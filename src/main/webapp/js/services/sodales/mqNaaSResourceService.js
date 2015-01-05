@@ -30,6 +30,7 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
                     his.content = response.status+" - PUT (IRootResourceAdministrastion): "+response.data;
                     his.type = "INFO";
                     his.$save();
+                    return response.data;
 //                    return json;
                 }, function(response){
                     var his = new HistoryService();

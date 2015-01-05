@@ -10,6 +10,7 @@ angular.module('openNaaSApp')
                     console.log("Editor");
 //                    createStencil();
                     graph = new myGraph("#graph");
+                    scope.graph = graph;
 
                 }};
         })
@@ -104,6 +105,21 @@ angular.module('openNaaSApp')
                 return {
                     // A = attribute, E = Element, C = Class and M = HTML Comment
                     restrict: 'AE',
+                    controller: function ($scope, ngDialog) {
+                        console.log($scope);
+                        $scope.arn = {network: "Network-Internal-1.0-2", endpoint: "http://fibratv.dtdns.net:41080"};
+                        $scope.cpe = {network: "Network-Internal-1.0-2", endpoint: "http://fibratv.dtdns.net:41081"};
+                        $scope.openARNDialog = function () {
+                            $scope.arn = {endpoint: "asdasdsa"};
+                            ngDialog.open({template: 'partials/sodales/arnDialog.html'});
+
+                        };
+                        $scope.openCPEDialog = function () {
+                            $scope.arn = {endpoint: "asdasdsa"};
+                            ngDialog.open({template: 'partials/sodales/cpeDialog.html'});
+
+                        };
+                    },
                     link: function (scope, element, attrs) {
                         element.droppable({
                             drop: function (e, ui) {
@@ -119,8 +135,15 @@ angular.module('openNaaSApp')
                                     y: $newPosY
                                 };
                                 console.log(divPos);
+                                
+                                if(nodeType === "arn"){
+                                    scope.openARNDialog();
+                                } else if(nodeType === "cpe"){
+                                    scope.openCPEDialog();
+                                }
+                                console.log("Create with draw");
                                 createElement(nodeType, divPos);
-
+                                
                                 var dragIndex = angular.element(ui.draggable).data('index'),
                                         reject = angular.element(ui.draggable).data('reject'),
                                         dragEl = angular.element(ui.draggable).parent(),
