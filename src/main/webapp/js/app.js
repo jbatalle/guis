@@ -40,7 +40,12 @@ angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSAp
                         })
                         .when('/mgt', {
                             templateUrl: 'partials/sodales/0_1_mgt_pi.html',
-                            controller: 'serviceProviderController'
+                            controller: 'sodalesPiMgtCtrl'
+                        })
+                        .when('/crawler', {
+                            template: " ", // just fire controller
+                            controller: 'CrawlerResourceController',
+                            animation: 'slide'
                         })
                         .otherwise({
                             templateUrl: 'partials/sodales/0_home.html',
