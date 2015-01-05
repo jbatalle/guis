@@ -19,21 +19,7 @@ Go into the project dir and type `mvn jetty:run`, then point your browser to `ht
 
 'bower install' for js dependencies
 
-Based
--------
-
-https://github.com/philipsorst/angular-rest-springsecurity
-
-
-mvn -Djetty.port=9999 jetty:run
-
-
-Integrate:
-https://bitbucket.org/infinit-group/cvdb/overview
-https://github.com/ppp21/spring-websockets.git
-
-
-Installation
+Tests
 -------
 Javascript dependencies:
 $ npm install bower --save-dev
@@ -42,11 +28,3 @@ Install Karma:
 $ npm install karma --save-dev
 # Install plugins that your project needs:
 $ npm install karma-jasmine karma-chrome-launcher --save-dev
-
-Adding new features in Angular
--------
-* Create partial view
-* Create controller
-* Create service
-* Add controller and view in app.js config
-* Add js libs to index.html
