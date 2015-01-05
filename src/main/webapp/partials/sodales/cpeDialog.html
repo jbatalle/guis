@@ -1,5 +1,5 @@
 
-<div class="container-fluid" ng-controller="SodalesController">
+<div class="container-fluid" ng-controller="sodalesPiMgtCtrl">
 
     <form action="createARN" method="post" name="editForm">
         <div>
@@ -11,13 +11,6 @@
                 <input type="text" class="form-control" ng-model="arn.endpoint"
                        name="endpoint" >
             </div>
-            <div>
-                <label>
-                    <input type="checkbox" ng-model="superVisor" name="superVisorFlag" 
-                           ng-true-value="1" ng-false-value="0" value="${existingUser.superVisorFlag}">
-                    Make a Supervisor</label>
-            </div>
-
             <div>
                 <a href="#" class="btn btn-sm btn-primary" ng-click="addCPE(arn)">Add</a>
             </div>
