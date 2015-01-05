@@ -32,7 +32,7 @@ angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSAp
                         })
                         .when('/openaccess/vimgt', {
                             templateUrl: 'partials/sodales/2_0_openAccess.html',
-                            controller: 'RootResourceController'
+                            controller: 'SodalesOpenaccessDashCtrl'
                         })
                         .when('/openaccess/vicreation', {
                             templateUrl: 'partials/sodales/2_2_openAccess_vicreation.html',

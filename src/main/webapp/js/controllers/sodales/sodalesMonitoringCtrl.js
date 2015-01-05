@@ -71,6 +71,7 @@ angular.module('openNaaSApp')
                     scope: $scope}
                 );
             };
+            $scope.selectedResource("ARN");
         })
         .controller('statisticsDialogCtrl', function ($scope, ngTableParams, $filter, localStorageService, arnService) {
             var requestData = getCounter($scope.infId);
