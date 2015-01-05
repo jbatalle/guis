@@ -1,0 +1,48 @@
+<div class="row">
+
+    <div class="col-md-3">
+        <p class="lead">Select VI</p>
+        <div class="list-group">
+            <a href="#" class="list-group-item active">VI 1</a>
+            <a href="#" class="list-group-item">VI 2</a>
+            <a href="#" class="list-group-item">VI 3</a>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <h2 class="page-header">OpenAccess <small>History of actions</small></h2>
+        <ol class="breadcrumb">
+            <li>
+                <i class="fa fa-dashboard"></i>  <a href="#" onclick="javascript:loadPage('2_0_openAccess');
+                        return false;">VI List</a>
+            </li>
+            <li class="active">
+                <i class="fa fa-history"></i>  <a href="#" onclick="javascript:loadPage('2_1_openAccess_history');
+                        return false;">History and status</a>
+            </li>
+        </ol>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-history fa-fw"></i> History</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <button ng-click="tableParams.reload()" class="btn btn-default">Reload</button>
+                            <button ng-click="tableParams.sorting({})" class="btn btn-default">Clear sorting</button>
+
+                            <table ng-table="tableParams" class="table ng-table-responsive">
+                                <tr ng-repeat="hist in $data">
+                                    <td data-title="'Date'" sortable="'date'" class="col-sm-2 col-md-2 col-lg-2">{{hist.date| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                    <td data-title="'Type'" sortable="'type'" class="col-sm-1 col-md-1 col-lg-1">{{hist.type}}</td>
+                                    <td data-title="'Information'">{{hist.content}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+

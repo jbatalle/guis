@@ -1,0 +1,27 @@
+
+<div class="container-fluid" ng-controller="SodalesController">
+
+    <form action="createARN" method="post" name="editForm">
+        <div>
+            <div>Select network
+                <input type="text" class="form-control" ng-model="arn.network"
+                       name="network" value="http://fibratv.dtdns.net:41080" bs-typeahead>
+            </div>
+            <div>Enter the URL endpoint First Name
+                <input type="text" class="form-control" ng-model="arn.endpoint"
+                       name="endpoint" >
+            </div>
+            <div>
+                <label>
+                    <input type="checkbox" ng-model="superVisor" name="superVisorFlag" 
+                           ng-true-value="1" ng-false-value="0" value="${existingUser.superVisorFlag}">
+                    Make a Supervisor</label>
+            </div>
+
+            <div>
+                <a href="#" class="btn btn-sm btn-primary" ng-click="addARN(arn)">Add</a>
+            </div>
+        </div>
+    </form>
+
+</div>
