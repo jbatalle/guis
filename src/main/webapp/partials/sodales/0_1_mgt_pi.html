@@ -2,9 +2,15 @@
     <div class="col-md-3">
         <p class="lead">List of physical resources</p>
         <div class="list-group">
-            <a href="#" class="list-group-item active">Physical Resource 1</a>
+            <a href="#" class="list-group-item active">
+                <div class="ui-widget-content netEl-drag" id="ofSwitch" draggable>
+                    <img id="arn" draggable src="../plugin/img/SODALES_ARN.png" width="60"> ARN
+                </div>
+            </a>
             <a href="#" class="list-group-item">Physical Resource 2</a>
-            <a href="#" class="list-group-item">Physical Resource 3</a>
+            <div class="ui-widget-content netEl-drag" id="ofSwitch" draggable>
+        <img id="cpe" draggable src="../plugin/img/SODALES_CPE.png" width="60"> CPE
+    </div>
         </div>
     </div>
     <div class="col-md-9">
@@ -16,8 +22,8 @@
                         <h3 class="panel-title"><i class="fa fa-image fa-fw"></i> Graph</h3>
                     </div>
                     <div class="panel-body" style="text-align: center;">
-                        <div id="graph"></div>
-                        <img src="img/SODALES-PR.png"/>
+                        <a href="" ng-hide="networkId" ng-click="createNetwork()" class="btn btn-xs btn-default" title="Create Network">Create Network</a>
+                        <div grapheditor ng-show="networkId"></div>
                     </div>
                 </div>
             </div>
@@ -30,13 +36,12 @@
                         <h3 class="panel-title"><i class="fa fa-info-circle fa-fw"></i> Resource info</h3>
                     </div>
                     <div class="panel-body">
-                        <div id="graph"></div>
-                            Form to update information of the physical resource. insert button
-                        </div>
+                        Form to update information of the physical resource. insert button
                     </div>
                 </div>
             </div>
-        </div><!--close row-->
-    </div><!--close col-md-9-->
+        </div>
+    </div><!--close row-->
+</div><!--close col-md-9-->
 </div><!--close bigrow-->
 
