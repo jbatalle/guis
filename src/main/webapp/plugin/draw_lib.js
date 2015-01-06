@@ -115,10 +115,14 @@ console.log("add link between ports");
 
     var findLinkIndex = function(id) {
         for (var i in links) {if (links[i]["id"] === id) return i};
-    }
+    };
 
     this.getNodes = function() {
         return nodes;
+    }
+    
+    this.setNodes = function(newNodes) {
+        nodes = newNodes;
     }
 
     this.getNode = function(nodeId) {
@@ -306,6 +310,12 @@ var zoom = d3.behavior.zoom()
                             graph.addPortToNode(d.id, port);
                         })
                     .text("Add port");
+                popup.append("p").append("a")
+                    .attr({"xlink:href": "", "ng-Click":"openARNDialog()"})
+                    .on("mousedown", function(){
+                angular.element(document.getElementById('sodalesPiMgtCtrl')).scope().createNetwork();
+                        })
+                    .text("Remove");
                 d.ports.forEach(function(entry) {
                     popup.append("li").text("Id: "+entry.id +". Name: "+entry.name);
                 });
@@ -314,7 +324,7 @@ var zoom = d3.behavior.zoom()
 
         var portsTest = nodeEnter.append("g")
             .attr("id", "ports").selectAll("g.ports")
-            .data(function(d){ console.log("ADD ports"); console.log(d.ports); return d.ports;});
+            .data(function(d){ return d.ports;});
 
         portsTest
             .enter().append("rect")

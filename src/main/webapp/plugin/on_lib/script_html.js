@@ -94,7 +94,6 @@ function createARN(divPos) {
     var name = "arn" + graph.getNodes().length;
     var arn = new ARN(name);
     console.log(arn);
-    console.log(arn instanceof NetworkElement);
     console.log(arn.getPorts());
     arn.id = name;
     arn.setX(divPos.x);

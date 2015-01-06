@@ -4,12 +4,18 @@ angular.module('openNaaSApp')
         .controller('sodalesPiMgtCtrl', function ($scope, MqNaaSResourceService, $routeParams, localStorageService, ngDialog, RootResourceService, spService) {
 var url = "";
             console.log(localStorageService.get("mqNaaSElements"));
+//            console.log(JSON.parse(localStorageService.get("mqNaaSElements")));
+localStorageService.set("graphNodes", []);
             RootResourceService.list().then(function (data) {
                 console.log(data);
-                $scope.networkId = data.IRootResource.IRootResourceId[1];
+                data = checkIfIsArray(data.IRootResource.IRootResourceId);
+                $scope.networkId = data[1];
                 console.log($scope.networkId);
-
-                localStorageService.set("mqNaaSElements", data);
+                if(!$scope.networkId){
+                    localStorageService.set("networkElements", []);
+                }
+getMqNaaSResource($scope.networkId);
+//                localStorageService.set("mqNaaSElements", data);
                 console.log($scope.data);
             });
 
@@ -64,7 +70,6 @@ var url = "";
                 MqNaaSResourceService.put(url, ARN).then(function (data) {
                     console.log(data);
                     $scope.dataARN = data;
-                    console.log($scope.data);
                 });
                 ngDialog.close();
             };
@@ -76,10 +81,25 @@ var url = "";
                 console.log(CPE);
                 url = generateUrl("IRootResourceAdministration", $scope.networkId, "IRootResourceAdministration");
                 MqNaaSResourceService.put(url, CPE).then(function (data) {
-                    $scope.data = data;
-                    console.log($scope.data);
+                    $scope.dataCPE = data;
                 });
                 ngDialog.close();
+            };
+            
+            var getMqNaaSResource = function (root, url) {
+                console.log("GET MQNAAS RESOURCE. SET RESOURCES");
+                var url = generateUrl("IRootResourceAdministration", root, "IRootResourceProvider");
+                console.log(root);
+                MqNaaSResourceService.list(url).then(function (data) {
+                    console.log(data);
+                    if (data === undefined)
+                        return;
+                    data = checkIfIsArray(data.IRootResource.IRootResourceId);
+                    $scope.networkElements = data;
+                    localStorageService.set("networkElements", data);
+                }, function (error) {
+                    console.log(error);
+                });
             };
 
         });
