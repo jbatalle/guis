@@ -1,20 +1,19 @@
-
 <div class="container-fluid" ng-controller="sodalesPiMgtCtrl">
-
-    <form action="createARN" method="post" name="editForm">
+    <b>Adding a CPE resource</b>
+    <form action="createCPE" method="post" name="editForm">
         <div>
-            <div>Add this resource inside the network
-                <input type="text" class="form-control" ng-model="arn.network"
-                       name="network" bs-typeahead>
+            <div>Select network
+                <select ng-model="cpe.network">
+                    <option selected>{{networkId}}</option>
+                </select> 
             </div>
             <div>Enter the endpoint (URL)
-                <input type="text" class="form-control" ng-model="arn.endpoint"
-                       name="endpoint" >
+                <input type="text" class="form-control" ng-model="cpe.endpoint" name="endpoint" >
             </div>
+            <br/>
             <div>
-                <a href="#" class="btn btn-sm btn-primary" ng-click="addCPE(arn)">Add</a>
+                <a href="" class="btn btn-sm btn-primary" ng-click="addCPE(arn)">Add</a>
             </div>
         </div>
     </form>
-
 </div>
