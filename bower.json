@@ -19,7 +19,7 @@
     "ngDialog": "~0.3.7",
     "tree-model-bower" : "git://github.com/bikezilla/tree-model-bower",
     "jquery-ui": "1.11.1",
-    "angular-bootstrap-select":"0.1.0-rc1"
+    "angular-strap":"2.1.5"
   },
   "devDependencies": {
     "angular-mocks": "~1.3.2",
