@@ -6,12 +6,13 @@ var url = "";
             console.log(localStorageService.get("mqNaaSElements"));
 //            console.log(JSON.parse(localStorageService.get("mqNaaSElements")));
 localStorageService.set("graphNodes", []);
-
+console.log($rootScope.networkId);
             RootResourceService.list().then(function (data) {
                 data = checkIfIsArray(data.IRootResource.IRootResourceId);
                 $scope.listNetworks = data;
                 console.log($scope.listNetworks);
                 $rootScope.networkId = data[1];
+$scope.selectedNetwork = $rootScope.networkId;
                 console.log($rootScope.networkId);
                 if(!$rootScope.networkId){
                     console.log("Clean localStorage networkElements due network is not created.");

@@ -20,11 +20,13 @@ ng-hide {
     right: 0;
     margin: auto;
 }
-
 .statsTable {
-    ￼width: 300px;
+    width: 340px;
 }
-
-.statsTable, th.ng-binding.ng-scope{
-    ￼width: 50px;    
+statsTable, th.ng-binding.ng-scope{
+    width: 50px;
+    text-align: center;
+}
+statsTable, td.ng-binding.ng-scope{
+    text-align: center;
 }
