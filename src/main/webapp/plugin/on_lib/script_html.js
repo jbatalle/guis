@@ -72,14 +72,11 @@ function createElement(name, type, divPos, data) {
                 createARN(name, divPos);
 //            else
 //                createARN(divPos, data);
-            showInfoMessage("Element added");
+            //showInfoMessage("Element added");
             break;
         case "cpe":
-//            if (jQuery.isEmptyObject(data))
                 createCPE(name, divPos);
-//            else
-//                createARN(divPos, data);
-            showInfoMessage("Element added");
+//            showInfoMessage("Element added");
             break;
         default:
             console.log("Element not defined");
@@ -108,7 +105,7 @@ function createARN(name, divPos) {
 function createCPE(name, divPos) {
     CPE.prototype = new NetworkElement();
     CPE.prototype.constructor = CPE;
-    var name = "cpe" + graph.getNodes().length;
+//    var name = "cpe" + graph.getNodes().length;
     var cpe = new CPE(name);
     console.log(cpe);
     console.log(cpe instanceof NetworkElement);

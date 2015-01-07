@@ -1,15 +1,17 @@
 <div class="row">
     <div class="col-md-3">
+        <p class="lead">Networks</p>
+        <select ng-model="networkId" ng-options="network for network in listNetworks"></select>
         <p class="lead">List of physical resources</p>
         <div class="list-group">
             <a href="#" class="list-group-item">
-                <div class="ui-widget-content netEl-drag" id="arn" draggable>
-                    <img id="arn" draggable src="../plugin/img/SODALES_ARN.png" width="60"> ARN
+                <div class="ui-widget-content netEl-drag" id="arn">
+                    <img id="arn" draggable src="../plugin/img/SODALES_ARN.png" width="60" style="z-index:1090"> ARN
                 </div>
             </a>
             <a href="#" class="list-group-item">
-                <div class="ui-widget-content netEl-drag" id="cpe" draggable>
-                    <img id="cpe" draggable src="../plugin/img/SODALES_CPE.png" width="60"> CPE
+                <div class="ui-widget-content netEl-drag" id="cpe">
+                    <img id="cpe" draggable src="../plugin/img/SODALES_CPE.png" width="60" style="z-index:1090"> CPE
                 </div>
             </a>
         </div>
@@ -20,7 +22,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><i class="fa fa-image fa-fw"></i> Graph</h3>
+                        <h3 class="panel-title"><i class="fa fa-image fa-fw"></i> Topology graph</h3>
                     </div>
                     <div class="panel-body" style="text-align: center;">
                         <a href="" ng-hide="networkId" ng-click="createNetwork()" class="btn btn-xs btn-default" title="Create Network">Create Network</a>

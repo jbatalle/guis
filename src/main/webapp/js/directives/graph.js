@@ -6,20 +6,12 @@ angular.module('openNaaSApp')
                     scope: {},
                     templateUrl: 'partials/d3/editor.html',
                     link: function (scope, element, attrs) {
-                        console.log("Editor");
-//                    createStencil();
                         graph = new myGraph("#graph");
                         graph.setNodes(localStorageService.get("graphNodes"));
                         scope.graph = graph;
                         timer(console.log("TIMER HEUEHE"), 0);
-                        console.log("View");
                         console.log(localStorageService.get("graphNodes"));
-//                        graph = new myGraph("#graph");
-
                         console.log(localStorageService.get("networkElements"));
-//                    var xmlTopology = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?> <ns2:topology xmlns:ns2="opennaas.api"> <networkElements> <networkElement xsi:type="switch" id="openflowswitch:s1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s1.1"> <state> <congested>false</congested> </state> </port> <port id="s1.2"> <state> <congested>false</congested> </state> </port> <port id="s1.3"> <state> <congested>false</congested> </state> </port> <port id="s1.4"> <state> <congested>false</congested> </state> </port> </ports> </networkElement> <networkElement xsi:type="switch" id="openflowswitch:s2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s2.1"> <state> <congested>false</congested> </state> </port> <port id="s2.2"> <state> <congested>false</congested> </state> </port> <port id="s2.3"> <state> <congested>false</congested> </state> </port> </ports> </networkElement><networkElement xsi:type="switch" id="openflowswitch:s3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s3.1"> <state> <congested>false</congested> </state> </port> <port id="s3.2"> <state> <congested>false</congested> </state> </port> <port id="s3.3"> <state> <congested>false</congested> </state> </port> <port id="s3.4"> <state> <congested>false</congested> </state> </port> </ports> </networkElement> </networkElements> <links> <link> <state> <congested>false</congested> </state> <srcPort>s1.1</srcPort> <dstPort>s2.1</dstPort> </link> <link> <state> <congested>false</congested> </state> <srcPort>s1.2</srcPort> <dstPort>s3.1</dstPort> </link> <link> <state> <congested>false</congested> </state> <srcPort>s2.2</srcPort> <dstPort>s3.2</dstPort> </link> </links> <networkDevicePortIdsMap> <entry> <key>s1.1</key> <value> <deviceId>openflowswitch:s1</deviceId> <devicePortId>1</devicePortId> </value> </entry> <entry> <key>s1.2</key> <value> <deviceId>openflowswitch:s1</deviceId> <devicePortId>2</devicePortId> </value> </entry> <entry> <key>s1.3</key> <value> <deviceId>openflowswitch:s1</deviceId> <devicePortId>3</devicePortId> </value> </entry> <entry> <key>s1.4</key> <value> <deviceId>openflowswitch:s1</deviceId> <devicePortId>4</devicePortId> </value> </entry> <entry> <key>s2.1</key> <value> <deviceId>openflowswitch:s2</deviceId> <devicePortId>1</devicePortId> </value> </entry> <entry> <key>s2.2</key> <value> <deviceId>openflowswitch:s2</deviceId> <devicePortId>2</devicePortId> </value> </entry> <entry> <key>s2.3</key> <value> <deviceId>openflowswitch:s2</deviceId> <devicePortId>3</devicePortId> </value> </entry> <entry> <key>s3.1</key> <value> <deviceId>openflowswitch:s3</deviceId> <devicePortId>1</devicePortId> </value> </entry> <entry> <key>s3.2</key> <value> <deviceId>openflowswitch:s3</deviceId> <devicePortId>2</devicePortId> </value> </entry> <entry> <key>s3.3</key> <value> <deviceId>openflowswitch:s3</deviceId> <devicePortId>3</devicePortId> </value> </entry> <entry> <key>s3.4</key> <value> <deviceId>openflowswitch:s3</deviceId> <devicePortId>4</devicePortId> </value> </entry> </networkDevicePortIdsMap> </ns2:topology>';
-//                    var json = convertXml2JSonObject(xmlTopology);
-//                    console.log(json);
 
                         var networkElements = localStorageService.get("networkElements");
                         var links = [];
@@ -29,7 +21,6 @@ angular.module('openNaaSApp')
                         //for each network element
                         for (var i = 0; i < networkElements.length; i++) {
                             console.log(networkElements[i]);
-                            console.log(networkElements[i].split("-")[0].toLowerCase());
                             var type = networkElements[i].split("-")[0].toLowerCase();
                             var id = networkElements[i];
 //                        var ports = networkElements[i].ports.port;
@@ -44,7 +35,6 @@ angular.module('openNaaSApp')
                             node.net_force = {};
                             node.velocity = {x: 0, y: 0};
                             nodes.push(node);
-                            console.log(nodes);
                             //{id:1, x: 10, y: 20, net_force: {}, velocity: {}
                         }
                         var edges = [];
@@ -96,7 +86,6 @@ angular.module('openNaaSApp')
 //        createSwitch(nodes[i].id, nodes[i].ports, nodes[i].x, nodes[i].y);
                             var divPos = {x: nodes[i].x, y: nodes[i].y};
                             var data = {id: nodes[i].id, ports: nodes[i].ports};
-                            console.log("NODE TYPE: " + nodes[i].type);
                             createElement(nodes[i].id, nodes[i].type, divPos, data);
 //                            localStorageService.set("graphNodes", graph.getNodes());
                         }
@@ -117,7 +106,6 @@ angular.module('openNaaSApp')
                                 data: {"nodeType": nodeType, "divPos": divPos}})
                         };
                         $scope.openCPEDialog = function (nodeType, divPos) {
-//                            $scope.cpe = {endpoint: "asdasdsa"};
                             ngDialog.open({
                                 template: 'partials/sodales/cpeDialog.html',
                                 data: {"nodeType": nodeType, "divPos": divPos}});
@@ -127,8 +115,6 @@ angular.module('openNaaSApp')
 
                         element.droppable({
                             drop: function (e, ui) {
-                                console.log(e);
-                                console.log(ui);
                                 var $newPosX = ui.offset.left - $(this).offset().left;
                                 var $newPosY = ui.offset.top - $(this).offset().top;
                                 var nodeType = angular.element(ui.draggable).parent().context.id;
@@ -141,12 +127,10 @@ angular.module('openNaaSApp')
                                 };
                                 console.log(divPos);
                                 if (nodeType === "arn") {
-                                    console.log("CALL DIALOG OPEN .............................................");
                                     scope.openARNDialog(nodeType, divPos);
                                 } else if (nodeType === "cpe") {
                                     scope.openCPEDialog(nodeType, divPos);
                                 }
-                                console.log("AFTER .............................................");
                                 console.log("Create with draw");
                                 console.log(graph.getNodes());
 //                                createElement(nodeType, divPos);
@@ -199,13 +183,12 @@ angular.module('openNaaSApp')
                     scope: {},
                     templateUrl: 'partials/d3/view.html',
                     link: function (scope, element, attrs) {
-                        timer(console.log("TIMER HEUEHE"), 0);
-                        console.log("View");
                         graph = new myGraph("#graph");
+                        graph.setNodes(localStorageService.get("graphNodes"));
+                        scope.graph = graph;
+                        timer(console.log("TIMER HEUEHE"), 0);
+                        console.log(localStorageService.get("graphNodes"));
                         console.log(localStorageService.get("networkElements"));
-//                    var xmlTopology = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?> <ns2:topology xmlns:ns2="opennaas.api"> <networkElements> <networkElement xsi:type="switch" id="openflowswitch:s1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s1.1"> <state> <congested>false</congested> </state> </port> <port id="s1.2"> <state> <congested>false</congested> </state> </port> <port id="s1.3"> <state> <congested>false</congested> </state> </port> <port id="s1.4"> <state> <congested>false</congested> </state> </port> </ports> </networkElement> <networkElement xsi:type="switch" id="openflowswitch:s2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s2.1"> <state> <congested>false</congested> </state> </port> <port id="s2.2"> <state> <congested>false</congested> </state> </port> <port id="s2.3"> <state> <congested>false</congested> </state> </port> </ports> </networkElement><networkElement xsi:type="switch" id="openflowswitch:s3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s3.1"> <state> <congested>false</congested> </state> </port> <port id="s3.2"> <state> <congested>false</congested> </state> </port> <port id="s3.3"> <state> <congested>false</congested> </state> </port> <port id="s3.4"> <state> <congested>false</congested> </state> </port> </ports> </networkElement> </networkElements> <links> <link> <state> <congested>false</congested> </state> <srcPort>s1.1</srcPort> <dstPort>s2.1</dstPort> </link> <link> <state> <congested>false</congested> </state> <srcPort>s1.2</srcPort> <dstPort>s3.1</dstPort> </link> <link> <state> <congested>false</congested> </state> <srcPort>s2.2</srcPort> <dstPort>s3.2</dstPort> </link> </links> <networkDevicePortIdsMap> <entry> <key>s1.1</key> <value> <deviceId>openflowswitch:s1</deviceId> <devicePortId>1</devicePortId> </value> </entry> <entry> <key>s1.2</key> <value> <deviceId>openflowswitch:s1</deviceId> <devicePortId>2</devicePortId> </value> </entry> <entry> <key>s1.3</key> <value> <deviceId>openflowswitch:s1</deviceId> <devicePortId>3</devicePortId> </value> </entry> <entry> <key>s1.4</key> <value> <deviceId>openflowswitch:s1</deviceId> <devicePortId>4</devicePortId> </value> </entry> <entry> <key>s2.1</key> <value> <deviceId>openflowswitch:s2</deviceId> <devicePortId>1</devicePortId> </value> </entry> <entry> <key>s2.2</key> <value> <deviceId>openflowswitch:s2</deviceId> <devicePortId>2</devicePortId> </value> </entry> <entry> <key>s2.3</key> <value> <deviceId>openflowswitch:s2</deviceId> <devicePortId>3</devicePortId> </value> </entry> <entry> <key>s3.1</key> <value> <deviceId>openflowswitch:s3</deviceId> <devicePortId>1</devicePortId> </value> </entry> <entry> <key>s3.2</key> <value> <deviceId>openflowswitch:s3</deviceId> <devicePortId>2</devicePortId> </value> </entry> <entry> <key>s3.3</key> <value> <deviceId>openflowswitch:s3</deviceId> <devicePortId>3</devicePortId> </value> </entry> <entry> <key>s3.4</key> <value> <deviceId>openflowswitch:s3</deviceId> <devicePortId>4</devicePortId> </value> </entry> </networkDevicePortIdsMap> </ns2:topology>';
-//                    var json = convertXml2JSonObject(xmlTopology);
-//                    console.log(json);
 
                         var networkElements = localStorageService.get("networkElements");
                         var links = [];
@@ -283,7 +266,7 @@ angular.module('openNaaSApp')
                             var divPos = {x: nodes[i].x, y: nodes[i].y};
                             var data = {id: nodes[i].id, ports: nodes[i].ports};
                             console.log("NODE TYPE: " + nodes[i].type);
-                            createElement(nodes[i].type, divPos, data);
+                            createElement(nodes[i].id, nodes[i].type, divPos, data);
                         }
                     }};
             }]);
