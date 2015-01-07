@@ -10,7 +10,10 @@ services.factory('arnService', ['$http', 'x2js', 'HistoryService', function ($ht
                     var x2js = new X2JS();
                     var json = x2js.xml_str2json(response.data);
                     var his = new HistoryService();
-                    his.content = response.status+" - PUT (ARN Service Statistics): "+response.data;
+                    console.log(json);
+                    console.log(json.response.operation._type);
+                    console.log(json.response.operation._entity);
+                    his.content = response.status+" - PUT (ARN Service Statistics): "+json.response.operation._type+" - "+json.response.operation._entity;
                     his.type = "INFO";
                     his.$save();
                     return json;
