@@ -299,10 +299,10 @@ var zoom = d3.behavior.zoom()
                     .attr("class", "popup_context_menu")
                     .style("left", mousePosition[0] + "px")
                     .style("top", mousePosition[1] + "px");
-                popup.append("h2").text(d.name);
+                popup.append("h3").text(d.name);
                 popup.append("p").text("Id: "+d.id).append("p")
                     .append("p").text("Ports: "+d.ports.length)
-                    .append("p").append("a")
+/*                    .append("p").append("a")
                     .attr({"xlink:href": "#"})
                     .on("mousedown", function(){
                         port_num = d.ports.length+1;
@@ -310,10 +310,11 @@ var zoom = d3.behavior.zoom()
                             graph.addPortToNode(d.id, port);
                         })
                     .text("Add port");
-                popup.append("p").append("a")
+*/                popup.append("p").append("a")
                     .attr({"xlink:href": "", "ng-Click":"openARNDialog()"})
                     .on("mousedown", function(){
-                angular.element(document.getElementById('sodalesPiMgtCtrl')).scope().createNetwork();
+                        console.log("Remove resource: "+d.id);
+                        angular.element(document.getElementById('piMgt')).scope().deleteEntry(d.id);
                         })
                     .text("Remove");
                 d.ports.forEach(function(entry) {

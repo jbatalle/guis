@@ -1,17 +1,19 @@
 'use strict';
 
 angular.module('openNaaSApp')
-        .controller('sodalesPiMgtCtrl', function ($scope, MqNaaSResourceService, $routeParams, localStorageService, ngDialog, RootResourceService, spService) {
+        .controller('sodalesPiMgtCtrl', function ($scope, $rootScope, MqNaaSResourceService, $routeParams, localStorageService, ngDialog, RootResourceService, spService) {
 var url = "";
             console.log(localStorageService.get("mqNaaSElements"));
 //            console.log(JSON.parse(localStorageService.get("mqNaaSElements")));
 localStorageService.set("graphNodes", []);
+
             RootResourceService.list().then(function (data) {
                 console.log(data);
                 data = checkIfIsArray(data.IRootResource.IRootResourceId);
-                $scope.networkId = data[1];
-                console.log($scope.networkId);
-                if(!$scope.networkId){
+                $rootScope.networkId = data[1];
+                console.log($rootScope.networkId);
+                if(!$rootScope.networkId){
+                    console.log("Clean localStorage networkElements due network is not created.");
                     localStorageService.set("networkElements", []);
                 }
 getMqNaaSResource($scope.networkId);
@@ -39,12 +41,13 @@ getMqNaaSResource($scope.networkId);
                 });
             };
 
-            $scope.arn = {endpoint: "http://fibratv.dtdns.net:41080"};
-            $scope.openARNDialog = function () {
+            $scope.arn = {network: "", endpoint: "http://fibratv.dtdns.net:41080"};
+            $scope.cpe = {endpoint: "http://fibratv.dtdns.net:41081"};
+/*            $scope.openARNDialog = function () {
                 $scope.arn = {endpoint: "asdasdsa"};
                 ngDialog.open({template: 'partials/sodales/arnDialog.html'});
 
-            };
+            };*/
 
             $scope.createTSON = function () {
                 var TSON = getResource("TSON");
@@ -70,6 +73,8 @@ getMqNaaSResource($scope.networkId);
                 MqNaaSResourceService.put(url, ARN).then(function (data) {
                     console.log(data);
                     $scope.dataARN = data;
+                    console.log(data);
+                    createElement(data, $scope.ngDialogData.nodeType, $scope.ngDialogData.divPos);
                 });
                 ngDialog.close();
             };
@@ -84,6 +89,14 @@ getMqNaaSResource($scope.networkId);
                     $scope.dataCPE = data;
                 });
                 ngDialog.close();
+            };
+            
+            $scope.deleteEntry = function (resourceName) {
+                console.log(resourceName);
+                MqNaaSResourceService.remove(resourceName).then(function (data) {
+                    console.log(data);
+                    $scope.data = MqNaaSResourceService.query();
+                });
             };
             
             var getMqNaaSResource = function (root, url) {
@@ -101,5 +114,4 @@ getMqNaaSResource($scope.networkId);
                     console.log(error);
                 });
             };
-
         });

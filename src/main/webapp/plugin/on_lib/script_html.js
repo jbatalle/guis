@@ -43,7 +43,7 @@ console.log("SCRIPT");
     /* END Stencil - Images draggables to d3js */
 });
 
-function createElement(type, divPos, data) {
+function createElement(name, type, divPos, data) {
     console.log("Create element " + type + " " + divPos);
     switch (type) {
         case "ofSwitch":
@@ -69,14 +69,14 @@ function createElement(type, divPos, data) {
             break;
         case "arn":
 //            if (jQuery.isEmptyObject(data))
-                createARN(divPos);
+                createARN(name, divPos);
 //            else
 //                createARN(divPos, data);
             showInfoMessage("Element added");
             break;
         case "cpe":
 //            if (jQuery.isEmptyObject(data))
-                createCPE(divPos);
+                createCPE(name, divPos);
 //            else
 //                createARN(divPos, data);
             showInfoMessage("Element added");
@@ -88,10 +88,10 @@ function createElement(type, divPos, data) {
 
 }
 
-function createARN(divPos) {
+function createARN(name, divPos) {
     ARN.prototype = new NetworkElement();
     ARN.prototype.constructor = ARN;
-    var name = "arn" + graph.getNodes().length;
+//    var name = "arn" + graph.getNodes().length;
     var arn = new ARN(name);
     console.log(arn);
     console.log(arn.getPorts());
@@ -105,7 +105,7 @@ function createARN(divPos) {
     graph.addNodewithData(arn);
 }
 
-function createCPE(divPos) {
+function createCPE(name, divPos) {
     CPE.prototype = new NetworkElement();
     CPE.prototype.constructor = CPE;
     var name = "cpe" + graph.getNodes().length;
