@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSApp.services', 'LocalStorageModule', 'cb.x2js', 'ngTable', 'ngDialog'])
+angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSApp.services', 'LocalStorageModule', 'cb.x2js', 'ngTable', 'ngDialog', 'angular-bootstrap-select'])
         .config(function (localStorageServiceProvider) {
             localStorageServiceProvider
                     .setPrefix('openNaaSApp')
