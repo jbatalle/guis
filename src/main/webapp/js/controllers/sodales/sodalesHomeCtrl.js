@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openNaaSApp')
-        .controller('SodalesHomeCtrl', function ($scope, MqNaaSResourceService, $routeParams, localStorageService, ngDialog, RootResourceService, spService) {
+        .controller('SodalesHomeCtrl', function ($scope, MqNaaSResourceService, $routeParams, localStorageService, ngDialog, RootResourceService, spService, viService) {
             var url = generateUrl("IRootResourceAdministration", $routeParams.id, "IRootResourceProvider");
             console.log(url);
             MqNaaSResourceService.list(url).then(function (data) {
@@ -11,10 +11,13 @@ angular.module('openNaaSApp')
                 localStorageService.set("mqNaaSElements", data);
                 console.log($scope.data);
             });
-            
+
             spService.list().then(function (data) {
                 $scope.spSize = data.length;
             });
 
+            viService.list().then(function (data) {
+                $scope.viSize = data.length;
+            });
 
-        })
+        });
