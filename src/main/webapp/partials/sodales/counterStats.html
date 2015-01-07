@@ -1,6 +1,6 @@
-<table border="1">
+<table border="1" class="statsTable">
     <tr>
-        <th>Variable</th>
+        <th>Counter key</th>
         <th ng-repeat="header in content.headers track by $index">{{header}}</th>
     </tr>
     <tr>
@@ -40,11 +40,11 @@
         <td ng-repeat="ary in content.values._fragments track by $index">{{ary}}</td>
     </tr>
     <tr>
-        <td>jabbers</td>
+        <td>Jabbers</td>
         <td ng-repeat="ary in content.values._jabbers track by $index">{{ary}}</td>
     </tr>
     <tr>
-        <td>collisions</td>
+        <td>Collisions</td>
         <td ng-repeat="ary in content.values._collisions track by $index">{{ary}}</td>
     </tr>
     <tr>
