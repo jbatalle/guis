@@ -3,6 +3,7 @@
 angular.module('openNaaSApp')
         .controller('SodalesMonitoringController', function ($scope, ngTableParams, $filter, $routeParams, localStorageService, ngDialog, arnService, cpeService) {
 
+            $scope.dropdown = [{ "text": "CFM/OAM", "click": "selectedResource('CFM/OAM')"}];
             $scope.selectedResource = function (resourceId) {
                 //get statistics and send to scope
                 console.log("Selected " + resourceId);
@@ -12,8 +13,18 @@ angular.module('openNaaSApp')
                     $scope.ARNStats = false;
                     $scope.CPEStats = true;
                     $scope.getCPEPortList();
+                }
+                if (resourceId === 'CFM/OAM') {
+                    $scope.CPEactive = "active";
+                    $scope.ARNactive = "";
+                    $scope.ARNStats = false;
+                    $scope.CPEStats = false;
+                    $scope.CFM_OAM = true;
+                    $scope.getCCM();
+                    $scope.getLBM();
+                    $scope.getDMM();
                 }/*if (resourceId === 'ARN') {*/
-                else{
+                else {
                     $scope.ARNactive = "active";
                     $scope.CPEactive = "";
                     $scope.ARNStats = true;
@@ -63,6 +74,47 @@ angular.module('openNaaSApp')
                 });
             };
 
+            $scope.getCCM = function (portId) {
+                var reqUrl = "meaGetCcmDefectState.xml?unit=0&streamId=1";
+                var xml = '<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href=="olg_rss.css" ?><meaCcmCounter xmlns="http://www.ethernity-net.com/enet/CcmCounter"><CcmDefectCount><unit>0</unit><LastSequenc>1832557</LastSequenc><Unexpected_MEG_ID>0</Unexpected_MEG_ID><Unexpected_MEP_ID>0</Unexpected_MEP_ID><reorder>4</reorder><eventLoss>0</eventLoss></CcmDefectCount></meaCcmCounter>';
+                var x2js = new X2JS();
+                var json = x2js.xml_str2json(xml);
+                $scope.ccmCounter = json.meaCcmCounter.CcmDefectCount;
+                console.log(json);
+                var data = json.meaCcmCounter.CcmDefectCount;
+                console.log(data);
+
+                /*                cpeService.get(reqUrl).then(function (response) {
+                 var data = response.meaCcmCounter.CcmDefectCount;
+                 $scope.ccmCounter = data.meaCcmCounter.CcmDefectCount;
+                 });
+                 */
+            };
+            $scope.getLBM = function (portId) {
+                var reqUrl = "meagetLBMStatistics.xml?unit=0&streamId=1";
+                var xml = '<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href=="olg_rss.css" ?><meaStatistics xmlns="http://www.ethernity-net.com/enet/LbmDmmStatistics"><lbmDmmStatistics><unit>0</unit><AVG_latency>0</AVG_latency><Bytes>1735000</Bytes><MAX_jitter>0</MAX_jitter><MIN_jitter>4294967295</MIN_jitter><Pkts>1735</Pkts><drop>0</drop><lastseqID>1754</lastseqID><num_Of_Bits_Error>6695669</num_Of_Bits_Error><seq_ID_err>0</seq_ID_err><seq_ID_reorder>0</seq_ID_reorder></lbmDmmStatistics></meaStatistics>';
+                var x2js = new X2JS();
+                var json = x2js.xml_str2json(xml);
+                $scope.lbmCounter = json.meaStatistics.lbmDmmStatistics;
+                console.log(json.meaStatistics.lbmDmmStatistics);
+/*                cpeService.get(reqUrl).then(function (response) {
+                    var data = response.meaCcmCounter.CcmDefectCount;
+                    $scope.lbmCounter = data;
+                });*/
+            };
+            $scope.getDMM = function (portId) {
+                var reqUrl = "meaGetDmmStatistics.xml?unit=0&streamId=1";
+                var xml = '<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href=="olg_rss.css" ?><meaStatistics xmlns="http://www.ethernity-net.com/enet/LbmDmmStatistics"><lbmDmmStatistics><unit>0</unit><AVG_latency>5408</AVG_latency><Bytes>0</Bytes><MAX_jitter>6240</MAX_jitter><MIN_jitter>5312</MIN_jitter><Pkts>0</Pkts><drop>0</drop><lastseqID>0</lastseqID><num_Of_Bits_Error>0</num_Of_Bits_Error><seq_ID_err>0</seq_ID_err><seq_ID_reorder>0</seq_ID_reorder></lbmDmmStatistics></meaStatistics>';
+                var x2js = new X2JS();
+                var json = x2js.xml_str2json(xml);
+                $scope.dmmCounter = json.meaStatistics.lbmDmmStatistics;
+                console.log(json.meaStatistics.lbmDmmStatistics);
+/*                cpeService.get(reqUrl).then(function (response) {
+                    var data = response.meaPmCounter.PmCounter;
+                    $scope.dmmCounter = data.meaStatistics.lbmDmmStatistics;
+                });
+                */
+            };
 
             $scope.viewStatistics = function (interfaceId) {
                 $scope.infId = interfaceId;
