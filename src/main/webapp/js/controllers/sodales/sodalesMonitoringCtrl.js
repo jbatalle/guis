@@ -3,7 +3,7 @@
 angular.module('openNaaSApp')
         .controller('SodalesMonitoringController', function ($scope, ngTableParams, $filter, $routeParams, localStorageService, ngDialog, arnService, cpeService) {
 
-            $scope.dropdown = [{ "text": "CFM/OAM", "click": "selectedResource('CFM/OAM')"}];
+            $scope.dropdown = [{"text": "CFM/OAM", "click": "selectedResource('CFM/OAM')"}];
             $scope.selectedResource = function (resourceId) {
                 //get statistics and send to scope
                 console.log("Selected " + resourceId);
@@ -82,15 +82,12 @@ angular.module('openNaaSApp')
                 var x2js = new X2JS();
                 var json = x2js.xml_str2json(xml);
                 $scope.ccmCounter = json.meaCcmCounter.CcmDefectCount;
-                console.log(json);
                 var data = json.meaCcmCounter.CcmDefectCount;
                 console.log(data);
-
-                /*                cpeService.get(reqUrl).then(function (response) {
-                 var data = response.meaCcmCounter.CcmDefectCount;
-                 $scope.ccmCounter = data.meaCcmCounter.CcmDefectCount;
-                 });
-                 */
+                cpeService.get(reqUrl).then(function (response) {
+                    console.log(response);
+                    $scope.ccmCounter = response.meaCcmCounter.CcmDefectCount;
+                });
             };
             $scope.getLBM = function (portId) {
                 var reqUrl = "meagetLBMStatistics.xml?unit=0&streamId=1";
@@ -99,10 +96,10 @@ angular.module('openNaaSApp')
                 var json = x2js.xml_str2json(xml);
                 $scope.lbmCounter = json.meaStatistics.lbmDmmStatistics;
                 console.log(json.meaStatistics.lbmDmmStatistics);
-/*                cpeService.get(reqUrl).then(function (response) {
-                    var data = response.meaCcmCounter.CcmDefectCount;
-                    $scope.lbmCounter = data;
-                });*/
+                cpeService.get(reqUrl).then(function (response) {
+                    console.log(response);
+                    $scope.lbmCounter = response.meaStatistics.lbmDmmStatistics;
+                });
             };
             $scope.getDMM = function (portId) {
                 var reqUrl = "meaGetDmmStatistics.xml?unit=0&streamId=1";
@@ -111,11 +108,12 @@ angular.module('openNaaSApp')
                 var json = x2js.xml_str2json(xml);
                 $scope.dmmCounter = json.meaStatistics.lbmDmmStatistics;
                 console.log(json.meaStatistics.lbmDmmStatistics);
-/*                cpeService.get(reqUrl).then(function (response) {
+                cpeService.get(reqUrl).then(function (response) {
+                    console.log(response);
                     var data = response.meaPmCounter.PmCounter;
-                    $scope.dmmCounter = data.meaStatistics.lbmDmmStatistics;
+                    $scope.dmmCounter = response.meaStatistics.lbmDmmStatistics;
                 });
-                */
+
             };
 
             $scope.viewStatistics = function (interfaceId) {
