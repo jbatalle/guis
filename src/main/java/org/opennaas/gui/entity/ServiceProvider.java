@@ -10,6 +10,8 @@ import javax.persistence.ElementCollection;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OrderColumn;
 
 import org.opennaas.gui.JsonViews;
@@ -22,6 +24,8 @@ import org.codehaus.jackson.map.annotate.JsonView;
  * @author Josep Batallé <josep.batalle@i2cat.net>
  */
 @javax.persistence.Entity
+@NamedQueries({  
+    @NamedQuery(name = "ServiceProvider.findByName", query = "SELECT t FROM ServiceProvider t WHERE t.name = :name")})  
 public class ServiceProvider implements Entity {
 
     @Id

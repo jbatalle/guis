@@ -3,21 +3,12 @@ package org.opennaas.gui.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
-import javax.persistence.Table;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import org.opennaas.gui.JsonViews;
 
@@ -29,6 +20,8 @@ import org.codehaus.jackson.map.annotate.JsonView;
  * @author Josep Batallé <josep.batalle@i2cat.net>
  */
 @javax.persistence.Entity
+@NamedQueries({  
+    @NamedQuery(name = "VI.findByName", query = "SELECT t FROM VI t WHERE t.name = :name")})  
 public class VI implements Entity {
 
     @Id

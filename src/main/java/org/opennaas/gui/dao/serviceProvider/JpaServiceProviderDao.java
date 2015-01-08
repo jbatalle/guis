@@ -1,7 +1,7 @@
 package org.opennaas.gui.dao.serviceProvider;
 
 import java.util.List;
-import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -10,7 +10,6 @@ import javax.persistence.criteria.Root;
 
 import org.opennaas.gui.dao.JpaDao;
 import org.opennaas.gui.entity.ServiceProvider;
-import org.springframework.transaction.annotation.Propagation;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,6 +55,13 @@ public class JpaServiceProviderDao extends JpaDao<ServiceProvider, Long> impleme
         this.getEntityManager().persist(entity);
         this.getEntityManager().flush();
 
+    }
+
+    @Override
+    public ServiceProvider findByName(String spName) {
+        Query q = this.getEntityManager().createNamedQuery("ServiceProvider.findByName");
+        q.setParameter("name", spName);
+        return (ServiceProvider) q.getSingleResult();
     }
 
 }

@@ -107,6 +107,15 @@ public class VIResource {
         this.vIDao.add(id, resName, resType);
     }
     
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/getVIByName/{viName}")
+    public VI getVIByName( @PathParam("viName")String viName) {
+        this.logger.info("get vi by Name "+viName);
+
+        return this.vIDao.findByName(viName);
+    }
+    
     private boolean isAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();

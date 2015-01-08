@@ -115,6 +115,15 @@ public class ServiceProvidersResource {
 
         this.serviceProvidersDao.delete(id, viId);
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/getSPByName/{spName}")
+    public ServiceProvider getSPByName( @PathParam("spName")String spName) {
+        this.logger.info("add vi(id, viId)");
+
+        return this.serviceProvidersDao.findByName(spName);
+    }
 
     private boolean isAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

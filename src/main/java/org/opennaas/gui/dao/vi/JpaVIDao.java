@@ -1,7 +1,7 @@
 package org.opennaas.gui.dao.vi;
 
 import java.util.List;
-import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -9,11 +9,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.opennaas.gui.dao.JpaDao;
+import org.opennaas.gui.entity.ServiceProvider;
 import org.opennaas.gui.entity.VI;
 import org.opennaas.gui.entity.virtualResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Propagation;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,5 +49,12 @@ private final Logger logger = LoggerFactory.getLogger(this.getClass());
         entity.getViRes().add(virtRes);
         this.getEntityManager().persist(entity);
 //        this.getEntityManager().flush();
+    }
+
+    @Override
+    public VI findByName(String viName) {
+        Query q = this.getEntityManager().createNamedQuery("VI.findByName");
+        q.setParameter("name", viName);
+        return (VI) q.getSingleResult();
     }
 }

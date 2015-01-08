@@ -12,4 +12,5 @@ import org.opennaas.gui.entity.VI;
 public interface VIDao extends Dao<VI, Long> {
 
     public void add(Long id, String resName, String resType);
+    public VI findByName(String viName);
 }
