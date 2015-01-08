@@ -47,6 +47,14 @@ angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSAp
                             controller: 'CrawlerResourceController',
                             animation: 'slide'
                         })
+                        .when('/viList', {
+                            templateUrl: 'partials/createVI/index.html',
+                            controller: 'listVIController'
+                        })
+                        .when('/editVIRequest/:id', {
+                            templateUrl: 'partials/createVI/editor.html',
+                            controller: 'editVIController'
+                        })
                         .otherwise({
                             templateUrl: 'partials/sodales/0_home.html',
                             controller: 'SodalesHomeCtrl'
