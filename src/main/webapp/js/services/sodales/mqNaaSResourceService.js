@@ -40,8 +40,8 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
                 });
                 return promise;
             },
-            get: function (id) {
-                var promise = $http.get('rest/mqnaas/IRootResourceProvider/'+id).then(function (response) {
+            get: function (url) {
+                var promise = $http.get(genericUrl+url).then(function (response) {
                     var json = x2js.xml_str2json(response.data);
                     var his = new HistoryService();
                     his.content = response.status+" - GET (IRootResourceAdministrastion): "+response.statusText;
@@ -56,9 +56,9 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
                 });
                 return promise;
             },
-            remove: function (data) {
-                console.log(data);
-                var promise = $http.delete('rest/mqnaas/IRootResourceAdministration/'+data).then(function (response) {
+            remove: function (url) {
+                console.log(url);
+                var promise = $http.delete(genericUrl+url).then(function (response) {
                     // convert the data to JSON and provide
                     // it to the success function below
                     //var x2js = new X2JS();

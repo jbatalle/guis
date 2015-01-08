@@ -47,6 +47,21 @@ services.factory('viService', ['$http', 'x2js', 'HistoryService', function ($htt
                     his.$save();
                 });
                 return promise;
-            }
+            },
+            addResourceToVI: function (viId, resName, resType) {
+                var promise = $http.get("rest/vi/"+viId+"/name/"+resName+"/type/"+resType).then(function (response) {
+                    var his = new HistoryService();
+                    his.content = response.status+" - POST (Add Resource To VI): "+response.data;
+                    his.type = "INFO";
+                    his.$save();
+                    return response.data;
+                }, function(response){
+                    var his = new HistoryService();
+                    his.content = response.status+" - POST (Add Resource To VI): "+response.statusText;
+                    his.type = "ERROR";
+                    his.$save();
+                });
+                return promise;
+            },
         };
     }]);

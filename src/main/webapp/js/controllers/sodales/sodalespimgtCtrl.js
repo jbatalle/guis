@@ -2,19 +2,19 @@
 
 angular.module('openNaaSApp')
         .controller('sodalesPiMgtCtrl', function ($scope, $rootScope, MqNaaSResourceService, $routeParams, localStorageService, ngDialog, RootResourceService, spService) {
-var url = "";
+            var url = "";
             console.log(localStorageService.get("mqNaaSElements"));
 //            console.log(JSON.parse(localStorageService.get("mqNaaSElements")));
-localStorageService.set("graphNodes", []);
-console.log($rootScope.networkId);
+            localStorageService.set("graphNodes", []);
+            console.log($rootScope.networkId);
             RootResourceService.list().then(function (data) {
                 data = checkIfIsArray(data.IRootResource.IRootResourceId);
                 $scope.listNetworks = data;
                 console.log($scope.listNetworks);
                 $rootScope.networkId = data[1];
-$scope.selectedNetwork = $rootScope.networkId;
+                $scope.selectedNetwork = $rootScope.networkId;
                 console.log($rootScope.networkId);
-                if(!$rootScope.networkId){
+                if (!$rootScope.networkId) {
                     console.log("Clean localStorage networkElements due network is not created.");
                     localStorageService.set("networkElements", []);
                 }
@@ -43,11 +43,11 @@ $scope.selectedNetwork = $rootScope.networkId;
 
             $scope.arn = {network: "", endpoint: "http://fibratv.dtdns.net:41080"};
             $scope.cpe = {endpoint: "http://fibratv.dtdns.net:41081"};
-/*            $scope.openARNDialog = function () {
-                $scope.arn = {endpoint: "asdasdsa"};
-                ngDialog.open({template: 'partials/sodales/arnDialog.html'});
-
-            };*/
+            /*            $scope.openARNDialog = function () {
+             $scope.arn = {endpoint: "asdasdsa"};
+             ngDialog.open({template: 'partials/sodales/arnDialog.html'});
+             
+             };*/
 
             $scope.createTSON = function () {
                 var TSON = getResource("TSON");
@@ -67,7 +67,7 @@ $scope.selectedNetwork = $rootScope.networkId;
                 });
                 ngDialog.close();
             };
-            
+
             $scope.addCPE = function (data) {
                 var CPE = getResource("CPE", data.endpoint);
                 url = generateUrl("IRootResourceAdministration", $rootScope.networkId, "IRootResourceAdministration");
@@ -77,7 +77,7 @@ $scope.selectedNetwork = $rootScope.networkId;
                 });
                 ngDialog.close();
             };
-            
+
             $scope.deleteEntry = function (resourceName) {
                 console.log(resourceName);
                 MqNaaSResourceService.remove(resourceName).then(function (data) {
@@ -85,9 +85,9 @@ $scope.selectedNetwork = $rootScope.networkId;
                     $scope.data = MqNaaSResourceService.query();
                 });
             };
-            
+
             var getMqNaaSResource = function (root, url) {
-                console.log("GET MQNAAS RESOURCE. SET RESOURCES "+root);
+                console.log("GET MQNAAS RESOURCE. SET RESOURCES " + root);
                 var url = generateUrl("IRootResourceAdministration", root, "IRootResourceProvider");
                 MqNaaSResourceService.list(url).then(function (data) {
                     console.log(data);
@@ -100,4 +100,39 @@ $scope.selectedNetwork = $rootScope.networkId;
                     console.log(error);
                 });
             };
+
+            $scope.configureResourceSlices = function (resName) {
+                var sliceId = $scope.getSlice(resName);
+                var unitId = $scope.createUnit(resName, sliceId, "port");
+                var unitId = $scope.setRangeUnit(resName, sliceId);
+                var unitId = $scope.setCubes(resName, sliceId);
+            };
+            $scope.getSlice = function (resourceName) {//get
+                var url = generateUrl("IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/slice");
+                MqNaaSResourceService.get(url).then(function (data) {
+                    return data;
+                });
+            };
+            $scope.createUnit = function (resourceName, sliceId, content) {//put
+                var url = generateUrl("IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/IUnitManagement");
+                var content = "port";
+                MqNaaSResourceService.put(url, content).then(function (data) {
+                    return data;
+                });
+            };
+            $scope.setRangeUnit = function (resourceName, sliceId, unitId, range) {
+                var url = generateUrl("IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId);
+                var range = getRangeUnit(1, 2);
+                MqNaaSResourceService.put(url, range).then(function (data) {
+                    return data;
+                });
+            };
+            $scope.setCubes = function (resourceName, sliceId, cubes) {
+                var url = generateUrl("IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/ISliceAdministration/cubes");
+                var cubes = getCubeforTSON(1, 2, 3, 4);
+                MqNaaSResourceService.put(url, cubes).then(function (data) {
+                    return data;
+                });
+            };
+
         });
