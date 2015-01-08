@@ -31,9 +31,8 @@ angular.module('openNaaSApp')
             $scope.createVIRequest = function () {
                 var urlCreateVI = "IRootResourceAdministration/"+$rootScope.networkId+"/IRequestManagement";
                 MqNaaSResourceService.put(urlCreateVI).then(function (result) {
-                    $scope.data.push(result);
+//                    $scope.data.push(result);
                     var vi = {"name": result};
-                    console.log("CREATE VI AND save spring...");
                     viService.createVI(vi);
                     localStorageService.set("virtualElements", []);
                     $scope.tableParams.reload();
