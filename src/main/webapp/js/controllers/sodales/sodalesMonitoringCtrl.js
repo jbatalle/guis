@@ -12,9 +12,10 @@ angular.module('openNaaSApp')
                     $scope.ARNactive = "";
                     $scope.ARNStats = false;
                     $scope.CPEStats = true;
+                    $scope.CFM_OAM = false;
                     $scope.getCPEPortList();
                 }
-                if (resourceId === 'CFM/OAM') {
+                else if (resourceId === 'CFM/OAM') {
                     $scope.CPEactive = "active";
                     $scope.ARNactive = "";
                     $scope.ARNStats = false;
@@ -29,6 +30,7 @@ angular.module('openNaaSApp')
                     $scope.CPEactive = "";
                     $scope.ARNStats = true;
                     $scope.CPEStats = false;
+                    $scope.CFM_OAM = false;
                     $scope.getARNStats();
                 }
             };
