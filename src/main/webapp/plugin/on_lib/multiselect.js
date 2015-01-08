@@ -1,6 +1,6 @@
 var drag = d3.behavior.drag()
     .on("drag", function (d, i) {
-console.log("Drag");
+
         var link = graph.vis.selectAll("line.link")
                     .data(graph.getLinks());
         
@@ -68,7 +68,7 @@ console.log("drag");
 
             d3.event.sourceEvent.stopPropagation();
         } else{
-console.log("Drag one node");
+
             if(ctrlKey){
                 var selection = d3.selectAll('.selected');
 

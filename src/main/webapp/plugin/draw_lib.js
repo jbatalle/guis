@@ -57,16 +57,16 @@ console.log(nodes);
         }
         nodes.splice(findNodeIndex(id),1);
         update();
-    }
+    };
 
     this.addLink = function (source, target) {
 console.log("add link");
         console.log(findNode(source));
-
+update();
         links.push({id: source+"-"+target, source:findNode(source), target:findNode(target)});
         console.log(links);
         update();
-    }
+    };
 
     this.addLinkBetweenPorts = function (source, target) {
         console.log(nodes);
@@ -77,7 +77,7 @@ console.log("add link between ports");
         links.push({id: source+"-"+target, source:findPortNode(source), target:findPortNode(target)});
         console.log(links);
         update();
-    }
+    };
 
     this.removeLink = function (id) {
         links.splice(findLinkIndex(id),1);
@@ -281,6 +281,42 @@ var zoom = d3.behavior.zoom()
             .attr("dy", function(d){ return d.text_y})
             .text(function(d) {return d.id});
         
+        nodeEnter.on("mousedown", function(d){
+            //if is a Virtual Resource
+            if (!ctrlKey) {
+                    console.log("Click on node "+d.name);
+//                    var parentNode = graph.getNodes().filter(function (p) { return d.parent == p.id})[0];
+                    var parentNode = graph.getNodes().filter(function (p) { return d.name == p.name})[0];;
+console.log(parentNode);
+                    startState = d, endState = undefined;
+console.log(parentNode.x);
+console.log(d);
+console.log(d.x);
+                    //startState = node;
+console.log("Change X "+(parentNode.x+d.posx));
+                    startState.x = (parentNode.x);
+                    startState.y = (parentNode.y);
+                    startState.testx = (parentNode.x);
+                    startState.testy = (parentNode.y);
+                    startState.transitions = [];
+                    nodeMouseDown(startState);
+                    console.log(startState);
+                }
+        });
+        nodeEnter.on("mouseup", function(d){
+            //if is a Virtual Resource
+            var parentNode = graph.getNodes().filter(function (p) { return d.name == p.name})[0];
+            console.log(parentNode);
+console.log(node);
+                    endState = d;
+
+                    //startState = node;
+console.log("Change X "+(parentNode.x));
+                    endState.x = (parentNode.x);
+                    endState.y = (parentNode.y);
+                    endState.transitions = [];
+                    nodeMouseUpMapping(endState);
+        });
         nodeEnter.on("contextmenu", function(d, index) {
              if(contextMenuShowing) {
                 d3.event.preventDefault();
