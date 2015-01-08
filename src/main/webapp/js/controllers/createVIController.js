@@ -60,13 +60,19 @@ angular.module('openNaaSApp')
 $scope.virtualPort = [];
             var urlPeriod = "IRootResourceAdministration/"+$rootScope.networkId+"/IRequestManagement/" + $scope.viId + "/IRequestAdministration/period";
             MqNaaSResourceService.get(urlPeriod).then(function (result) {
-                $scope.period = result;
-                $scope.period.startDate = "1/8/15";
+                $scope.period = result.period;
                 console.log(result);
-                var d = new Date(result.startDate+1000);
+//                $scope.period.startDate = "1/8/15";
+                console.log(result);
+                console.log(result.period.startDate*1000);
+                var d = new Date(result.period.startDate*1000);
                 console.log(d);
 //                console.log(formatDate(d));
-                console.log(customFormat( "#DD#/#MM#/#YYYY#", d));
+//$scope.period.startDate = customFormat( "#DD#/#MM#/#YYYY#", new Date(result.period.startDate*1000));
+$scope.period.startDate = parseInt($scope.period.startDate*1000);
+$scope.period.endDate = parseInt($scope.period.endDate*1000);
+//$scope.period.endDate = customFormat( "#DD#/#MM#/#YYYY#", new Date(result.period.endDate*1000));
+                console.log($scope.period);
             });
 
             $scope.setPeriod = function (period) {
