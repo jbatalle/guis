@@ -1,22 +1,37 @@
-<div class="row">
+<div class="row" >
     <div class="col-md-3">
-        <p class="lead">AVAILABLE resources</p>
+        <p class="lead">Available resources</p>
         <div class="list-group">
-            <a href="" ng-click="selectedResource('ARN')" class="list-group-item" ng-class="ARNactive">ARN</a>
-            <a href="" ng-click="selectedResource('CPE')" class="list-group-item" ng-class="CPEactive">CPE</a>
+            <a href="#" class="list-group-item">
+                <div class="ui-widget-content netEl-drag" id="arn">
+                    <img id="arn" draggable src="../plugin/img/SODALES_ARN.png" width="60" style="z-index:1090"> ARN
+                </div>
+            </a>
+            <a href="#" class="list-group-item">
+                <div class="ui-widget-content netEl-drag" id="cpe">
+                    <img id="cpe" draggable src="../plugin/img/SODALES_CPE.png" width="60" style="z-index:1090"> CPE
+                </div>
+            </a>
         </div>
         <div>
-            VI Settings. COnfig, period...
+            <div class="form-group">
+                <label class="control-label"><i class="fa fa-calendar"></i> <i class="fa fa-arrows-h"></i> 
+                    <i class="fa fa-calendar"></i> VI Period range </label><br>
+                <div class="form-group col-xs-12">
+                    <input type="text" class="form-control" ng-model="period.startDate" data-max-date="{{period.endDate}}" placeholder="From" bs-datepicker>
+                </div>
+                <div class="form-group col-xs-12">
+                    <input type="text" class="form-control" ng-model="period.endDate" data-min-date="{{period.startDate | date:'yyyy-MM-dd' }}" placeholder="Until" bs-datepicker>
+                </div>
+                <input class="btn btn-default" type="submit" ng-click="setPeriod(period)" value="Set period" />
+            </div>
         </div>
     </div>
     <div class="col-md-9">
-        <h2 class="page-header">Editing request: {{viId}}</h2>
-        <div>
-            <table border="1">
-                <tr>
-                    <td>DisYellow Bytes</td>
-                </tr>
-            </table>
+        <h2 class="page-header">Editing VI request: {{viId}}</h2>
+        Instantiate or something button!!
+        <div ng-controller="editVIController">
+            <div grapheditorVI></div>
         </div>
         <!-- /.row -->
     </div>
