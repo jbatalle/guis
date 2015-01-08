@@ -10,6 +10,9 @@ import javax.persistence.criteria.Root;
 
 import org.opennaas.gui.dao.JpaDao;
 import org.opennaas.gui.entity.VI;
+import org.opennaas.gui.entity.virtualResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Josep Batallé <josep.batalle@i2cat.net>
  */
 public class JpaVIDao extends JpaDao<VI, Long> implements VIDao {
-
+private final Logger logger = LoggerFactory.getLogger(this.getClass());
     public JpaVIDao() {
         super(VI.class);
     }
@@ -36,5 +39,15 @@ public class JpaVIDao extends JpaDao<VI, Long> implements VIDao {
 
         TypedQuery<VI> typedQuery = this.getEntityManager().createQuery(criteriaQuery);
         return typedQuery.getResultList();
+    }
+    
+    @Override
+    @Transactional
+    public void add(Long id, String resName, String resType){
+        VI entity = this.find(id);
+        virtualResource virtRes = new virtualResource(resName, resType);
+        entity.getViRes().add(virtRes);
+        this.getEntityManager().persist(entity);
+//        this.getEntityManager().flush();
     }
 }

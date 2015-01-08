@@ -99,6 +99,14 @@ public class VIResource {
         this.vIDao.delete(id);
     }
     
+    @GET
+    @Path("{id}/name/{resName}/type/{resType}")//rest/vi/"+viId+"/name/"+resName+"/type/"+resType
+    public void addVI(@PathParam("id") Long id, @PathParam("resName")String resName, @PathParam("resType")String resType) {
+        this.logger.info("add vi(id, viId)");
+
+        this.vIDao.add(id, resName, resType);
+    }
+    
     private boolean isAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();

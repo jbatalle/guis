@@ -29,7 +29,7 @@ public class DataBaseInitializer {
         /* Default constructor for reflection instantiation */
     }
 
-    public DataBaseInitializer(UserDao userDao, ServiceProviderDao serviceProvidersDao, VIDao viDao, PasswordEncoder passwordEncoder) {
+    public DataBaseInitializer(UserDao userDao, ServiceProviderDao serviceProvidersDao, VIDao vIDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.serviceProviderDao = serviceProvidersDao;
         this.vIDao = vIDao;
