@@ -81,7 +81,7 @@ angular.module('openNaaSApp')
                 var xml = '<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href=="olg_rss.css" ?><meaCcmCounter xmlns="http://www.ethernity-net.com/enet/CcmCounter"><CcmDefectCount><unit>0</unit><LastSequenc>1832557</LastSequenc><Unexpected_MEG_ID>0</Unexpected_MEG_ID><Unexpected_MEP_ID>0</Unexpected_MEP_ID><reorder>4</reorder><eventLoss>0</eventLoss></CcmDefectCount></meaCcmCounter>';
                 var x2js = new X2JS();
                 var json = x2js.xml_str2json(xml);
-                $scope.ccmCounter = json.meaCcmCounter.CcmDefectCount;
+//                $scope.ccmCounter = json.meaCcmCounter.CcmDefectCount;
                 var data = json.meaCcmCounter.CcmDefectCount;
                 console.log(data);
                 cpeService.get(reqUrl).then(function (response) {
@@ -94,7 +94,7 @@ angular.module('openNaaSApp')
                 var xml = '<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href=="olg_rss.css" ?><meaStatistics xmlns="http://www.ethernity-net.com/enet/LbmDmmStatistics"><lbmDmmStatistics><unit>0</unit><AVG_latency>0</AVG_latency><Bytes>1735000</Bytes><MAX_jitter>0</MAX_jitter><MIN_jitter>4294967295</MIN_jitter><Pkts>1735</Pkts><drop>0</drop><lastseqID>1754</lastseqID><num_Of_Bits_Error>6695669</num_Of_Bits_Error><seq_ID_err>0</seq_ID_err><seq_ID_reorder>0</seq_ID_reorder></lbmDmmStatistics></meaStatistics>';
                 var x2js = new X2JS();
                 var json = x2js.xml_str2json(xml);
-                $scope.lbmCounter = json.meaStatistics.lbmDmmStatistics;
+//                $scope.lbmCounter = json.meaStatistics.lbmDmmStatistics;
                 console.log(json.meaStatistics.lbmDmmStatistics);
                 cpeService.get(reqUrl).then(function (response) {
                     console.log(response);
@@ -106,7 +106,7 @@ angular.module('openNaaSApp')
                 var xml = '<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href=="olg_rss.css" ?><meaStatistics xmlns="http://www.ethernity-net.com/enet/LbmDmmStatistics"><lbmDmmStatistics><unit>0</unit><AVG_latency>5408</AVG_latency><Bytes>0</Bytes><MAX_jitter>6240</MAX_jitter><MIN_jitter>5312</MIN_jitter><Pkts>0</Pkts><drop>0</drop><lastseqID>0</lastseqID><num_Of_Bits_Error>0</num_Of_Bits_Error><seq_ID_err>0</seq_ID_err><seq_ID_reorder>0</seq_ID_reorder></lbmDmmStatistics></meaStatistics>';
                 var x2js = new X2JS();
                 var json = x2js.xml_str2json(xml);
-                $scope.dmmCounter = json.meaStatistics.lbmDmmStatistics;
+//                $scope.dmmCounter = json.meaStatistics.lbmDmmStatistics;
                 console.log(json.meaStatistics.lbmDmmStatistics);
                 cpeService.get(reqUrl).then(function (response) {
                     console.log(response);
@@ -114,6 +114,27 @@ angular.module('openNaaSApp')
                     $scope.dmmCounter = response.meaStatistics.lbmDmmStatistics;
                 });
 
+            };
+
+            $scope.configureCCM = function () {
+                var url = "ccmSetting.html?unit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId=10&srcPort=104&megLevel=4&cfmVersion=0&ccmPeriod=1&rdiEnable=1&megId=ccmTest&lmEnable=1&remoteMepId=10&localMepId=9&policerId=3&outServiceId=6&inServiceId=7&Priority=7";
+                cpeService.get(url).then(function (response) {});
+                url = "meaGetCcmConfig.xml?unit=0&stream_id=1";
+                cpeService.get(url).then(function (response) {});
+            };
+
+            $scope.configureLBM = function () {
+                var url = "lbSetting.html?unit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId=11&srcPort=104&megLevel=4&cfmVersion=0&policerId=3&Priority=4&lbmSide=1";
+                cpeService.get(url).then(function (response) {});
+                url = "meaGetLbConfig.xml?unit=0&stream_id=1";
+                cpeService.get(url).then(function (response) {});
+            };
+            
+            $scope.configureDMM = function () {
+                var url = "dmSetting.html?unit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId=12&srcPort=104&megLevel=4&cfmVersion=0&policerId=3&Priority=4&dmmSide=1";
+                cpeService.get(url).then(function (response) {});
+                url = "meaGetDmConfig.xml?unit=0&stream_id=1";
+                cpeService.get(url).then(function (response) {});
             };
 
             $scope.viewStatistics = function (interfaceId) {
