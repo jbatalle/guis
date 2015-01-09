@@ -96,6 +96,7 @@ angular.module('openNaaSApp')
                     data = checkIfIsArray(data.IRootResource.IRootResourceId);
                     $scope.networkElements = data;
                     localStorageService.set("networkElements", data);
+                    $scope.getRealPorts(root);
                 }, function (error) {
                     console.log(error);
                 });
@@ -135,4 +136,10 @@ angular.module('openNaaSApp')
                 });
             };
 
+            $scope.getRealPorts = function (resourceName) {
+                var xml = "<IResource><IResourceId>port-1</IResourceId><IResourceId>port-2</IResourceId></IResource>";
+                var x2js = new X2JS();
+                var json = x2js.xml_str2json(xml);
+                localStorageService.set("arnPorts", {name: resourceName, ports: json.IResource.IResourceId});
+            };
         });
