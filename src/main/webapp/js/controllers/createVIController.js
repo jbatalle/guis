@@ -10,10 +10,15 @@ angular.module('openNaaSApp')
                 var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
                 MqNaaSResourceService.list(urlListVI).then(function (result) {
                     console.log(result);
-                    $scope.data = result.IResource.IResourceId;
+//                    $scope.data = result.IResource.IResourceId;
                     $scope.tableParams.reload();
                 });
-            }
+                viService.list().then(function (result) {
+                    console.log(result);
+                    $scope.data = result;
+                    $scope.tableParams.reload();
+                });
+            };
             $scope.updateSpList();
             $scope.tableParams = new ngTableParams({
                 page: 1, // show first page
@@ -34,7 +39,7 @@ angular.module('openNaaSApp')
                 var urlCreateVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
                 MqNaaSResourceService.put(urlCreateVI).then(function (result) {
 //                    $scope.data.push(result);
-                    var vi = {"name": result};
+                    var vi = {"name": result, "status": "requested"};
                     viService.createVI(vi);
                     localStorageService.set("virtualElements", []);
                     $scope.updateSpList();
@@ -52,6 +57,7 @@ angular.module('openNaaSApp')
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/?arg0=" + viReq;
                 MqNaaSResourceService.put(url).then(function (result) {
                     $scope.resRoot = result;//empty
+                    viService.updateStatus(viReq, "created");
                 });
             };
 
