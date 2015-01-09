@@ -35,8 +35,8 @@ angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSAp
                             controller: 'SodalesOpenaccessDashCtrl'
                         })
                         .when('/openaccess/vicreation', {
-                            templateUrl: 'partials/sodales/2_2_openAccess_vicreation.html',
-                            controller: 'InfoRootResourceController'
+                            templateUrl: 'partials/createVI/index.html',
+                            controller: 'listVIController'
                         })
                         .when('/mgt', {
                             templateUrl: 'partials/sodales/0_1_mgt_pi.html',
