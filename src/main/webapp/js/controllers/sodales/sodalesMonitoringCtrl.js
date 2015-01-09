@@ -5,15 +5,19 @@ angular.module('openNaaSApp')
 
             var availableResources = [];
             localStorageService.get("networkElements").forEach(function (el) {
+                console.log(el);
+                if(el !== null)
                 availableResources.push({name: el, type: el.split("-")[0]});
             });
             $scope.availableResources = availableResources;
+            $scope.noResource = true;
 
             $scope.dropdown = [{"text": "CFM/OAM", "click": "selectedResource('CFM/OAM')"}];
             $scope.selectedResource = function (resourceId) {
                 //get statistics and send to scope
                 console.log("Selected " + resourceId);
                 if (resourceId === 'CPE') {
+                    $scope.noResource = false;
                     $scope.CPEactive = "active";
                     $scope.ARNactive = "";
                     $scope.ARNStats = false;
@@ -22,6 +26,7 @@ angular.module('openNaaSApp')
                     $scope.getCPEPortList();
                 }
                 else if (resourceId === 'CFM/OAM') {
+                    $scope.noResource = false;
                     $scope.CPEactive = "active";
                     $scope.ARNactive = "";
                     $scope.ARNStats = false;
@@ -30,8 +35,8 @@ angular.module('openNaaSApp')
                     $scope.getCCM();
                     $scope.getLBM();
                     $scope.getDMM();
-                }/*if (resourceId === 'ARN') {*/
-                else {
+                }else if (resourceId === 'ARN') {
+                    $scope.noResource = false;
                     $scope.ARNactive = "active";
                     $scope.CPEactive = "";
                     $scope.ARNStats = true;
@@ -157,7 +162,7 @@ angular.module('openNaaSApp')
                     scope: $scope}
                 );
             };
-            $scope.selectedResource("ARN");
+//            $scope.selectedResource("ARN");
         })
         .controller('statisticsDialogCtrl', function ($scope, ngTableParams, $filter, localStorageService, arnService) {
             var requestData = getCounter($scope.infId);
