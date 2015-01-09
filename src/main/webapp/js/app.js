@@ -13,10 +13,11 @@ angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSAp
                         .when('/login', {
                             templateUrl: 'partials/login.html',
                             controller: 'LoginController'
-                        }).when('/piMgt', {
-                    templateUrl: 'partials/piMgt.html',
-                    controller: 'PIMgtCtrl'
-                })
+                        })
+                        .when('/piMgt', {
+                            templateUrl: 'partials/piMgt.html',
+                            controller: 'PIMgtCtrl'
+                        })
                         .when('/createVI', {
                             templateUrl: 'partials/createVI/index.html',
                             controller: 'listVIController'
@@ -38,8 +39,8 @@ angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSAp
                             controller: 'UsersController'
                         })
                         .otherwise({
-                            templateUrl: 'partials/index.html',
-                            controller: "HomeCtrl"
+                            templateUrl: 'partials/piMgt.html',
+                            controller: "PIMgtCtrl"
                         });
 
                 $locationProvider.hashPrefix('!');
