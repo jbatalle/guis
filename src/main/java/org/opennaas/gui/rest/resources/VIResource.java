@@ -14,14 +14,13 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.gui.JsonViews;
-import org.opennaas.gui.dao.serviceProvider.ServiceProviderDao;
-import org.opennaas.gui.entity.ServiceProvider;
+import org.opennaas.gui.dao.vi.VIDao;
+import org.opennaas.gui.entity.VI;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
-import org.opennaas.gui.entity.ServiceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +31,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
-@Path("/sp")
-public class ServiceProvidersResource {
+@Path("/vi")
+public class VIResource {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private ServiceProviderDao serviceProvidersDao;
+    private VIDao vIDao;
 
     @Autowired
     private ObjectMapper mapper;
@@ -54,7 +53,7 @@ public class ServiceProvidersResource {
         } else {
             viewWriter = this.mapper.writerWithView(JsonViews.User.class);
         }
-        List<ServiceProvider> allEntries = this.serviceProvidersDao.findAll();
+        List<VI> allEntries = this.vIDao.findAll();
 
         return viewWriter.writeValueAsString(allEntries);
     }
@@ -62,10 +61,10 @@ public class ServiceProvidersResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public ServiceProvider read(@PathParam("id") Long id) {
+    public VI read(@PathParam("id") Long id) {
         this.logger.info("read(id)");
 
-        ServiceProvider historyEntry = this.serviceProvidersDao.find(id);
+        VI historyEntry = this.vIDao.find(id);
         if (historyEntry == null) {
             throw new WebApplicationException(404);
         }
@@ -75,20 +74,20 @@ public class ServiceProvidersResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ServiceProvider create(ServiceProvider historyEntry) {
+    public VI create(VI historyEntry) {
         this.logger.info("create(): " + historyEntry);
 
-        return this.serviceProvidersDao.save(historyEntry);
+        return this.vIDao.save(historyEntry);
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public ServiceProvider update(@PathParam("id") Long id, ServiceProvider historyEntry) {
+    public VI update(@PathParam("id") Long id, VI historyEntry) {
         this.logger.info("update(): " + historyEntry);
 
-        return this.serviceProvidersDao.save(historyEntry);
+        return this.vIDao.save(historyEntry);
     }
 
     @DELETE
@@ -97,34 +96,34 @@ public class ServiceProvidersResource {
     public void delete(@PathParam("id") Long id) {
         this.logger.info("delete(id)");
 
-        this.serviceProvidersDao.delete(id);
+        this.vIDao.delete(id);
     }
     
     @GET
-    @Path("{id}/vi/{viId}")
-    public void addVI(@PathParam("id") Long id, @PathParam("viId")String viId) {
+    @Path("{viName}/name/{resName}/type/{resType}")//rest/vi/"+viId+"/name/"+resName+"/type/"+resType
+    public void addVI(@PathParam("viName") String viName, @PathParam("resName")String resName, @PathParam("resType")String resType) {
         this.logger.info("add vi(id, viId)");
-
-        this.serviceProvidersDao.add(id, viId);
-    }
-    
-    @DELETE
-    @Path("{id}/vi/{viId}")
-    public void removeVI(@PathParam("id") Long id, @PathParam("viId")String viId) {
-        this.logger.info("add vi(id, viId)");
-
-        this.serviceProvidersDao.delete(id, viId);
+        this.vIDao.add(this.vIDao.findByName(viName).getId(), resName, resType);
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/getSPByName/{spName}")
-    public ServiceProvider getSPByName( @PathParam("spName")String spName) {
-        this.logger.info("add vi(id, viId)");
+    @Path("/getVIByName/{viName}")
+    public VI getVIByName( @PathParam("viName")String viName) {
+        this.logger.info("get vi by Name "+viName);
 
-        return this.serviceProvidersDao.findByName(spName);
+        return this.vIDao.findByName(viName);
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/updateStatus/{viName}/{status}")
+    public void updateStatus( @PathParam("viName")String viName, @PathParam("status")String status) {
+        this.logger.info("change vi("+viName+") status to "+status);
 
+        this.vIDao.findByName(viName).setStatus(status);
+    }
+    
     private boolean isAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();

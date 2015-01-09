@@ -3,16 +3,12 @@ package org.opennaas.gui.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CollectionTable;
 
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OrderColumn;
 
 import org.opennaas.gui.JsonViews;
 
@@ -25,8 +21,8 @@ import org.codehaus.jackson.map.annotate.JsonView;
  */
 @javax.persistence.Entity
 @NamedQueries({  
-    @NamedQuery(name = "ServiceProvider.findByName", query = "SELECT t FROM ServiceProvider t WHERE t.name = :name")})  
-public class ServiceProvider implements Entity {
+    @NamedQuery(name = "VI.findByName", query = "SELECT t FROM VI t WHERE t.name = :name")})  
+public class VI implements Entity {
 
     @Id
     @GeneratedValue
@@ -37,13 +33,13 @@ public class ServiceProvider implements Entity {
 
     @Column
     private String name;
+    
+    @Column
+    private String status;
+    
+    private ArrayList<virtualResource> viRes = new ArrayList<virtualResource>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name="viList")
-    @OrderColumn(insertable=true,updatable=true,name="viOrder")
-    private List<String> vi = new ArrayList<String>();
-
-    public ServiceProvider() {
+    public VI() {
         this.date = new Date();
     }
 
@@ -70,13 +66,20 @@ public class ServiceProvider implements Entity {
         this.name = name;
     }
 
-    @JsonView(JsonViews.User.class)
-    public List<String> getVi() {
-        return vi;
+    public List<virtualResource> getViRes() {
+        return viRes;
     }
 
-    public void setVi(List<String> vi) {
-        this.vi = vi;
+    public void setViRes(ArrayList<virtualResource> viRes) {
+        this.viRes = viRes;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     
     @Override

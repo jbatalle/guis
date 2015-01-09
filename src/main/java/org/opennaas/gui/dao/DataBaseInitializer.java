@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.opennaas.gui.dao.serviceProvider.ServiceProviderDao;
 import org.opennaas.gui.dao.user.UserDao;
+import org.opennaas.gui.dao.vi.VIDao;
 import org.opennaas.gui.entity.ServiceProvider;
 import org.opennaas.gui.entity.User;
+import org.opennaas.gui.entity.VI;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -17,6 +19,8 @@ public class DataBaseInitializer {
 
     private ServiceProviderDao serviceProviderDao;
 
+    private VIDao vIDao;
+    
     private UserDao userDao;
 
     private PasswordEncoder passwordEncoder;
@@ -25,9 +29,10 @@ public class DataBaseInitializer {
         /* Default constructor for reflection instantiation */
     }
 
-    public DataBaseInitializer(UserDao userDao, ServiceProviderDao serviceProvidersDao, PasswordEncoder passwordEncoder) {
+    public DataBaseInitializer(UserDao userDao, ServiceProviderDao serviceProvidersDao, VIDao vIDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.serviceProviderDao = serviceProvidersDao;
+        this.vIDao = vIDao;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -49,5 +54,7 @@ public class DataBaseInitializer {
         this.serviceProviderDao.save(sp);
         
         this.serviceProviderDao.add((long) 1, "vi-2");
+        
+        VI VI = new VI();
     }
 }
