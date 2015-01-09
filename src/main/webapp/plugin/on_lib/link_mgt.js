@@ -101,4 +101,5 @@ console.log(d);
     graph.addLink(source.id, target.id);
     //call Controller VI in order to do the mapping
 console.log("CALL CONtroller vi - maPPing");
+angular.element(document.getElementById('viMgt')).scope().openARNDialog();
 }

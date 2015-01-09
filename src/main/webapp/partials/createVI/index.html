@@ -10,8 +10,11 @@
 <table ng-table="tableParams" class="table ng-table-responsive">
     <tr ng-repeat="vi in $data track by $index">
         <td data-title="'Id'" sortable="'id'" class="col-sm-1 col-md-1 col-lg-1">{{vi}}</td>
+        <td data-title="'Status'" sortable="'id'" class="col-sm-1 col-md-1 col-lg-1">
+            <span>Preparing request</span>
+        </td>
         <td data-title="'Action'" class="col-sm-2 col-md-2 col-lg-2">
-            <a href="" ng-click="sendVIR(vi)" class="btn btn-default" title="process">Process</a>
+            <a href="" ng-click="sendVIR(vi)" class="btn btn-default" title="process">Send to Process</a>
             <a href="#!/editVIRequest/{{vi}}" class="btn btn-default" title="edit">Edit</a>
         </td>
         <td data-title="'Remove'" class="col-sm-1 col-md-1 col-lg-1">

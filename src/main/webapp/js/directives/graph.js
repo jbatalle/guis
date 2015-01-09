@@ -7,7 +7,7 @@ angular.module('openNaaSApp')
                     templateUrl: 'partials/d3/editor.html',
                     link: function (scope, element, attrs) {
                         graph = new myGraph("#graph");
-                        graph.setNodes(localStorageService.get("graphNodes"));
+//                        graph.setNodes(localStorageService.get("graphNodes"));
                         scope.graph = graph;
                         timer(console.log("TIMER HEUEHE"), 0);
                         console.log(localStorageService.get("graphNodes"));
@@ -184,7 +184,7 @@ angular.module('openNaaSApp')
                     templateUrl: 'partials/d3/view.html',
                     link: function (scope, element, attrs) {
                         graph = new myGraph("#graph");
-                        graph.setNodes(localStorageService.get("graphNodes"));
+//                        graph.setNodes(localStorageService.get("graphNodes"));
                         scope.graph = graph;
                         timer(console.log("TIMER HEUEHE"), 0);
                         console.log(localStorageService.get("graphNodes"));
@@ -335,21 +335,19 @@ angular.module('openNaaSApp')
                     templateUrl: 'partials/d3/editorVI.html',
                     link: function (scope, element, attrs) {
                         graph = new myGraph("#graph");
-                        graph.setNodes(localStorageService.get("graphNodes"));
+//                        graph.setNodes(localStorageService.get("graphNodes"));
                         scope.graph = graph;
                         timer(console.log("TIMER HEUEHE"), 0);
                         console.log(localStorageService.get("graphNodes"));
-                        console.log(localStorageService.get("networkElements"));
-                        console.log(localStorageService.get("virtualElements"));
 
                         var networkElements = localStorageService.get("networkElements");
                         var virtualElements = localStorageService.get("virtualElements");
-console.log(networkElements);
-console.log(virtualElements);
-networkElements = networkElements.concat(virtualElements).filter( function(el) {
-    return el !== null;
-});
-console.log(networkElements);
+                        console.log(networkElements);
+                        console.log(virtualElements);
+                        networkElements = networkElements.concat(virtualElements).filter(function (el) {
+                            return el !== null;
+                        });
+                        console.log(networkElements);
                         var links = [];
                         var lin = {s: 0, t: 1};
                         links.push(lin);
@@ -358,8 +356,15 @@ console.log(networkElements);
                         for (var i = 0; i < networkElements.length; i++) {
                             console.log(networkElements[i]);
                             //IF IS VIRTUAL TAKE THE VALUE FROM THE RESOURCE TYPE JSON
-                            var type = networkElements[i].split("-")[0].toLowerCase();
-                            var id = networkElements[i];
+                            console.log(typeof networkElements[i]);
+                            if (typeof networkElements[i] === "object") {
+                                console.log("IS a object -> Virtual Resources with type");
+                                var type = networkElements[i].type.toLowerCase();
+                                var id = networkElements[i].name;
+                            } else {
+                                var type = networkElements[i].split("-")[0].toLowerCase();
+                                var id = networkElements[i];
+                            }
 //                        var ports = networkElements[i].ports.port;
                             var ports = [];
 //        createSwitch(id, ports);
