@@ -115,6 +115,15 @@ public class VIResource {
         return this.vIDao.findByName(viName);
     }
     
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/updateStatus/{viName}/{status}")
+    public void updateStatus( @PathParam("viName")String viName, @PathParam("status")String status) {
+        this.logger.info("change vi("+viName+") status to "+status);
+
+        this.vIDao.findByName(viName).setStatus(status);
+    }
+    
     private boolean isAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();

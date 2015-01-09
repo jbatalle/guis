@@ -34,6 +34,9 @@ public class VI implements Entity {
     @Column
     private String name;
     
+    @Column
+    private String status;
+    
     private ArrayList<virtualResource> viRes = new ArrayList<virtualResource>();
 
     public VI() {
@@ -69,6 +72,14 @@ public class VI implements Entity {
 
     public void setViRes(ArrayList<virtualResource> viRes) {
         this.viRes = viRes;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     
     @Override
