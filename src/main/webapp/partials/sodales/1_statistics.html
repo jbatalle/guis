@@ -1,7 +1,8 @@
 <div class="row">
     <div class="col-md-2">
         <p class="lead">List of resources</p>
-        <div class="list-group">
+        <div class="list-group" ng-repeat="resource in availableResources">
+            <a href="" ng-click="selectedResource(resource.type)" class="list-group-item" ng-class="ARNactive">{{resource.name}}</a>
             <a href="" ng-click="selectedResource('ARN')" class="list-group-item" ng-class="ARNactive">ARN</a>
             <a href="" ng-click="selectedResource('CPE')" class="list-group-item" ng-class="CPEactive" data-animation="am-flip-x" bs-dropdown="dropdown">CPE</a>
         </div>

@@ -3,6 +3,12 @@
 angular.module('openNaaSApp')
         .controller('SodalesMonitoringController', function ($scope, ngTableParams, $filter, $routeParams, localStorageService, ngDialog, arnService, cpeService) {
 
+            var availableResources = [];
+            localStorageService.get("networkElements").forEach(function (el) {
+                availableResources.push({name: el, type: el.split("-")[0]});
+            });
+            $scope.availableResources = availableResources;
+
             $scope.dropdown = [{"text": "CFM/OAM", "click": "selectedResource('CFM/OAM')"}];
             $scope.selectedResource = function (resourceId) {
                 //get statistics and send to scope
@@ -118,23 +124,29 @@ angular.module('openNaaSApp')
 
             $scope.configureCCM = function () {
                 var url = "ccmSetting.html?unit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId=10&srcPort=104&megLevel=4&cfmVersion=0&ccmPeriod=1&rdiEnable=1&megId=ccmTest&lmEnable=1&remoteMepId=10&localMepId=9&policerId=3&outServiceId=6&inServiceId=7&Priority=7";
-                cpeService.get(url).then(function (response) {});
+                cpeService.get(url).then(function (response) {
+                });
                 url = "meaGetCcmConfig.xml?unit=0&stream_id=1";
-                cpeService.get(url).then(function (response) {});
+                cpeService.get(url).then(function (response) {
+                });
             };
 
             $scope.configureLBM = function () {
                 var url = "lbSetting.html?unit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId=11&srcPort=104&megLevel=4&cfmVersion=0&policerId=3&Priority=4&lbmSide=1";
-                cpeService.get(url).then(function (response) {});
+                cpeService.get(url).then(function (response) {
+                });
                 url = "meaGetLbConfig.xml?unit=0&stream_id=1";
-                cpeService.get(url).then(function (response) {});
+                cpeService.get(url).then(function (response) {
+                });
             };
-            
+
             $scope.configureDMM = function () {
                 var url = "dmSetting.html?unit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId=12&srcPort=104&megLevel=4&cfmVersion=0&policerId=3&Priority=4&dmmSide=1";
-                cpeService.get(url).then(function (response) {});
+                cpeService.get(url).then(function (response) {
+                });
                 url = "meaGetDmConfig.xml?unit=0&stream_id=1";
-                cpeService.get(url).then(function (response) {});
+                cpeService.get(url).then(function (response) {
+                });
             };
 
             $scope.viewStatistics = function (interfaceId) {
