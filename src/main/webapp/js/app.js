@@ -7,90 +7,94 @@ angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSAp
                     .setStorageType('sessionStorage')
                     .setNotify(true, true);
         }).config(
-                ['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
+        ['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
 
-                        $routeProvider
-                                .when('/login', {
-                                    templateUrl: 'partials/login.html',
-                                    controller: 'LoginController'
-                                }).when('/piMgt', {
-                                    templateUrl: 'partials/piMgt.html',
-                                    controller: 'PIMgtCtrl'
-                                })
-                                .when('/createVI', {
-                                    templateUrl: 'partials/createVI.html',
-                                    controller: 'CreateVICtrl'
-                                })
-                                .when('/mgt', {
-                                    templateUrl: 'partials/mgt.html',
-                                    controller: 'MgtCtrl'
-                                })
-                                .when('/statistics', {
-                                    templateUrl: 'partials/statistics.html',
-                                    controller: 'StatisticsCtrl'
-                                })
-                                .when('/users', {
-                                    templateUrl: 'partials/users.html',
-                                    controller: 'UsersController'
-                                })
-                                .otherwise({
-                                    templateUrl: 'partials/index.html',
-                                    controller: "HomeCtrl"
-                                });
+                $routeProvider
+                        .when('/login', {
+                            templateUrl: 'partials/login.html',
+                            controller: 'LoginController'
+                        }).when('/piMgt', {
+                    templateUrl: 'partials/piMgt.html',
+                    controller: 'PIMgtCtrl'
+                })
+                        .when('/createVI', {
+                            templateUrl: 'partials/createVI/index.html',
+                            controller: 'listVIController'
+                        })
+                        .when('/editVIRequest/:id', {
+                            templateUrl: 'partials/createVI/editor.html',
+                            controller: 'editVIController'
+                        })
+                        .when('/mgt', {
+                            templateUrl: 'partials/mgt.html',
+                            controller: 'MgtCtrl'
+                        })
+                        .when('/statistics', {
+                            templateUrl: 'partials/statistics.html',
+                            controller: 'StatisticsCtrl'
+                        })
+                        .when('/users', {
+                            templateUrl: 'partials/users.html',
+                            controller: 'UsersController'
+                        })
+                        .otherwise({
+                            templateUrl: 'partials/index.html',
+                            controller: "HomeCtrl"
+                        });
 
-                        $locationProvider.hashPrefix('!');
+                $locationProvider.hashPrefix('!');
 
-                        /* Register error provider that shows message on failed requests or redirects to login page on
-                         * unauthenticated requests */
-                        $httpProvider.interceptors.push(function ($q, $rootScope, $location) {
-                            return {
-                                'responseError': function (rejection) {
-                                    var status = rejection.status;
-                                    var config = rejection.config;
-                                    var method = config.method;
-                                    var url = config.url;
+                /* Register error provider that shows message on failed requests or redirects to login page on
+                 * unauthenticated requests */
+                $httpProvider.interceptors.push(function ($q, $rootScope, $location) {
+                    return {
+                        'responseError': function (rejection) {
+                            var status = rejection.status;
+                            var config = rejection.config;
+                            var method = config.method;
+                            var url = config.url;
 
-                                    if (status == 401) {
-                                        $location.path("/login");
-                                    } else {
-                                        $rootScope.error = method + " on " + url + " failed with status " + status;
-                                    }
+                            if (status == 401) {
+                                $location.path("/login");
+                            } else {
+                                $rootScope.error = method + " on " + url + " failed with status " + status;
+                            }
 
-                                    return $q.reject(rejection);
-                                }
-                            };
+                            return $q.reject(rejection);
                         }
-                        );
+                    };
+                }
+                );
 
-                        /* Registers auth token interceptor, auth token is either passed by header or by query parameter
-                         * as soon as there is an authenticated user */
-                        $httpProvider.interceptors.push(function ($q, $rootScope, $location) {
-                            return {
-                                'request': function (config) {
-                                    var isRestCall = config.url.indexOf('rest') == 0;
-                                    if (isRestCall && angular.isDefined($rootScope.authToken)) {
-                                        var authToken = $rootScope.authToken;
-                                        if (openNaaSAppConfig.useAuthTokenHeader) {
-                                            config.headers['X-Auth-Token'] = authToken;
-                                        } else {
-                                            config.url = config.url + "?token=" + authToken;
-                                        }
-                                    }
-                                    return config || $q.when(config);
+                /* Registers auth token interceptor, auth token is either passed by header or by query parameter
+                 * as soon as there is an authenticated user */
+                $httpProvider.interceptors.push(function ($q, $rootScope, $location) {
+                    return {
+                        'request': function (config) {
+                            var isRestCall = config.url.indexOf('rest') == 0;
+                            if (isRestCall && angular.isDefined($rootScope.authToken)) {
+                                var authToken = $rootScope.authToken;
+                                if (openNaaSAppConfig.useAuthTokenHeader) {
+                                    config.headers['X-Auth-Token'] = authToken;
+                                } else {
+                                    config.url = config.url + "?token=" + authToken;
                                 }
-                            };
+                            }
+                            return config || $q.when(config);
                         }
-                        );
+                    };
+                }
+                );
 
-                    }]
+            }]
 
-                ).run(function ($rootScope, $location, $cookieStore, UserService) {
+        ).run(function ($rootScope, $location, $cookieStore, UserService) {
 
     /* Reset error when a new view is loaded */
     $rootScope
-    .$on('$viewContentLoaded', function () {
-        delete $rootScope.error;
-    });
+            .$on('$viewContentLoaded', function () {
+                delete $rootScope.error;
+            });
 
     $rootScope.hasRole = function (role) {
 
