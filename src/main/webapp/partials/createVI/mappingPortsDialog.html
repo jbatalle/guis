@@ -1,29 +1,20 @@
 <div class="container-fluid" ng-controller="editVIController">
     <b>Mapping virtual resource to physical resource</b>
-<br/>       
-        <select placeholder="select virtual resource" bs-select ng-model="viRes" ng-options="viRes.name as (viRes.name + '(' + viRes.type + ')' ) for viRes in virtualResources" ></select>
-        <select placeholder="select physical resource" bs-select ng-model="piRes" ng-options="piRes for piRes in physicalResources" ></select>
-        <button type="button" class="btn btn-default" ng-model="button.toggle" bs-checkbox>Map resources</button>
-        
-        if map...
-        <select placeholder="select virtual port" bs-select ng-model="viPort" ng-options="port for port in virtualPorts.IResource.IResourceId" ></select>
-        <select placeholder="select physical port" bs-select ng-model="piPort" ng-options="port for port in physicalPorts.IResource.IResourceId" ></select>
-        
-        <br/><br/><br/><br/>
-    <form action="createARN" method="post" name="editForm">
-        <div>
-            <div>Select network
-                <select ng-model="arn.network">
-                    <option selected>{{networkId}}</option>
-                </select> 
-            </div>
-            <div>Enter the endpoint (URL)
-                <input type="text" class="form-control" ng-model="arn.endpoint" name="endpoint" >
-            </div>
-            <br/>
-            <div>
-                <a href="" class="btn btn-sm btn-primary" ng-click="closeThisDialog()">Close</a>
-            </div>
-        </div>
-    </form>
+    <br/>       
+
+    <select placeholder="select virtual resource" bs-select ng-model="viRes" ng-options="viRes.name as (viRes.name + '(' + viRes.type + ')' ) for viRes in virtualResources" ></select>
+    <select placeholder="select physical resource" bs-select ng-model="piRes" ng-options="piRes for piRes in physicalResources" ></select>
+    <a href="" class="btn btn-sm btn-primary" ng-click="mapVirtualResourceToRealResource(resourceRequest)">Map</a>
+
+    <br/>
+    IF.-..
+    Select the method of port mapping (automatic/manual):
+    <br/><b>Automatic: </b><a href="" class="btn btn-sm btn-primary" ng-click="addResourceToGraph(resourceRequest)">Auto mapping</a>
+    <br/><b>Manual: </b><br/>
+    <select placeholder="select virtual port" bs-select ng-model="viPort" ng-options="port for port in virtualPorts.IResource.IResourceId" ></select>
+    <select placeholder="select physical port" bs-select ng-model="piPort" ng-options="port for port in physicalPorts.IResource.IResourceId" ></select>
+    <a href="" class="btn btn-sm btn-primary" ng-click="mapVirtualPorts(resourceRequest)">Map</a>
+    
+    <br/>
+    <a href="" class="btn btn-sm btn-primary" ng-click="closeThisDialog()">Close</a>
 </div>
