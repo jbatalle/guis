@@ -2,7 +2,7 @@
 
 angular.module('openNaaSApp')
         .controller('SodalesMonitoringController', function ($scope, ngTableParams, $filter, $routeParams, localStorageService, ngDialog, arnService, cpeService, $interval) {
-var promise;
+            var promise;
             var availableResources = [];
             $scope.selected = "";
             localStorageService.get("networkElements").forEach(function (el) {
@@ -84,22 +84,22 @@ var promise;
             };
             $scope.getCPEStats = function (portId) {
                 var reqUrl = "meaPmCounter.xml?unit=0&pmId=" + portId;
-$interval.cancel(promise);
-                console.log("Time out...");
+                $interval.cancel(promise);
                 promise = $interval(function () {
-                    console.log("Call CPE stats");
-                cpeService.get(reqUrl).then(function (response) {
-                    var data = response.meaPmCounter.PmCounter;
-                    console.log(data);
-                    $scope.content = data;
-                });}, 1000);
+                    
+                    cpeService.get(reqUrl).then(function (response) {
+                        $scope.content = response.meaPmCounter.PmCounter;
+                        console.log($scope.content);
+                    });
+                }, 1000);
             };
+
+            $scope.$on("$destroy", function () {
+                if (promise) {
+                    $interval.cancel(promise);
+                }
+            });
             
-$scope.$on("$destroy", function() {
-        if (promise) {
-            $interval.cancel(promise);
-        }
-    });
             $scope.getCCM = function (portId) {
                 var reqUrl = "meaGetCcmDefectState.xml?unit=0&streamId=1";
                 var xml = '<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href=="olg_rss.css" ?><meaCcmCounter xmlns="http://www.ethernity-net.com/enet/CcmCounter"><CcmDefectCount><unit>0</unit><LastSequenc>1832557</LastSequenc><Unexpected_MEG_ID>0</Unexpected_MEG_ID><Unexpected_MEP_ID>0</Unexpected_MEP_ID><reorder>4</reorder><eventLoss>0</eventLoss></CcmDefectCount></meaCcmCounter>';
