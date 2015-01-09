@@ -2,6 +2,20 @@
     <b>Mapping virtual resource to physical resource</b>
     List of virtual ports
     List of physical ports
+    {{physicalPorts}}
+        {{virtualPorts}}
+        {{physicalResources}}
+        {{virtualResources}}
+        
+        <select placeholder="select virtual resource" bs-select ng-model="viRes" ng-options="viRes.name as (viRes.name + '(' + viRes.type + ')' ) for viRes in virtualResources" ></select>
+        <select placeholder="select physical resource" bs-select ng-model="piRes" ng-options="piRes for piRes in physicalResources" ></select>
+        <button type="button" class="btn btn-default" ng-model="button.toggle" bs-checkbox>Map resources</button>
+        
+        if map...
+        <select placeholder="select virtual port" bs-select ng-model="viPort" ng-options="port for port in virtualPorts.IResource.IResourceId" ></select>
+        <select placeholder="select physical port" bs-select ng-model="piPort" ng-options="port for port in physicalPorts.IResource.IResourceId" ></select>
+        
+        <br/><br/><br/><br/>
     <form action="createARN" method="post" name="editForm">
         <div>
             <div>Select network
@@ -14,7 +28,7 @@
             </div>
             <br/>
             <div>
-                <a href="" class="btn btn-sm btn-primary" ng-click="addARN(arn)">Add</a>
+                <a href="" class="btn btn-sm btn-primary" ng-click="closeThisDialog()">Close</a>
             </div>
         </div>
     </form>

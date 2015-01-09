@@ -129,8 +129,35 @@ angular.module('openNaaSApp')
                     $scope.physicalPorts = result;
                 });
             };
-            $scope.openARNDialog = function(){
+            $scope.openMappingDialog = function(source, target){
                 console.log("FUNCTION IS CALLED");
-                ngDialog.open({template: 'partials/createVI/mappingPortsDialog.html'});
+                console.log(source);
+                if(source === undefined || target === undefined){
+                    $scope.getListVirtualResources();
+                    $scope.getListRealResources();
+                } else if(source.indexOf("ARN") !== -1 || source.indexOf("CPE") !== -1 || source.indexOf("TSON") !== -1){
+                    $scope.physicalPorts = $scope.getPhysicalPorts(source);
+                    $scope.virtualPorts = $scope.getVirtualPorts(target);
+                } else {
+                    $scope.physicalPorts = $scope.getPhysicalPorts(target);
+                    $scope.virtualPorts = $scope.getVirtualPorts(source);
+                }
+                console.log($scope);
+                ngDialog.open({
+                    template: 'partials/createVI/mappingPortsDialog.html',
+                    scope: $scope
+                });
             };
+            
+            $scope.getListVirtualResources = function() {
+                viService.getVIByName($scope.viId).then(function(response){
+                    $scope.virtualResources = response.viRes;
+                });
+            };
+            $scope.getListRealResources = function() {
+                $scope.physicalResources = localStorageService.get("networkElements");
+            };
+            
+            $scope.physicalPorts = $scope.getPhysicalPorts("ARN-Internal-1.0-3");
+            $scope.virtualPorts = $scope.getVirtualPorts("req-1");
         });
