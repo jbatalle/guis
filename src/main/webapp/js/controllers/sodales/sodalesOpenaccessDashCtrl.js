@@ -4,14 +4,26 @@ angular.module('openNaaSApp')
         .controller('SodalesOpenaccessDashCtrl', function ($scope, $filter, ngTableParams, spService, viService, ngDialog) {
 
 //$scope.listVi = [{name:"vi-1"},{name:"vi-2"},{name:"vi-4"}];
-            $scope.listVi = ["vi-1", "vi-2", "vi-4"];
+            $scope.listVi = [];
 
-            viService.list().then(function (data) {
-                console.log(data);
-                //$scope.listVi =  
-            });
+            $scope.updateSpList = function () {
+                viService.list().then(function (data) {
+                    $scope.listVi = [];
+                    data.forEach(function (vi) {
+//                    if()
+                        $scope.listVi.push(vi.name);
+                    });
+                    spService.list().then(function (data) {
+                        $scope.data = data;
+                    });
+                    $scope.tableParams.reload();
+
+                });
+            };
+
             spService.list().then(function (data) {
                 console.log(data);
+                $scope.data = data;
                 //$scope.spList = data;
                 $scope.tableParams = new ngTableParams({
                     page: 1, // show first page
@@ -22,14 +34,15 @@ angular.module('openNaaSApp')
                 }, {
                     total: data.length,
                     getData: function ($defer, params) {
-                        console.log(data);
-                        var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+                        console.log($scope.data);
+                        var orderedData = params.sorting() ? $filter('orderBy')($scope.data, params.orderBy()) : $scope.data;
                         $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     },
                     $scope: {$data: {}}
                 });
             });
-
+            //};
+            $scope.updateSpList();
             $scope.openSPCreationDialog = function () {
                 ngDialog.open({template: 'partials/sodales/spCreationDialog.html'});
             };
@@ -38,18 +51,16 @@ angular.module('openNaaSApp')
                 console.log(spName);
                 console.log(vi);
                 spService.addViToSP(spName, vi).then(function (response) {
-
+                    $scope.updateSpList();
                 });
 
             };
 
             $scope.removeVI = function (spName, vi) {
-                console.log(spName);
                 console.log(vi);
                 spService.removeVIOfSP(spName, vi).then(function (response) {
-
+                    $scope.updateSpList();
                 });
-
             };
 
             $scope.addSP = function (data) {
