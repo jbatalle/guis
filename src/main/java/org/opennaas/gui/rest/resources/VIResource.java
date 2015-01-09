@@ -100,11 +100,10 @@ public class VIResource {
     }
     
     @GET
-    @Path("{id}/name/{resName}/type/{resType}")//rest/vi/"+viId+"/name/"+resName+"/type/"+resType
-    public void addVI(@PathParam("id") Long id, @PathParam("resName")String resName, @PathParam("resType")String resType) {
+    @Path("{viName}/name/{resName}/type/{resType}")//rest/vi/"+viId+"/name/"+resName+"/type/"+resType
+    public void addVI(@PathParam("viName") String viName, @PathParam("resName")String resName, @PathParam("resType")String resType) {
         this.logger.info("add vi(id, viId)");
-
-        this.vIDao.add(id, resName, resType);
+        this.vIDao.add(this.vIDao.findByName(viName).getId(), resName, resType);
     }
     
     @GET
