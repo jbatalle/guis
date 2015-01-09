@@ -14,13 +14,13 @@
         <td data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">{{iface.vi}}</td>
         <td data-title="'Add VI'" class="col-sm-1 col-md-1 col-lg-1">
             <select ng-model="selectedAddVi">
-                <option ng-repeat="item in listVi| viDuplicates:iface.vi">{{item}}</option>
+                <option ng-repeat="item in listVi | viDuplicates:iface.vi">{{item}}</option>
             </select> 
             <a href="" ng-click="addVI(iface.id, selectedAddVi)" title="View">Add</a>
         </td>
         <td data-title="'Remove VI'" class="col-sm-1 col-md-1 col-lg-1">
             <select ng-model="selectedRemoveVi">
-                <option ng-repeat="item in iface.vi">{{item}}</option>
+                <option ng-repeat="item in iface.vi track by $index">{{item}}</option>
             </select> 
             <a href="" ng-click="removeVI(iface.id, selectedRemoveVi)" title="View">Remove</a>
         </td>

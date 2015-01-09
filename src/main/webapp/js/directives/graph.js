@@ -12,7 +12,7 @@ angular.module('openNaaSApp')
                         timer(console.log("TIMER HEUEHE"), 0);
                         console.log(localStorageService.get("graphNodes"));
                         console.log(localStorageService.get("networkElements"));
-
+console.log(localStorageService.get("arnPorts"));
                         var networkElements = localStorageService.get("networkElements");
                         var links = [];
                         var lin = {s: 0, t: 1};
@@ -25,6 +25,7 @@ angular.module('openNaaSApp')
                             var id = networkElements[i];
 //                        var ports = networkElements[i].ports.port;
                             var ports = [];
+                            ports = localStorageService.get("arnPorts").ports;
 //        createSwitch(id, ports);
                             var node = {};
                             node.id = id;
