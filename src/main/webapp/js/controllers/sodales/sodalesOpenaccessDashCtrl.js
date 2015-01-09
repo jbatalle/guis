@@ -1,10 +1,15 @@
 'use strict';
 
 angular.module('openNaaSApp')
-        .controller('SodalesOpenaccessDashCtrl', function ($scope, $filter, ngTableParams, spService, ngDialog) {
+        .controller('SodalesOpenaccessDashCtrl', function ($scope, $filter, ngTableParams, spService, viService, ngDialog) {
 
 //$scope.listVi = [{name:"vi-1"},{name:"vi-2"},{name:"vi-4"}];
-$scope.listVi = ["vi-1","vi-2","vi-4"];
+            $scope.listVi = ["vi-1", "vi-2", "vi-4"];
+
+            viService.list().then(function (data) {
+                console.log(data);
+                //$scope.listVi =  
+            });
             spService.list().then(function (data) {
                 console.log(data);
                 //$scope.spList = data;
@@ -28,30 +33,30 @@ $scope.listVi = ["vi-1","vi-2","vi-4"];
             $scope.openSPCreationDialog = function () {
                 ngDialog.open({template: 'partials/sodales/spCreationDialog.html'});
             };
-            
+
             $scope.addVI = function (spName, vi) {
                 console.log(spName);
                 console.log(vi);
                 spService.addViToSP(spName, vi).then(function (response) {
-                    
+
                 });
 
             };
-            
+
             $scope.removeVI = function (spName, vi) {
                 console.log(spName);
                 console.log(vi);
                 spService.removeVIOfSP(spName, vi).then(function (response) {
-                    
+
                 });
 
             };
-            
+
             $scope.addSP = function (data) {
                 console.log("Adding SP");
                 console.log(data);
                 var name = data.name;//{"name":"SP4"}
-                var sp = {"name": name.replace( /\s/g, "")};
+                var sp = {"name": name.replace(/\s/g, "")};
                 console.log(sp);
                 spService.createSP(sp).then(function (response) {
                     console.log(response);
