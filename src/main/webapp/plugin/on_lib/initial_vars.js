@@ -18,6 +18,7 @@ graphImage["ofController"] =    plugin_path+"img/ofController.png";
 graphImage["laptop"] =    plugin_path+"img/laptop.png";
 graphImage["arn"] =    plugin_path+"img/SODALES_ARN.png";
 graphImage["cpe"] =    plugin_path+"img/SODALES_CPE.png";
+graphImage["tson"] =    plugin_path+"img/CONTENT_TSON.png";
 
 var genericImages = {};
 genericImages["helpImage"] = plugin_path+"img/helpImage.png";
