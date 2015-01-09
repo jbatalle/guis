@@ -4,19 +4,20 @@ angular.module('openNaaSApp')
         .controller('SodalesMonitoringController', function ($scope, ngTableParams, $filter, $routeParams, localStorageService, ngDialog, arnService, cpeService) {
 
             var availableResources = [];
+            $scope.selected = "";
             localStorageService.get("networkElements").forEach(function (el) {
                 console.log(el);
-                if(el !== null)
-                availableResources.push({name: el, type: el.split("-")[0]});
+                if (el !== null)
+                    availableResources.push({name: el, type: el.split("-")[0]});
             });
             $scope.availableResources = availableResources;
-            $scope.noResource = true;
 
             $scope.dropdown = [{"text": "CFM/OAM", "click": "selectedResource('CFM/OAM')"}];
-            $scope.selectedResource = function (resourceId) {
+            $scope.selectedResource = function (resourceName, resourceType) {
                 //get statistics and send to scope
-                console.log("Selected " + resourceId);
-                if (resourceId === 'CPE') {
+                console.log("Selected " + resourceName);
+                if (resourceType === 'CPE') {
+                    $scope.selected = resourceName;
                     $scope.noResource = false;
                     $scope.CPEactive = "active";
                     $scope.ARNactive = "";
@@ -25,7 +26,8 @@ angular.module('openNaaSApp')
                     $scope.CFM_OAM = false;
                     $scope.getCPEPortList();
                 }
-                else if (resourceId === 'CFM/OAM') {
+                else if (resourceType === 'CFM/OAM') {
+                    $scope.selected = resourceName;
                     $scope.noResource = false;
                     $scope.CPEactive = "active";
                     $scope.ARNactive = "";
@@ -35,7 +37,8 @@ angular.module('openNaaSApp')
                     $scope.getCCM();
                     $scope.getLBM();
                     $scope.getDMM();
-                }else if (resourceId === 'ARN') {
+                } else if (resourceType === 'ARN') {
+                    $scope.selected = resourceName;
                     $scope.noResource = false;
                     $scope.ARNactive = "active";
                     $scope.CPEactive = "";
@@ -162,7 +165,23 @@ angular.module('openNaaSApp')
                     scope: $scope}
                 );
             };
+            $scope.navClass = function (page) {
+
+                return page === $scope.selected ? 'active' : '';
+            };
+            $scope.getClass = function (ind) {
+                console.log("GET CLASS");
+                if (ind === "ARN") {
+                    return "ARNactive";
+                } else {
+                    return "CPEactive";
+                }
+            }
+
 //            $scope.selectedResource("ARN");
+            if (availableResources.length > 0)
+                $scope.selectedResource(availableResources[0].type);
+            $scope.noResource = true;
         })
         .controller('statisticsDialogCtrl', function ($scope, ngTableParams, $filter, localStorageService, arnService) {
             var requestData = getCounter($scope.infId);
