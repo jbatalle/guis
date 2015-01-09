@@ -41,11 +41,13 @@
 	
     <bean id="historyEntryDao" class="org.opennaas.gui.dao.history.JpaHistoryEntryDao"></bean>
     <bean id="serviceProviderDao" class="org.opennaas.gui.dao.serviceProvider.JpaServiceProviderDao"></bean>
+    <bean id="vIDao" class="org.opennaas.gui.dao.vi.JpaVIDao"></bean>
     <bean id="userDao" class="org.opennaas.gui.dao.user.JpaUserDao"></bean>
 	
     <bean id="dataBaseInitializer" class="org.opennaas.gui.dao.DataBaseInitializer" init-method="initDataBase">
         <constructor-arg ref="userDao" />
         <constructor-arg ref="serviceProviderDao" />
+        <constructor-arg ref="vIDao" />
         <constructor-arg ref="passwordEncoder" />
     </bean>
 
