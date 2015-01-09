@@ -8,10 +8,10 @@
  * Controller of the webappApp
  */
 angular.module('openNaaSApp')
-  .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, ngTableParams, viService, localStorageService) {
+        .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, ngTableParams, viService, localStorageService) {
             console.log("LIST VI");
             $rootScope.networkId = "Network-Internal-1.0-2";//to remove
-            
+
             $scope.data = [];
             $scope.updateSpList = function () {
                 var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
@@ -76,9 +76,11 @@ angular.module('openNaaSApp')
 //            console.log($scope.$parent.ngDialogData);
             var urlPeriod = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestAdministration/period";
             MqNaaSResourceService.get(urlPeriod).then(function (result) {
-                $scope.period = result.period;
-                $scope.period.startDate = parseInt($scope.period.startDate * 1000);
-                $scope.period.endDate = parseInt($scope.period.endDate * 1000);
+                if (result !== null) {
+                    $scope.period = result.period;
+                    $scope.period.startDate = parseInt($scope.period.startDate * 1000);
+                    $scope.period.endDate = parseInt($scope.period.endDate * 1000);
+                }
             });
 
             $scope.setPeriod = function (period) {
@@ -143,13 +145,13 @@ angular.module('openNaaSApp')
                     $scope.physicalPorts = result;
                 });
             };
-            $scope.openMappingDialog = function(source, target){
+            $scope.openMappingDialog = function (source, target) {
                 console.log("FUNCTION IS CALLED");
                 console.log(source);
-                if(source === undefined || target === undefined){
+                if (source === undefined || target === undefined) {
                     $scope.getListVirtualResources();
                     $scope.getListRealResources();
-                } else if(source.indexOf("ARN") !== -1 || source.indexOf("CPE") !== -1 || source.indexOf("TSON") !== -1){
+                } else if (source.indexOf("ARN") !== -1 || source.indexOf("CPE") !== -1 || source.indexOf("TSON") !== -1) {
                     $scope.physicalPorts = $scope.getPhysicalPorts(source);
                     $scope.virtualPorts = $scope.getVirtualPorts(target);
                 } else {
@@ -162,16 +164,16 @@ angular.module('openNaaSApp')
                     scope: $scope
                 });
             };
-            
-            $scope.getListVirtualResources = function() {
-                viService.getVIByName($scope.viId).then(function(response){
+
+            $scope.getListVirtualResources = function () {
+                viService.getVIByName($scope.viId).then(function (response) {
                     $scope.virtualResources = response.viRes;
                 });
             };
-            $scope.getListRealResources = function() {
+            $scope.getListRealResources = function () {
                 $scope.physicalResources = localStorageService.get("networkElements");
             };
-            
+
             $scope.physicalPorts = $scope.getPhysicalPorts("ARN-Internal-1.0-3");
             $scope.virtualPorts = $scope.getVirtualPorts("req-1");
         });

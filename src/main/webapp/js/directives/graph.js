@@ -276,34 +276,21 @@ angular.module('openNaaSApp')
                         timer(console.log("TIMER HEUEHE"), 0);
                         console.log(localStorageService.get("graphNodes"));
 
-                        var networkElements = localStorageService.get("networkElements");
-                        var virtualElements = localStorageService.get("virtualElements");
-                        console.log(networkElements);
-                        console.log(virtualElements);
-                        networkElements = networkElements.concat(virtualElements).filter(function (el) {
-                            return el !== null;
-                        });
-                        console.log(networkElements);
-                        var links = [];
-                        var lin = {s: 0, t: 1};
-                        links.push(lin);
+                        var xmlTopology = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?> <ns2:topology xmlns:ns2="opennaas.api"> <networkElements> <networkElement xsi:type="switch" id="openflowswitch:s1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s1.1"> <state> <congested>false</congested> </state> </port> <port id="s1.2"> <state> <congested>false</congested> </state> </port> <port id="s1.3"> <state> <congested>false</congested> </state> </port> <port id="s1.4"> <state> <congested>false</congested> </state> </port> </ports> </networkElement> <networkElement xsi:type="switch" id="openflowswitch:s2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s2.1"> <state> <congested>false</congested> </state> </port> <port id="s2.2"> <state> <congested>false</congested> </state> </port> <port id="s2.3"> <state> <congested>false</congested> </state> </port> </ports> </networkElement><networkElement xsi:type="switch" id="openflowswitch:s3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s3.1"> <state> <congested>false</congested> </state> </port> <port id="s3.2"> <state> <congested>false</congested> </state> </port> <port id="s3.3"> <state> <congested>false</congested> </state> </port> <port id="s3.4"> <state> <congested>false</congested> </state> </port> </ports> </networkElement> </networkElements> <links> <link> <state> <congested>false</congested> </state> <srcPort>s1.1</srcPort> <dstPort>s2.1</dstPort> </link> <link> <state> <congested>false</congested> </state> <srcPort>s1.2</srcPort> <dstPort>s3.1</dstPort> </link>  <link> <state> <congested>false</congested> </state> <srcPort>s2.2</srcPort> <dstPort>s3.2</dstPort> </link>  </links>  </ns2:topology>';
+                        var json = convertXml2JSonObject(xmlTopology);
+                        console.log(json);
+
+                        var networkElements = json.topology.networkElements.networkElement;
+                        var links = json.topology.links.link;
                         var nodes = [];
                         //for each network element
                         for (var i = 0; i < networkElements.length; i++) {
                             console.log(networkElements[i]);
-                            //IF IS VIRTUAL TAKE THE VALUE FROM THE RESOURCE TYPE JSON
-                            console.log(typeof networkElements[i]);
-                            if (typeof networkElements[i] === "object") {
-                                console.log("IS a object -> Virtual Resources with type");
-                                var type = networkElements[i].type.toLowerCase();
-                                var id = networkElements[i].name;
-                            } else {
-                                var type = networkElements[i].split("-")[0].toLowerCase();
-                                var id = networkElements[i];
-                            }
-//                        var ports = networkElements[i].ports.port;
-                            var ports = [];
-//        createSwitch(id, ports);
+                            var type = networkElements[i]["_xsi:type"];
+                            if(type === "switch") type = "ofSwitch";
+                            var id = networkElements[i]._id.split(":")[1];
+                            var ports = networkElements[i].ports.port;
+
                             var node = {};
                             node.id = id;
                             node.type = type;
