@@ -12,7 +12,7 @@ angular.module('openNaaSApp')
             });
             $scope.availableResources = availableResources;
 
-            $scope.dropdown = [{"text": "CFM/OAM", "click": "selectedResource('CFM/OAM')"}];
+            $scope.dropdown = [{"text": "CFM/OAM", "click": "selectedResource('', 'CFM/OAM')"}];
             $scope.selectedResource = function (resourceName, resourceType) {
                 //get statistics and send to scope
                 console.log("Selected " + resourceName);
@@ -104,7 +104,7 @@ angular.module('openNaaSApp')
                 });
             };
             $scope.getLBM = function (portId) {
-                var reqUrl = "meagetLBMStatistics.xml?unit=0&streamId=1";
+                var reqUrl = "meaGetLbmStatistics.xml?unit=0&stream_id=1";
                 var xml = '<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href=="olg_rss.css" ?><meaStatistics xmlns="http://www.ethernity-net.com/enet/LbmDmmStatistics"><lbmDmmStatistics><unit>0</unit><AVG_latency>0</AVG_latency><Bytes>1735000</Bytes><MAX_jitter>0</MAX_jitter><MIN_jitter>4294967295</MIN_jitter><Pkts>1735</Pkts><drop>0</drop><lastseqID>1754</lastseqID><num_Of_Bits_Error>6695669</num_Of_Bits_Error><seq_ID_err>0</seq_ID_err><seq_ID_reorder>0</seq_ID_reorder></lbmDmmStatistics></meaStatistics>';
                 var x2js = new X2JS();
                 var json = x2js.xml_str2json(xml);
@@ -116,7 +116,7 @@ angular.module('openNaaSApp')
                 });
             };
             $scope.getDMM = function (portId) {
-                var reqUrl = "meaGetDmmStatistics.xml?unit=0&streamId=1";
+                var reqUrl = "meaGetDmmStatistics.xml?unit=0&stream_id=1";
                 var xml = '<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href=="olg_rss.css" ?><meaStatistics xmlns="http://www.ethernity-net.com/enet/LbmDmmStatistics"><lbmDmmStatistics><unit>0</unit><AVG_latency>5408</AVG_latency><Bytes>0</Bytes><MAX_jitter>6240</MAX_jitter><MIN_jitter>5312</MIN_jitter><Pkts>0</Pkts><drop>0</drop><lastseqID>0</lastseqID><num_Of_Bits_Error>0</num_Of_Bits_Error><seq_ID_err>0</seq_ID_err><seq_ID_reorder>0</seq_ID_reorder></lbmDmmStatistics></meaStatistics>';
                 var x2js = new X2JS();
                 var json = x2js.xml_str2json(xml);
@@ -124,7 +124,7 @@ angular.module('openNaaSApp')
                 console.log(json.meaStatistics.lbmDmmStatistics);
                 cpeService.get(reqUrl).then(function (response) {
                     console.log(response);
-                    var data = response.meaPmCounter.PmCounter;
+                    var data = response.meaStatistics.lbmDmmStatistics;
                     $scope.dmmCounter = response.meaStatistics.lbmDmmStatistics;
                 });
 

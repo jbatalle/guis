@@ -3,7 +3,8 @@
         <p class="lead">List of resources</p>
         <div class="list-group" >
             <a ng-repeat="resource in availableResources" href="" ng-click="selectedResource(resource.name, resource.type)" 
-               class="list-group-item" ng-class="navClass('{{resource.name}}')">{{resource.name}}</a>
+               class="list-group-item" ng-class="navClass('{{resource.name}}')" 
+               data-animation="am-flip-x" bs-dropdown="dropdown">{{resource.name}}</a>
         </div>
         <a href="" ng-click="selectedResource('ARN')" class="list-group-item" ng-class="ARNactive">ARN</a>
             <a href="" ng-click="selectedResource('CPE')" class="list-group-item" ng-class="CPEactive" data-animation="am-flip-x" bs-dropdown="dropdown">CPE</a>
