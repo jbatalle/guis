@@ -6,14 +6,14 @@
                class="list-group-item" ng-class="navClass('{{resource.name}}')" 
                data-animation="am-flip-x" bs-dropdown="dropdown">{{resource.name}}</a>
         </div>
-        <a href="" ng-click="selectedResource('ARN')" class="list-group-item" ng-class="ARNactive">ARN</a>
-            <a href="" ng-click="selectedResource('CPE')" class="list-group-item" ng-class="CPEactive" data-animation="am-flip-x" bs-dropdown="dropdown">CPE</a>
+        <a href="" ng-click="selectedResource('tes', 'ARN')" class="list-group-item" ng-class="ARNactive">ARN</a>
+        <a href="" ng-click="selectedResource('CPE')" class="list-group-item" ng-class="CPEactive" data-animation="am-flip-x" bs-dropdown="dropdown">CPE</a>
     </div>
     <div class="col-md-10">
         <h2 class="page-header">Monitoring <small>Statistics</small></h2>
         <div ng-show="ARNStats">
             <table ng-table="tableParams" class="table ng-table-responsive" style="text-align: center">
-                <tr ng-repeat="iface in $data">
+                <tr ng-repeat="iface in $data" ng-if="iface._name =='Eth 1' || iface._name =='Eth 2' || iface._name =='intEth 1'">
                     <td data-title="'Eth-ID'" sortable="'_name'" class="col-sm-1 col-md-1 col-lg-1">{{iface._name}}</td>
                     <td data-title="'Card ID'" sortable="'_cardId'" class="col-sm-1 col-md-1 col-lg-1">{{iface._cardId}}</td>
                     <td data-title="'Admin'" sortable="'_admin'" class="col-sm-1 col-md-1 col-lg-1">{{iface._admin}}</td>

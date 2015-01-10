@@ -150,10 +150,18 @@ angular.module('openNaaSApp')
             $scope.physicalPorts = $scope.getPhysicalPorts("ARN-Internal-1.0-3");
             $scope.virtualPorts = $scope.getVirtualPorts("req-1");
         })
-        .controller('spStatsController', function ($scope, ngTableParams, $filter, $routeParams, localStorageService, ngDialog, arnService, cpeService, $interval) {
+        .controller('spStatsController', function ($scope, ngTableParams, $filter, $routeParams, localStorageService, ngDialog, arnService, cpeService, $interval, viService) {
             var promise;
             var availableResources = [];
             $scope.selected = "";
+            $scope.vi = $routeParams.id;
+            $scope.vi = "vi-1";
+            viService.getVIByName($scope.vi).then(function(result){
+                console.log(result);
+                console.log(result.viRes);
+                $scope.availableResources;
+            });
+            
             localStorageService.get("networkElements").forEach(function (el) {
                 console.log(el);
                 if (el !== null)
@@ -194,6 +202,7 @@ angular.module('openNaaSApp')
                     $scope.ARNStats = true;
                     $scope.CPEStats = false;
                     $scope.CFM_OAM = false;
+                    console.log("GET ARN");
                     $scope.getARNStats();
                 }
             };
@@ -201,8 +210,9 @@ angular.module('openNaaSApp')
                 console.log("REQUEST ARN Stats");
                 //            var data = getLAGs();
                 var data = getLinkStatus();
-                arnService.put(data).then(function (response) {
-                    var data = response.response.operation.interfaceList.interface;
+//                arnService.put(data).then(function (response) {
+//                    var data = response.response.operation.interfaceList.interface;
+                    data = [{_name: "Eth 1"}, {_name: "Eth 2"}, {_name: "Eth 4"}];
                     console.log(data);
                     $scope.element = $routeParams.id;
 //                $scope.data = data.response.operation.interfaceList.interface;
@@ -218,12 +228,13 @@ angular.module('openNaaSApp')
                         total: data.length,
                         getData: function ($defer, params) {
                             console.log(data);
+                            
                             var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
                             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                         },
                         $scope: {$data: {}}
                     });
-                });
+//                });
             };
             $scope.getCPEPortList = function () {
                 var reqListPortsUrl = "meaPortMapping.xml?unit=0";
