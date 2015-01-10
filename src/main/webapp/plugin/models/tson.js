@@ -5,7 +5,7 @@
 function TSON(endpoint) {
     this.id = endpoint;
     this.data = {"endpoint": endpoint};
-    this.type = "arn";
+    this.type = "tson";
     this.width = "60px";
     this.height = "60px";
     this.text_x = 0;
