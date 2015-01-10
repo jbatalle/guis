@@ -10,7 +10,7 @@
 angular.module('openNaaSApp')
         .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, ngTableParams, viService, localStorageService) {
             console.log("LIST VI");
-            $rootScope.networkId = "Network-Internal-1.0-2";//to remove
+            $rootScope.networkId = "Network-2";
 
             $scope.data = [];
             $scope.updateSpList = function () {
@@ -176,4 +176,13 @@ angular.module('openNaaSApp')
 
             $scope.physicalPorts = $scope.getPhysicalPorts("ARN-Internal-1.0-3");
             $scope.virtualPorts = $scope.getVirtualPorts("req-1");
+        })
+        .controller('listVIMenuController', function ($scope, $rootScope, MqNaaSResourceService, $filter, ngTableParams, viService, localStorageService) {
+            console.log("LIST VI");
+
+                viService.list().then(function (result) {
+                    console.log(result);
+                    $scope.data = result;
+                    $scope.tableParams.reload();
+                });
         });

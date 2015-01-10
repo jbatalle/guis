@@ -8,26 +8,15 @@
  * Controller of the webappApp
  */
 angular.module('openNaaSApp')
-  .controller('PIMgtCtrl', function ($scope, $rootScope, MqNaaSResourceService, $routeParams, localStorageService, ngDialog, RootResourceService) {
+        .controller('PIMgtCtrl', function ($scope, $rootScope, MqNaaSResourceService, $routeParams, localStorageService, ngDialog, RootResourceService) {
             var url = "";
             console.log(localStorageService.get("mqNaaSElements"));
 //            console.log(JSON.parse(localStorageService.get("mqNaaSElements")));
             localStorageService.set("graphNodes", []);
+            $rootScope.networkId = "Network-2";
             console.log($rootScope.networkId);
-            RootResourceService.list().then(function (data) {
-                data = checkIfIsArray(data.IRootResource.IRootResourceId);
-                $scope.listNetworks = data;
-                console.log($scope.listNetworks);
-                $rootScope.networkId = data[1];
-                $scope.selectedNetwork = $rootScope.networkId;
-                console.log($rootScope.networkId);
-                if (!$rootScope.networkId) {
-                    console.log("Clean localStorage networkElements due network is not created.");
-                    localStorageService.set("networkElements", []);
-                }
-                getMqNaaSResource($rootScope.networkId);
-//                localStorageService.set("mqNaaSElements", data);
-            });
+            //localStorageService.set("networkElements", []);
+            
 
             $scope.list = function () {
                 RootResourceService.list().then(function (data) {
@@ -109,6 +98,7 @@ angular.module('openNaaSApp')
                 });
             };
 
+getMqNaaSResource($rootScope.networkId);
             $scope.configureResourceSlices = function (resName) {
                 var sliceId = $scope.getSlice(resName);
                 var unitId = $scope.createUnit(resName, sliceId, "port");
