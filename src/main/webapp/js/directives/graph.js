@@ -163,6 +163,7 @@ console.log(localStorageService.get("arnPorts"));
                         var w = angular.element($window);
                         element.draggable({
                             revert: true,
+                            helper: 'clone', 
                             start: function (event, ui) {
                                 console.log("Start dragging");
                                 console.log(event);
@@ -277,15 +278,11 @@ console.log(localStorageService.get("arnPorts"));
                     restrict: 'AE',
                     controller: function ($scope, ngDialog) {
                         console.log($scope);
-                        $scope.openARNDialog = function (nodeType, divPos) {
+                        
+                        $scope.openaddVIResDialog = function (nodeType, divPos) {
                             ngDialog.open({
-                                template: 'partials/sodales/arnVIDialog.html',
-                                data: {"nodeType": nodeType, "divPos": divPos}})
-                        };
-                        $scope.openCPEDialog = function (nodeType, divPos) {
-                            ngDialog.open({
-                                template: 'partials/sodales/cpeVIDialog.html',
-                                data: {"nodeType": nodeType, "divPos": divPos}});
+                                template: 'partials/addResInVIDialog.html',
+                                data : {"nodeType": nodeType, "divPos": divPos}});
                         };
                     },
                     link: function (scope, element, attrs) {
@@ -305,11 +302,7 @@ console.log(localStorageService.get("arnPorts"));
 
                                 console.log("Create with draw");
                                 console.log(graph.getNodes());
-                                if (nodeType === "arn") {
-                                    scope.openARNDialog(nodeType, divPos);
-                                } else if (nodeType === "cpe") {
-                                    scope.openCPEDialog(nodeType, divPos);
-                                }
+                                scope.openaddVIResDialog(nodeType, divPos);
 //                                createElement("randomName", nodeType, divPos);
 
                                 var dragIndex = angular.element(ui.draggable).data('index'),

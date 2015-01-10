@@ -20,3 +20,9 @@ function checkIfIsArray(possibleArray) {
         return [possibleArray];
     }
 }
+
+function generateUrl(action1, resource, action2) {
+    var url;
+    url = action1 + "/" + resource + "/" + action2;
+    return url;
+}

@@ -8,5 +8,4 @@ public class Constants {
 //public static final String	WS_REST_URL = "ws.rest.url";
 
     public static final String WS_REST_URL = "http://admin:123456@localhost:9000";
-    public static String HOME_URL = "nfv-gui-vrf/secure/nfvRouting/home";
 }
