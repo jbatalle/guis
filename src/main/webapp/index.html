@@ -104,10 +104,9 @@
                                         <a href="">Edit VI</a>
                                         <ul class="dl-submenu">
                                             <h4>List of available VI</h4>
-                                            <div id="listAvailableVI" ng-controller="listVIMenuController">
+                                            <li id="listAvailableVI" ng-controller="listVIMenuController">
                                                 <a href="#!/editVIRequest/{{vi.name}}" ng-repeat="vi in data">{{vi.name}}</a>
-                                                <a href="#!/editVIRequest/1">Resource 1.1</a>
-                                            </div>
+                                            </li>
                                         </ul>
                                     </li>
 
