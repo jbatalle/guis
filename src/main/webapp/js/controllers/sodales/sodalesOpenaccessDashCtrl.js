@@ -3,21 +3,20 @@
 angular.module('openNaaSApp')
         .controller('SodalesOpenaccessDashCtrl', function ($scope, $filter, ngTableParams, spService, viService, ngDialog) {
 
-//$scope.listVi = [{name:"vi-1"},{name:"vi-2"},{name:"vi-4"}];
             $scope.listVi = [];
 
             $scope.updateSpList = function () {
                 viService.list().then(function (data) {
                     $scope.listVi = [];
                     data.forEach(function (vi) {
-//                    if()
+                        console.log(vi);
+                    if(vi.status === "created")
                         $scope.listVi.push(vi.name);
                     });
                     spService.list().then(function (data) {
                         $scope.data = data;
                     });
                     $scope.tableParams.reload();
-
                 });
             };
 
@@ -68,9 +67,9 @@ angular.module('openNaaSApp')
                 console.log(data);
                 var name = data.name;//{"name":"SP4"}
                 var sp = {"name": name.replace(/\s/g, "")};
-                console.log(sp);
                 spService.createSP(sp).then(function (response) {
                     console.log(response);
+                    $scope.updateSpList();
                 });
                 ngDialog.close();
             };
