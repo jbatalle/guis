@@ -1,12 +1,14 @@
 <div class="container-fluid" ng-controller="SodalesOpenaccessDashCtrl">
     <form action="createARN" method="post" name="editForm">
         <div>
-            <div>Select Service Provider name
-                <input type="text" class="form-control" ng-model="sp.name"
-                       name="name" value="http://fibratv.dtdns.net:41080" bs-typeahead>
+	<h3>Insert Service Provider information</h3>
+            <div class="col-xs-9">
+                <b>Name:</b> <input type="text" class="form-control" ng-model="sp.name" name="name" bs-typeahead><br/>
+		<b>Description:</b> <input type="text" class="form-control" ng-model="sp.description" name="name" bs-typeahead><br/>
+		<b>Url:</b> <input type="text" class="form-control" ng-model="sp.url" name="name" bs-typeahead><br/>
             </div>
-            
-            <div>
+            <br/>
+            <div class="col-xs-9">
                 <a href="#" class="btn btn-sm btn-primary" ng-click="addSP(sp)">Add</a>
             </div>
         </div>
