@@ -55,6 +55,18 @@ angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSAp
                             templateUrl: 'partials/createVI/editor.html',
                             controller: 'editVIController'
                         })
+                        .when('/spInfo', {
+                            templateUrl: 'partials/sodales/sp/spInfo.html',
+                            controller: 'spController'
+                        })
+                        .when('/spVIInfo/:id', {
+                            templateUrl: 'partials/sodales/sp/spVIInfo.html',
+                            controller: 'spVIController'
+                        })
+                        .when('/spStats/:id', {
+                            templateUrl: 'partials/sodales/sp/spStats.html',
+                            controller: 'spStatsController'
+                        })
                         .otherwise({
                             templateUrl: 'partials/sodales/0_home.html',
                             controller: 'SodalesHomeCtrl'
