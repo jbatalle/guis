@@ -3,7 +3,7 @@
 angular.module('openNaaSApp')
         .controller('sodalesPiMgtCtrl', function ($scope, $rootScope, MqNaaSResourceService, $routeParams, localStorageService, ngDialog, RootResourceService, arnService, cpeService) {
             var url = "";
-            $rootScope.networkId = "Network-Internal-1.0-7";
+//            $rootScope.networkId = "Network-Internal-1.0-7";
             console.log(localStorageService.get("mqNaaSElements"));
 //            console.log(JSON.parse(localStorageService.get("mqNaaSElements")));
             localStorageService.set("graphNodes", []);
@@ -14,6 +14,7 @@ angular.module('openNaaSApp')
                 console.log($scope.listNetworks);
                 if (!$rootScope.networkId) {
                     $rootScope.networkId = data[1];
+                    localStorageService.set("networkId", netId);
                 }
                 $scope.selectedNetwork = $rootScope.networkId;
                 console.log("Clean localStorage networkElements due network is not created.");
@@ -26,6 +27,7 @@ angular.module('openNaaSApp')
             $scope.setNetworkId = function (netId) {
                 console.log("Select networkId to rootScope: " + netId);
                 $rootScope.networkId = netId;
+                localStorageService.set("networkId", netId);
             };
             $scope.list = function () {
                 RootResourceService.list().then(function (data) {
