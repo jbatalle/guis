@@ -127,7 +127,7 @@ function createTSON(name, divPos) {
     TSON.prototype = new NetworkElement();
     TSON.prototype.constructor = TSON;
 //    var name = "cpe" + graph.getNodes().length;
-    var tson = new CPE(name);
+    var tson = new TSON(name);
     console.log(tson);
     console.log(tson instanceof NetworkElement);
     console.log(tson.getPorts());
@@ -159,6 +159,7 @@ function createofSwitch(divPos) {
     graph.addNodewithData(ofSw);
 }
 function createofSwitchwithData(divPos, data) {
+    console.log("Creating Switch with data");
     OfSwitch.prototype = new NetworkElement();
     OfSwitch.prototype.constructor = OfSwitch;
     var name = data.id;

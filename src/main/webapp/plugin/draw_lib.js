@@ -336,23 +336,7 @@ console.log("Change X "+(parentNode.x));
                     .style("left", mousePosition[0] + "px")
                     .style("top", mousePosition[1] + "px");
                 popup.append("h3").text(d.name);
-                popup.append("p").text("Id: "+d.id).append("p")
-                    .append("p").text("Ports: "+d.ports.length)
-/*                    .append("p").append("a")
-                    .attr({"xlink:href": "#"})
-                    .on("mousedown", function(){
-                        port_num = d.ports.length+1;
-                            port = {"id": d.id+port_num, "name": "ge-0/"+port_num, x: -23, y: 12, posx: -23, posy: 12, parent: d.id};
-                            graph.addPortToNode(d.id, port);
-                        })
-                    .text("Add port");
-*/                popup.append("p").append("a")
-                    .attr({"xlink:href": "", "ng-Click":"openARNDialog()"})
-                    .on("mousedown", function(){
-                        console.log("Remove resource: "+d.id);
-                        angular.element(document.getElementById('piMgt')).scope().deleteEntry(d.id);
-                        })
-                    .text("Remove");
+                popup.append("p").text("Ports: "+d.ports.length);
                 d.ports.forEach(function(entry) {
                     popup.append("li").text("Id: "+entry.id +". Name: "+entry.name);
                 });
@@ -368,6 +352,8 @@ console.log("Change X "+(parentNode.x));
                 .attr("id",function(d){ return d.id;})
                 .attr("cx", function(d){ return d.posx;})
                 .attr("cy", function(d){ return d.posy;})
+                .attr("x", function(d){ return d.posx;})
+                .attr("y", function(d){ return d.posy;})
                 .attr("width", 12)
                 .attr("height", 12)
             .on("mousedown", function(d){
@@ -405,8 +391,8 @@ console.log("Change X "+(parentNode.x+d.posx));
             return "translate(" + d.x + "," + d.y + ")";
         });
 
-        portsTest.attr('x', function(d) { return d.x; })
-                .attr('y', function(d) { return d.y; });
+//        portsTest.attr('x', function(d) { return d.x; })
+//                .attr('y', function(d) { return d.y; });
 
 
         node.exit().remove();
