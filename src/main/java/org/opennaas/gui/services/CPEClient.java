@@ -14,9 +14,8 @@ import org.apache.log4j.Logger;
 public class CPEClient extends GenericRestService {
 
     private final Logger log = Logger.getLogger(this.getClass());
-    private String cpeURL = "http://fibratv.dtdns.net:41081";
-
-    public String get(String path, HttpServletRequest request) throws RestServiceException {
+    
+    public String get(String cpeURL, String path, HttpServletRequest request) throws RestServiceException {
         log.info("Path: " + path);
         String url;
         ClientResponse response;
@@ -38,7 +37,7 @@ public class CPEClient extends GenericRestService {
         return checkResponse(response) ? response.getEntity(String.class) : null;
     }
     
-    public String post(String content) throws RestServiceException {
+    public String post(String cpeURL, String content) throws RestServiceException {
         ClientResponse response;
         String url;
         String path = "";

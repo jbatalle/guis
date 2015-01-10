@@ -15,33 +15,13 @@ public class ARNClient extends GenericRestService {
 
     private final Logger log = Logger.getLogger(this.getClass());
 
-    public String get(String path, HttpServletRequest request) throws RestServiceException {
-        log.info("Path: " + path);
-        ClientResponse response;
-        log.info("JerseyClient GET: " + path);
-        try {
-            log.info("JerseyClient GET: " + path);
-            String url = getURL(path);
-            Client client = Client.create();
-            addHTTPBasicAuthentication(client);
-            WebResource webResource = client.resource(url);
-            response = webResource.get(ClientResponse.class);
-            log.info("Route table: " + response);
-        } catch (ClientHandlerException e) {
-            log.error(e.getMessage());
-            return "OpenNaaS is not started";
-        }
-        return checkResponse(response) ? response.getEntity(String.class) : null;
-    }
-    
-    public String post(String content) throws RestServiceException {
+    public String post(String cpeURL, String content) throws RestServiceException {
         ClientResponse response;
         log.info("JerseyClient POST: ");
         try {
-            String url = "http://fibratv.dtdns.net:41080/cgi-bin/xml-parser.cgi";
             Client client = Client.create();
             addHTTPBasicAuthentication(client);
-            WebResource webResource = client.resource(url);
+            WebResource webResource = client.resource(cpeURL);
             response = webResource.post(ClientResponse.class, content);
             log.info("Route table: " + response);
         } catch (ClientHandlerException e) {

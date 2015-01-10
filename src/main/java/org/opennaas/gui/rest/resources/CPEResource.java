@@ -8,13 +8,15 @@ import java.util.logging.Level;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import org.opennaas.gui.services.ARNClient;
 import org.opennaas.gui.services.CPEClient;
 import org.opennaas.gui.services.RestServiceException;
 import org.slf4j.Logger;
@@ -31,7 +33,44 @@ public class CPEResource {
 
     @Autowired
     private CPEClient cpeClient;
+    
+    private String cpeURL = "http://fibratv.dtdns.net:41081";
 
+    @PUT
+    @Produces(MediaType.APPLICATION_XML)
+    @Path("{res1:.*}")
+    public void setUrl(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, RestServiceException, ServletException {
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = null;
+        try {
+            InputStream inputStream = request.getInputStream();
+            if (inputStream != null) {
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                char[] charBuffer = new char[128];
+                int bytesRead = -1;
+                while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
+                    stringBuilder.append(charBuffer, 0, bytesRead);
+                }
+            } else {
+                stringBuilder.append("");
+            }
+        } catch (IOException ex) {
+            throw ex;
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException ex) {
+                    throw ex;
+                }
+            }
+        }
+        String body = stringBuilder.toString();
+        logger.error("SET URL: "+body);
+        this.cpeURL = body;
+    }
+     
+    
     @GET
     @Produces(MediaType.APPLICATION_XML)
     @Path("{res1:.*}")
@@ -46,7 +85,7 @@ public class CPEResource {
         this.logger.info("GET PATH: "+path);
         String responseData = "";
         try {
-            responseData = cpeClient.get(path, request);
+            responseData = cpeClient.get(cpeURL, path, request);
         } catch (RestServiceException ex) {
             logger.error("SOme errror");
             java.util.logging.Logger.getLogger(ARNResource.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,7 +129,7 @@ public class CPEResource {
 
         String responseData = "";
         try {
-            responseData = cpeClient.post(body);
+            responseData = cpeClient.post(cpeURL, body);
         } catch (RestServiceException ex) {
             logger.error("SOme errror");
             java.util.logging.Logger.getLogger(ARNResource.class.getName()).log(Level.SEVERE, null, ex);

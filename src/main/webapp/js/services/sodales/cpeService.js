@@ -36,6 +36,20 @@ services.factory('cpeService', ['$http', 'x2js', 'HistoryService', function ($ht
                     his.$save();
                 });
                 return promise;
+            },
+            setUrl: function (url) {
+                var promise = $http.put("rest/cpe/setURL", url).then(function (response) {
+                    var his = new HistoryService();
+                    his.content = response.status+" - PUT (Set CPE URL): ";
+                    his.type = "INFO";
+                    his.$save();
+                }, function(response){
+                    var his = new HistoryService();
+                    his.content = response.status+" - POST (Set CPE URL): ";
+                    his.type = "ERROR";
+                    his.$save();
+                });
+                return promise;
             }
         };
     }]);
