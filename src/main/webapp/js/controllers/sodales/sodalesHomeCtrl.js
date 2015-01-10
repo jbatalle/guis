@@ -1,17 +1,8 @@
 'use strict';
 
 angular.module('openNaaSApp')
-        .controller('SodalesHomeCtrl', function ($scope, MqNaaSResourceService, $routeParams, localStorageService, spService, viService) {
-            /*var url = generateUrl("IRootResourceAdministration", $routeParams.id, "IRootResourceProvider");
-            console.log(url);
-            MqNaaSResourceService.list(url).then(function (data) {
-                console.log(data);
-                $scope.element = $routeParams.id;
-                $scope.data = data;
-                localStorageService.set("mqNaaSElements", data);
-                console.log($scope.data);
-            });
-*/
+        .controller('SodalesHomeCtrl', function ($scope, HistoryService, spService, viService) {
+
             spService.list().then(function (data) {
                 console.log("GET SP SIZE");
                 $scope.spSize = data.length;
@@ -21,5 +12,16 @@ angular.module('openNaaSApp')
                 console.log("GET VI SIZE");
                 $scope.viSize = data.length;
             });
+            $scope.slicesSize = 0;
+            /*            viService.list().then(function (data) {
+             console.log("GET Slices SIZE");
+             $scope.slicesSize = data.length;
+             });
+             */
 
+            HistoryService.query({}, function (data) {
+                data.splice(10, Number.MAX_VALUE);
+                $scope.lastHistory = data;
+                console.log(data);
+            });
         });
