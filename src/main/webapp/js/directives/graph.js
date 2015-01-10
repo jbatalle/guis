@@ -28,7 +28,8 @@ angular.module('openNaaSApp')
                             if(type === "switch") type = "ofSwitch";
                             var id = networkElements[i]._id.split(":")[1];
                             var ports = networkElements[i].ports.port;
-
+console.log(networkElements[i].ports);
+console.log(ports);
                             var node = {};
                             node.id = id;
                             node.type = type;
@@ -93,6 +94,11 @@ angular.module('openNaaSApp')
                             createElement(nodes[i].id, nodes[i].type, divPos, data);
 //                            localStorageService.set("graphNodes", graph.getNodes());
                         }
+                        links.forEach(function(e){
+    console.log(e);
+    console.log(e.srcPort);
+graph.addLinkBetweenPorts(e.srcPort, e.dstPort);
+    });
                     }};
             }])
 
