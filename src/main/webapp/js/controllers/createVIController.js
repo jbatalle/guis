@@ -3,7 +3,7 @@
 angular.module('openNaaSApp')
         .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, ngTableParams, viService, localStorageService) {
             console.log("LIST VI");
-            $rootScope.networkId = "Network-Internal-1.0-2";//to remove
+//            $rootScope.networkId = "Network-Internal-1.0-2";//to remove
             
             $scope.data = [];
             $scope.updateSpList = function () {

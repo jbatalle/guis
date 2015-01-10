@@ -19,6 +19,8 @@ console.log(localStorageService.get("arnPorts"));
                         links.push(lin);
                         var nodes = [];
                         //for each network element
+                        console.log(networkElements);
+                        networkElements = [];
                         for (var i = 0; i < networkElements.length; i++) {
                             console.log(networkElements[i]);
                             var type = networkElements[i].split("-")[0].toLowerCase();
@@ -90,9 +92,10 @@ console.log(localStorageService.get("arnPorts"));
                             createElement(nodes[i].id, nodes[i].type, divPos, data);
 //                            localStorageService.set("graphNodes", graph.getNodes());
                         }
+                        console.log("End editor");
                     }};
             }])
-        .directive('droppable', ['$window', '$rootScope', 'localStorageService', '$timeout', function ($window, $rootScope, localStorageService, timer) {
+        .directive('droppable', ['$window', '$rootScope', 'localStorageService', function ($window, $rootScope, localStorageService) {
                 return {
                     // A = attribute, E = Element, C = Class and M = HTML Comment
                     restrict: 'AE',
@@ -104,16 +107,17 @@ console.log(localStorageService.get("arnPorts"));
 //                            $scope.arn = {endpoint: "asdasdsa"};
                             ngDialog.open({
                                 template: 'partials/sodales/arnDialog.html',
-                                data: {"nodeType": nodeType, "divPos": divPos}})
+                                data: {"nodeType": nodeType, "divPos": divPos}});
                         };
                         $scope.openCPEDialog = function (nodeType, divPos) {
+                            console.log("OpeN ARN DIALOG");
                             ngDialog.open({
                                 template: 'partials/sodales/cpeDialog.html',
                                 data: {"nodeType": nodeType, "divPos": divPos}});
                         };
                     },
                     link: function (scope, element, attrs) {
-
+console.log("DROPPABLE");
                         element.droppable({
                             drop: function (e, ui) {
                                 var $newPosX = ui.offset.left - $(this).offset().left;
