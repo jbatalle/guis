@@ -100,7 +100,6 @@ public class VIResource {
     }
     
     @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("removeByName/{viName}")
     public void delete(@PathParam("viName") String viName) {
         this.logger.info("delete(id)");
@@ -125,12 +124,15 @@ public class VIResource {
     }
     
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/updateStatus/{viName}/{status}")
     public void updateStatus( @PathParam("viName")String viName, @PathParam("status")String status) {
         this.logger.info("change vi("+viName+") status to "+status);
 
         this.vIDao.findByName(viName).setStatus(status);
+        VI vi = this.vIDao.findByName(viName);
+        vi.setStatus(status);
+        this.vIDao.save(vi);
+        this.logger.info(this.vIDao.findByName(viName).getStatus());
     }
     
     private boolean isAdmin() {

@@ -53,5 +53,12 @@
             </div>
             <input class="btn btn-default" type="submit" ng-click="setPeriod(period)" value="Set period" />
         </div>
+        <div>
+            <h3>List of resources</h3>
+            <ul>
+                <li ng-repeat="res in virtualElements">
+                    {{res.name}} ({{res.type}})
+                </li>
+            </ul></div>
     </div>
 </div>

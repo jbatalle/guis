@@ -311,7 +311,7 @@ console.log(ports);
                         graph = new myGraph("#graph");
 //                        graph.setNodes(localStorageService.get("graphNodes"));
                         scope.graph = graph;
-                        timer(console.log("TIMER HEUEHE"), 0);
+                        timer(console.log("TIMER"), 0);
                         console.log(localStorageService.get("graphNodes"));
                         console.log(localStorageService.get("virtualElements"));
 
@@ -328,9 +328,9 @@ console.log(ports);
                             {x:550, y:300, "_id": "tson:Tson-4", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "tson", ports: {port:[{"_id":"T11"}, {"_id":"T12"}, {"_id":"T13"}]}},
                             {x:650, y:200, "_id": "tson:Tson-5", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "tson", ports: {port:[{"_id":"T21"}, {"_id":"T22"}]}},
                             {x:650, y:400, "_id": "tson:Tson-6", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "tson", ports: {port:[{"_id":"T31"}, {"_id":"T32"}]}},
-                            {x:100, y:200, "_id": "tson:wireless-4", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "wifi", ports: {port:[{"_id":"T31"}, {"_id":"T32"}]}},
-                            {x:100, y:250, "_id": "tson:wireless-5", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "wifi", ports: {port:[{"_id":"T31"}, {"_id":"T32"}]}},
-                            {x:100, y:300, "_id": "tson:wireless-6", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "wifi", ports: {port:[{"_id":"T31"}, {"_id":"T32"}]}}
+                            {x:100, y:200, "_id": "tson:wireless-4", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "wifi", ports: {port:[]}},
+                            {x:100, y:250, "_id": "tson:wireless-5", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "wifi", ports: {port:[]}},
+                            {x:100, y:300, "_id": "tson:wireless-6", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "wifi", ports: {port:[]}}
                         ];
                         var links = [{srcPort:"T11", dstPort:"OF11"},
                             {srcPort:"OF12", dstPort:"OF21"},{srcPort:"OF22", dstPort:"OF31"},{srcPort:"OF32", dstPort:"OF13"},
