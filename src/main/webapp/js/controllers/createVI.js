@@ -210,7 +210,7 @@ angular.module('openNaaSApp')
                     $scope.getListRealResources();
                 }
                 console.log($scope);
-                $scope.mapVirtualPorts($scope.virtualPorts[0], $scope.physicalPorts[0]);
+                
                 ngDialog.open({
                     template: 'partials/createVI/autoMappingPortsDialog.html',
                     scope: $scope
@@ -243,6 +243,8 @@ angular.module('openNaaSApp')
                     $scope.physicalPorts = $scope.getPhysicalPorts(target);
                     $scope.virtualPorts = $scope.getVirtualPorts(source);
                 }
+//                $scope.mapVirtualPorts($scope.virtualPorts[0], $scope.physicalPorts[0]);
+$scope.coded = [{virt: "port-11", real: "port-1"},{virt: "port-12", real: "port-2"},{virt: "port-13", real: "port-3"},];
                 console.log($scope.physicalPorts);
                 console.log($scope.virtualPorts);
                 console.log();

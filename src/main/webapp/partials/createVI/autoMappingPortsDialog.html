@@ -8,17 +8,11 @@
 
     <br/>
     <div ng-show="mapPorts">
-        Select the method of port mapping (automatic/manual):
-        <br/><b>Automatic: </b><a href="" class="btn btn-sm btn-primary" ng-click="autoMapping(viRes, piRes)">Auto mapping</a>
-        <br/><b>Manual: </b><br/>
-        <select placeholder="select virtual port" bs-select ng-model="viPort" ng-options="port for port in virtualPorts.IResource.IResourceId" ></select>
-        <select placeholder="select physical port" bs-select ng-model="piPort" ng-options="port for port in physicalPorts.IResource.IResourceId" ></select>
-        <a href="" class="btn btn-sm btn-primary" ng-click="mapVirtualPorts(viPort, piPort)">Map</a> {{mappedPort}}
-        
+        <br/><a href="" class="btn btn-sm btn-primary" ng-click="autoMapping(viRes, piRes)">Auto mapping</a>
         <br/>
         Mapped ports:
         <ul>
-            <li ng-repeat="port in mappedPorts">
+            <li ng-repeat="port in coded">
                 VirtualPort: {{port.virt}} --> RealPort: {{port.real}}
             </li>
         <ul>
