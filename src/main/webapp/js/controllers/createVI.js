@@ -73,7 +73,7 @@ angular.module('openNaaSApp')
                     viService.updateStatus(viReq, "created");
                 });
                 viService.updateStatus(viReq, "created");
-                $rootScope.info = viReq+" created";
+                $rootScope.info = viReq + " created";
                 $scope.updateSpList();
             };
 
@@ -107,7 +107,7 @@ angular.module('openNaaSApp')
                     $scope.virtualElements = result.viRes;
                 });
             };
-$scope.updateVirtualElements();
+            $scope.updateVirtualElements();
             $scope.setPeriod = function (period) {
                 var urlPeriod = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestAdministration/period";
                 var onPeriod = getPeriod(new Date(period.startDate).getTime() / 1000, new Date(period.endDate).getTime() / 1000);//xml
@@ -121,12 +121,14 @@ $scope.updateVirtualElements();
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/?arg0=" + resourceType;
                 MqNaaSResourceService.put(url).then(function (result) {
                     $scope.resourceRequest = result;
-                    viService.addResourceToVI($scope.viId, result, resourceType);
-                    var vEl = localStorageService.get("virtualElements");
-                    vEl.push({name: result, type: resourceType});
-                    localStorageService.set("virtualElements", vEl);
-                    $scope.addResourceToGraph(result);
-                    $scope.updateVirtualElements();
+                    viService.addResourceToVI($scope.viId, result, resourceType).then(function () {
+                        var vEl = localStorageService.get("virtualElements");
+                        vEl.push({name: result, type: resourceType});
+                        localStorageService.set("virtualElements", vEl);
+                        $scope.addResourceToGraph(result);
+                        $scope.updateVirtualElements();
+                    });
+
                 });
             };
             $scope.addVirtualPortToResource = function (resourceRequest) {
@@ -158,10 +160,10 @@ $scope.updateVirtualElements();
                     console.log(result);
                     $scope.resRoot = result;//empty
                     viService.updateStatus(viReq, "created");
-                    $rootScope.info = viReq+" created";
+                    $rootScope.info = viReq + " created";
                 });
                 viService.updateStatus(viReq, "created");
-                    $rootScope.info = viReq+" created";
+                $rootScope.info = viReq + " created";
             };
             $scope.addResourceToGraph = function (name) {
                 console.log($scope.ngDialogData);
@@ -211,9 +213,9 @@ $scope.updateVirtualElements();
             $scope.getListRealResources = function () {
                 $scope.physicalResources = localStorageService.get("networkElements");
             };
-$scope.$watch('physicalPorts', function(newValue, oldValue) {
-      console.log('physicalPorts changed to ' + newValue);
-  });
+            $scope.$watch('physicalPorts', function (newValue, oldValue) {
+                console.log('physicalPorts changed to ' + newValue);
+            });
             $scope.autoMapping = function (source, target) {
                 console.log(source);
                 console.log(target);
@@ -269,12 +271,41 @@ $scope.$watch('physicalPorts', function(newValue, oldValue) {
                 MqNaaSResourceService.put(url, cube).then(function () {
                 });
             };
-        })
-                .controller('listVIMenuController', function ($scope, $rootScope, MqNaaSResourceService, $filter, ngTableParams, viService, localStorageService) {
-                    console.log("LIST VI");
-
-                    viService.list().then(function (result) {
-                        console.log(result);
-                        $scope.data = result;
-                    });
+            $scope.getSlice = function (resourceName) {
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/"+$scope.viId +"/IRequestResourceManagement/"+ resourceName + "/ISliceProvider/slice";
+                console.log(url);
+                MqNaaSResourceService.getText(url).then(function (data) {
+                    console.log(data);
+                    $scope.getSliceInfo = data;
+                    $scope.getListUnits(resourceName, data);
                 });
+            };
+            $scope.getListUnits = function (resourceName, slice) {
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + slice + "/IUnitManagement";
+                MqNaaSResourceService.get(url).then(function (data) {
+                    console.log(data);
+                    $scope.getUnitsList = data.IResource.IResourceId;
+                });
+            };
+            $scope.openSlicesDialog = function(){
+                $scope.getListVirtualResources();
+                ngDialog.open({
+                    template: 'partials/viResourceInfo.html',
+                    scope: $scope
+                });
+            };
+            
+            $scope.createUnit = function(virtResource, sliceId, unitType){
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement/?arg0="+unitType;
+                MqNaaSResourceService.put(url).then(function () {
+                });
+            };
+        })
+        .controller('listVIMenuController', function ($scope, $rootScope, MqNaaSResourceService, $filter, ngTableParams, viService, localStorageService) {
+            console.log("LIST VI");
+
+            viService.list().then(function (result) {
+                console.log(result);
+                $scope.data = result;
+            });
+        });

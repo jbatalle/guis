@@ -1,0 +1,19 @@
+<div class="container-fluid" ng-controller="editVIController">
+    <h3>Select virtual resource</h3>
+    <select placeholder="select virtual resource" bs-select ng-model="viRes" ng-options="viRes.name as (viRes.name + '(' + viRes.type + ')' ) for viRes in virtualResources" ng-change="getSlice(viRes)" ></select>
+
+    <div ng-show="viRes">
+        Slice: {{getSliceInfo}}
+        <br/>
+        List units: {{getUnitsList}}
+        <br/>
+        <select ng-model="typeUnit" >
+            <option value="port">port</option>
+            <option value="time">time</option>
+            <option value="lambda">lambda</option>
+        </select>
+        <a href="" class="btn btn-sm btn-primary" ng-click="createUnit(viRes, slice, typeUnit)">Create unit</a>
+    </div>
+    <br/>
+    <a href="" class="btn btn-sm btn-primary" ng-click="closeThisDialog()">Close</a>
+</div>

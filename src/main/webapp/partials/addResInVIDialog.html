@@ -7,10 +7,7 @@
             </div>
             <div ng-show='resourceRequest'>
                 <h4>Resource added correctly with the name: {{resourceRequest}}.</h4>
-                <div>
-                    <a href="" class="btn btn-sm btn-primary" ng-click="addVirtualPortToResource(resourceRequest)">Add port</a>
-                </div>
-                Add ports to the recent created resource:
+                Add ports to the recent created resource: <a href="" class="btn btn-sm btn-primary" ng-click="addVirtualPortToResource(resourceRequest)">Add port</a>
                 <ul>
                     <li ng-repeat=" vPort in virtualPort">
                         {{vPort}}
