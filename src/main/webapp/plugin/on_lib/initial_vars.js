@@ -19,6 +19,7 @@ graphImage["laptop"] =    plugin_path+"img/laptop.png";
 graphImage["arn"] =    plugin_path+"img/SODALES_ARN.png";
 graphImage["cpe"] =    plugin_path+"img/SODALES_CPE.png";
 graphImage["tson"] =    plugin_path+"img/CONTENT_TSON.png";
+graphImage["wifi"] =    plugin_path+"img/wifi.png";
 
 var genericImages = {};
 genericImages["helpImage"] = plugin_path+"img/helpImage.png";

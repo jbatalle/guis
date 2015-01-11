@@ -15,7 +15,7 @@ angular.module('openNaaSApp')
             localStorageService.set("graphNodes", []);
             $rootScope.networkId = "Network-2";
             console.log($rootScope.networkId);
-            //localStorageService.set("networkElements", []);
+            localStorageService.set("networkElements", []);
             
 
             $scope.list = function () {
@@ -37,51 +37,6 @@ angular.module('openNaaSApp')
                 });
             };
 
-            $scope.arn = {network: "", endpoint: "http://fibratv.dtdns.net:41080"};
-            $scope.cpe = {endpoint: "http://fibratv.dtdns.net:41081"};
-            /*            $scope.openARNDialog = function () {
-             $scope.arn = {endpoint: "asdasdsa"};
-             ngDialog.open({template: 'partials/sodales/arnDialog.html'});
-             
-             };*/
-
-            $scope.createTSON = function () {
-                var TSON = getResource("TSON");
-                var json = TSON;
-                url = generateUrl("IRootResourceAdministration", $rootScope.networkId, "IRootResourceAdministration");
-                MqNaaSResourceService.put(url, json).then(function (data) {
-                    $scope.data = data;
-                });
-            };
-
-            $scope.addARN = function (data) {
-                var ARN = getResource("ARN", data.endpoint);
-                url = generateUrl("IRootResourceAdministration", $rootScope.networkId, "IRootResourceAdministration");
-                MqNaaSResourceService.put(url, ARN).then(function (data) {
-                    $scope.dataARN = data;
-                    createElement(data, $scope.ngDialogData.nodeType, $scope.ngDialogData.divPos);
-                });
-                ngDialog.close();
-            };
-
-            $scope.addCPE = function (data) {
-                var CPE = getResource("CPE", data.endpoint);
-                url = generateUrl("IRootResourceAdministration", $rootScope.networkId, "IRootResourceAdministration");
-                MqNaaSResourceService.put(url, CPE).then(function (data) {
-                    $scope.dataCPE = data;
-                    createElement(data, $scope.ngDialogData.nodeType, $scope.ngDialogData.divPos);
-                });
-                ngDialog.close();
-            };
-
-            $scope.deleteEntry = function (resourceName) {
-                console.log(resourceName);
-                MqNaaSResourceService.remove(resourceName).then(function (data) {
-                    console.log(data);
-                    $scope.data = MqNaaSResourceService.query();
-                });
-            };
-
             var getMqNaaSResource = function (root, url) {
                 console.log("GET MQNAAS RESOURCE. SET RESOURCES " + root);
                 var url = generateUrl("IRootResourceAdministration", root, "IRootResourceProvider");
@@ -90,9 +45,12 @@ angular.module('openNaaSApp')
                     if (data === undefined)
                         return;
                     data = checkIfIsArray(data.IRootResource.IRootResourceId);
-                    $scope.networkElements = data;
-                    localStorageService.set("networkElements", data);
-                    $scope.getRealPorts(root);
+                    var url = generateUrl("IRootResourceAdministration", root, "IRootResourceAdministration/Network-nitos-3/IRootResourceProvider");
+                    var nitRes = [];
+                    MqNaaSResourceService.list(url).then(function(res){nitRes = res;
+                        console.log(data.concat(nitRes.IRootResource.IRootResourceId));
+                    localStorageService.set("networkElements", data.concat(nitRes.IRootResource.IRootResourceId));});
+                    
                 }, function (error) {
                     console.log(error);
                 });
@@ -133,10 +91,4 @@ getMqNaaSResource($rootScope.networkId);
                 });
             };
 
-            $scope.getRealPorts = function (resourceName) {
-                var xml = "<IResource><IResourceId>port-1</IResourceId><IResourceId>port-2</IResourceId></IResource>";
-                var x2js = new X2JS();
-                var json = x2js.xml_str2json(xml);
-                localStorageService.set("arnPorts", {name: resourceName, ports: json.IResource.IResourceId});
-            };
         });

@@ -99,6 +99,15 @@ public class VIResource {
         this.vIDao.delete(id);
     }
     
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("removeByName/{viName}")
+    public void delete(@PathParam("viName") String viName) {
+        this.logger.info("delete(id)");
+
+        this.vIDao.delete(this.vIDao.findByName(viName).getId());
+    }
+    
     @GET
     @Path("{viName}/name/{resName}/type/{resType}")//rest/vi/"+viId+"/name/"+resName+"/type/"+resType
     public void addVI(@PathParam("viName") String viName, @PathParam("resName")String resName, @PathParam("resType")String resType) {

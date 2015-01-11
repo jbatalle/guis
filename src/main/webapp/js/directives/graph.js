@@ -16,9 +16,9 @@ angular.module('openNaaSApp')
                         //var xmlTopology = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?> <ns2:topology xmlns:ns2="opennaas.api"> <networkElements> <networkElement xsi:type="switch" id="openflowswitch:s1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s1.1"> <state> <congested>false</congested> </state> </port> <port id="s1.2"> <state> <congested>false</congested> </state> </port> <port id="s1.3"> <state> <congested>false</congested> </state> </port> <port id="s1.4"> <state> <congested>false</congested> </state> </port> </ports> </networkElement> <networkElement xsi:type="switch" id="openflowswitch:s2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s2.1"> <state> <congested>false</congested> </state> </port> <port id="s2.2"> <state> <congested>false</congested> </state> </port> <port id="s2.3"> <state> <congested>false</congested> </state> </port> </ports> </networkElement><networkElement xsi:type="switch" id="openflowswitch:s3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s3.1"> <state> <congested>false</congested> </state> </port> <port id="s3.2"> <state> <congested>false</congested> </state> </port> <port id="s3.3"> <state> <congested>false</congested> </state> </port> <port id="s3.4"> <state> <congested>false</congested> </state> </port> </ports> </networkElement> </networkElements> <links> <link> <state> <congested>false</congested> </state> <srcPort>s1.1</srcPort> <dstPort>s2.1</dstPort> </link> <link> <state> <congested>false</congested> </state> <srcPort>s1.2</srcPort> <dstPort>s3.1</dstPort> </link> <link> <state> <congested>false</congested> </state> <srcPort>s2.2</srcPort> <dstPort>s3.2</dstPort> </link> </links> <networkDevicePortIdsMap> <entry> <key>s1.1</key> <value> <deviceId>openflowswitch:s1</deviceId> <devicePortId>1</devicePortId> </value> </entry> <entry> <key>s1.2</key> <value> <deviceId>openflowswitch:s1</deviceId> <devicePortId>2</devicePortId> </value> </entry> <entry> <key>s1.3</key> <value> <deviceId>openflowswitch:s1</deviceId> <devicePortId>3</devicePortId> </value> </entry> <entry> <key>s1.4</key> <value> <deviceId>openflowswitch:s1</deviceId> <devicePortId>4</devicePortId> </value> </entry> <entry> <key>s2.1</key> <value> <deviceId>openflowswitch:s2</deviceId> <devicePortId>1</devicePortId> </value> </entry> <entry> <key>s2.2</key> <value> <deviceId>openflowswitch:s2</deviceId> <devicePortId>2</devicePortId> </value> </entry> <entry> <key>s2.3</key> <value> <deviceId>openflowswitch:s2</deviceId> <devicePortId>3</devicePortId> </value> </entry> <entry> <key>s3.1</key> <value> <deviceId>openflowswitch:s3</deviceId> <devicePortId>1</devicePortId> </value> </entry> <entry> <key>s3.2</key> <value> <deviceId>openflowswitch:s3</deviceId> <devicePortId>2</devicePortId> </value> </entry> <entry> <key>s3.3</key> <value> <deviceId>openflowswitch:s3</deviceId> <devicePortId>3</devicePortId> </value> </entry> <entry> <key>s3.4</key> <value> <deviceId>openflowswitch:s3</deviceId> <devicePortId>4</devicePortId> </value> </entry> </networkDevicePortIdsMap> </ns2:topology>';
                         var xmlTopology = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?> <ns2:topology xmlns:ns2="opennaas.api"> <networkElements> <networkElement xsi:type="switch" id="openflowswitch:s1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s1.1"> <state> <congested>false</congested> </state> </port> <port id="s1.2"> <state> <congested>false</congested> </state> </port> <port id="s1.3"> <state> <congested>false</congested> </state> </port> <port id="s1.4"> <state> <congested>false</congested> </state> </port> </ports> </networkElement> <networkElement xsi:type="switch" id="openflowswitch:s2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s2.1"> <state> <congested>false</congested> </state> </port> <port id="s2.2"> <state> <congested>false</congested> </state> </port> <port id="s2.3"> <state> <congested>false</congested> </state> </port> </ports> </networkElement><networkElement xsi:type="switch" id="openflowswitch:s3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s3.1"> <state> <congested>false</congested> </state> </port> <port id="s3.2"> <state> <congested>false</congested> </state> </port> <port id="s3.3"> <state> <congested>false</congested> </state> </port> <port id="s3.4"> <state> <congested>false</congested> </state> </port> </ports> </networkElement> </networkElements> <links> <link> <state> <congested>false</congested> </state> <srcPort>s1.1</srcPort> <dstPort>s2.1</dstPort> </link> <link> <state> <congested>false</congested> </state> <srcPort>s1.2</srcPort> <dstPort>s3.1</dstPort> </link>  <link> <state> <congested>false</congested> </state> <srcPort>s2.2</srcPort> <dstPort>s3.2</dstPort> </link>  </links>  </ns2:topology>';
                         var networkElements = [
-                            {"_id": "openflowswitch:s1", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "switch", ports: {port: [{"_id":"OF11"}, {"_id":"OF12"}, {"_id":"OF13"}]}},
-                            {"_id": "openflowswitch:s2", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "switch", ports: {port:[{"_id":"OF21"}, {"_id":"OF22"}]}},
-                            {"_id": "openflowswitch:s3", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "switch", ports: {port:[{"_id":"OF31"}, {"_id":"OF32"}]}},
+                            {"_id": "openflowswitch:OFSwitch-4", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "switch", ports: {port: [{"_id":"OF11"}, {"_id":"OF12"}, {"_id":"OF13"}]}},
+                            {"_id": "openflowswitch:OFSwitch-5", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "switch", ports: {port:[{"_id":"OF21"}, {"_id":"OF22"}]}},
+                            {"_id": "openflowswitch:OFSwitch-6", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "switch", ports: {port:[{"_id":"OF31"}, {"_id":"OF32"}]}},
                             {"_id": "tson:Tson-4", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "tson", ports: {port:[{"_id":"T11"}, {"_id":"T12"}, {"_id":"T13"}]}},
                             {"_id": "tson:Tson-5", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "tson", ports: {port:[{"_id":"T21"}, {"_id":"T22"}]}},
                             {"_id": "tson:Tson-6", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "tson", ports: {port:[{"_id":"T31"}, {"_id":"T32"}]}}
@@ -110,13 +110,13 @@ console.log(ports);
                         }
                         console.log(links);
 
-                                      graph.addLink("s1", "s2");
-                                      graph.addLink("s2", "s3");
-                                      graph.addLink("s3", "s1");
+                                      graph.addLink("OFSwitch-4", "OFSwitch-5");
+                                      graph.addLink("OFSwitch-5", "OFSwitch-6");
+                                      graph.addLink("OFSwitch-6", "OFSwitch-4");
                                       graph.addLink("Tson-4", "Tson-5");
                                       graph.addLink("Tson-5", "Tson-6");
                                       graph.addLink("Tson-6", "Tson-4");
-                                      graph.addLink("Tson-4", "s1");
+                                      graph.addLink("Tson-4", "OFSwitch-4");
                         
                         links.forEach(function(e){
                             console.log(e);
@@ -314,6 +314,18 @@ console.log(ports);
 
                         var networkElements = json.topology.networkElements.networkElement;
                         var links = json.topology.links.link;
+                        var networkElements = [
+                            {"_id": "openflowswitch:OFSwitch-4", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "switch", ports: {port: [{"_id":"OF11"}, {"_id":"OF12"}, {"_id":"OF13"}]}},
+                            {"_id": "openflowswitch:OFSwitch-5", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "switch", ports: {port:[{"_id":"OF21"}, {"_id":"OF22"}]}},
+                            {"_id": "openflowswitch:OFSwitch-6", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "switch", ports: {port:[{"_id":"OF31"}, {"_id":"OF32"}]}},
+                            {"_id": "tson:Tson-4", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "tson", ports: {port:[{"_id":"T11"}, {"_id":"T12"}, {"_id":"T13"}]}},
+                            {"_id": "tson:Tson-5", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "tson", ports: {port:[{"_id":"T21"}, {"_id":"T22"}]}},
+                            {"_id": "tson:Tson-6", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "tson", ports: {port:[{"_id":"T31"}, {"_id":"T32"}]}}
+                        ];
+                        var links = [{srcPort:"T11", dstPort:"OF11"},
+                            {srcPort:"OF12", dstPort:"OF21"},{srcPort:"OF22", dstPort:"OF31"},{srcPort:"OF32", dstPort:"OF13"},
+                            {srcPort:"T12", dstPort:"T21"},{srcPort:"T22", dstPort:"T31"},{srcPort:"T32", dstPort:"T13"}
+                        ];
                         var nodes = [];
                         //for each network element
                         for (var i = 0; i < networkElements.length; i++) {
@@ -386,6 +398,13 @@ console.log(ports);
                             createElement(nodes[i].id, nodes[i].type, divPos, data);
 //                            localStorageService.set("graphNodes", graph.getNodes());
                         }
+                        graph.addLink("OFSwitch-4", "OFSwitch-5");
+                                      graph.addLink("OFSwitch-5", "OFSwitch-6");
+                                      graph.addLink("OFSwitch-6", "OFSwitch-4");
+                                      graph.addLink("Tson-4", "Tson-5");
+                                      graph.addLink("Tson-5", "Tson-6");
+                                      graph.addLink("Tson-6", "Tson-4");
+                                      graph.addLink("Tson-4", "OFSwitch-4");
                     }};
             }])
         ;

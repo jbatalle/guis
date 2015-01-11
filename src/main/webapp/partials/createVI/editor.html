@@ -1,44 +1,57 @@
 <div class="row" >
-    <div class="col-md-3">
-        <p class="lead">Available resources</p>
+    <div class="col-md-9">
+        <h2 class="page-header">VI request: {{viId}}</h2>
+    </div>
+</div>
+<div class="row" >    
+    <div class="col-md-9">
         <div class="list-group">
-            <a href="#" class="list-group-item">
-                <div class="ui-widget-content netEl-drag" id="arn">
-                    <img id="tson" draggable src="../plugin/img/CONTENT_TSON.png" width="60" style="z-index:1090"> TSON
-                </div>
-            </a>
-            <a href="#" class="list-group-item">
-                <div class="ui-widget-content netEl-drag" id="cpe">
-                    <img id="ofswitch" draggable src="../plugin/img/ofSwitch.png" width="60" style="z-index:1090"> OFSwitch
-                </div>
-            </a>
-        </div>
-        <div>
-            <div class="form-group">
-                <input class="btn btn-default" type="submit" ng-click="openMappingDialog()" value="Mapping" />
-                <input class="btn btn-default" type="submit" ng-click="sendVIR(viId)" value="Send to process" />
+            <div class="col-md-3">
+                <a href="#" class="list-group-item">
+                    <div class="ui-widget-content netEl-drag" id="arn">
+                        <img id="tson" draggable src="../plugin/img/CONTENT_TSON.png" width="60" style="z-index:1090"> TSON
+                    </div>
+                </a>
             </div>
-        </div>
-        <div>
-            <div class="form-group">
-                <label class="control-label"><i class="fa fa-calendar"></i> <i class="fa fa-arrows-h"></i> 
-                    <i class="fa fa-calendar"></i> VI Period range </label><br>
-                <div class="form-group col-xs-12">
-                    <input type="text" class="form-control" ng-model="period.startDate" data-max-date="{{period.endDate }}" data-date-format="dd-MM-yyyy" data-date-type="number" data-autoclose="1" placeholder="From" bs-datepicker>
-                </div>
-                <div class="form-group col-xs-12">
-                    <input type="text" class="form-control" ng-model="period.endDate" data-min-date="{{period.startDate }}" data-date-format="dd-MM-yyyy" data-date-type="number" data-autoclose="1" placeholder="Until" bs-datepicker>
-                </div>
-                <input class="btn btn-default" type="submit" ng-click="setPeriod(period)" value="Set period" />
+            <div class="col-md-3">
+                <a href="#" class="list-group-item">
+                    <div class="ui-widget-content netEl-drag" id="cpe">
+                        <img id="ofswitch" draggable src="../plugin/img/ofSwitch.png" width="60" style="z-index:1090"> OFSwitch
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a href="#" class="list-group-item">
+                    <div class="ui-widget-content netEl-drag" id="cpe">
+                        <img id="wifi" draggable src="../plugin/img/wifi.png" width="60" style="z-index:1090"> Wireless
+                    </div>
+                </a>
             </div>
         </div>
     </div>
+    <div class="col-md-3">
+        <h4>Other actions </h4>
+        <div class="form-group">
+            <input class="btn btn-default" type="submit" ng-click="openMappingDialog()" value="Mapping" />
+            <input class="btn btn-default" type="submit" ng-click="sendVIR(viId)" value="Send to process" />
+        </div>
+    </div>
     <div class="col-md-9">
-        <h2 class="page-header">VI request {{viId}}</h2>
-        Instantiate or something button!!
         <div id="viMgt" ng-controller="editVIController">
             <div grapheditorVI></div>
         </div>
-        <!-- /.row -->
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="control-label"><i class="fa fa-calendar"></i> <i class="fa fa-arrows-h"></i> 
+                <i class="fa fa-calendar"></i> VI Period range </label><br>
+            <div class="form-group col-xs-12">
+                <input type="text" class="form-control" ng-model="period.startDate" data-max-date="{{period.endDate}}" data-date-format="dd-MM-yyyy" data-date-type="number" data-autoclose="1" placeholder="From" bs-datepicker>
+            </div>
+            <div class="form-group col-xs-12">
+                <input type="text" class="form-control" ng-model="period.endDate" data-min-date="{{period.startDate}}" data-date-format="dd-MM-yyyy" data-date-type="number" data-autoclose="1" placeholder="Until" bs-datepicker>
+            </div>
+            <input class="btn btn-default" type="submit" ng-click="setPeriod(period)" value="Set period" />
+        </div>
     </div>
 </div>

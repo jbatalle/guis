@@ -44,9 +44,8 @@
                     <a class="navbar-brand" href="/" style="padding: 0"><img src="img/content_logo_small.png" alt="" style="width: 160px; margin-left: 25px;"></a>
                 </div>
                 <!-- Top Menu Items -->
-                <ul class="nav navbar-right top-nav">
+                
                     <ul class="nav navbar-nav navbar-right">
-
                         <li class="dropdown" ng-show="user">
                             <a href="" class="dropdown-toggle" data-toggle="dropdown">{{user.name}} <b class="caret"></b></a>
                             <ul class="dropdown-menu">
@@ -54,13 +53,7 @@
                             </ul>
                         </li>
                     </ul>
-                    <li class="dropdown">
-                        @logged(user)
-                    </li>
-                </ul>
-
-                <wxy-push-menu menu="menu" options="options"></wxy-push-menu>
-
+                
                 <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav side-nav">

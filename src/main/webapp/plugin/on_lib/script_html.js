@@ -51,7 +51,7 @@ function createElement(name, type, divPos, data) {
                 createofSwitch(divPos);
             else
                 createofSwitchwithData(divPos, data);
-            showInfoMessage("Element added");
+//showInfoMessage("Element added");
             break;
         case "router":
             createRouter(divPos);
@@ -82,10 +82,10 @@ function createElement(name, type, divPos, data) {
             if (jQuery.isEmptyObject(data))
                 createTSON(name, divPos);
             else
-                createTSON(name, divPos, data);
+                createTSONwithData(name, divPos, data);
             break;
         default:
-            console.log("Element not defined");
+//            console.log("Element not defined");
             return;
     }
 
@@ -125,8 +125,25 @@ function createCPE(name, divPos) {
     console.log(cpe);
     graph.addNodewithData(cpe);
 }
+function createTSON(name, divPos) {
+    TSON.prototype = new NetworkElement();
+    TSON.prototype.constructor = TSON;
+//    var name = "cpe" + graph.getNodes().length;
+    var tson = new TSON(name);
+    console.log(tson);
+    console.log(tson instanceof NetworkElement);
+    console.log(tson.getPorts());
+    tson.id = name;
+    tson.setX(divPos.x);
+    tson.setY(divPos.y);
+    //var ports = [{"id": ofSw.id+"1", "name": "ge-0/1", x: (ofSw.x-23), y: (ofSw.x+12), posx: -23, posy: 12, parent: ofSw.id},
+    //          {"id": ofSw.id+"2", "name": "ge-2/1", x: (ofSw.x+45), y: (ofSw.y+12), posx: 45, posy: 12, parent: ofSw.id}];
+    //ofSw.setPorts(ports);
+    console.log(tson);
+    graph.addNodewithData(tson);
+}
 
-function createTSON(name, divPos, data) {
+function createTSONwithData(name, divPos, data) {
     TSON.prototype = new NetworkElement();
     TSON.prototype.constructor = TSON;
 //    var name = "cpe" + graph.getNodes().length;
