@@ -8,6 +8,7 @@ addJSFile('../plugin/models/Router.js');
 addJSFile('../plugin/models/arn.js');
 addJSFile('../plugin/models/cpe.js');
 addJSFile('../plugin/models/tson.js');
+addJSFile('../plugin/models/wifi.js');
 
 function NetworkElement(name, data, ports) {
     this.name = name;
@@ -37,8 +38,8 @@ NetworkElement.prototype = {
         this.y = y;
     },
     setPorts: function(ports, parentId){
-       ports = definePortPositions(ports, parentId);
-	   this.ports = ports;
+        ports = definePortPositions(ports, parentId);
+        this.ports = ports;
     },
     getPorts: function(){
 	   return this.ports;
@@ -50,7 +51,7 @@ NetworkElement.prototype = {
 
 
 function definePortPositions(ports, parentId){
-    console.log("define port positions");
+    console.log("DEfine PORTS ---------------------------------------");
     if( ports.length === 1){
         ports[0].id = ports[0]._id;
         ports[0].name = "ge-"+0+"/1";
@@ -61,6 +62,7 @@ function definePortPositions(ports, parentId){
         ports[0].parent = parentId;
     }
     if( ports.length > 1){
+        console.log("Lengt > 1");
         for(var i= 0; i<ports.length; i++){
         //{"id": this.id+"1", "name": "ge-0/1", x: -23, y: 12, posx: -23, posy: 12, parent: this.id},
             ports[i].id = ports[i]._id;
@@ -71,6 +73,8 @@ function definePortPositions(ports, parentId){
                 ports[0].posx = -23;
                 ports[0].posy = 12;
             }else if( ports.length == 3){
+                console.log("Lengt = 3");
+                ports[0].test = "TEST";
                 ports[0].posx = -23;
                 ports[0].posy = 12;
                 ports[1].posx = 45;

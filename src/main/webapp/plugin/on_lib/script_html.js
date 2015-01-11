@@ -79,7 +79,10 @@ function createElement(name, type, divPos, data) {
 //            showInfoMessage("Element added");
             break;
         case "tson":
+            if (jQuery.isEmptyObject(data))
                 createTSON(name, divPos);
+            else
+                createTSON(name, divPos, data);
             break;
         default:
             console.log("Element not defined");
@@ -123,7 +126,7 @@ function createCPE(name, divPos) {
     graph.addNodewithData(cpe);
 }
 
-function createTSON(name, divPos) {
+function createTSON(name, divPos, data) {
     TSON.prototype = new NetworkElement();
     TSON.prototype.constructor = TSON;
 //    var name = "cpe" + graph.getNodes().length;
@@ -134,6 +137,7 @@ function createTSON(name, divPos) {
     tson.id = name;
     tson.setX(divPos.x);
     tson.setY(divPos.y);
+    tson.setPorts(data.ports, tson.id);
     //var ports = [{"id": ofSw.id+"1", "name": "ge-0/1", x: (ofSw.x-23), y: (ofSw.x+12), posx: -23, posy: 12, parent: ofSw.id},
     //          {"id": ofSw.id+"2", "name": "ge-2/1", x: (ofSw.x+45), y: (ofSw.y+12), posx: 45, posy: 12, parent: ofSw.id}];
     //ofSw.setPorts(ports);
