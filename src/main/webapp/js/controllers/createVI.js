@@ -272,11 +272,12 @@ $scope.coded = [{virt: "port-11", real: "port-1"},{virt: "port-12", real: "port-
                 });
             };
 
-            $scope.setRange = function (virtResource) {
-                var range = getRangeUnit(1, 2);
+            $scope.setRange = function (virtResource, sliceId, unitId, lowerRange, upRange ) {
+                var range = getRangeUnit(lowerRange, upRange);
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId + "/IUnitAdministration/range";
                 MqNaaSResourceService.put(url, range).then(function () {
                 });
+                $scope.rangeSetOk="Range set correctly";
             };
 
             $scope.setCube = function (virtResource) {
@@ -295,7 +296,7 @@ $scope.coded = [{virt: "port-11", real: "port-1"},{virt: "port-12", real: "port-
                 });
             };
             $scope.getListUnits = function (resourceName, slice) {
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + slice + "/IUnitManagement";
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + resourceName + "/ISliceProvider/" + slice + "/IUnitManagement";
                 MqNaaSResourceService.get(url).then(function (data) {
                     console.log(data);
                     $scope.getUnitsList = data.IResource.IResourceId;
@@ -313,6 +314,14 @@ $scope.coded = [{virt: "port-11", real: "port-1"},{virt: "port-12", real: "port-
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + $scope.getSliceInfo + "/IUnitManagement/?arg0=" + unitType;
                 MqNaaSResourceService.put(url).then(function () {
                     $scope.getListUnits(virtResource, $scope.getSliceInfo);
+                });
+            };
+            
+            $scope.getUnit = function (virtResource, slice, unitId) {
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + slice + "/IUnitManagement/"+unitId;
+                MqNaaSResourceService.get(url).then(function (response) {
+                    console.log(response.unit);
+                    $scope.unitInfo = response.unit;
                 });
             };
         })
