@@ -56,6 +56,21 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
                 });
                 return promise;
             },
+            getText: function (url) {
+                var promise = $http.get(genericUrl+url).then(function (response) {
+                    var his = new HistoryService();
+                    his.content = response.status+" - GET (IRootResourceAdministrastion): "+response.statusText;
+                    his.type = "INFO";
+                    his.$save();
+                    return response.data;
+                }, function(response){
+                    var his = new HistoryService();
+                    his.content = response.status+" - GET (IRootResourceAdministrastion): "+response.statusText;
+                    his.type = "ERROR";
+                    his.$save();
+                });
+                return promise;
+            },
             remove: function (url) {
                 console.log(url);
                 var promise = $http.delete(genericUrl+url).then(function (response) {

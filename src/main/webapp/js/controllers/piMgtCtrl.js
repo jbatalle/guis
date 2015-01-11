@@ -46,18 +46,20 @@ angular.module('openNaaSApp')
                     data = checkIfIsArray(data.IRootResource.IRootResourceId);
                     var url = generateUrl("IRootResourceAdministration", root, "IRootResourceAdministration/Network-nitos-3/IRootResourceProvider");
                     var nitRes = [];
-                    MqNaaSResourceService.list(url).then(function(res){nitRes = res;
-                    console.log(data.concat(nitRes.IRootResource.IRootResourceId));
-                    localStorageService.set("networkElements", data.concat(nitRes.IRootResource.IRootResourceId));
-                $scope.networkElements = data.concat(nitRes.IRootResource.IRootResourceId);});
-                    
+                    MqNaaSResourceService.list(url).then(function (res) {
+                        nitRes = res;
+                        console.log(data.concat(nitRes.IRootResource.IRootResourceId));
+                        localStorageService.set("networkElements", data.concat(nitRes.IRootResource.IRootResourceId));
+                        $scope.networkElements = data.concat(nitRes.IRootResource.IRootResourceId);
+                    });
+
                 }, function (error) {
                     console.log(error);
                 });
-                
+
             };
 
-getMqNaaSResource($rootScope.networkId);
+            getMqNaaSResource($rootScope.networkId);
             $scope.configureResourceSlices = function (resName) {
                 var sliceId = $scope.getSlice(resName);
                 var unitId = $scope.createUnit(resName, sliceId, "port");
@@ -92,4 +94,35 @@ getMqNaaSResource($rootScope.networkId);
                 });
             };
 
+            $scope.getResouceInfo = function (resourceName) {
+                $scope.resourceName = resourceName;
+                console.log("GET INFO RES");
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/slice";
+                console.log(url);
+                MqNaaSResourceService.getText(url).then(function (data) {
+                    console.log(data);
+                    $scope.getSliceInfo = data;
+                    $scope.getListUnits(resourceName, data);
+                });
+            };
+            $scope.getListUnits = function (resourceName, slice) {
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + slice + "/IUnitManagement";
+                MqNaaSResourceService.get(url).then(function (data) {
+                    console.log(data);
+                    $scope.getUnitsList = data.IResource.IResourceId;
+                });
+            };
+            
+
+            $scope.openUnitDialog = function (unit) {
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + $scope.resourceName + "/ISliceProvider/" + $scope.getSliceInfo + "/IUnitManagement/"+unit;
+                MqNaaSResourceService.get(url).then(function (data) {
+                    console.log(data);
+                    $scope.getUnitInfo = data.unit;
+                });
+                ngDialog.open({
+                    template: 'partials/resourceInfo.html',
+                    scope: $scope
+                });
+            };
         });

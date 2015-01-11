@@ -17,11 +17,16 @@
                         <h3>List of resources</h3>
                         <ul>
                             <li ng-repeat="res in networkElements" ng-if=" res !== 'CHANNEL-7' && res !== 'CHANNEL-8' ">
-                                {{res}}
+                                <a ng-click="getResouceInfo(res)"> {{res}}</a>
                             </li>
                             <li>wireless-4</li>
                             <li>wireless-5</li>
                         </ul>
+                        <div ng-show="getSliceInfo">
+                            <h3>Resource Info</h3>
+                            Slice: {{getSliceInfo}}<br/>
+                            Units: <span ng-repeat="unit in getUnitsList"><a ng-click="openUnitDialog(unit)">{{unit}}</a> </span><br/>
+                        </div>
                     </div>
                 </div>
             </div>
