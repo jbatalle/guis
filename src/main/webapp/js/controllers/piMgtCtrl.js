@@ -16,7 +16,6 @@ angular.module('openNaaSApp')
             $rootScope.networkId = "Network-2";
             console.log($rootScope.networkId);
             localStorageService.set("networkElements", []);
-            
 
             $scope.list = function () {
                 RootResourceService.list().then(function (data) {
@@ -27,7 +26,7 @@ angular.module('openNaaSApp')
                     $scope.data = data;
                     localStorageService.set("mqNaaSElements", data);
                 });
-            }
+            };
 
             $scope.createNetwork = function () {
                 var xml = getNETWORK();
@@ -48,12 +47,14 @@ angular.module('openNaaSApp')
                     var url = generateUrl("IRootResourceAdministration", root, "IRootResourceAdministration/Network-nitos-3/IRootResourceProvider");
                     var nitRes = [];
                     MqNaaSResourceService.list(url).then(function(res){nitRes = res;
-                        console.log(data.concat(nitRes.IRootResource.IRootResourceId));
-                    localStorageService.set("networkElements", data.concat(nitRes.IRootResource.IRootResourceId));});
+                    console.log(data.concat(nitRes.IRootResource.IRootResourceId));
+                    localStorageService.set("networkElements", data.concat(nitRes.IRootResource.IRootResourceId));
+                $scope.networkElements = data.concat(nitRes.IRootResource.IRootResourceId);});
                     
                 }, function (error) {
                     console.log(error);
                 });
+                
             };
 
 getMqNaaSResource($rootScope.networkId);

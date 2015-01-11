@@ -412,7 +412,7 @@ console.log(d.ports[i].x);
                 popup.append("h3").text(d.name);
                 popup.append("p").text("Ports: " + d.ports.length);
                 d.ports.forEach(function (entry) {
-                    popup.append("li").text("Id: " + entry.id + ". Name: " + entry.name);
+                    popup.append("li").text("Id: " + entry.id + ".");
                 });
             }
         });
@@ -422,7 +422,7 @@ console.log(d.ports[i].x);
                 .data(function (d) {
                     return d.ports;
                 });
-
+/*
         portsTest
                 .enter().append("rect")
                 .attr("id", function (d) {
@@ -475,7 +475,7 @@ console.log(d.ports[i].x);
             endState.transitions = [];
             nodeMouseUp(endState);
         });
-
+*/
         portsTest.exit().remove();
         nodeEnter.attr("transform", function (d) {
             return "translate(" + d.x + "," + d.y + ")";

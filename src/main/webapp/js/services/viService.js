@@ -94,7 +94,7 @@ services.factory('viService', ['$http', 'x2js', 'HistoryService', function ($htt
                 return promise;
             },
             removeVI: function (viId) {
-                var promise = $http.remove("rest/vi/removeByName/"+viId).then(function (response) {
+                var promise = $http.delete("rest/vi/removeByName/"+viId).then(function (response) {
                     var his = new HistoryService();
                     his.content = response.status+" - REMOVE (Remove VI)";
                     his.type = "INFO";
