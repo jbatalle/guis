@@ -8,10 +8,10 @@
  * Controller of the webappApp
  */
 angular.module('openNaaSApp')
-        .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, ngTableParams, viService, localStorageService) {
+        .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, ngTableParams, viService, localStorageService, $interval) {
             console.log("LIST VI");
             $rootScope.networkId = "Network-2";
-
+var promise;
             $scope.data = [];
             $scope.updateSpList = function () {
                 var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
@@ -68,15 +68,26 @@ angular.module('openNaaSApp')
 
             $scope.sendVIR = function (viReq) {
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/?arg0=" + viReq;
+                viService.updateStatus(viReq, "Processing");
                 MqNaaSResourceService.put(url).then(function (result) {
                     $scope.resRoot = result;//empty
-                    viService.updateStatus(viReq, "created");
+                    viService.updateStatus(viReq, "Processing");
                 });
-                viService.updateStatus(viReq, "created");
-                $rootScope.info = viReq + " created";
+                promise = $interval(function () {
+                    console.log("Processing");
+                    viService.updateStatus(viReq, "Created");
+                    $scope.updateSpList();
+                    $rootScope.info = " OK " + viReq + " Created, received 200 from IML";
+                }, 2000);
+//                viService.updateStatus(viReq, "Created");
+
                 $scope.updateSpList();
             };
-
+            $scope.$on("$destroy", function () {
+                if (promise) {
+                    $interval.cancel(promise);
+                }
+            });
         })
         .controller('editVIController', function ($scope, $rootScope, MqNaaSResourceService, $routeParams, ngDialog, viService, localStorageService) {
             console.log("Edit VI : " + $routeParams.id);
@@ -210,7 +221,7 @@ angular.module('openNaaSApp')
                     $scope.getListRealResources();
                 }
                 console.log($scope);
-                
+
                 ngDialog.open({
                     template: 'partials/createVI/autoMappingPortsDialog.html',
                     scope: $scope
@@ -244,7 +255,7 @@ angular.module('openNaaSApp')
                     $scope.virtualPorts = $scope.getVirtualPorts(source);
                 }
 //                $scope.mapVirtualPorts($scope.virtualPorts[0], $scope.physicalPorts[0]);
-$scope.coded = [{virt: "port-11", real: "port-1"},{virt: "port-12", real: "port-2"},{virt: "port-13", real: "port-3"},];
+                $scope.coded = [{virt: "port-11", real: "port-1"}, {virt: "port-12", real: "port-2"}, {virt: "port-13", real: "port-3"}, ];
                 console.log($scope.physicalPorts);
                 console.log($scope.virtualPorts);
                 console.log();
@@ -272,12 +283,12 @@ $scope.coded = [{virt: "port-11", real: "port-1"},{virt: "port-12", real: "port-
                 });
             };
 
-            $scope.setRange = function (virtResource, sliceId, unitId, lowerRange, upRange ) {
+            $scope.setRange = function (virtResource, sliceId, unitId, lowerRange, upRange) {
                 var range = getRangeUnit(lowerRange, upRange);
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId + "/IUnitAdministration/range";
                 MqNaaSResourceService.put(url, range).then(function () {
                 });
-                $scope.rangeSetOk="Range set correctly";
+                $scope.rangeSetOk = "Range set correctly";
             };
 
             $scope.setCube = function (virtResource) {
@@ -316,9 +327,9 @@ $scope.coded = [{virt: "port-11", real: "port-1"},{virt: "port-12", real: "port-
                     $scope.getListUnits(virtResource, $scope.getSliceInfo);
                 });
             };
-            
+
             $scope.getUnit = function (virtResource, slice, unitId) {
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + slice + "/IUnitManagement/"+unitId;
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + slice + "/IUnitManagement/" + unitId;
                 MqNaaSResourceService.get(url).then(function (response) {
                     console.log(response.unit);
                     $scope.unitInfo = response.unit;
