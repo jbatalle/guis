@@ -118,11 +118,11 @@ console.log(ports);
                                       graph.addLink("OFSwitch-4", "OFSwitch-5");
                                       graph.addLink("OFSwitch-5", "OFSwitch-6");
                                       graph.addLink("OFSwitch-6", "OFSwitch-4");
-                                      graph.addLink("Tson-4", "Tson-5");
-                                      graph.addLink("Tson-5", "Tson-6");
-                                      graph.addLink("Tson-6", "Tson-4");
-                                      graph.addLink("Tson-4", "OFSwitch-4");
-                        
+                                      graph.addLink("Tson-9", "Tson-10");
+                                      graph.addLink("Tson-10", "Tson-11");
+                                      graph.addLink("Tson-11", "Tson-9");
+                                      graph.addLink("Tson-9", "OFSwitch-4");
+
                         links.forEach(function(e){
                             console.log(e);
                             console.log(e.srcPort);
@@ -130,7 +130,7 @@ console.log(ports);
                         });
                         graph.update();
                     }};
-                        
+
             }])
 
         .directive('draggable', ['$window', '$rootScope', function ($window, $rootScope) {
@@ -142,7 +142,7 @@ console.log(ports);
                         var w = angular.element($window);
                         element.draggable({
                             revert: true,
-                            helper: 'clone', 
+                            helper: 'clone',
                             start: function (event, ui) {
                                 console.log("Start dragging");
                                 console.log(event);
@@ -257,7 +257,7 @@ console.log(ports);
                     restrict: 'AE',
                     controller: function ($scope, ngDialog) {
                         console.log($scope);
-                        
+
                         $scope.openaddVIResDialog = function (nodeType, divPos) {
                             ngDialog.open({
                                 template: 'partials/addResInVIDialog.html',
@@ -412,10 +412,11 @@ console.log(type);
                         graph.addLink("OFSwitch-4", "OFSwitch-5");
                                       graph.addLink("OFSwitch-5", "OFSwitch-6");
                                       graph.addLink("OFSwitch-6", "OFSwitch-4");
-                                      graph.addLink("Tson-4", "Tson-5");
-                                      graph.addLink("Tson-5", "Tson-6");
-                                      graph.addLink("Tson-6", "Tson-4");
-                                      graph.addLink("Tson-4", "OFSwitch-4");
+                                      graph.addLink("Tson-9", "Tson-10");
+                                      graph.addLink("Tson-10", "Tson-11");
+                                      graph.addLink("Tson-11", "Tson-9");
+                                      graph.addLink("Tson-9", "OFSwitch-4");
                     }};
             }])
         ;
+
