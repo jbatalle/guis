@@ -7,14 +7,19 @@
             </div>
             <div ng-show='resourceRequest'>
                 <h4>Resource added correctly with the name: {{resourceRequest}}.</h4>
-                Add ports to the recent created resource: <a href="" class="btn btn-sm btn-primary" ng-click="addVirtualPortToResource(resourceRequest)">Add port</a>
+                <span ng-show="ngDialogData.nodeType != 'wifi'">
+                    Add ports to the recent created resource: <a href="" class="btn btn-sm btn-primary" ng-click="addVirtualPortToResource(resourceRequest)">Add port</a>
+                </span>
+                <span ng-show="ngDialogData.nodeType == 'wifi'">
+                    Add virtual interface to the recent created resource: <a href="" class="btn btn-sm btn-primary" ng-click="addVirtualPortToResource(resourceRequest)">Add interface</a>
+                </span>
                 <ul>
                     <li ng-repeat=" vPort in virtualPort">
                         {{vPort}}
                     </li>
                 </ul>
             </div>
-            
+
             <div>
                 <a href="" class="btn btn-sm btn-primary" ng-click="closeThisDialog()">Done</a>
             </div>

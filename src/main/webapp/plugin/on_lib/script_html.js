@@ -47,6 +47,8 @@ function createElement(name, type, divPos, data) {
     console.log("Create element " + type + " " + divPos);
     switch (type) {
         case "ofSwitch":
+        case "ofswitch":
+            console.log(jQuery.isEmptyObject(data));
             if (jQuery.isEmptyObject(data))
                 createofSwitch(divPos);
             else
@@ -176,7 +178,7 @@ function createTSONwithData(name, divPos, data) {
 function createofSwitch(divPos) {
     OfSwitch.prototype = new NetworkElement();
     OfSwitch.prototype.constructor = OfSwitch;
-    var name = "ofSw" + graph.getNodes().length;
+//    var name = "ofSw" + graph.getNodes().length;
     var ofSw = new OfSwitch(name);
     console.log(ofSw);
     console.log(ofSw instanceof NetworkElement);
