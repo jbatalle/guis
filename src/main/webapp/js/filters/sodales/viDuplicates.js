@@ -23,7 +23,7 @@ angular.module('openNaaSApp')
                     });
                     items = newItems;
                 }
-                console.log(items);
+//                console.log(items);
                 return items;
             };
         });

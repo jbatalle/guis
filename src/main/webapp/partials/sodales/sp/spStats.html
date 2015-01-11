@@ -10,7 +10,7 @@
         <a href="" ng-click="selectedResource('CPE')" class="list-group-item" ng-class="CPEactive" data-animation="am-flip-x" bs-dropdown="dropdown">CPE</a>
     </div>
     <div class="col-md-10">
-        <h2 class="page-header">Monitoring <small>Statistics</small></h2>
+        <h2 class="page-header">Status <small>Statistics</small></h2>
         <div ng-show="ARNStats">
             <table ng-table="tableParams" class="table ng-table-responsive" style="text-align: center">
                 <tr ng-repeat="iface in $data" ng-if="iface._name =='Eth 1' || iface._name =='Eth 2' || iface._name =='intEth 1'">

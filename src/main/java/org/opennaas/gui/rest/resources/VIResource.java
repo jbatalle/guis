@@ -21,6 +21,7 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
+import org.opennaas.gui.entity.virtualResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,6 +100,14 @@ public class VIResource {
         this.vIDao.delete(id);
     }
     
+    @DELETE
+    @Path("removeByName/{viName}")
+    public void delete(@PathParam("viName") String viName) {
+        this.logger.info("delete(id)");
+
+        this.vIDao.delete(this.vIDao.findByName(viName).getId());
+    }
+    
     @GET
     @Path("{viName}/name/{resName}/type/{resType}")//rest/vi/"+viId+"/name/"+resName+"/type/"+resType
     public void addVI(@PathParam("viName") String viName, @PathParam("resName")String resName, @PathParam("resType")String resType) {
@@ -116,12 +125,15 @@ public class VIResource {
     }
     
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/updateStatus/{viName}/{status}")
     public void updateStatus( @PathParam("viName")String viName, @PathParam("status")String status) {
         this.logger.info("change vi("+viName+") status to "+status);
 
         this.vIDao.findByName(viName).setStatus(status);
+        VI vi = this.vIDao.findByName(viName);
+        vi.setStatus(status);
+        this.vIDao.save(vi);
+        this.logger.info(this.vIDao.findByName(viName).getStatus());
     }
     
     private boolean isAdmin() {

@@ -20,7 +20,7 @@ console.log(localStorageService.get("arnPorts"));
                         var nodes = [];
                         //for each network element
                         console.log(networkElements);
-                        networkElements = [];
+//                        networkElements = [];
                         for (var i = 0; i < networkElements.length; i++) {
                             console.log(networkElements[i]);
                             var type = networkElements[i].split("-")[0].toLowerCase();

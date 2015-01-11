@@ -93,5 +93,20 @@ services.factory('viService', ['$http', 'HistoryService', function ($http, Histo
                 });
                 return promise;
             },
+            removeVI: function (viId) {
+                var promise = $http.delete("rest/vi/removeByName/"+viId).then(function (response) {
+                    var his = new HistoryService();
+                    his.content = response.status+" - REMOVE (Remove VI)";
+                    his.type = "INFO";
+                    his.$save();
+                    return response.data;
+                }, function(response){
+                    var his = new HistoryService();
+                    his.content = response.status+" - REMOVE (Remove VI): "+response.statusText;
+                    his.type = "ERROR";
+                    his.$save();
+                });
+                return promise;
+            }
         };
     }]);

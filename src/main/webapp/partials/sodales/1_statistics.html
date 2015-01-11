@@ -2,7 +2,9 @@
     <div class="col-md-2">
         <p class="lead">List of resources</p>
         <div class="list-group" >
-            <a ng-repeat="resource in availableResources" href="" ng-click="selectedResource(resource.name, resource.type)" 
+            <a ng-if="resource.type == 'ARN'" ng-repeat="resource in availableResources" href="" ng-click="selectedResource(resource.name, resource.type)" 
+               class="list-group-item" ng-class="navClass('{{resource.name}}')" >{{resource.name}}</a>
+            <a ng-if="resource.type == 'CPE'" ng-repeat="resource in availableResources" href="" ng-click="selectedResource(resource.name, resource.type)" 
                class="list-group-item" ng-class="navClass('{{resource.name}}')" 
                data-animation="am-flip-x" bs-dropdown="dropdown">{{resource.name}}</a>
         </div>
@@ -10,7 +12,7 @@
             <a href="" ng-click="selectedResource('CPE')" class="list-group-item" ng-class="CPEactive" data-animation="am-flip-x" bs-dropdown="dropdown">CPE</a>
     </div>
     <div class="col-md-10">
-        <h2 class="page-header">Monitoring <small>Statistics</small></h2>
+        <h2 class="page-header">Status <small>Statistics</small></h2>
         <div ng-show="ARNStats">
             <table ng-table="tableParams" class="table ng-table-responsive" style="text-align: center">
                 <tr ng-repeat="iface in $data">
@@ -79,6 +81,91 @@
             </table>
         </div>
         <div ng-show="CFM_OAM">
+            <h3>CCM</h3>
+            <div>
+                <table class="table ng-table-responsive" style="text-align: center">
+                    <tr>
+                        <th>Unit</th>
+                        <th>Last Sequence</th>
+                        <th>Unexpected MEG ID</th>
+                        <th>Unexpected MEP ID</th>
+                        <th>Reorder</th>
+                        <th>Event Loss</th>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.unit}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.LastSequenc}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.Unexpected_MEG_ID}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.Unexpected_MEP_ID}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.reorder}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.eventLoss}}</td>
+                    </tr>
+                </table>
+            </div>
+            <h3>LBM</h3>
+            <div>
+                <table class="table ng-table-responsive" style="text-align: center">
+                    <tr>
+                        <th>Unit</th>
+                        <th>AVG latency</th>
+                        <th>Bytes</th>
+                        <th>MAX jitter</th>
+                        <th>MIN jitter</th>
+                        <th>Packets</th>
+                        <th>Drop</th>
+                        <th>Last seq ID</th>
+                        <th>Num Of Bits Error</th>
+                        <th>Seq ID Error</th>
+                        <th>Seq ID Reorder</th>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.unit}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.AVG_latency}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.Bytes}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.MAX_jitter}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.MIN_jitter}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.Pkts}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.drop}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.lastseqID}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.num_Of_Bits_Error}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.seq_ID_err}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.seq_ID_reorder}}</td>
+                    </tr>
+                </table>
+            </div>
+            <h3>DMM</h3>
+            <div>
+                <table class="table ng-table-responsive" style="text-align: center">
+                    <tr>
+                        <th>Unit</th>
+                        <th>AVG latency</th>
+                        <th>Bytes</th>
+                        <th>MAX jitter</th>
+                        <th>MIN jitter</th>
+                        <th>Packets</th>
+                        <th>Drop</th>
+                        <th>Last seq ID</th>
+                        <th>Num Of Bits Error</th>
+                        <th>Seq ID Error</th>
+                        <th>Seq ID Reorder</th>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.unit}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.AVG_latency}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.Bytes}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.MAX_jitter}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.MIN_jitter}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.Pkts}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.drop}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.lastseqID}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.num_Of_Bits_Error}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.seq_ID_err}}</td>
+                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.seq_ID_reorder}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div ng-show="ARN_OAM">
             <h3>CCM</h3>
             <div>
                 <table class="table ng-table-responsive" style="text-align: center">

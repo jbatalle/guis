@@ -1,6 +1,6 @@
 
 <div class="page-header">
-    <h3>Available VIs</h3>
+    <h3>Virtual Slice list</h3>
 </div>
 
 <table ng-table="tableParams" class="table ng-table-responsive">
@@ -11,8 +11,8 @@
             <span>{{vi.status}}</span>
         </td>
         <td data-title="'Action'" class="col-sm-2 col-md-2 col-lg-2">
-            <a href="#!/spVIInfo/{{vi.name}}" class="btn btn-default" title="edit">View VI</a>
-            <a href="#!/spStats/{{vi.name}}" class="btn btn-default" title="edit">View stats</a>
+            <a href="#!/spVIInfo/{{vi.name}}" class="btn btn-default" title="edit">View virtual slice</a>
+            <a href="#!/spStats/{{vi.name}}" class="btn btn-default" title="edit">Virtual slice stats</a>
         </td>
     </tr>
 </table>

@@ -80,6 +80,9 @@ public class ProxyServlet extends HttpServlet {
         //  Create Post request dynamically to remote server
         String url = "http://ipaddress:port/contextpath" + request.getAttribute("uri");
         url = baseUrl + request.getAttribute("path");//recevie /mqnaas/IRootResourceProvider
+        if( request.getQueryString() != null ){
+            url = url + "?" + request.getQueryString();
+        }
 logger.error("URL: "+url);
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -137,6 +140,9 @@ logger.error("URL: "+url);
         String url = "http://ipaddress:port/contextpath" + request.getAttribute("uri");
         url = baseUrl + request.getAttribute("path");//recevie /mqnaas/IRootResourceProvider
 logger.error("URL: "+url);
+        if( request.getQueryString() != null ){
+            url = url + "?" + request.getQueryString();
+        }
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 

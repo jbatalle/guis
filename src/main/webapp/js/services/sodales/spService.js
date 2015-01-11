@@ -66,7 +66,7 @@ services.factory('spService', ['$http', 'HistoryService', function ($http, Histo
             removeVIOfSP: function (spId, viId) {
                 var promise = $http.delete("rest/sp/"+spId+"/vi/"+viId).then(function (response) {
                     var his = new HistoryService();
-                    his.content = response.status+" - REMOVE (Remove VI "+viId+"): ";
+                    his.content = response.status+" - REMOVE (Remove VI "+viId+") ";
                     his.type = "INFO";
                     his.$save();
                     return response.data;
@@ -88,6 +88,21 @@ services.factory('spService', ['$http', 'HistoryService', function ($http, Histo
                 }, function(response){
                     var his = new HistoryService();
                     his.content = response.status+" - GET (Get SP Info): "+response.statusText;
+                    his.type = "ERROR";
+                    his.$save();
+                });
+                return promise;
+            },
+            removeSP: function (spId) {
+                var promise = $http.delete("rest/sp/"+spId).then(function (response) {
+                    var his = new HistoryService();
+                    his.content = response.status+" - REMOVE (Remove SP "+spId+") ";
+                    his.type = "INFO";
+                    his.$save();
+                    return response.data;
+                }, function(response){
+                    var his = new HistoryService();
+                    his.content = response.status+" - REMOVE (Remove SP): "+response.statusText;
                     his.type = "ERROR";
                     his.$save();
                 });

@@ -24,6 +24,7 @@ angular.module('openNaaSApp')
                     $scope.ARNStats = false;
                     $scope.CPEStats = true;
                     $scope.CFM_OAM = false;
+                    $scope.ARN_OAM = false;
                     $scope.getCPEPortList();
                 }
                 else if (resourceType === 'CFM/OAM') {
@@ -34,6 +35,7 @@ angular.module('openNaaSApp')
                     $scope.ARNStats = false;
                     $scope.CPEStats = false;
                     $scope.CFM_OAM = true;
+                    $scope.ARN_OAM = false;
                     $scope.getCCM();
                     $scope.getLBM();
                     $scope.getDMM();
@@ -45,7 +47,18 @@ angular.module('openNaaSApp')
                     $scope.ARNStats = true;
                     $scope.CPEStats = false;
                     $scope.CFM_OAM = false;
+                    $scope.ARN_OAM = false;
                     $scope.getARNStats();
+                } else if (resourceType === 'ARN_OAM') {
+                    $scope.selected = resourceName;
+                    $scope.noResource = false;
+                    $scope.ARNactive = "active";
+                    $scope.CPEactive = "";
+                    $scope.ARNStats = false;
+                    $scope.CPEStats = false;
+                    $scope.CFM_OAM = false;
+                    $scope.ARN_OAM = true;
+                    $scope.getNotificationsLogging();
                 }
             };
             $scope.getARNStats = function () {
@@ -86,7 +99,7 @@ angular.module('openNaaSApp')
                 var reqUrl = "meaPmCounter.xml?unit=0&pmId=" + portId;
                 $interval.cancel(promise);
                 promise = $interval(function () {
-                    
+
                     cpeService.get(reqUrl).then(function (response) {
                         $scope.content = response.meaPmCounter.PmCounter;
                         console.log($scope.content);
@@ -99,7 +112,7 @@ angular.module('openNaaSApp')
                     $interval.cancel(promise);
                 }
             });
-            
+
             $scope.getCCM = function (portId) {
                 var reqUrl = "meaGetCcmDefectState.xml?unit=0&streamId=1";
                 var xml = '<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href=="olg_rss.css" ?><meaCcmCounter xmlns="http://www.ethernity-net.com/enet/CcmCounter"><CcmDefectCount><unit>0</unit><LastSequenc>1832557</LastSequenc><Unexpected_MEG_ID>0</Unexpected_MEG_ID><Unexpected_MEP_ID>0</Unexpected_MEP_ID><reorder>4</reorder><eventLoss>0</eventLoss></CcmDefectCount></meaCcmCounter>';
@@ -166,6 +179,10 @@ angular.module('openNaaSApp')
                 cpeService.get(url).then(function (response) {
                 });
             };
+            
+            $scope.getNotificationsLogging = function(){
+                
+            };
 
             $scope.viewStatistics = function (interfaceId) {
                 $scope.infId = interfaceId;
@@ -186,48 +203,36 @@ angular.module('openNaaSApp')
                 } else {
                     return "CPEactive";
                 }
-            }
+            };
 
 //            $scope.selectedResource("ARN");
             if (availableResources.length > 0)
                 $scope.selectedResource(availableResources[0].type);
             $scope.noResource = true;
         })
-        .controller('statisticsDialogCtrl', function ($scope, ngTableParams, $filter, localStorageService, arnService) {
+        .controller('statisticsDialogCtrl', function ($scope, ngTableParams, $filter, localStorageService, arnService, $interval) {
+            var promise;
             var requestData = getCounter($scope.infId);
             arnService.put(requestData).then(function (response) {
                 var data = response.response.operation.interfaceList.interface.ethernet.counters;
 //                data = {"tx": {"_dropEvents": "1", "_octets": "2", "_packets": "3", "_broadcastPackets": "4", "_multicastPackets": "0", "_crcAlignErrors": "0", "_undersizePackets": "0", "_oversizePackets": "0", "_fragments": "0", "_jabbers": "0", "_collisions": "0", "_packets64Octets": "0", "_packets65to127Octets": "0", "_packets128to255Octets": "0", "_packets256to511Octets": "0", "_packets512to1023Octets": "0", "_packets1024to1518Octets": "0", "_throughput": "0"}, "rx": {"_dropEvents": "21", "_octets": "22", "_packets": "23", "_broadcastPackets": "24", "_multicastPackets": "0", "_crcAlignErrors": "0", "_undersizePackets": "0", "_oversizePackets": "0", "_fragments": "0", "_jabbers": "0", "_collisions": "0", "_packets64Octets": "0", "_packets65to127Octets": "0", "_packets128to255Octets": "0", "_packets256to511Octets": "0", "_packets512to1023Octets": "0", "_packets1024to1518Octets": "0", "_throughput": "0"}};
                 data = transpose(data);
                 $scope.content = data;
+                $interval.cancel(promise);
+                
             });
-
-            /*            $scope.tableParams = new ngTableParams({
-             page: 1, // show first page
-             count: 10, // count per page
-             sorting: {
-             date: 'desc'     // initial sorting
-             }
-             }, {
-             
-             getData: function($defer, params) {
-             var requestData = getCounter($scope.infId);
-             arnService.put(requestData).then(function(response) {
-             var data = response.response.operation.interfaceList.interface.ethernet.counters;
-             console.log(data);
-             $scope.content = data;
-             //                    data = '{"_dropEvents":"0","_octets":"0","_packets":"0","_broadcastPackets":"0","_multicastPackets":"0","_crcAlignErrors":"0","_undersizePackets":"0","_oversizePackets":"0","_fragments":"0","_jabbers":"0","_collisions":"0","_packets64Octets":"0","_packets65to127Octets":"0","_packets128to255Octets":"0","_packets256to511Octets":"0","_packets512to1023Octets":"0","_packets1024to1518Octets":"0","_throughput":"0"}';
-             params.total(data.length);
-             $defer.resolve(data);
-             
-             //                    console.log(data);
-             //                    var orderedData = params.sorting() ? $filter('orderBy')($scope.data, params.orderBy()) : $scope.data;
-             //                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-             })
-             },
-             $scope: {$data: {}}
-             });*/
-        })
+            promise = $interval(function () {
+                    cpeService.get(reqUrl).then(function (response) {
+                        $scope.content = response.meaPmCounter.PmCounter;
+                        console.log($scope.content);
+                    });
+                }, 1000);
+            $scope.$on("$destroy", function () {
+                if (promise) {
+                    $interval.cancel(promise);
+                }
+            });
+        });
 //    });
 
 function transpose(items) {
