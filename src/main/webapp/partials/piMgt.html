@@ -16,9 +16,11 @@
                         <div grapheditor ng-show="networkId"></div>
                         <h3>List of resources</h3>
                         <ul>
-                            <li ng-repeat="res in networkElements">
+                            <li ng-repeat="res in networkElements" ng-if=" res !== 'CHANNEL-7' && res !== 'CHANNEL-8' ">
                                 {{res}}
                             </li>
+                            <li>wireless-4</li>
+                            <li>wireless-5</li>
                         </ul>
                     </div>
                 </div>

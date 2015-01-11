@@ -22,9 +22,8 @@ angular.module('openNaaSApp')
                             {x:550, y:300, "_id": "tson:Tson-4", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "tson", ports: {port:[{"_id":"T11"}, {"_id":"T12"}, {"_id":"T13"}]}},
                             {x:650, y:200, "_id": "tson:Tson-5", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "tson", ports: {port:[{"_id":"T21"}, {"_id":"T22"}]}},
                             {x:650, y:400, "_id": "tson:Tson-6", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "tson", ports: {port:[{"_id":"T31"}, {"_id":"T32"}]}},
-                            {x:100, y:200, "_id": "tson:wireless-4", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "wifi", ports: {port:[{"_id":"T31"}, {"_id":"T32"}]}},
+                            {x:100, y:200, "_id": "tson:wireless-4", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "wifi", ports: {port:[{"_id":"CHANNEL-1"}, {"_id":"CHANNEL-1"},{"_id":"CHANNEL-2"}, {"_id":"CHANNEL-3"},{"_id":"CHANNEL-4"}, {"_id":"CHANNEL-5"},{"_id":"CHANNEL-6"}, {"_id":"CHANNEL-7"}]}},
                             {x:100, y:250, "_id": "tson:wireless-5", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "wifi", ports: {port:[{"_id":"T31"}, {"_id":"T32"}]}},
-                            {x:100, y:300, "_id": "tson:wireless-6", "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance","_xsi:type": "wifi", ports: {port:[{"_id":"T31"}, {"_id":"T32"}]}}
                         ];
                         var links = [{srcPort:"T11", dstPort:"OF11"},
                             {srcPort:"OF12", dstPort:"OF21"},{srcPort:"OF22", dstPort:"OF31"},{srcPort:"OF32", dstPort:"OF13"},
