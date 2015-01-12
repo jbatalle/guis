@@ -362,7 +362,7 @@ console.log("Change X "+(parentNode.x));
         var portsTest = nodeEnter.append("g")
             .attr("id", "ports").selectAll("g.ports")
             .data(function(d){ return d.ports;});
-
+/*
         portsTest
             .enter().append("rect")
                 .attr("id",function(d){ return d.id;})
@@ -399,7 +399,7 @@ console.log("Change X "+(parentNode.x+d.posx));
                     endState.transitions = [];
                     nodeMouseUp(endState);
             });
-
+*/
         portsTest.exit().remove();
         nodeEnter.attr("transform", function (d) {
             return "translate(" + d.x + "," + d.y + ")";

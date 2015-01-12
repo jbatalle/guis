@@ -26,6 +26,10 @@ angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSAp
                             templateUrl: 'partials/sodales/1_statistics.html',
                             controller: 'SodalesMonitoringController'
                         })
+                        .when('/cfm', {
+                            templateUrl: 'partials/sodales/CFM-OAM.html',
+                            controller: 'SodalesMonitoringController'
+                        })
                         .when('/openaccess/history', {
                             templateUrl: 'partials/sodales/2_1_openAccess_history.html',
                             controller: 'SodalesHistoryController'

@@ -13,10 +13,12 @@ angular.module('openNaaSApp')
                         console.log(localStorageService.get("graphNodes"));
                         console.log(localStorageService.get("networkElements"));
 console.log(localStorageService.get("arnPorts"));
+console.log(localStorageService.get("link"));
                         var networkElements = localStorageService.get("networkElements");
                         var links = [];
                         var lin = {s: 0, t: 1};
                         links.push(lin);
+                        
                         var nodes = [];
                         //for each network element
                         console.log(networkElements);
@@ -92,6 +94,10 @@ console.log(localStorageService.get("arnPorts"));
                             createElement(nodes[i].id, nodes[i].type, divPos, data);
 //                            localStorageService.set("graphNodes", graph.getNodes());
                         }
+                        localStorageService.get("link").forEach(function(l){
+                               console.log(l);
+                               graph.addLink(l.s, l.t);
+                            });
                         console.log("End editor");
                     }};
             }])

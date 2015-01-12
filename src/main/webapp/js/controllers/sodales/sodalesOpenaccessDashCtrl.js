@@ -10,7 +10,7 @@ angular.module('openNaaSApp')
                     $scope.listVi = [];
                     data.forEach(function (vi) {
                         console.log(vi);
-                        if (vi.status === "Processed")
+                        if (vi.status === "Created")
                             $scope.listVi.push(vi.name);
                     });
                     spService.list().then(function (data) {

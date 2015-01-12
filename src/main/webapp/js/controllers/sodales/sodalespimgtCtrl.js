@@ -149,7 +149,7 @@ angular.module('openNaaSApp')
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement";
                 MqNaaSResourceService.put(url).then(function (data) {
                     $scope.createdLink = data;
-                    localStorageService.set("link", data);
+                    localStorageService.set("link", [{s: $scope.source, t: $scope.dest}]);
                     return data;
                 });
             };

@@ -19,13 +19,15 @@ angular.module('openNaaSApp')
                 spService.getSPByName($rootScope.spName).then(function (result) {
                     console.log(result);
                     result.vi.forEach(function(vi){
-                        console.log(vi);
-                        console.log(viService.getVIByName(vi).then(function(result){return result;}));
-                        $scope.data.push({name:"vi-1", status:"created"});
+                        viService.getVIByName(vi).then(function(viInfo){
+                        console.log(viInfo);
+                        $scope.data.push({name:viInfo.name, date: viInfo.date, status:"Created"});
+                        $scope.tableParams.reload();
 //                        $scope.data.push(viService.getVIByName(vi));
+                        });
                     });
 //                    $scope.data = result.vi;
-                    $scope.tableParams.reload();
+                    
                 });
             };
             $scope.updateSpList();

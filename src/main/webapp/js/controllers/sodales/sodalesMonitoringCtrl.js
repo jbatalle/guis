@@ -12,7 +12,7 @@ angular.module('openNaaSApp')
             });
             $scope.availableResources = availableResources;
 
-            $scope.dropdown2 = [{"text": "Alarms and notifications", "click": "selectedResource('', 'ARN/OAM')"}];
+            $scope.dropdown2 = [{"text": "System notifications", "click": "selectedResource('', 'ARN/OAM')"}];
             $scope.dropdown = [{"text": "CFM/OAM", "click": "selectedResource('', 'CFM/OAM')"}];
             $scope.selectedResource = function (resourceName, resourceType) {
                 //get statistics and send to scope
@@ -182,7 +182,23 @@ angular.module('openNaaSApp')
             };
 
             $scope.getNotificationsLogging = function () {
+                var requestData = getAlarmShow($scope.infId);
+                arnService.put(requestData).then(function (response) {
+                    $scope.notiLog = response.response.operation.cardList.card.status;
+                });
+            };
 
+            $scope.equipmentBoards = function () {
+                var requestData = getEquipment($scope.infId);
+                arnService.put(requestData).then(function (response) {
+                    $scope.equipBoard = response.response.operation.alarmRegisterList;
+                });
+            };
+            $scope.fanModuleStatus = function () {
+                var requestData = getFanModule($scope.infId);
+                arnService.put(requestData).then(function (response) {
+                    $scope.fanStatus = response.response.operation.cardList.card.fanStatusList;
+                });
             };
 
             $scope.viewStatistics = function (interfaceId) {

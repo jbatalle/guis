@@ -27,7 +27,7 @@
 /* Stencil CSS */
 #stencil { width: 200px; height:500px; border:3px solid black; border-radius:12px; margin:auto; float: left;}
 /* D3JS graph */
-#graph { width: 80%; height:500px; border:3px solid black; border-radius:12px; margin:auto; float: left}
+#graph { width: 80%; height:500px; /*border:3px solid black;*/ border-radius:12px; margin:auto; float: left}
 
 /* ------------------------------------------------------ */
 .node rect {
