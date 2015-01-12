@@ -335,9 +335,8 @@ console.log("Change X "+(parentNode.x));
                     .attr("class", "popup_context_menu")
                     .style("left", mousePosition[0] + "px")
                     .style("top", mousePosition[1] + "px");
-                popup.append("h3").text(d.name);
-                popup.append("p").text("Id: "+d.id).append("p")
-                    .append("p").text("Ports: "+d.ports.length)
+                popup.append("h4").text(d.name);
+                popup.append("p").text("Ports: "+d.ports.length)
 /*                    .append("p").append("a")
                     .attr({"xlink:href": "#"})
                     .on("mousedown", function(){
@@ -346,15 +345,16 @@ console.log("Change X "+(parentNode.x));
                             graph.addPortToNode(d.id, port);
                         })
                     .text("Add port");
-*/                popup.append("p").append("a")
+                */
+/*                popup.append("p").append("a")
                     .attr({"xlink:href": "", "ng-Click":"openARNDialog()"})
                     .on("mousedown", function(){
                         console.log("Remove resource: "+d.id);
-                        angular.element(document.getElementById('piMgt')).scope().deleteEntry(d.id);
+                        angular.element(document.getElementById('piMgt')).scope().deleteResource(d.id);
                         })
                     .text("Remove");
-                d.ports.forEach(function(entry) {
-                    popup.append("li").text("Id: "+entry.id +". Name: "+entry.name);
+  */              d.ports.forEach(function(entry) {
+                    popup.append("li").text("Id: "+entry.id +".");
                 });
         }
         });

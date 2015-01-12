@@ -19,6 +19,7 @@ angular.module('openNaaSApp')
                 $scope.selectedNetwork = $rootScope.networkId;
                 console.log("Clean localStorage networkElements due network is not created.");
                 localStorageService.set("networkElements", []);
+                localStorageService.set("link", []);
                 console.log($rootScope.networkId);
                 getMqNaaSResource($rootScope.networkId);
 //                localStorageService.set("mqNaaSElements", data);
@@ -76,6 +77,12 @@ angular.module('openNaaSApp')
                 });
                 ngDialog.close();
             };
+            
+            $scope.deleteResource = function (resName) {
+                url = generateUrl("IRootResourceAdministration", $rootScope.networkId, "IRootResourceAdministration/"+resName);
+                MqNaaSResourceService.remove(url).then(function (data) {
+                });
+            };
 
             $scope.addCPE = function (data) {
                 var CPE = getResource("CPE", data.endpoint);
@@ -105,8 +112,13 @@ angular.module('openNaaSApp')
                         return;
                     data = checkIfIsArray(data.IRootResource.IRootResourceId);
                     $scope.networkElements = data;
+                    data.forEach(function(resource){
+                        $scope.getRealPorts(resource); 
+                    });
+                    
                     localStorageService.set("networkElements", data);
-                    $scope.getRealPorts(root);
+                    console.log("GEt and store ports");
+                    
                 }, function (error) {
                     console.log(error);
                 });
@@ -149,16 +161,28 @@ angular.module('openNaaSApp')
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement";
                 MqNaaSResourceService.put(url).then(function (data) {
                     $scope.createdLink = data;
+                    $scope.createdLinkInfo = [{s: $scope.source, t: $scope.dest}];
                     localStorageService.set("link", [{s: $scope.source, t: $scope.dest}]);
                     return data;
                 });
             };
 
             $scope.getRealPorts = function (resourceName) {
-                var xml = "<IResource><IResourceId>port-1</IResourceId><IResourceId>port-2</IResourceId></IResource>";
-                var x2js = new X2JS();
-                var json = x2js.xml_str2json(xml);
-                localStorageService.set("arnPorts", {name: resourceName, ports: json.IResource.IResourceId});
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/IPortManagement";
+                MqNaaSResourceService.get(url).then(function (result) {
+                    console.log(result);
+                    console.log(result.IResource.IResourceId);
+                    var ports =[];
+                    result.IResource.IResourceId.forEach( function(entry){
+                       console.log(entry);
+                       ports.push({"_id": entry});
+                    });
+                    localStorageService.set(resourceName, {name: resourceName, ports: {port: ports}});
+                console.log("Swet ports");
+                console.log(localStorageService.get(resourceName));
+                });
+                 
+                
             };
 
             $scope.createLinkDialog = function (source, dest) {
@@ -184,12 +208,15 @@ angular.module('openNaaSApp')
             $scope.attachPortsToLink = function (type, portId) {
                 var linkId = $scope.createdLink;
                 var url;
-                if (type === "source")
+                if (type === "source"){
                     url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement/" + linkId + "/ILinkAdministration/srcPort?arg0=" + portId;
-                else if (type === "target")
-                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement/" + linkId + "/ILinkAdministration/dstPort?arg0=" + portId;
-                MqNaaSResourceService.put(url).then(function (response) {
-                });//empty
+                    $scope.srcPortAttahed = "Source port Attached";
+                }else if (type === "dest"){
+                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement/" + linkId + "/ILinkAdministration/destPort?arg0=" + portId;
+                    $scope.dstPortAttahed = "Source port Attached";
+                }
+                MqNaaSResourceService.put(url).then(function (response) {});//empty
+                
             };
 
             $scope.getLinks = function () {

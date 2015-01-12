@@ -3,7 +3,7 @@ var stencil_image_width = 60;//px
 $(function () {
     /* Information message */
     $(".ui-widget").hide();
-console.log("SCRIPT");
+    console.log("SCRIPT");
     /* END Information message */
 
     /* Stencil - Images draggables to d3js */
@@ -16,19 +16,19 @@ console.log("SCRIPT");
             x = ui.helper.clone();
             ui.helper.remove();
             x.draggable({
-                	helper: 'original',
-                	cursor: 'move',
+                helper: 'original',
+                cursor: 'move',
                 //containment: '#droppable',
-	                tolerance: 'fit',
-                	drop: function (event, ui) {
-	                    $(ui.draggable).remove();
-	        	}
+                tolerance: 'fit',
+                drop: function (event, ui) {
+                    $(ui.draggable).remove();
+                }
             });
             console.log("Create");
-            var nodeType = ui.draggable.attr("id"),//select the id of the element
-                divPos = {},
-                $div = $("#graph"),
-                e = window.event;
+            var nodeType = ui.draggable.attr("id"), //select the id of the element
+                    divPos = {},
+                    $div = $("#graph"),
+                    e = window.event;
 
             divPos = {//position where the element is dropped
                 x: e.pageX - $div.offset().left,
@@ -68,15 +68,17 @@ function createElement(name, type, divPos, data) {
             createLaptop(divPos);
             break;
         case "arn":
-//            if (jQuery.isEmptyObject(data))
+            if (jQuery.isEmptyObject(data))
                 createARN(name, divPos);
-//            else
-//                createARN(divPos, data);
+            else
+                createARN(name, divPos, data);
             //showInfoMessage("Element added");
             break;
         case "cpe":
+            if (jQuery.isEmptyObject(data))
                 createCPE(name, divPos);
-//            showInfoMessage("Element added");
+            else
+                createCPE(name, divPos, data);
             break;
         default:
             console.log("Element not defined");
@@ -85,7 +87,8 @@ function createElement(name, type, divPos, data) {
 
 }
 
-function createARN(name, divPos) {
+function createARN(name, divPos, data) {
+    console.log(data);
     ARN.prototype = new NetworkElement();
     ARN.prototype.constructor = ARN;
 //    var name = "arn" + graph.getNodes().length;
@@ -95,6 +98,7 @@ function createARN(name, divPos) {
     arn.id = name;
     arn.setX(divPos.x);
     arn.setY(divPos.y);
+     if (!jQuery.isEmptyObject(data)) arn.setPorts(data.ports, arn.id);
     //var ports = [{"id": ofSw.id+"1", "name": "ge-0/1", x: (ofSw.x-23), y: (ofSw.x+12), posx: -23, posy: 12, parent: ofSw.id},
     //          {"id": ofSw.id+"2", "name": "ge-2/1", x: (ofSw.x+45), y: (ofSw.y+12), posx: 45, posy: 12, parent: ofSw.id}];
     //ofSw.setPorts(ports);
@@ -102,7 +106,8 @@ function createARN(name, divPos) {
     graph.addNodewithData(arn);
 }
 
-function createCPE(name, divPos) {
+function createCPE(name, divPos, data) {
+    console.log(data);
     CPE.prototype = new NetworkElement();
     CPE.prototype.constructor = CPE;
 //    var name = "cpe" + graph.getNodes().length;
@@ -113,6 +118,7 @@ function createCPE(name, divPos) {
     cpe.id = name;
     cpe.setX(divPos.x);
     cpe.setY(divPos.y);
+    if (!jQuery.isEmptyObject(data)) cpe.setPorts(data.ports, cpe.id);
     //var ports = [{"id": ofSw.id+"1", "name": "ge-0/1", x: (ofSw.x-23), y: (ofSw.x+12), posx: -23, posy: 12, parent: ofSw.id},
     //          {"id": ofSw.id+"2", "name": "ge-2/1", x: (ofSw.x+45), y: (ofSw.y+12), posx: 45, posy: 12, parent: ofSw.id}];
     //ofSw.setPorts(ports);
@@ -132,7 +138,7 @@ function createofSwitch(divPos) {
     ofSw.setX(divPos.x);
     ofSw.setY(divPos.y);
     //var ports = [{"id": ofSw.id+"1", "name": "ge-0/1", x: (ofSw.x-23), y: (ofSw.x+12), posx: -23, posy: 12, parent: ofSw.id},
-	   //          {"id": ofSw.id+"2", "name": "ge-2/1", x: (ofSw.x+45), y: (ofSw.y+12), posx: 45, posy: 12, parent: ofSw.id}];
+    //          {"id": ofSw.id+"2", "name": "ge-2/1", x: (ofSw.x+45), y: (ofSw.y+12), posx: 45, posy: 12, parent: ofSw.id}];
     //ofSw.setPorts(ports);
     console.log(ofSw);
     graph.addNodewithData(ofSw);
@@ -168,35 +174,39 @@ function createRouter(divPos) {
     graph.addNodewithData(router);
 }
 
-function showInfoMessage(message){
+function showInfoMessage(message) {
     document.getElementById("info_message_text").innerHTML = message;
     $("#info_message").show();
-    setInterval(function () { $("#info_message").hide();}, 3000);
+    setInterval(function () {
+        $("#info_message").hide();
+    }, 3000);
 }
 
-function showErrorMessage(message){
+function showErrorMessage(message) {
     document.getElementById("error_message_text").innerHTML = message;
     $("#error_message").show();
-    setInterval(function () { $("#error_message").hide();}, 3000);
+    setInterval(function () {
+        $("#error_message").hide();
+    }, 3000);
 }
 
-function createLaptop(){
+function createLaptop() {
     showErrorMessage("Element not defined");
 }
 
-function createStencil(){
+function createStencil() {
     console.log(graphImage);
     var stencilDiv = document.getElementById("stencil");
     for (key in graphImage) {
         console.log(key);
         el = generateHtmlDivElement(key);
-	stencilDiv.appendChild(el);
+        stencilDiv.appendChild(el);
     }
-/*	el = generateHtmlDivElement("ofSwitch");
-	stencilDiv.appendChild(el);
-    el = generateHtmlDivElement("laptop");
-	stencilDiv.appendChild(el);
-*/
+    /*	el = generateHtmlDivElement("ofSwitch");
+     stencilDiv.appendChild(el);
+     el = generateHtmlDivElement("laptop");
+     stencilDiv.appendChild(el);
+     */
 }
 
 function generateHtmlDivElement(type) {

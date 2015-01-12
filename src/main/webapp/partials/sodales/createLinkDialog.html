@@ -3,23 +3,25 @@
         <div>
             <h3>Connection between resources </h3>({{source}}, {{dest}})
             <div ng-hide="createdLink">
-            Create link <a href="" class="btn btn-sm btn-primary" ng-click="createLink()">Add</a> {{createdLink}}
+                Create link <a href="" class="btn btn-sm btn-primary" ng-click="createLink()">Add</a> {{createdLink}}
             </div>
             <div ng-show="createdLink">
                 Link: {{createdLink}}<br/>
-                {{source}}
+
+                Select source port of {{source}}:
                 <select placeholder="select virtual port" bs-select ng-model="piPort1" ng-options="port for port in physicalPorts1.IResource.IResourceId" ></select>
-                <input type="text" ng-model="pInt" name="name" class="form-control" bs-typeahead><br/>
-                <input type="text" ng-model="pEth" name="name" class="form-control" bs-typeahead><br/>
-                <a href="" class="btn btn-sm btn-primary" ng-click="mappingPortsToLink(source, piPort1, pInt, pEth)">Map</a>
+                <a ng-show="dstPortAttahed" class="btn btn-sm btn-primary" ng-click="attachPortsToLink('source', piPort1)">Attach source port</a>
+                {{dstPortAttahed}}
                 <br/>
-                {{dest}}
+                Select target port of {{dest}}:
                 <select placeholder="select virtual port" bs-select ng-model="piPort2" ng-options="port for port in physicalPorts2.IResource.IResourceId" ></select>
-                <input type="text" ng-model="pInt" name="name" class="form-control" bs-typeahead><br/>
-                <input type="text" ng-model="pEth" name="name" class="form-control" bs-typeahead><br/>
-                <a href="" class="btn btn-sm btn-primary" ng-click="mappingPortsToLink(dest, piPort2, pInt, pEth)">Map</a>
+                <a ng-show="dstPortAttahed" class="btn btn-sm btn-primary" ng-click="attachPortsToLink('dest', piPort2)">Attach destination port</a>
+                {{dstPortAttahed}}
             </div>
-        
+
         </div>
     </form>
+    <div>
+        <a href="" class="btn btn-sm btn-primary" ng-click="closeThisDialog()">Close dialog</a>
+    </div>
 </div>

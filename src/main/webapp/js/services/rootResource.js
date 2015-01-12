@@ -7,13 +7,13 @@ services.factory('RootResourceService', ['$http', 'x2js', 'HistoryService', func
                 var promise = $http.get('rest/mqnaas/IRootResourceProvider').then(function (response) {
                     var json = x2js.xml_str2json(response.data);
                     var his = new HistoryService();
-                    his.content = response.status+" - GET (IRootResourceAdministrastion): "+response.statusText;
+                    his.content = response.status+" - GET (IRootResourceAdministration): "+response.statusText;
                     his.type = "INFO";
                     his.$save();
                     return json;
                 }, function(response){
                     var his = new HistoryService();
-                    his.content = response.status+" - GET List (IRootResourceAdministrastion): "+response.statusText;
+                    his.content = response.status+" - GET List (IRootResourceAdministration): "+response.statusText;
                     his.type = "ERROR";
                     his.$save();
                 });
@@ -24,13 +24,13 @@ services.factory('RootResourceService', ['$http', 'x2js', 'HistoryService', func
                     console.log(response);
                     var json = response.data;
                     var his = new HistoryService();
-                    his.content = response.status+" - PUT (IRootResourceAdministrastion): "+response.data;
+                    his.content = response.status+" - PUT (IRootResourceAdministration): "+response.data;
                     his.type = "INFO";
                     his.$save();
                     return json;
                 }, function(response){
                     var his = new HistoryService();
-                    his.content = response.status+" - PUT (IRootResourceAdministrastion): "+response.statusText;
+                    his.content = response.status+" - PUT (IRootResourceAdministration): "+response.statusText;
                     his.type = "ERROR";
                     his.$save();
                 });
@@ -40,7 +40,7 @@ services.factory('RootResourceService', ['$http', 'x2js', 'HistoryService', func
                 var promise = $http.get('rest/mqnaas/IRootResourceProvider/'+id).then(function (response) {
                     var json = x2js.xml_str2json(response.data);
                     var his = new HistoryService();
-                    his.content = response.status+" - GET (IRootResourceAdministrastion): "+response.statusText;
+                    his.content = response.status+" - GET (IRootResourceAdministration): "+response.statusText;
                     his.type = "INFO";
                     his.$save();
                     return json;
@@ -57,7 +57,7 @@ services.factory('RootResourceService', ['$http', 'x2js', 'HistoryService', func
                     console.log(response);
 //                    var json = x2js.xml_str2json(response.data);
                     var his = new HistoryService();
-                    his.content = response.status+" - DELETE (IRootResourceAdministrastion): "+response.data;
+                    his.content = response.status+" - DELETE (IRootResourceAdministration): "+response.data;
                     his.type = "INFO";
                     his.$save();
 //                    return json;

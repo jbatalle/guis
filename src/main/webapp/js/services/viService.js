@@ -6,7 +6,7 @@ services.factory('viService', ['$http', 'HistoryService', function ($http, Histo
             list: function () {
                 var promise = $http.get("rest/vi").then(function (response) {
                     var his = new HistoryService();
-                    his.content = response.status+" - GET (Get VI List): "+response.data;
+                    his.content = response.status+" - GET (Get VI List)";
                     his.type = "INFO";
                     his.$save();
                     return response.data;

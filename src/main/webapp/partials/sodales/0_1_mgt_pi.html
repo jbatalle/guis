@@ -26,7 +26,28 @@
                     </div>
                     <div class="panel-body" style="text-align: center;">
                         <a href="" ng-hide="networkId" ng-click="createNetwork()" class="btn btn-xs btn-default" title="Create Network">Create Network</a>
-                        <div grapheditor ng-show="networkId"></div>
+                        <div grapheditor ng-model="sodalesPiMgtCtrl" ng-show="networkId"></div>
+                    </div>
+                    <div ng-show="networkId">
+                        <h3>List of resources</h3>
+                        <ul>
+                            <li ng-repeat="res in networkElements" >
+                                <a ng-click="getResouceInfo(res)"> {{res}}</a>
+                                <a ng-click="deleteResource(res)"> Remove </a>
+                            </li>
+                        </ul>
+                        <h3>Links</h3>
+                        <ul>
+                            <li ng-repeat="link in createdLinkInfo" >
+                                {{createdLink}}: <a ng-click="getResouceInfo(link)"> {{link}}</a>
+                                <a ng-click="deleteResource(link)"> Remove </a>
+                            </li>
+                        </ul>
+                        <div ng-show="getSliceInfo">
+                            <h3>Resource Info</h3>
+                            Slice: {{getSliceInfo}}<br/>
+                            Units: <span ng-repeat="unit in getUnitsList"><a ng-click="openUnitDialog(unit)">{{unit}}</a> </span><br/>
+                        </div>
                     </div>
                 </div>
             </div>
