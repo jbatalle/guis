@@ -1,18 +1,34 @@
 <div class="container-fluid" ng-controller="sodalesPiMgtCtrl">
-    <b>Adding a ARN resource</b>
+    <b>Configuration VLAN conectivity ARN</b>
+    <upLinkIfaces>16842752</upLinkIfaces>
+    <upLinkIfaces>83951616</upLinkIfaces>
+    <downLinkIfaces>50397184</downLinkIfaces>
+    <downLinkIfaces>67174400</downLinkIfaces>
+    <upLinkVlan>100</upLinkVlan>
+    <downLinkVlan>200</downLinkVlan>
     <form action="createARN" method="post" name="editForm">
         <div>
-            <div>Select network
-                <select ng-model="arn.network">
-                    <option selected>{{networkId}}</option>
-                </select> 
+            <div>Enter uplink iface
+                <input type="text" class="form-control" ng-model="arn.upLinkIfaces" name="endpoint" >
             </div>
-            <div>Enter the endpoint (URL)
-                <input type="text" class="form-control" ng-model="arn.endpoint" name="endpoint" >
+            <div>Enter uplink iface
+                <input type="text" class="form-control" ng-model="arn.upLinkIfaces" name="endpoint" >
+            </div>
+            <div>Enter uplink iface
+                <input type="text" class="form-control" ng-model="arn.downLinkIfaces" name="endpoint" >
+            </div>
+            <div>Enter uplink iface
+                <input type="text" class="form-control" ng-model="arn.downLinkIfaces" name="endpoint" >
+            </div>
+            <div>Enter uplink iface
+                <input type="text" class="form-control" ng-model="arn.upLinkVlan" name="endpoint" >
+            </div>
+            <div>Enter uplink iface
+                <input type="text" class="form-control" ng-model="arn.downLinkVlan" name="endpoint" >
             </div>
             <br/>
             <div>
-                <a href="" class="btn btn-sm btn-primary" ng-click="addARN(arn)">Add</a>
+                <a href="" class="btn btn-sm btn-primary" ng-click="Configure(arn)">Add</a>
             </div>
         </div>
     </form>
