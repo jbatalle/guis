@@ -190,9 +190,13 @@ angular.module('openNaaSApp')
 
             $scope.equipmentBoards = function () {
                 var requestData = getEquipment($scope.infId);
-                arnService.put(requestData).then(function (response) {
-                    $scope.equipBoard = response.response.operation.alarmRegisterList;
-                });
+                var xml = "<?xml version='1.0' encoding='utf-8'?><response timestamp='1421071666' localDate='2015/01/12' localTime='14:07:46' version='3.5.0-r' ><operation type='show' entity='alarmRegister' ><alarmRegisterList><alarmRegister id='0' code='36866' accessType='0' startOrEnd='1' timeStamp='1421071626' localTimeStamp='1421071666' interfaceId='83951616' accessIndex='' accessInterface='' lagMember='' success='' serviceId='' macAddr='' /><alarmRegister id='1' code='99901' accessType='0' startOrEnd='1' timeStamp='1421071627' localTimeStamp='1421071666' interfaceId='83951616' accessIndex='' accessInterface='' lagMember='' success='' serviceId='' macAddr='' /><alarmRegister id='2' code='36866' accessType='0' startOrEnd='1' timeStamp='1421071628' localTimeStamp='1421071666' interfaceId='83951617' accessIndex='' accessInterface='' lagMember='' success='' serviceId='' macAddr='' /><alarmRegister id='3' code='99901' accessType='0' startOrEnd='1' timeStamp='1421071629' localTimeStamp='1421071666' interfaceId='83951617' accessIndex='' accessInterface='' lagMember='' success='' serviceId='' macAddr='' /></alarmRegisterList><result error='00000000' errorStr='OK'/></operation></response>";
+                var x2js = new X2JS();
+                var json = x2js.xml_str2json(xml);
+                $scope.equipBoard = json.response.operation.alarmRegisterList
+//                arnService.put(requestData).then(function (response) {
+//                    $scope.equipBoard = response.response.operation.alarmRegisterList;
+//                });
             };
             $scope.fanModuleStatus = function () {
                 var requestData = getFanModule($scope.infId);

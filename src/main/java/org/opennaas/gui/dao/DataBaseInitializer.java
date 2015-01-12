@@ -46,7 +46,7 @@ public class DataBaseInitializer {
         adminUser.addRole("admin");
         this.userDao.save(adminUser);
 
-        ServiceProvider sp = new ServiceProvider();
+/*        ServiceProvider sp = new ServiceProvider();
         sp.setName("SP1");
         List<String> vi = new ArrayList<String>();
         vi.add("vi-1");
@@ -54,7 +54,7 @@ public class DataBaseInitializer {
         this.serviceProviderDao.save(sp);
         
         this.serviceProviderDao.add((long) 1, "vi-2");
-        
+   */     
         VI VI = new VI();
     }
 }

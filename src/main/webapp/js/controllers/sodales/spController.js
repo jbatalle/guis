@@ -8,7 +8,7 @@ angular.module('openNaaSApp')
             $scope.data = [];
             $scope.updateSpList = function () {
                 spService.list().then(function (data) {
-                  console.log(data);  
+                    console.log(data);
                 });
                 var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
                 MqNaaSResourceService.list(urlListVI).then(function (result) {
@@ -18,16 +18,15 @@ angular.module('openNaaSApp')
                 });
                 spService.getSPByName($rootScope.spName).then(function (result) {
                     console.log(result);
-                    result.vi.forEach(function(vi){
-                        viService.getVIByName(vi).then(function(viInfo){
-                        console.log(viInfo);
-                        $scope.data.push({name:viInfo.name, date: viInfo.date, status:"Created"});
-                        $scope.tableParams.reload();
+                    result.vi.forEach(function (vi) {
+                        viService.getVIByName(vi).then(function (viInfo) {
+                            console.log(viInfo);
+                            $scope.data.push({name: viInfo.name, date: viInfo.date, status: "Created"});
+                            $scope.tableParams.reload();
 //                        $scope.data.push(viService.getVIByName(vi));
                         });
                     });
 //                    $scope.data = result.vi;
-                    
                 });
             };
             $scope.updateSpList();
@@ -51,64 +50,39 @@ angular.module('openNaaSApp')
             console.log("Edit VI : " + $routeParams.id);
             $scope.viId = $routeParams.id;
             $scope.virtualPort = [];
-            var urlPeriod = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestAdministration/period";
-            MqNaaSResourceService.get(urlPeriod).then(function (result) {
-                $scope.period = result.period;
-                $scope.period.startDate = parseInt($scope.period.startDate * 1000);
-                $scope.period.endDate = parseInt($scope.period.endDate * 1000);
-            });
-
             
-            $scope.addResourceToGraph = function (name) {
-                console.log($scope.ngDialogData);
-                console.log(name);
-                createElement(name, $scope.ngDialogData.nodeType, $scope.ngDialogData.divPos);
-                ngDialog.close();
+            $scope.getNetworkResources = function () {
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider";
+                MqNaaSResourceService.get(url).then(function (result) {
+                    $scope.networkRes = result.IRootResource.IRootResourceId;
+                });
             };
 
-            $scope.getVirtualPorts = function (virtualRes) {
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtualRes + "/IPortManagement";
-                MqNaaSResourceService.get(url).then(function (result) {
-                    $scope.virtualPorts = result;
-                });
-            };
-            $scope.getPhysicalPorts = function (resourceName) {
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/IPortManagement";
-                MqNaaSResourceService.get(url).then(function (result) {
-                    $scope.physicalPorts = result;
-                });
-            };
-            $scope.openMappingDialog = function(source, target){
-                console.log("FUNCTION IS CALLED");
-                console.log(source);
-                if(source === undefined || target === undefined){
-                    $scope.getListVirtualResources();
-                    $scope.getListRealResources();
-                } else if(source.indexOf("ARN") !== -1 || source.indexOf("CPE") !== -1 || source.indexOf("TSON") !== -1){
-                    $scope.physicalPorts = $scope.getPhysicalPorts(source);
-                    $scope.virtualPorts = $scope.getVirtualPorts(target);
-                } else {
-                    $scope.physicalPorts = $scope.getPhysicalPorts(target);
-                    $scope.virtualPorts = $scope.getVirtualPorts(source);
-                }
-                console.log($scope);
+            $scope.openOperationARNDialog = function (source, target) {
                 ngDialog.open({
-                    template: 'partials/createVI/mappingPortsDialog.html',
+                    template: 'partials/sp/arnOpDialog.html',
                     scope: $scope
                 });
             };
             
-            $scope.getListVirtualResources = function() {
-                viService.getVIByName($scope.viId).then(function(response){
+            $scope.openOperationCPEDialog = function (source, target) {
+                ngDialog.open({
+                    template: 'partials/sp/cpeOpDialog.html',
+                    scope: $scope
+                });
+            };
+
+            $scope.getListVirtualResources = function () {
+                viService.getVIByName($scope.viId).then(function (response) {
                     $scope.virtualResources = response.viRes;
                 });
             };
-            $scope.getListRealResources = function() {
+            $scope.getListRealResources = function () {
                 $scope.physicalResources = localStorageService.get("networkElements");
             };
-            
-            $scope.physicalPorts = $scope.getPhysicalPorts("ARN-Internal-1.0-3");
-            $scope.virtualPorts = $scope.getVirtualPorts("req-1");
+
+//            $scope.physicalPorts = $scope.getPhysicalPorts("ARN-Internal-1.0-3");
+//            $scope.virtualPorts = $scope.getVirtualPorts("req-1");
         })
         .controller('spStatsController', function ($scope, ngTableParams, $filter, $routeParams, localStorageService, ngDialog, arnService, cpeService, $interval, viService) {
             var promise;
@@ -116,12 +90,12 @@ angular.module('openNaaSApp')
             $scope.selected = "";
             $scope.vi = $routeParams.id;
             $scope.vi = "vi-1";
-            viService.getVIByName($scope.vi).then(function(result){
+            viService.getVIByName($scope.vi).then(function (result) {
                 console.log(result);
                 console.log(result.viRes);
                 $scope.availableResources;
             });
-            
+
             localStorageService.get("networkElements").forEach(function (el) {
                 console.log(el);
                 if (el !== null)
@@ -172,28 +146,28 @@ angular.module('openNaaSApp')
                 var data = getLinkStatus();
 //                arnService.put(data).then(function (response) {
 //                    var data = response.response.operation.interfaceList.interface;
-                    data = [{_name: "Eth 1"}, {_name: "Eth 2"}, {_name: "Eth 4"}];
-                    console.log(data);
-                    $scope.element = $routeParams.id;
+                data = [{_name: "Eth 1"}, {_name: "Eth 2"}, {_name: "Eth 4"}];
+                console.log(data);
+                $scope.element = $routeParams.id;
 //                $scope.data = data.response.operation.interfaceList.interface;
 //                localStorageService.set("mqNaaSElements", data);
 //                console.log($scope.data);
-                    $scope.tableParams = new ngTableParams({
-                        page: 1, // show first page
-                        count: 10, // count per page
-                        sorting: {
-                            date: 'desc'     // initial sorting
-                        }
-                    }, {
-                        total: data.length,
-                        getData: function ($defer, params) {
-                            console.log(data);
-                            
-                            var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                        },
-                        $scope: {$data: {}}
-                    });
+                $scope.tableParams = new ngTableParams({
+                    page: 1, // show first page
+                    count: 10, // count per page
+                    sorting: {
+                        date: 'desc'     // initial sorting
+                    }
+                }, {
+                    total: data.length,
+                    getData: function ($defer, params) {
+                        console.log(data);
+
+                        var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+                        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    },
+                    $scope: {$data: {}}
+                });
 //                });
             };
             $scope.getCPEPortList = function () {
@@ -206,7 +180,7 @@ angular.module('openNaaSApp')
                 var reqUrl = "meaPmCounter.xml?unit=0&pmId=" + portId;
                 $interval.cancel(promise);
                 promise = $interval(function () {
-                    
+
                     cpeService.get(reqUrl).then(function (response) {
                         $scope.content = response.meaPmCounter.PmCounter;
                         console.log($scope.content);
@@ -219,7 +193,7 @@ angular.module('openNaaSApp')
                     $interval.cancel(promise);
                 }
             });
-            
+
             $scope.getCCM = function (portId) {
                 var reqUrl = "meaGetCcmDefectState.xml?unit=0&streamId=1";
                 var xml = '<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/css" href=="olg_rss.css" ?><meaCcmCounter xmlns="http://www.ethernity-net.com/enet/CcmCounter"><CcmDefectCount><unit>0</unit><LastSequenc>1832557</LastSequenc><Unexpected_MEG_ID>0</Unexpected_MEG_ID><Unexpected_MEP_ID>0</Unexpected_MEP_ID><reorder>4</reorder><eventLoss>0</eventLoss></CcmDefectCount></meaCcmCounter>';

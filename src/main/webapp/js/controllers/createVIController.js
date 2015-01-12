@@ -65,15 +65,15 @@ angular.module('openNaaSApp')
                 viService.updateStatus(viReq, "Processing");
                 MqNaaSResourceService.put(url).then(function (result) {
                     $scope.resRoot = result;//empty
-                    viService.updateStatus(viReq, "Processing");
+//                    viService.updateStatus(viReq, "Processing");
                     $rootScope.info = viReq + " created";
                 });
-                promise = $interval(function () {
-                    viService.updateStatus(viReq, "Created");
-                    $scope.updateSpList();
-                    $rootScope.info = " OK " + viReq + " Created, received 200 from IML";
-                }, 4000);
-                viService.updateStatus(viReq, "Created");
+                /*                promise = $interval(function () {
+                 viService.updateStatus(viReq, "Created");
+                 $scope.updateSpList();
+                 $rootScope.info = " OK " + viReq + " Created, received 200 from IML";
+                 }, 4000);
+                 */                viService.updateStatus(viReq, "Created");
                 $rootScope.info = viReq + " created";
                 $scope.updateSpList();
             };
@@ -121,7 +121,7 @@ angular.module('openNaaSApp')
                 MqNaaSResourceService.put(url).then(function (virtualResource) {
                     $scope.resourceRequest = virtualResource;
                     viService.addResourceToVI($scope.viId, virtualResource, resourceType).then(function () {
-                        console.log("Added resource with name: "+virtualResource);
+                        console.log("Added resource with name: " + virtualResource);
                         var vEl = localStorageService.get("virtualElements");
                         vEl.push({name: virtualResource, type: resourceType});
                         localStorageService.set("virtualElements", vEl);
@@ -138,6 +138,7 @@ angular.module('openNaaSApp')
                 });
             };
             $scope.mapVirtualResourceToRealResource = function (resourceRequest, realResource) {
+                console.log(resourceRequest);
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceMapping/defineMapping/?arg0=" + resourceRequest + "&arg1=" + realResource;
                 MqNaaSResourceService.get(url).then(function (result) {
                     $scope.resRoot = result;//empty
@@ -162,12 +163,12 @@ angular.module('openNaaSApp')
                     viService.updateStatus(viReq, "Processing");
                     $rootScope.info = viReq + " created";
                 });
-                promise = $interval(function () {
-                    viService.updateStatus(viReq, "Created");
-                    $scope.updateSpList();
-                    $rootScope.info = " OK " + viReq + " Created, received 200 from IML";
-                }, 4000);
-                viService.updateStatus(viReq, "Created");
+                /*                promise = $interval(function () {
+                 viService.updateStatus(viReq, "Created");
+                 $scope.updateSpList();
+                 $rootScope.info = " OK " + viReq + " Created, received 200 from IML";
+                 }, 4000);
+                 */                viService.updateStatus(viReq, "Created");
                 $rootScope.info = viReq + " created";
             };
             $scope.addResourceToGraph = function (name) {
@@ -177,6 +178,7 @@ angular.module('openNaaSApp')
             };
 
             $scope.getVirtualPorts = function (virtualRes) {
+                console.log(virtualRes);
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtualRes + "/IPortManagement";
                 MqNaaSResourceService.get(url).then(function (result) {
                     $scope.virtualPorts = result;
@@ -222,8 +224,8 @@ angular.module('openNaaSApp')
                 $scope.physicalResources = localStorageService.get("networkElements");
             };
 
-            $scope.physicalPorts = $scope.getPhysicalPorts("ARN-Internal-1.0-3");
-            $scope.virtualPorts = $scope.getVirtualPorts("req-1");
+//            $scope.physicalPorts = $scope.getPhysicalPorts("ARN-Internal-1.0-3");
+//            $scope.virtualPorts = $scope.getVirtualPorts("req-1");
 
             $scope.getMappingPort = function (virtualPort) {
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceMapping/mapping/?arg0=" + virtualPort;
@@ -332,26 +334,30 @@ angular.module('openNaaSApp')
                     var unitType = "port";
                     var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement?arg0=" + unitType;
                     MqNaaSResourceService.put(url).then(function (data) {
-                        console.log("SET unit" +data);
+                        console.log("SET unit" + data);
                         var unitId = data;
-                        var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId+"/IUnitAdministration/range";
+                        var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId + "/IUnitAdministration/range";
                         var range = getRangeUnit(1, 2);
                         MqNaaSResourceService.put(url, range).then(function () {
+
+                            var unitType = "vlan";
+                            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement?arg0=" + unitType;
+                            MqNaaSResourceService.put(url).then(function (data) {
+                                var unitId = data;
+                                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId + "/IUnitAdministration/range";
+                                var range = getRangeUnit(1, 2);
+                                MqNaaSResourceService.put(url, range).then(function () {
+
+                                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/ISliceAdministration/cubes";
+                                    var cubes = getCubeforTSON(1, 1, 2, 2);
+                                    MqNaaSResourceService.put(url, cubes).then(function () {
+                                    });
+                                });
+                            });
                         });
                     });
-                    var unitType = "vlan";
-                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement?arg0=" + unitType;
-                    MqNaaSResourceService.put(url).then(function (data) {
-                        var unitId = data;
-                        var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId+"/IUnitAdministration/range";
-                        var range = getRangeUnit(1, 2);
-                        MqNaaSResourceService.put(url, range).then(function () {
-                        });
-                    });
-                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/ISliceAdministration/cubes";
-                    var cubes = getCubeforTSON(1, 1, 2, 2);
-                    MqNaaSResourceService.put(url, cubes).then(function () {
-                    });
+
+
                 });
             };
         });

@@ -68,7 +68,9 @@ angular.module('openNaaSApp')
             };
 
             $scope.addARN = function (data) {
+                console.log(data);
                 var ARN = getResource("ARN", data.endpoint);
+                console.log(ARN);
                 url = generateUrl("IRootResourceAdministration", $rootScope.networkId, "IRootResourceAdministration");
                 arnService.setUrl(data.endpoint);
                 MqNaaSResourceService.put(url, ARN).then(function (data) {
@@ -86,7 +88,9 @@ angular.module('openNaaSApp')
             };
 
             $scope.addCPE = function (data) {
+                console.log(data);
                 var CPE = getResource("CPE", data.endpoint);
+                console.log(CPE);
                 url = generateUrl("IRootResourceAdministration", $rootScope.networkId, "IRootResourceAdministration");
                 cpeService.setUrl(data.endpoint);
                 MqNaaSResourceService.put(url, CPE).then(function (data) {
@@ -130,29 +134,34 @@ angular.module('openNaaSApp')
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/slice";
                 console.log(url);
                 MqNaaSResourceService.getText(url).then(function (data) {
-                    console.log("Slice: "+data);
+                    console.log("Slice: " + data);
                     var sliceId = data;
                     var unitType = "port";
-                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/IUnitManagement?arg0="+unitType;
+                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/IUnitManagement?arg0=" + unitType;
                     MqNaaSResourceService.put(url).then(function (data) {
-                        console.log("SET unit" +data);
+                        console.log("SET unit" + data);
                         var unitId = data;
-                        var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId+"/IUnitAdministration/range";
+                        var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId + "/IUnitAdministration/range";
                         var range = getRangeUnit(1, 2);
-                        MqNaaSResourceService.put(url, range).then(function () {console.log("Set Range1"); });
+                        MqNaaSResourceService.put(url, range).then(function () {
+                            console.log("Set Range1");
+                            var unitType = "vlan";
+                            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/IUnitManagement?arg0=" + unitType;
+                            MqNaaSResourceService.put(url).then(function (data) {
+                                var unitId = data;
+                                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId + "/IUnitAdministration/range";
+                                var range = getRangeUnit(1, 2);
+                                MqNaaSResourceService.put(url, range).then(function () {
+                                    console.log("Set Range1");
+                                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/ISliceAdministration/cubes";
+                                    var cubes = getCubeforTSON(1, 1, 2, 2);
+                                    MqNaaSResourceService.put(url, cubes).then(function () {
+                                    });
+                                });
+                            });
+                        });
                     });
-                    var unitType = "vlan";
-                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/IUnitManagement?arg0="+unitType;
-                    MqNaaSResourceService.put(url).then(function (data) {
-                        var unitId = data;
-                        var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId+"/IUnitAdministration/range";
-                        var range = getRangeUnit(1, 2);
-                        MqNaaSResourceService.put(url, range).then(function () { console.log("Set Range1"); });
-                    });
-                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/ISliceAdministration/cubes";
-                    var cubes = getCubeforTSON(1, 1, 2, 2);
-                    MqNaaSResourceService.put(url, cubes).then(function () {
-                    });
+
                 });
             };
 

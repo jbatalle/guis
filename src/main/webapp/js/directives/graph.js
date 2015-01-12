@@ -118,7 +118,7 @@ angular.module('openNaaSApp')
                     controller: function ($scope, ngDialog) {
                         console.log($scope);
                         $scope.arn = {network: "Network-Internal-1.0-2", endpoint: "http://fibratv.dtdns.net:41080"};
-                        $scope.cpe = {network: "Network-Internal-1.0-2", endpoint: "http://fibratv.dtdns.net:41081"};
+                        $scope.cpe = {network: "Network-Internal-1.0-2", endpoint: "http://fibra2222tv.dtdns.net:41081"};
                         $scope.openARNDialog = function (nodeType, divPos) {
 //                            $scope.arn = {endpoint: "asdasdsa"};
                             ngDialog.open({

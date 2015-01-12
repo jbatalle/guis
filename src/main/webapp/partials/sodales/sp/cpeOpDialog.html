@@ -1,18 +1,29 @@
 <div class="container-fluid" ng-controller="sodalesPiMgtCtrl">
-    <b>Adding a ARN resource</b>
+    <egressPortId>104</egressPortId>
+    <egressVlan>300</egressVlan>
+    <ingressPortId>105</ingressPortId>
+    <ingressVlan>200</ingressVlan>
+    <unitId>0</unitId>
     <form action="createARN" method="post" name="editForm">
         <div>
-            <div>Select network
-                <select ng-model="arn.network">
-                    <option selected>{{networkId}}</option>
-                </select> 
+            <div>Egress port id
+                <input placeholder="104" type="text" class="form-control" ng-model="cpe.egressPortId" name="egressPortId" >
             </div>
-            <div>Enter the endpoint (URL)
-                <input type="text" class="form-control" ng-model="arn.endpoint" name="endpoint" >
+            <div>Egress vlan
+                <input type="text" class="form-control" ng-model="cpe.egressVlan" name="egressVlan" >
+            </div>
+            <div>Ingress port id
+                <input type="text" class="form-control" ng-model="cpe.ingressPortId" name="ingressPortId" >
+            </div>
+            <div>Ingress vlan
+                <input type="text" class="form-control" ng-model="cpe.ingressVlan" name="ingressVlan" >
+            </div>
+            <div>Unit id
+                <input type="text" class="form-control" ng-model="cpe.unitId" name="unitId" >
             </div>
             <br/>
             <div>
-                <a href="" class="btn btn-sm btn-primary" ng-click="addARN(arn)">Add</a>
+                <a href="" class="btn btn-sm btn-primary" ng-click="Configure(cpe)">Add</a>
             </div>
         </div>
     </form>
