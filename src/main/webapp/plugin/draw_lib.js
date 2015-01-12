@@ -305,6 +305,7 @@ console.log("Change X "+(parentNode.x+d.posx));
         });
         nodeEnter.on("mouseup", function(d){
             //if is a Virtual Resource
+            if (!ctrlKey) {
             var parentNode = graph.getNodes().filter(function (p) { return d.name == p.name})[0];
             console.log(parentNode);
 console.log(node);
@@ -316,6 +317,7 @@ console.log("Change X "+(parentNode.x));
                     endState.y = (parentNode.y);
                     endState.transitions = [];
                     nodeMouseUpMapping(endState);
+                }
         });
         nodeEnter.on("contextmenu", function(d, index) {
              if(contextMenuShowing) {

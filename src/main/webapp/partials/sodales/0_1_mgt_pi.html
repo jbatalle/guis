@@ -39,15 +39,10 @@
                         <h3>Links</h3>
                         <ul>
                             <li ng-repeat="link in createdLinkInfo" >
-                                {{createdLink}}: <a ng-click="getResouceInfo(link)"> {{link}}</a>
+                                {{createdLink}}: {{link.s}} to {{link.t}}
                                 <a ng-click="deleteResource(link)"> Remove </a>
                             </li>
                         </ul>
-                        <div ng-show="getSliceInfo">
-                            <h3>Resource Info</h3>
-                            Slice: {{getSliceInfo}}<br/>
-                            Units: <span ng-repeat="unit in getUnitsList"><a ng-click="openUnitDialog(unit)">{{unit}}</a> </span><br/>
-                        </div>
                     </div>
                 </div>
             </div>

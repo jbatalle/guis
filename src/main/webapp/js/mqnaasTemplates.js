@@ -15,7 +15,7 @@ getPeriod = function(start, end){
 };
 
 getCubeforTSON = function(lowRange1, uppRange1, lowRange2, uppRange2){
-  return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:cubesList xmlns:ns2="org.mqnaas"><cubes><cube><ranges><range><lowerBound>'+lowRange1+'</lowerBound><upperBound>'+uppRange1+'</upperBound></range></ranges></cube><cube><ranges><range><lowerBound>'+lowRange2+'</lowerBound><upperBound>'+uppRange2+'</upperBound></range></ranges></cube></cubes></ns2:cubesList>';
+    return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:cubesList xmlns:ns2="org.mqnaas"><cubes><cube><ranges><range><lowerBound>'+lowRange1+'</lowerBound><upperBound>'+uppRange1+'</upperBound></range><range><lowerBound>'+lowRange2+'</lowerBound><upperBound>'+uppRange2+'</upperBound></range></ranges></cube></cubes></ns2:cubesList>';
 };
 
 getRangeUnit = function(lowerBound, upperBound){

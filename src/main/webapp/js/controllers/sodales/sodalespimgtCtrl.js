@@ -14,7 +14,7 @@ angular.module('openNaaSApp')
                 console.log($scope.listNetworks);
                 if (!$rootScope.networkId) {
                     $rootScope.networkId = data[1];
-                    localStorageService.set("networkId", netId);
+                    localStorageService.set("networkId", data[1]);
                 }
                 $scope.selectedNetwork = $rootScope.networkId;
                 console.log("Clean localStorage networkElements due network is not created.");
@@ -73,13 +73,14 @@ angular.module('openNaaSApp')
                 arnService.setUrl(data.endpoint);
                 MqNaaSResourceService.put(url, ARN).then(function (data) {
                     $scope.dataARN = data;
+                    $scope.configurePhysicalResource(data);
                     createElement(data, $scope.ngDialogData.nodeType, $scope.ngDialogData.divPos);
                 });
                 ngDialog.close();
             };
-            
+
             $scope.deleteResource = function (resName) {
-                url = generateUrl("IRootResourceAdministration", $rootScope.networkId, "IRootResourceAdministration/"+resName);
+                url = generateUrl("IRootResourceAdministration", $rootScope.networkId, "IRootResourceAdministration/" + resName);
                 MqNaaSResourceService.remove(url).then(function (data) {
                 });
             };
@@ -90,6 +91,7 @@ angular.module('openNaaSApp')
                 cpeService.setUrl(data.endpoint);
                 MqNaaSResourceService.put(url, CPE).then(function (data) {
                     $scope.dataCPE = data;
+                    $scope.configurePhysicalResource(data);
                     createElement(data, $scope.ngDialogData.nodeType, $scope.ngDialogData.divPos);
                 });
                 ngDialog.close();
@@ -112,23 +114,53 @@ angular.module('openNaaSApp')
                         return;
                     data = checkIfIsArray(data.IRootResource.IRootResourceId);
                     $scope.networkElements = data;
-                    data.forEach(function(resource){
-                        $scope.getRealPorts(resource); 
+                    data.forEach(function (resource) {
+                        $scope.getRealPorts(resource);
                     });
-                    
+
                     localStorageService.set("networkElements", data);
                     console.log("GEt and store ports");
-                    
+
                 }, function (error) {
                     console.log(error);
                 });
             };
 
+            $scope.configurePhysicalResource = function (resourceName) {
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/slice";
+                console.log(url);
+                MqNaaSResourceService.getText(url).then(function (data) {
+                    console.log("Slice: "+data);
+                    var sliceId = data;
+                    var unitType = "port";
+                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/IUnitManagement?arg0="+unitType;
+                    MqNaaSResourceService.put(url).then(function (data) {
+                        console.log("SET unit" +data);
+                        var unitId = data;
+                        var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId+"/IUnitAdministration/range";
+                        var range = getRangeUnit(1, 2);
+                        MqNaaSResourceService.put(url, range).then(function () {console.log("Set Range1"); });
+                    });
+                    var unitType = "vlan";
+                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/IUnitManagement?arg0="+unitType;
+                    MqNaaSResourceService.put(url).then(function (data) {
+                        var unitId = data;
+                        var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId+"/IUnitAdministration/range";
+                        var range = getRangeUnit(1, 2);
+                        MqNaaSResourceService.put(url, range).then(function () { console.log("Set Range1"); });
+                    });
+                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + sliceId + "/ISliceAdministration/cubes";
+                    var cubes = getCubeforTSON(1, 1, 2, 2);
+                    MqNaaSResourceService.put(url, cubes).then(function () {
+                    });
+                });
+            };
+
             $scope.configureResourceSlices = function (resName) {
-                var sliceId = $scope.getSlice(resName);
-                var unitId = $scope.createUnit(resName, sliceId, "port");
-                var unitId = $scope.setRangeUnit(resName, sliceId);
-                var unitId = $scope.setCubes(resName, sliceId);
+//                var sliceId = $scope.getSlice(resName);
+//                var unitId = $scope.createUnit(resName, sliceId, "port");
+//                var unitId = $scope.setRangeUnit(resName, sliceId);
+//                var unitId = $scope.setCubes(resName, sliceId);
             };
             $scope.getSlice = function (resourceName) {//get
                 var url = generateUrl("IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/slice");
@@ -172,17 +204,15 @@ angular.module('openNaaSApp')
                 MqNaaSResourceService.get(url).then(function (result) {
                     console.log(result);
                     console.log(result.IResource.IResourceId);
-                    var ports =[];
-                    result.IResource.IResourceId.forEach( function(entry){
-                       console.log(entry);
-                       ports.push({"_id": entry});
+                    var ports = [];
+                    result.IResource.IResourceId.forEach(function (entry) {
+                        console.log(entry);
+                        ports.push({"_id": entry});
                     });
                     localStorageService.set(resourceName, {name: resourceName, ports: {port: ports}});
-                console.log("Swet ports");
-                console.log(localStorageService.get(resourceName));
+                    console.log("Set ports");
+                    console.log(localStorageService.get(resourceName));
                 });
-                 
-                
             };
 
             $scope.createLinkDialog = function (source, dest) {
@@ -208,15 +238,16 @@ angular.module('openNaaSApp')
             $scope.attachPortsToLink = function (type, portId) {
                 var linkId = $scope.createdLink;
                 var url;
-                if (type === "source"){
+                if (type === "source") {
                     url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement/" + linkId + "/ILinkAdministration/srcPort?arg0=" + portId;
                     $scope.srcPortAttahed = "Source port Attached";
-                }else if (type === "dest"){
+                } else if (type === "dest") {
                     url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement/" + linkId + "/ILinkAdministration/destPort?arg0=" + portId;
                     $scope.dstPortAttahed = "Source port Attached";
                 }
-                MqNaaSResourceService.put(url).then(function (response) {});//empty
-                
+                MqNaaSResourceService.put(url).then(function (response) {
+                });//empty
+
             };
 
             $scope.getLinks = function () {
