@@ -103,5 +103,8 @@ console.log(d);
 console.log("CALL CONtroller vi - maPPing");
 console.log(source);
 console.log(target);
-angular.element(document.getElementById('viMgt')).scope().openMappingDialog(source.id, target.id);
-}
+    try{
+        angular.element(document.getElementById('viMgt')).scope().openMappingDialog(source.id, target.id);
+    } catch(err){console.log("Error1 "+err);}
+        angular.element(document.getElementById('piMgt')).scope().createLinkDialog(source.id, target.id);
+    }

@@ -49,7 +49,7 @@
                             <a href="#!/mgt">PHY Management</a>
                         </li>
                         <li>
-                            <a href="#!/monitoring">Status</a>
+                            <a href="#!/monitoring">Monitoring</a>
                         </li>
                         <li id="openAccessLi" class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="">OpenAccess
@@ -61,14 +61,16 @@
                                 <li><a tabindex="-1" href="#!/openaccess/history">Historic</a></li>
                             </ul>
                         </li>
+                        <li ng-show="hasRole('admin')">Only for ip</li>
+                        <li ng-show="hasRole('user')">Only for sp</li>
                         <li>
-                            <a href="#!/spInfo">SP VI LIst (operation?)</a>
+                            <a href="#!/spInfo">Virtual Slice Management</a>
                         </li>
                         <li>
-                            <a href="#!/spVIInfo/1">SP VI LIst (operation?)</a>
+                            <a href="#!/spVIInfo/1">Virtual Resource Operation</a>
                         </li>
                         <li>
-                            <a href="#!/spStats/1">SP statistics view</a>
+                            <a href="#!/spStats/1">Monitoring</a>
                         </li>
                         
                     </ul>

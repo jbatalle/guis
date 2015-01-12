@@ -56,49 +56,7 @@ angular.module('openNaaSApp')
                 $scope.period.endDate = parseInt($scope.period.endDate * 1000);
             });
 
-            $scope.setPeriod = function (period) {
-                var urlPeriod = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestAdministration/period";
-                var onPeriod = getPeriod(new Date(period.startDate).getTime() / 1000, new Date(period.endDate).getTime() / 1000);//xml
-                MqNaaSResourceService.put(urlPeriod, onPeriod).then(function () {//the response is empty
-                });
-            };
-            $scope.addResourceToVI = function (resourceType) {//resourceType TSON/ARN/CPE...
-                console.log("ADD RESOURCE TO VI");
-                resourceType = resourceType.toUpperCase();
-                console.log(resourceType);
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/?arg0=" + resourceType;
-                MqNaaSResourceService.put(url).then(function (result) {
-                    $scope.resourceRequest = result;
-                    viService.addResourceToVI($scope.viId, result, resourceType);
-                    var vEl = localStorageService.get("virtualElements");
-                    vEl.push({name: result, type: resourceType});
-                    localStorageService.set("virtualElements", vEl);
-                });
-            };
-            $scope.addVirtualPortToResource = function (resourceRequest) {
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + resourceRequest + "/IPortManagement";
-                MqNaaSResourceService.put(url).then(function (result) {
-                    $scope.virtualPort.push(result);
-                });
-            };
-            $scope.mapVirtualResourceToRealResource = function (resourceRequest, realResource) {
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + resourceRequest + "/IRequestResourceMapping/defineMapping/?arg0=" + resourceRequest + "&arg1=" + realResource;
-                MqNaaSResourceService.put(url).then(function (result) {
-                    $scope.resRoot = result;//empty
-                });
-            };
-            $scope.mapVirtualPorts = function (virtualPort, realPort) {
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceMapping/defineMapping/?arg0=" + virtualPort + "&arg1=" + realPort;
-                MqNaaSResourceService.put(url).then(function (result) {
-                    $scope.resRoot = result;//empty
-                });
-            };
-            $scope.sendVIR = function (viReq) {
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/?arg0=" + viReq;
-                MqNaaSResourceService.put(url).then(function (result) {
-                    $scope.resRoot = result;//empty
-                });
-            };
+            
             $scope.addResourceToGraph = function (name) {
                 console.log($scope.ngDialogData);
                 console.log(name);

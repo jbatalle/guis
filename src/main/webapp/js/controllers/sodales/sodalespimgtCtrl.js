@@ -28,6 +28,7 @@ angular.module('openNaaSApp')
                 console.log("Select networkId to rootScope: " + netId);
                 $rootScope.networkId = netId;
                 localStorageService.set("networkId", netId);
+                getMqNaaSResource($rootScope.networkId);
             };
             $scope.list = function () {
                 RootResourceService.list().then(function (data) {
@@ -144,11 +145,67 @@ angular.module('openNaaSApp')
                     return data;
                 });
             };
+            $scope.createLink = function () {
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement";
+                MqNaaSResourceService.put(url).then(function (data) {
+                    $scope.createdLink = data;
+                    localStorageService.set("link", data);
+                    return data;
+                });
+            };
 
             $scope.getRealPorts = function (resourceName) {
                 var xml = "<IResource><IResourceId>port-1</IResourceId><IResourceId>port-2</IResourceId></IResource>";
                 var x2js = new X2JS();
                 var json = x2js.xml_str2json(xml);
                 localStorageService.set("arnPorts", {name: resourceName, ports: json.IResource.IResourceId});
+            };
+
+            $scope.createLinkDialog = function (source, dest) {
+                console.log("Create Link dialog");
+                console.log(source);
+                console.log(dest);
+                $scope.source = source;
+                $scope.dest = dest;
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + source + "/IPortManagement";
+                MqNaaSResourceService.get(url).then(function (result) {
+                    $scope.physicalPorts1 = result;
+                });
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + dest + "/IPortManagement";
+                MqNaaSResourceService.get(url).then(function (result) {
+                    $scope.physicalPorts2 = result;
+                });
+
+                ngDialog.open({
+                    template: 'partials/sodales/createLinkDialog.html',
+                    scope: $scope
+                });
+            };
+            $scope.attachPortsToLink = function (type, portId) {
+                var linkId = $scope.createdLink;
+                var url;
+                if (type === "source")
+                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement/" + linkId + "/ILinkAdministration/srcPort?arg0=" + portId;
+                else if (type === "target")
+                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement/" + linkId + "/ILinkAdministration/dstPort?arg0=" + portId;
+                MqNaaSResourceService.put(url).then(function (response) {
+                });//empty
+            };
+
+            $scope.getLinks = function () {
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + slice + "/IUnitManagement/" + unitId;
+                MqNaaSResourceService.get(url).then(function (response) {
+                    console.log(response.unit);
+                    $scope.links = response.unit;
+                });
+            };
+
+            $scope.mappingPortsToLink = function (res1, port1, portInternalId, portEth) {
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + res1 + "/IPortManagement/" + port1 + "/IAttributeStore/attribute/?arg0=" + portInternalId + "&arg1=" + portEth;
+                MqNaaSResourceService.put(url).then(function (result) {
+                    $scope.resRoot = result;//empty
+                    $scope.mappedPort = "Mapped";
+                    $scope.mappedPorts.push({virt: virtualPort, real: realPort});
+                });
             };
         });

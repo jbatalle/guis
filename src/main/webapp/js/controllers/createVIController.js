@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('openNaaSApp')
-        .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, ngTableParams, viService, localStorageService) {
+        .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, ngTableParams, viService, localStorageService, $interval) {
             console.log("LIST VI");
 //            $rootScope.networkId = "Network-Internal-1.0-2";//to remove
-
+var promise;
             $scope.data = [];
             $scope.updateSpList = function () {
                 var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
@@ -39,6 +39,8 @@ angular.module('openNaaSApp')
                 var urlCreateVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
                 MqNaaSResourceService.put(urlCreateVI).then(function (result) {
 //                    $scope.data.push(result);
+console.log(result);
+if(result == null) return; 
                     var vi = {"name": result, "status": "editing..."};
                     viService.createVI(vi).then(function () {
                         localStorageService.set("virtualElements", []);
@@ -59,16 +61,27 @@ angular.module('openNaaSApp')
 
             $scope.sendVIR = function (viReq) {
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/?arg0=" + viReq;
+                viService.updateStatus(viReq, "Processing");
                 MqNaaSResourceService.put(url).then(function (result) {
                     $scope.resRoot = result;//empty
-                    viService.updateStatus(viReq, "created");
+                    viService.updateStatus(viReq, "Processing");
+                    $rootScope.info = viReq + " created";
                 });
+                promise = $interval(function () {
+                    viService.updateStatus(viReq, "Created");
+                    $scope.updateSpList();
+                    $rootScope.info = " OK " + viReq + " Created, received 200 from IML";
+                }, 4000);
+                viService.updateStatus(viReq, "Created");
+                $rootScope.info = viReq + " created";
+                $scope.updateSpList();
             };
 
         })
-        .controller('editVIController', function ($scope, $rootScope, MqNaaSResourceService, $routeParams, ngDialog, viService, localStorageService) {
+        .controller('editVIController', function ($scope, $rootScope, MqNaaSResourceService, $routeParams, ngDialog, viService, localStorageService, $interval) {
             console.log("Edit VI : " + $routeParams.id);
-    $scope.updateVirtualElements = function () {
+    var promise;
+            $scope.updateVirtualElements = function () {
                 viService.getVIByName($scope.viId).then(function (result) {
                     console.log(result);
                     localStorageService.set("virtualElements", result.viRes);
@@ -86,12 +99,13 @@ angular.module('openNaaSApp')
 
             var urlPeriod = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestAdministration/period";
             MqNaaSResourceService.get(urlPeriod).then(function (result) {
+                if (result == null)
+                    return;
                 $scope.period = result.period;
                 $scope.period.startDate = parseInt($scope.period.startDate * 1000);
                 $scope.period.endDate = parseInt($scope.period.endDate * 1000);
             });
-            
-            
+
             $scope.setPeriod = function (period) {
                 var urlPeriod = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestAdministration/period";
                 var onPeriod = getPeriod(new Date(period.startDate).getTime() / 1000, new Date(period.endDate).getTime() / 1000);//xml
@@ -139,13 +153,18 @@ angular.module('openNaaSApp')
             };
             $scope.sendVIR = function (viReq) {
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/?arg0=" + viReq;
+                viService.updateStatus(viReq, "Processing");
                 MqNaaSResourceService.put(url).then(function (result) {
-                    console.log(result);
                     $scope.resRoot = result;//empty
-                    viService.updateStatus(viReq, "created");
+                    viService.updateStatus(viReq, "Processing");
                     $rootScope.info = viReq + " created";
                 });
-                viService.updateStatus(viReq, "created");
+                promise = $interval(function () {
+                    viService.updateStatus(viReq, "Created");
+                    $scope.updateSpList();
+                    $rootScope.info = " OK " + viReq + " Created, received 200 from IML";
+                }, 4000);
+                viService.updateStatus(viReq, "Created");
                 $rootScope.info = viReq + " created";
             };
             $scope.addResourceToGraph = function (name) {
@@ -274,6 +293,31 @@ angular.module('openNaaSApp')
                 MqNaaSResourceService.get(url).then(function (response) {
                     console.log(response.unit);
                     $scope.unitInfo = response.unit;
+                });
+            };
+
+            $scope.attachPortsDialog = function (type, linkId, portId) {
+                $scope.getLinks();
+                ngDialog.open({
+                    template: 'partials/viResourceInfo.html',
+                    scope: $scope
+                });
+            };
+            $scope.attachPortsToLink = function (type, linkId, portId) {
+                var url;
+                if (type === "source")
+                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement/" + linkId + "/ILinkAdministration/srcPort?arg0=" + portId;
+                else if (type === "target")
+                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement/" + linkId + "/ILinkAdministration/dstPort?arg0=" + portId;
+                MqNaaSResourceService.put(url).then(function (response) {
+                });//empty
+            };
+
+            $scope.getLinks = function () {
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + slice + "/IUnitManagement/" + unitId;
+                MqNaaSResourceService.get(url).then(function (response) {
+                    console.log(response.unit);
+                    $scope.links = response.unit;
                 });
             };
         });

@@ -1,0 +1,25 @@
+<div class="container-fluid">
+    <form action="createARN" method="post" name="editForm">
+        <div>
+            <h3>Connection between resources </h3>({{source}}, {{dest}})
+            <div ng-hide="createdLink">
+            Create link <a href="" class="btn btn-sm btn-primary" ng-click="createLink()">Add</a> {{createdLink}}
+            </div>
+            <div ng-show="createdLink">
+                Link: {{createdLink}}<br/>
+                {{source}}
+                <select placeholder="select virtual port" bs-select ng-model="piPort1" ng-options="port for port in physicalPorts1.IResource.IResourceId" ></select>
+                <input type="text" ng-model="pInt" name="name" class="form-control" bs-typeahead><br/>
+                <input type="text" ng-model="pEth" name="name" class="form-control" bs-typeahead><br/>
+                <a href="" class="btn btn-sm btn-primary" ng-click="mappingPortsToLink(source, piPort1, pInt, pEth)">Map</a>
+                <br/>
+                {{dest}}
+                <select placeholder="select virtual port" bs-select ng-model="piPort2" ng-options="port for port in physicalPorts2.IResource.IResourceId" ></select>
+                <input type="text" ng-model="pInt" name="name" class="form-control" bs-typeahead><br/>
+                <input type="text" ng-model="pEth" name="name" class="form-control" bs-typeahead><br/>
+                <a href="" class="btn btn-sm btn-primary" ng-click="mappingPortsToLink(dest, piPort2, pInt, pEth)">Map</a>
+            </div>
+        
+        </div>
+    </form>
+</div>

@@ -12,6 +12,7 @@ angular.module('openNaaSApp')
             });
             $scope.availableResources = availableResources;
 
+            $scope.dropdown2 = [{"text": "Alarms and notifications", "click": "selectedResource('', 'ARN/OAM')"}];
             $scope.dropdown = [{"text": "CFM/OAM", "click": "selectedResource('', 'CFM/OAM')"}];
             $scope.selectedResource = function (resourceName, resourceType) {
                 //get statistics and send to scope
@@ -33,7 +34,7 @@ angular.module('openNaaSApp')
                     $scope.CPEactive = "active";
                     $scope.ARNactive = "";
                     $scope.ARNStats = false;
-                    $scope.CPEStats = false;
+                    $scope.CPEStats = true;
                     $scope.CFM_OAM = true;
                     $scope.ARN_OAM = false;
                     $scope.getCCM();
@@ -49,12 +50,12 @@ angular.module('openNaaSApp')
                     $scope.CFM_OAM = false;
                     $scope.ARN_OAM = false;
                     $scope.getARNStats();
-                } else if (resourceType === 'ARN_OAM') {
+                } else if (resourceType === 'ARN/OAM') {
                     $scope.selected = resourceName;
                     $scope.noResource = false;
                     $scope.ARNactive = "active";
                     $scope.CPEactive = "";
-                    $scope.ARNStats = false;
+                    $scope.ARNStats = true;
                     $scope.CPEStats = false;
                     $scope.CFM_OAM = false;
                     $scope.ARN_OAM = true;
@@ -179,9 +180,9 @@ angular.module('openNaaSApp')
                 cpeService.get(url).then(function (response) {
                 });
             };
-            
-            $scope.getNotificationsLogging = function(){
-                
+
+            $scope.getNotificationsLogging = function () {
+
             };
 
             $scope.viewStatistics = function (interfaceId) {
@@ -219,14 +220,18 @@ angular.module('openNaaSApp')
                 data = transpose(data);
                 $scope.content = data;
                 $interval.cancel(promise);
-                
+
             });
             promise = $interval(function () {
-                    cpeService.get(reqUrl).then(function (response) {
-                        $scope.content = response.meaPmCounter.PmCounter;
-                        console.log($scope.content);
-                    });
-                }, 1000);
+                var requestData = getCounter($scope.infId);
+                arnService.put(requestData).then(function (response) {
+                    var data = response.response.operation.interfaceList.interface.ethernet.counters;
+                    data = transpose(data);
+                    $scope.content = data;
+                    console.log($scope.content);
+                });
+            }, 1000);
+
             $scope.$on("$destroy", function () {
                 if (promise) {
                     $interval.cancel(promise);

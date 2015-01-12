@@ -2,7 +2,6 @@
     <b>Do you want to add a new virtual {{ngDialogData.nodeType}}?</b>
     <form action="createARN" method="post" name="editForm">
         <div>
-            parent: {{$parent.ngDialogData}} dialog: {{ngDialogData}}
             <div ng-hide='resourceRequest'>
                 <a href="" class="btn btn-sm btn-primary" ng-click="addResourceToVI(ngDialogData.nodeType)">Add {{ngDialogData.nodeType}} resource</a>
             </div>
