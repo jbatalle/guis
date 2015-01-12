@@ -27,14 +27,14 @@
         authentication-manager-ref="authenticationManager">
         <security:custom-filter ref="authenticationTokenProcessingFilter" position="FORM_LOGIN_FILTER" />
         <security:intercept-url pattern="/rest/user/authenticate" access="permitAll" />
-        <security:intercept-url method="GET" pattern="/rest/mqnaas/**" access="permitAll" />
-        <security:intercept-url method="PUT" pattern="/rest/mqnaas/**" access="permitAll" />
-        <security:intercept-url method="POST" pattern="/rest/mqnaas/**" access="permitAll" />
-        <security:intercept-url method="DELETE" pattern="/rest/mqnaas/**" access="permitAll" />
+        <security:intercept-url method="GET" pattern="/rest/mqnaas/**" access="hasRole('user')" />
+        <security:intercept-url method="PUT" pattern="/rest/mqnaas/**" access="hasRole('user')" />
+        <security:intercept-url method="POST" pattern="/rest/mqnaas/**" access="hasRole('user')" />
+        <security:intercept-url method="DELETE" pattern="/rest/mqnaas/**" access="hasRole('user')" />
         <security:intercept-url method="GET" pattern="/rest/user/**" access="hasRole('user')" />
         <security:intercept-url method="GET" pattern="/rest/arn/**" access="hasRole('user')" />
-        <security:intercept-url method="GET" pattern="/rest/sp/**" access="permitAll" />
-        <security:intercept-url method="POST" pattern="/rest/sp/**" access="permitAll" />
+        <security:intercept-url method="GET" pattern="/rest/sp/**" access="hasRole('user')" />
+        <security:intercept-url method="POST" pattern="/rest/sp/**" access="hasRole('user')" />
 <!--        <security:intercept-url method="GET" pattern="/rest/mqnaas/**" access="hasRole('user')" />-->
 <!--        <security:intercept-url method="DELETE" pattern="/rest/mqnaas/**" access="hasRole('admin')" />-->
     </security:http>
