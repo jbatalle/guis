@@ -50,7 +50,7 @@ angular.module('openNaaSApp')
             console.log("Edit VI : " + $routeParams.id);
             $scope.viId = $routeParams.id;
             $scope.virtualPort = [];
-            
+
             $scope.getNetworkResources = function () {
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider";
                 MqNaaSResourceService.get(url).then(function (result) {
@@ -58,14 +58,20 @@ angular.module('openNaaSApp')
                 });
             };
 
-            $scope.openOperationARNDialog = function (source, target) {
+            $scope.createOperation = function () {
+                ngDialog.open({
+                    template: 'partials/sodales/sp/arnOpDialog.html',
+                    scope: $scope
+                });
+            }
+            $scope.openOperationARNDialog = function () {
                 ngDialog.open({
                     template: 'partials/sp/arnOpDialog.html',
                     scope: $scope
                 });
             };
-            
-            $scope.openOperationCPEDialog = function (source, target) {
+
+            $scope.openOperationCPEDialog = function () {
                 ngDialog.open({
                     template: 'partials/sp/cpeOpDialog.html',
                     scope: $scope

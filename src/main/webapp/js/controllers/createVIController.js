@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openNaaSApp')
-        .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, ngTableParams, viService, localStorageService, $interval) {
+        .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, ngTableParams, viService, localStorageService, $interval, viNetService) {
             console.log("LIST VI");
 //            $rootScope.networkId = "Network-Internal-1.0-2";//to remove
             var promise;
@@ -47,6 +47,7 @@ angular.module('openNaaSApp')
                         localStorageService.set("virtualElements", []);
                         $scope.updateSpList();
                     });
+
                 });
             };
             $scope.deleteVIRequest = function (viReq) {
@@ -64,16 +65,47 @@ angular.module('openNaaSApp')
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/?arg0=" + viReq;
                 viService.updateStatus(viReq, "Processing");
                 MqNaaSResourceService.put(url).then(function (result) {
+                    console.log(result);
                     $scope.resRoot = result;//empty
 //                    viService.updateStatus(viReq, "Processing");
                     $rootScope.info = viReq + " created";
+                    console.log(localStorageService.get("virtualElements", []));
+                    var vi = {"name": result, "status": "Created"};
+                    $scope.virtNet = result;
+                    viNetService.createVI(vi).then(function () {
+                        viService.updateStatus(viReq, "Created");
+                        var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + vi.name + "/IRootResourceProvider/";
+                        MqNaaSResourceService.list(url).then(function (result) {
+
+                            var listRes = result.IResource.IResourceId;
+                            listRes.forEach(function (entry) {
+                                console.log(entry);
+                                viNetService.addResourceToVI($scope.virtNet, entry, entry.split("-")[0]).then(function () {
+
+                                });
+                        });
+
+
+                        viService.getVIByName(viReq).then(function (result) {
+                            console.log(result);
+                            result.viRes.forEach(function (entry) {
+                                console.log(entry);
+                                viNetService.addResourceToVI(result, entry.name, entry.type).then(function () {
+
+                                });
+                            });
+                        });
+                        $scope.updateSpList();
+                    });
                 });
                 /*                promise = $interval(function () {
                  viService.updateStatus(viReq, "Created");
                  $scope.updateSpList();
                  $rootScope.info = " OK " + viReq + " Created, received 200 from IML";
                  }, 4000);
-                 */                viService.updateStatus(viReq, "Created");
+                 */
+                viService.updateStatus(viReq, "Created");
+
                 $rootScope.info = viReq + " created";
                 $scope.updateSpList();
             };

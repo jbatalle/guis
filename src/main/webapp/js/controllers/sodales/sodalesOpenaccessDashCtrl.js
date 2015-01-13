@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('openNaaSApp')
-        .controller('SodalesOpenaccessDashCtrl', function ($scope, $filter, ngTableParams, spService, viService, ngDialog) {
+        .controller('SodalesOpenaccessDashCtrl', function ($scope, $filter, ngTableParams, spService, viService, ngDialog, viNetService) {
 
             $scope.listVi = [];
             $scope.data = [];
             $scope.updateSpList = function () {
-                viService.list().then(function (data) {
+                viNetService.list().then(function (data) {
                     $scope.listVi = [];
                     data.forEach(function (vi) {
                         console.log(vi);
