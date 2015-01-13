@@ -338,7 +338,28 @@ console.log("Change X "+(parentNode.x));
                     .style("left", mousePosition[0] + "px")
                     .style("top", mousePosition[1] + "px");
                 popup.append("h4").text(d.name);
+                
+console.log(d);
+console.log(window.location);
+console.log(window.location.hash);
+console.log(window.location.hash.split("/")[1]);
+if( window.location.hash.split("/")[1] === "spVIInfo"){
+                if(d.type === "arn"){
+                    popup.append("p").text("Available actions:");
+                    popup.append("p").text("Create / Remove / List NetworkService")
+                    popup.append("p").text("Create / Remove / List ClientService")
+                    popup.append("p").text("Create / Remove / List Service");
+                } else if(d.type === "cpe"){
+                    popup.append("p").text("Available actions:");
+                    popup.append("p").text("VLANConnectivityService")
+                            popup.append("a").text("Create ").on("mousedown", function(){callOperation(d.id, d.type, 0);})
+                            popup.append("a").text("Remove  ").on("mousedown", function(){callOperation(d.id, d.type, 1);})
+                            popup.append("a").text("List").on("mousedown", function(){/*callOperation(d.id, d.type, 2)*/;})
+                    //.attr({"xlink:href": "", "ng-Click":"openOperationARNDialog()"});
+                }
+            }else{
                 popup.append("p").text("Ports: "+d.ports.length)
+            }
 /*                    .append("p").append("a")
                     .attr({"xlink:href": "#"})
                     .on("mousedown", function(){
@@ -582,4 +603,11 @@ console.log(nodes);
        }
    }
 return nodes;
+}
+
+
+function callOperation(nodeId, resType, type){
+    console.log("CALL OPERATION "+type);
+    if(resType === "arn") angular.element(document.getElementById('viNetMgt')).scope().openOperationARNDialog(nodeId, type);
+    else if(resType === "cpe") angular.element(document.getElementById('viNetMgt')).scope().openOperationCPEDialog(nodeId, type);
 }

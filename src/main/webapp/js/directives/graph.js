@@ -455,7 +455,7 @@ angular.module('openNaaSApp')
                 return {
                     restrict: 'EA',
                     scope: {},
-                    templateUrl: 'partials/d3/view.html',
+                    templateUrl: 'partials/d3/editorSP.html',
                     link: function (scope, element, attrs) {
                         graph = new myGraph("#graph");
 //                        graph.setNodes(localStorageService.get("graphNodes"));
@@ -463,90 +463,88 @@ angular.module('openNaaSApp')
                         timer(console.log("TIMER HEUEHE"), 0);
                         console.log(localStorageService.get("graphNodes"));
                         console.log(localStorageService.get("virtualElements"));
+                        timer(
+                                function () {
+                                    var networkElements = localStorageService.get("virtualElements");
 
-                        var networkElements = localStorageService.get("virtualElements");
-                        ;
-                        var links = [];
-                        var lin = {s: 0, t: 1};
-                        links.push(lin);
-                        var nodes = [];
-                        //for each network element
-                        for (var i = 0; i < networkElements.length; i++) {
-                            if (typeof networkElements[i] === "object") {
-                                console.log("IS a object -> Virtual Resources with type");
-                                var type = networkElements[i].type.toLowerCase();
-                                var id = networkElements[i].name;
-                            }
+                                    var links = [];
+                                    var lin = {s: 0, t: 1};
+                                    links.push(lin);
+                                    var nodes = [];
+                                    //for each network element
+                                    for (var i = 0; i < networkElements.length; i++) {
+                                        console.log(networkElements[i]);
+                                        var type = networkElements[i].split("-")[0].toLowerCase();
+                                        var id = networkElements[i];
 //                        var ports = networkElements[i].ports.port;
-                            var ports = [];
+                                        var ports = [];
 //        createSwitch(id, ports);
-                            var node = {};
-                            node.id = id;
-                            node.type = type;
-                            node.ports = ports;
-                            node.x = Math.floor((Math.random() * 400) + 1);
-                            node.y = Math.floor((Math.random() * 400) + 1);
-                            node.net_force = {};
-                            node.velocity = {x: 0, y: 0};
-                            nodes.push(node);
-                            console.log(nodes);
-                            //{id:1, x: 10, y: 20, net_force: {}, velocity: {}
-                        }
-                        var edges = [];
-                        var edge = {};
-                        for (var i = 0; i < links.length; i++) {
-                            edge = {};
-                            for (var j = 0; j < nodes.length; j++) {
-                                for (var t = 0; t < nodes[j].ports.length; t++) {
-                                    if (nodes[j].ports[t]._id === links[i].srcPort) {
-                                        var srcP = j;
+                                        var node = {};
+                                        node.id = id;
+                                        node.type = "v"+type;
+                                        node.ports = ports;
+                                        node.x = Math.floor((Math.random() * 400) + 1);
+                                        node.y = Math.floor((Math.random() * 400) + 1);
+                                        node.net_force = {};
+                                        node.velocity = {x: 0, y: 0};
+                                        nodes.push(node);
+                                        console.log(nodes);
+                                        //{id:1, x: 10, y: 20, net_force: {}, velocity: {}
                                     }
-                                    if (nodes[j].ports[t]._id === links[i].dstPort) {
-                                        var dstP = j;
+                                    var edges = [];
+                                    var edge = {};
+                                    for (var i = 0; i < links.length; i++) {
+                                        edge = {};
+                                        for (var j = 0; j < nodes.length; j++) {
+                                            for (var t = 0; t < nodes[j].ports.length; t++) {
+                                                if (nodes[j].ports[t]._id === links[i].srcPort) {
+                                                    var srcP = j;
+                                                }
+                                                if (nodes[j].ports[t]._id === links[i].dstPort) {
+                                                    var dstP = j;
+                                                }
+                                            }
+                                        }
+                                        edge = {s: srcP, t: dstP};
+                                        edges.push(edge);
                                     }
-                                }
-                            }
-                            edge = {s: srcP, t: dstP};
-                            edges.push(edge);
-                        }
 
-                        //create edges
-                        var matrix = [];
-                        for (var i = 0; i < nodes.length; i++) {
-                            matrix[i] = [];
-                            for (var j = 0; j < nodes.length; j++) {
-                                matrix[i][j] = false;
-                            }
-                        }
-                        /*                    for (var i = 0; i < edges.length; i++) {
-                         matrix[edges[i].s][edges[i].t] = true;
-                         matrix[edges[i].t][edges[i].s] = true;
-                         }
-                         */
-                        nodes = StaticForcealgorithm(nodes, matrix);
-                        for (i = 0; i < nodes.length; i++) {
-                            console.log(nodes[i].x + " " + nodes[i].y);
-                            if (nodes[i].x < 0) {
-                                nodes[i].x = nodes[i].x + 400 / 2;
-                            }
-                            if (nodes[i].y < 0) {
-                                nodes[i].y = nodes[i].y + 400 / 2;
-                            }
-                            if (nodes[i].x > 400) {
-                                nodes[i].x = 400;
-                            }
-                            if (nodes[i].y > 400) {
-                                nodes[i].y = 400;
-                            }
+                                    //create edges
+                                    var matrix = [];
+                                    for (var i = 0; i < nodes.length; i++) {
+                                        matrix[i] = [];
+                                        for (var j = 0; j < nodes.length; j++) {
+                                            matrix[i][j] = false;
+                                        }
+                                    }
+                                    /*                    for (var i = 0; i < edges.length; i++) {
+                                     matrix[edges[i].s][edges[i].t] = true;
+                                     matrix[edges[i].t][edges[i].s] = true;
+                                     }
+                                     */
+                                    nodes = StaticForcealgorithm(nodes, matrix);
+                                    for (i = 0; i < nodes.length; i++) {
+                                        console.log(nodes[i].x + " " + nodes[i].y);
+                                        if (nodes[i].x < 0) {
+                                            nodes[i].x = nodes[i].x + 400 / 2;
+                                        }
+                                        if (nodes[i].y < 0) {
+                                            nodes[i].y = nodes[i].y + 400 / 2;
+                                        }
+                                        if (nodes[i].x > 400) {
+                                            nodes[i].x = 400;
+                                        }
+                                        if (nodes[i].y > 400) {
+                                            nodes[i].y = 400;
+                                        }
 //        createSwitch(nodes[i].id, nodes[i].ports, nodes[i].x, nodes[i].y);
-                            var divPos = {x: nodes[i].x, y: nodes[i].y};
-                            var data = {id: nodes[i].id, ports: nodes[i].ports};
-                            console.log("NODE TYPE: " + nodes[i].type);
-                            createElement(nodes[i].id, nodes[i].type, divPos, data);
-                        }
-                        localStorageService.get("link").forEach(function (l) {
-                            console.log(l);
-                            graph.addLink(l.s, l.t);
-                        });
+                                        var divPos = {x: nodes[i].x, y: nodes[i].y};
+                                        var data = {id: nodes[i].id, ports: nodes[i].ports};
+                                        console.log("NODE TYPE: " + nodes[i].type);
+                                        createElement(nodes[i].id, nodes[i].type, divPos, data);
+                                    }
+                                    
+                                }, 3000);
                     }};
+
             }]);

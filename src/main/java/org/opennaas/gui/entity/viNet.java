@@ -21,7 +21,7 @@ import org.codehaus.jackson.map.annotate.JsonView;
  */
 @javax.persistence.Entity
 @NamedQueries({  
-    @NamedQuery(name = "viNet.findByName", query = "SELECT t FROM VI t WHERE t.name = :name")})  
+    @NamedQuery(name = "viNet.findByName", query = "SELECT t FROM viNet t WHERE t.name = :name")})  
 public class viNet implements Entity {
 
     @Id

@@ -1,30 +1,24 @@
-<div class="container-fluid" ng-controller="sodalesPiMgtCtrl">
-    <egressPortId>104</egressPortId>
-    <egressVlan>300</egressVlan>
-    <ingressPortId>105</ingressPortId>
-    <ingressVlan>200</ingressVlan>
-    <unitId>0</unitId>
-    <form action="createARN" method="post" name="editForm">
-        <div>
-            <div>Egress port id
-                <input placeholder="104" type="text" class="form-control" ng-model="cpe.egressPortId" name="egressPortId" >
-            </div>
-            <div>Egress vlan
-                <input type="text" class="form-control" ng-model="cpe.egressVlan" name="egressVlan" >
-            </div>
-            <div>Ingress port id
-                <input type="text" class="form-control" ng-model="cpe.ingressPortId" name="ingressPortId" >
-            </div>
-            <div>Ingress vlan
-                <input type="text" class="form-control" ng-model="cpe.ingressVlan" name="ingressVlan" >
-            </div>
-            <div>Unit id
-                <input type="text" class="form-control" ng-model="cpe.unitId" name="unitId" >
-            </div>
-            <br/>
-            <div>
-                <a href="" class="btn btn-sm btn-primary" ng-click="Configure(cpe)">Add</a>
-            </div>
+<div class="container-fluid" ng-controller="spVIController">s
+    <b>Configuration VLAN conectivity ARN</b>
+    <div>
+        <div>Egress port id
+            <input placeholder="104" type="text" class="form-control" ng-model="cpe.egressPortId" name="egressPortId" >
         </div>
-    </form>
+        <div>Egress vlan
+            <input placeholder="300" type="text" class="form-control" ng-model="cpe.egressVlan" name="egressVlan" >
+        </div>
+        <div>Ingress port id
+            <input placeholder="105" type="text" class="form-control" ng-model="cpe.ingressPortId" name="ingressPortId" >
+        </div>
+        <div>Ingress vlan
+            <input placeholder="200" type="text" class="form-control" ng-model="cpe.ingressVlan" name="ingressVlan" >
+        </div>
+        <div>Unit id
+            <input placeholder="0" type="text" class="form-control" ng-model="cpe.unitId" name="unitId" >
+        </div>
+        <br/>
+        <div>
+            <a href="" class="btn btn-sm btn-primary" ng-click="Configure(cpe)">Add</a>
+        </div>
+    </div>
 </div>

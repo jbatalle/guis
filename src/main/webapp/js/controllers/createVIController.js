@@ -69,32 +69,20 @@ angular.module('openNaaSApp')
                     $scope.resRoot = result;//empty
 //                    viService.updateStatus(viReq, "Processing");
                     $rootScope.info = viReq + " created";
-                    console.log(localStorageService.get("virtualElements", []));
                     var vi = {"name": result, "status": "Created"};
                     $scope.virtNet = result;
                     viNetService.createVI(vi).then(function () {
                         viService.updateStatus(viReq, "Created");
                         var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + vi.name + "/IRootResourceProvider/";
                         MqNaaSResourceService.list(url).then(function (result) {
-
-                            var listRes = result.IResource.IResourceId;
+console.log(result);
+                            var listRes = result.IRootResource.IRootResourceId;
                             listRes.forEach(function (entry) {
                                 console.log(entry);
-                                viNetService.addResourceToVI($scope.virtNet, entry, entry.split("-")[0]).then(function () {
-
-                                });
+                                viNetService.addResourceToVI($scope.virtNet, entry, entry.split("-")[0]).then(function () {});
+                            })
                         });
 
-
-                        viService.getVIByName(viReq).then(function (result) {
-                            console.log(result);
-                            result.viRes.forEach(function (entry) {
-                                console.log(entry);
-                                viNetService.addResourceToVI(result, entry.name, entry.type).then(function () {
-
-                                });
-                            });
-                        });
                         $scope.updateSpList();
                     });
                 });

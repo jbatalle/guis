@@ -68,6 +68,7 @@ function createElement(name, type, divPos, data) {
             createLaptop(divPos);
             break;
         case "arn":
+        case "varn":
             if (jQuery.isEmptyObject(data))
                 createARN(name, divPos);
             else
@@ -75,6 +76,7 @@ function createElement(name, type, divPos, data) {
             //showInfoMessage("Element added");
             break;
         case "cpe":
+        case "vcpe":
             if (jQuery.isEmptyObject(data))
                 createCPE(name, divPos);
             else

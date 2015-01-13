@@ -9,6 +9,7 @@ import org.opennaas.gui.dao.viNet.viNetDao;
 import org.opennaas.gui.entity.ServiceProvider;
 import org.opennaas.gui.entity.User;
 import org.opennaas.gui.entity.VI;
+import org.opennaas.gui.entity.viNet;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -36,6 +37,7 @@ public class DataBaseInitializer {
         this.userDao = userDao;
         this.serviceProviderDao = serviceProvidersDao;
         this.vIDao = vIDao;
+        this.viNetDao = viNetDao;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -48,7 +50,11 @@ public class DataBaseInitializer {
         adminUser.addRole("user");
         adminUser.addRole("admin");
         this.userDao.save(adminUser);
-
+/*
+        viNet viNet = new viNet();
+        viNet.setName("TestVI");
+        this.viNetDao.save(viNet);
+  */      
 /*        ServiceProvider sp = new ServiceProvider();
         sp.setName("SP1");
         List<String> vi = new ArrayList<String>();
