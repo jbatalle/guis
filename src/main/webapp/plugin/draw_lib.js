@@ -340,18 +340,24 @@ console.log("Change X "+(parentNode.x));
                 popup.append("h4").text(d.name);
                 
 console.log(d);
-console.log(window.location);
-console.log(window.location.hash);
-console.log(window.location.hash.split("/")[1]);
 if( window.location.hash.split("/")[1] === "spVIInfo"){
                 if(d.type === "arn"){
                     popup.append("p").text("Available actions:");
-                    popup.append("p").text("Create / Remove / List NetworkService")
-                    popup.append("p").text("Create / Remove / List ClientService")
-                    popup.append("p").text("Create / Remove / List Service");
+                    popup.append("p").text("NetworkService:")
+                            popup.append("a").text("Create ").on("mousedown", function(){/*callOperation(d.id, d.type, 0)*/;})
+                            popup.append("a").text("Remove  ").on("mousedown", function(){/*callOperation(d.id, d.type, 1)*/;})
+                            popup.append("a").text("List").on("mousedown", function(){/*callOperation(d.id, d.type, 2)*/;})
+                    popup.append("p").text("ClientService:")
+                            popup.append("a").text("Create ").on("mousedown", function(){/*callOperation(d.id, d.type, 0)*/;})
+                            popup.append("a").text("Remove  ").on("mousedown", function(){/*callOperation(d.id, d.type, 1)*/;})
+                            popup.append("a").text("List").on("mousedown", function(){/*callOperation(d.id, d.type, 2)*/;})
+                    popup.append("p").text("Service:")
+                            popup.append("a").text("Create ").on("mousedown", function(){callOperation(d.id, d.type, 0);})
+                            popup.append("a").text("Remove  ").on("mousedown", function(){callOperation(d.id, d.type, 1);})
+                            popup.append("a").text("List").on("mousedown", function(){/*callOperation(d.id, d.type, 2)*/;})
                 } else if(d.type === "cpe"){
                     popup.append("p").text("Available actions:");
-                    popup.append("p").text("VLANConnectivityService")
+                    popup.append("p").text("VLANConnectivityService: ")
                             popup.append("a").text("Create ").on("mousedown", function(){callOperation(d.id, d.type, 0);})
                             popup.append("a").text("Remove  ").on("mousedown", function(){callOperation(d.id, d.type, 1);})
                             popup.append("a").text("List").on("mousedown", function(){/*callOperation(d.id, d.type, 2)*/;})

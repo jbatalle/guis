@@ -20,4 +20,12 @@ getCubeforTSON = function(lowRange1, uppRange1, lowRange2, uppRange2){
 
 getRangeUnit = function(lowerBound, upperBound){
     return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:range xmlns:ns2="org.mqnaas"><lowerBound>'+lowerBound+'</lowerBound><upperBound>'+upperBound+'</upperBound></ns2:range>';
-}
+};
+
+getARNVlanConnectivity = function(upLinkIfaces1, upLinkIfaces2, downLinkIfaces1, downLinkIfaces2, upLinkVlan, downLinkVlan){
+    return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><vlanConnectivityRequest xmlns="net.i2cat.dana.ptin_olt.capabilities.vlanconnectivity"><equipmentId>0</equipmentId><upLinkIfaces>16842752</upLinkIfaces><upLinkIfaces>83951616</upLinkIfaces><downLinkIfaces>50397184</downLinkIfaces><downLinkIfaces>67174400</downLinkIfaces><upLinkVlan>100</upLinkVlan><downLinkVlan>200</downLinkVlan></vlanConnectivityRequest>';
+};
+
+getCPEVlanConnectivity = function(egressPortId, egressVlan, ingressPortId, ingressVlan, unitId){
+    return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><vlanConnectivityRequest xmlns="net.i2cat.enet.capabilities.vlanconnectivity"><egressPortId>104</egressPortId><egressVlan>300</egressVlan><ingressPortId>105</ingressPortId><ingressVlan>200</ingressVlan><unitId>0</unitId></vlanConnectivityRequest>';
+};

@@ -71,6 +71,7 @@ angular.module('openNaaSApp')
             $scope.openOperationARNDialog = function (resourceName, type) {
                 console.log("Dialog call");
                 $scope.virtualResourceOp = resourceName;
+                $scope.arn = new Object;
                 ngDialog.open({
                     template: 'partials/sodales/sp/arnOpDialog.html',
                     scope: $scope
@@ -79,6 +80,7 @@ angular.module('openNaaSApp')
 
             $scope.openOperationCPEDialog = function (resourceName, type) {
                 $scope.virtualResourceOp = resourceName;
+                $scope.cpe = new Object;
                 ngDialog.open({
                     template: 'partials/sodales/sp/cpeOpDialog.html',
                     scope: $scope
@@ -94,14 +96,22 @@ angular.module('openNaaSApp')
                 $scope.physicalResources = localStorageService.get("networkElements");
             };
 
-            $scope.Configure = function (type) {
+            $scope.Configure = function (type, form) {
                 console.log(type);
                 if (type === "arn") {
-                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider";
-                MqNaaSResourceService.get(url).then(function (result) {});
-                 
-                } else if (type === "cpe") {
+                    console.log(form);
+                    var arn = form;
+                    var data = getARNVlanConnectivity(arn.upLinkIfaces1, arn.upLinkIfaces2, arn.downLinkIfaces1, arn.downLinkIfaces2, arn.upLinkVlan, arn.downLinkVlan);
+                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider/" + $scope.virtualResourceOp + "/IVlanConnectivity/vlanConnectivity";
+                    MqNaaSResourceService.put(url, data).then(function (result) {
+                    });
 
+                } else if (type === "cpe") {
+                    console.log(form);
+                    var cpe = form;
+                    var data = getCPEVlanConnectivity(cpe.egressPortId, cpe.egressVlan, cpe.ingressPortId, cpe.ingressVlan, cpe.unitId);
+                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider/" + $scope.virtualResourceOp + "/IVlanConnectivity/vlanConnectivity";
+                    MqNaaSResourceService.put(url, data).then(function (result) {});
                 }
             };
         })
