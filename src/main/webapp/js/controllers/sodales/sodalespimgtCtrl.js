@@ -32,12 +32,11 @@ angular.module('openNaaSApp')
                 getMqNaaSResource($rootScope.networkId);
             };
             $scope.list = function () {
+                console.log("GET LSIT -----------------------------");
                 RootResourceService.list().then(function (data) {
-                    if (data.IRootResource.IRootResourceId instanceof Array) {
-                    } else {
-                        data.IRootResource.IRootResourceId = [data.IRootResource.IRootResourceId];
-                    }
-                    $scope.data = data;
+                    console.log(data);
+                    data = checkIfIsArray(data.IRootResource.IRootResourceId);
+                    $scope.listNetworks = data;
                     localStorageService.set("mqNaaSElements", data);
                 });
             };
@@ -69,7 +68,7 @@ angular.module('openNaaSApp')
 
             $scope.addARN = function (data) {
                 console.log(data);
-                var ARN = getResource("ARN", data.endpoint);
+                var ARN = getARN(data.endpoint+"/cgi-bin/xml-parser.cgi");
                 console.log(ARN);
                 url = generateUrl("IRootResourceAdministration", $rootScope.networkId, "IRootResourceAdministration");
                 arnService.setUrl(data.endpoint);

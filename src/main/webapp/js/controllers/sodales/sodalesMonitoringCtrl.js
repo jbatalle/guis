@@ -93,7 +93,6 @@ angular.module('openNaaSApp')
             $scope.getCPEPortList = function () {
                 console.log();
                 var reqListPortsUrl = "meaPortMapping.xml?unit=0";
-                $scope.cpePortList = [{port: 1},{port: 2},{port: 105},{port: 104}];
                 cpeService.get(reqListPortsUrl).then(function (response) {
                     $scope.cpePortList = response.meaPortMapping.portMapping;
                 });
