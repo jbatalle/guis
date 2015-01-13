@@ -151,7 +151,6 @@ angular.module('openNaaSApp')
                     var data = response.meaStatistics.lbmDmmStatistics;
                     $scope.dmmCounter = response.meaStatistics.lbmDmmStatistics;
                 });
-
             };
 
             $scope.configureCCM = function () {
@@ -186,6 +185,8 @@ angular.module('openNaaSApp')
                 arnService.put(requestData).then(function (response) {
                     $scope.notiLog = response.response.operation.cardList.card.status;
                 });
+                $scope.equipmentBoards();
+                $scope.tableParams.reload();
             };
 
             $scope.equipmentBoards = function () {
@@ -193,18 +194,32 @@ angular.module('openNaaSApp')
                 var xml = "<?xml version='1.0' encoding='utf-8'?><response timestamp='1421071666' localDate='2015/01/12' localTime='14:07:46' version='3.5.0-r' ><operation type='show' entity='alarmRegister' ><alarmRegisterList><alarmRegister id='0' code='36866' accessType='0' startOrEnd='1' timeStamp='1421071626' localTimeStamp='1421071666' interfaceId='83951616' accessIndex='' accessInterface='' lagMember='' success='' serviceId='' macAddr='' /><alarmRegister id='1' code='99901' accessType='0' startOrEnd='1' timeStamp='1421071627' localTimeStamp='1421071666' interfaceId='83951616' accessIndex='' accessInterface='' lagMember='' success='' serviceId='' macAddr='' /><alarmRegister id='2' code='36866' accessType='0' startOrEnd='1' timeStamp='1421071628' localTimeStamp='1421071666' interfaceId='83951617' accessIndex='' accessInterface='' lagMember='' success='' serviceId='' macAddr='' /><alarmRegister id='3' code='99901' accessType='0' startOrEnd='1' timeStamp='1421071629' localTimeStamp='1421071666' interfaceId='83951617' accessIndex='' accessInterface='' lagMember='' success='' serviceId='' macAddr='' /></alarmRegisterList><result error='00000000' errorStr='OK'/></operation></response>";
                 var x2js = new X2JS();
                 var json = x2js.xml_str2json(xml);
-                $scope.equipBoard = json.response.operation.alarmRegisterList
-//                arnService.put(requestData).then(function (response) {
-//                    $scope.equipBoard = response.response.operation.alarmRegisterList;
-//                });
-            };
-            $scope.fanModuleStatus = function () {
-                var requestData = getFanModule($scope.infId);
-                arnService.put(requestData).then(function (response) {
-                    $scope.fanStatus = response.response.operation.cardList.card.fanStatusList;
+                console.log(json);
+                $scope.equipBoard = json.response.operation.alarmRegisterList.alarmRegister;
+//                arnService.put(requestData).then(function (json.response.operation.alarmRegisterList) {
+                var data = json.response.operation.alarmRegisterList.alarmRegister;
+                console.log(data);
+//                $scope.data = data.response.operation.interfaceList.interface;
+//                localStorageService.set("mqNaaSElements", data);
+//                console.log($scope.data);
+                $scope.tableParamsBoard = new ngTableParams({
+                    page: 1, // show first page
+                    count: 10, // count per page
+                    sorting: {
+                        date: 'desc'     // initial sorting
+                    }
+                }, {
+                    total: data.length,
+                    getData: function ($defer, params) {
+                        console.log(data);
+                        var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+                        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    },
+                    $scope: {$data: {}}
+//s                    });
                 });
             };
-
+            
             $scope.viewStatistics = function (interfaceId) {
                 $scope.infId = interfaceId;
                 ngDialog.open({

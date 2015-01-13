@@ -32,3 +32,6 @@ getFanModule = function(){
 getRfOverlay = function(){
     return '<?xml version="1.0" encoding="utf-8"?><request><operation token="333" type="showStatus" entity="cardRfOverlayModule"><rfOverlayModule equipmentId="0" /></operation></request>';
 };
+getEquipment = function(infId){
+    return '<?xml version="1.0" encoding="utf-8"?><request><operation type="show" entity="alarmRegister"><alarmRegister equipmentId="0" cardId="3" /></operation></request>';
+};

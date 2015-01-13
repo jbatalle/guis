@@ -44,6 +44,7 @@ public class DataBaseInitializer {
     public void initDataBase() {
         User userUser = new User("sp", this.passwordEncoder.encode("sp"));
         userUser.addRole("user");
+        userUser.addRole("sp");
         this.userDao.save(userUser);
         
         User adminUser = new User("ip", this.passwordEncoder.encode("ip"));
