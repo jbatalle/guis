@@ -215,10 +215,19 @@ angular.module('openNaaSApp')
                     console.log(result.IResource.IResourceId);
                     var ports = [];
                     result.IResource.IResourceId.forEach(function (entry) {
-                        console.log(entry);
-                        ports.push({"_id": entry});
+                        var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/IPortManagement/" + entry + "/IAttributeStore/attribute/?arg0=portInternalId";
+                        MqNaaSResourceService.getText(url).then(function (realPort) {
+                            console.log("GET physical port");
+                            console.log(realPort);
+                            console.log(entry);
+                            var p = entry+"("+realPort+")";
+                            if(realPort > 99) ports.push({"_id": p});
+                            console.log(ports);
+                            localStorageService.set(resourceName, {name: resourceName, ports: {port: ports}});
+                        });
+
                     });
-                    localStorageService.set(resourceName, {name: resourceName, ports: {port: ports}});
+                    
                     console.log("Set ports");
                     console.log(localStorageService.get(resourceName));
                 });

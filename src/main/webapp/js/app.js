@@ -128,6 +128,7 @@ angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSAp
     $rootScope
             .$on('$viewContentLoaded', function () {
                 delete $rootScope.error;
+        delete $rootScope.info;
             });
 
     $rootScope.hasRole = function (role) {

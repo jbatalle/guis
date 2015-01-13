@@ -34,7 +34,7 @@ angular.module('openNaaSApp')
                     $scope.CPEactive = "active";
                     $scope.ARNactive = "";
                     $scope.ARNStats = false;
-                    $scope.CPEStats = true;
+                    $scope.CPEStats = false;
                     $scope.CFM_OAM = true;
                     $scope.ARN_OAM = false;
                     $scope.getCCM();
@@ -55,7 +55,7 @@ angular.module('openNaaSApp')
                     $scope.noResource = false;
                     $scope.ARNactive = "active";
                     $scope.CPEactive = "";
-                    $scope.ARNStats = true;
+                    $scope.ARNStats = false;
                     $scope.CPEStats = false;
                     $scope.CFM_OAM = false;
                     $scope.ARN_OAM = true;

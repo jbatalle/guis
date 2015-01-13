@@ -113,6 +113,8 @@ angular.module('openNaaSApp')
                     var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider/" + $scope.virtualResourceOp + "/IVlanConnectivity/vlanConnectivity";
                     MqNaaSResourceService.put(url, data).then(function (result) {});
                 }
+                $rootScope.info = "200 - Operation done";
+                ngDialog.close();
             };
         })
         .controller('spStatsController', function ($scope, ngTableParams, $filter, $routeParams, localStorageService, ngDialog, arnService, cpeService, $interval, viNetService) {

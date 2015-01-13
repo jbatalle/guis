@@ -75,14 +75,15 @@ angular.module('openNaaSApp')
                         viService.updateStatus(viReq, "Created");
                         var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + vi.name + "/IRootResourceProvider/";
                         MqNaaSResourceService.list(url).then(function (result) {
-console.log(result);
+                            console.log(result);
                             var listRes = result.IRootResource.IRootResourceId;
                             listRes.forEach(function (entry) {
                                 console.log(entry);
-                                viNetService.addResourceToVI($scope.virtNet, entry, entry.split("-")[0]).then(function () {});
+                                viNetService.addResourceToVI($scope.virtNet, entry, entry.split("-")[0]).then(function () {
+                                });
                             })
                         });
-
+                        $rootScope.info = "200 - Virtual slice created";
                         $scope.updateSpList();
                     });
                 });
@@ -207,7 +208,16 @@ console.log(result);
             $scope.getPhysicalPorts = function (resourceName) {
                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/IPortManagement";
                 MqNaaSResourceService.get(url).then(function (result) {
-                    $scope.physicalPorts = result;
+                    console.log(result.IResource.IResourceId);
+                    $scope.physicalPorts = [];
+                    result.IResource.IResourceId.forEach(function (entry) {
+                        var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/IPortManagement/" + entry + "/IAttributeStore/attribute/?arg0=portInternalId";
+                        MqNaaSResourceService.getText(url).then(function (realPort) {
+                            var result = {onP: entry, real: realPort};
+                            console.log($scope.physicalPorts);
+                            $scope.physicalPorts.push(result);
+                        });
+                    });
                 });
             };
             $scope.openMappingDialog = function (source, target) {
