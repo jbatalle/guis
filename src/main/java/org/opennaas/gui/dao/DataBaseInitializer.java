@@ -5,6 +5,7 @@ import java.util.List;
 import org.opennaas.gui.dao.serviceProvider.ServiceProviderDao;
 import org.opennaas.gui.dao.user.UserDao;
 import org.opennaas.gui.dao.vi.VIDao;
+import org.opennaas.gui.dao.viNet.viNetDao;
 import org.opennaas.gui.entity.ServiceProvider;
 import org.opennaas.gui.entity.User;
 import org.opennaas.gui.entity.VI;
@@ -21,6 +22,8 @@ public class DataBaseInitializer {
 
     private VIDao vIDao;
     
+    private viNetDao viNetDao;
+    
     private UserDao userDao;
 
     private PasswordEncoder passwordEncoder;
@@ -29,7 +32,7 @@ public class DataBaseInitializer {
         /* Default constructor for reflection instantiation */
     }
 
-    public DataBaseInitializer(UserDao userDao, ServiceProviderDao serviceProvidersDao, VIDao vIDao, PasswordEncoder passwordEncoder) {
+    public DataBaseInitializer(UserDao userDao, ServiceProviderDao serviceProvidersDao, VIDao vIDao, viNetDao viNetDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.serviceProviderDao = serviceProvidersDao;
         this.vIDao = vIDao;

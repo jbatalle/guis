@@ -7,6 +7,7 @@
         <class>org.opennaas.gui.entity.HistoryEntry</class>
         <class>org.opennaas.gui.entity.ServiceProvider</class>
         <class>org.opennaas.gui.entity.VI</class>
+        <class>org.opennaas.gui.entity.viNet</class>
         <property name="hibernate.hbm2ddl.auto" value="update"/>
     </persistence-unit>
 </persistence>
