@@ -14,7 +14,9 @@ angular.module('openNaaSApp')
             }
             UserService.get(function (user) {
                 $rootScope.user = user;
-                $location.path("/");
+                console.log(user);
+                if(user.name === "sp") $location.path("/spInfo");
+                else $location.path("/");
             });
         });
     };

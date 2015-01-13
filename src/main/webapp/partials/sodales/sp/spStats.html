@@ -32,7 +32,7 @@
         <div ng-show="CPEStats">
             <ol class="breadcrumb">
                 <li class="active"><i class="fa fa-dashboard"></i> Port:</li>
-                <li ng-repeat="portMap in cpePortList" style="content:'/'; padding:'0';">
+                <li ng-if="portMap.port == 105 || portMap.port == 104" ng-repeat="portMap in cpePortList" style="content:'/'; padding:'0';">
                     <a href="" ng-click="getCPEStats(portMap.port)">{{portMap.port}}</a></li>
             </ol>
             <table class="table ng-table-responsive" style="text-align: center">

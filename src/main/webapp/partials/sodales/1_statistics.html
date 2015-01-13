@@ -9,8 +9,7 @@
                class="list-group-item" ng-class="navClass('{{resource.name}}')" 
                data-animation="am-flip-x" bs-dropdown="dropdown">{{resource.name}}</a>
         </div>
-        <a href="" ng-click="selectedResource('ARN')" class="list-group-item" ng-class="ARNactive">ARN</a>
-        <a href="" ng-click="selectedResource('CPE')" class="list-group-item" ng-class="CPEactive" data-animation="am-flip-x" bs-dropdown="dropdown">CPE</a>
+        
     </div>
     <div class="col-md-10">
         <h2 class="page-header">Performance monitoring <small>Statistics</small></h2>
@@ -35,7 +34,7 @@
         <div ng-show="CPEStats">
             <ol class="breadcrumb">
                 <li class="active"><i class="fa fa-dashboard"></i> Port:</li>
-                <li ng-repeat="portMap in cpePortList" style="content:'/'; padding:'0';">
+                <li ng-if="portMap.port > 99" ng-repeat="portMap in cpePortList" style="content:'/'; padding:'0';">
                     <a href="" ng-click="getCPEStats(portMap.port)">{{portMap.port}}</a></li>
             </ol>
             <table class="table ng-table-responsive" style="text-align: center">
