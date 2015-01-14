@@ -8,6 +8,17 @@ angular.module('openNaaSApp')
 //            console.log(JSON.parse(localStorageService.get("mqNaaSElements")));
             localStorageService.set("graphNodes", []);
             console.log($rootScope.networkId);
+            
+            $scope.updateListNetworks = function(){
+                console.log("Update list1");
+                RootResourceService.list().then(function (data) {
+                     data = checkIfIsArray(data.IRootResource.IRootResourceId);
+                     console.log("UpdateList nts");
+                     console.log(data);
+                    $scope.listNetworks = data;
+                });
+            };
+            
             RootResourceService.list().then(function (data) {
                 data = checkIfIsArray(data.IRootResource.IRootResourceId);
                 $scope.listNetworks = data;
@@ -37,6 +48,7 @@ angular.module('openNaaSApp')
                     console.log(data);
                     data = checkIfIsArray(data.IRootResource.IRootResourceId);
                     $scope.listNetworks = data;
+                    console.log($scope.listNetworks);
                     localStorageService.set("mqNaaSElements", data);
                 });
             };
@@ -46,10 +58,11 @@ angular.module('openNaaSApp')
                 RootResourceService.put(xml).then(function (data) {
                     $rootScope.networkId = data;
                     $scope.list();
+                    $scope.updateListNetworks();
                 });
             };
 
-            $scope.arn = {network: "", endpoint: "http://fibratv.dtdns.net:41080"};
+            $scope.arn = {network: "", endpoint: "http://192.168.122.237"};
             $scope.cpe = {endpoint: "http://fibratv.dtdns.net:41081"};
             /*            $scope.openARNDialog = function () {
              $scope.arn = {endpoint: "asdasdsa"};

@@ -177,10 +177,15 @@ angular.module('openNaaSApp')
                 console.log("REQUEST ARN Stats");
                 //            var data = getLAGs();
                 var data = getLinkStatus();
-//                arnService.put(data).then(function (response) {
-//                    var data = response.response.operation.interfaceList.interface;
-                data = [{_name: "Eth 1"}, {_name: "Eth 2"}, {_name: "Eth 4"}];
+                arnService.put(data).then(function (response) {
+                    var oldData = response.response.operation.interfaceList.interface;
+//                data = [{_name: "Eth 1"}, {_name: "Eth 2"}, {_name: "Eth 4"}];
                 console.log(data);
+                
+                var data = [];
+                oldData.forEach(function(entry){
+                    if(entry._name == "Eth 1" || entry._name == "intEth 1") data.push(entry);
+                })
                 $scope.element = $routeParams.id;
 //                $scope.data = data.response.operation.interfaceList.interface;
 //                localStorageService.set("mqNaaSElements", data);
@@ -201,7 +206,7 @@ angular.module('openNaaSApp')
                     },
                     $scope: {$data: {}}
                 });
-//                });
+                });
             };
             $scope.getCPEPortList = function () {
                 var reqListPortsUrl = "meaPortMapping.xml?unit=0";

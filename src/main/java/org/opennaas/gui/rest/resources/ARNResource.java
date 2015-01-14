@@ -31,7 +31,7 @@ public class ARNResource {
     @Autowired
     private ARNClient arnClient;
 
-    String arnURL = "http://fibratv.dtdns.net:41080/cgi-bin/xml-parser.cgi";
+    String arnURL = "http://192.168.122.237/cgi-bin/xml-parser.cgi";
 
     @PUT
     @Produces(MediaType.APPLICATION_XML)

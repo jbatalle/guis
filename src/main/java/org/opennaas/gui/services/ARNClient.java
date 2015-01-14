@@ -23,10 +23,10 @@ public class ARNClient extends GenericRestService {
             addHTTPBasicAuthentication(client);
             WebResource webResource = client.resource(cpeURL);
             response = webResource.post(ClientResponse.class, content);
-            log.info("Route table: " + response);
+
         } catch (ClientHandlerException e) {
             log.error(e.getMessage());
-            return "OpenNaaS is not started";
+            return "Error: "+e.getMessage();
         }
         return checkResponse(response) ? response.getEntity(String.class) : null;
     }
