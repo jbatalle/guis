@@ -46,11 +46,6 @@ angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSAp
                             templateUrl: 'partials/sodales/0_1_mgt_pi.html',
                             controller: 'sodalesPiMgtCtrl'
                         })
-                        .when('/crawler', {
-                            template: " ", // just fire controller
-                            controller: 'CrawlerResourceController',
-                            animation: 'slide'
-                        })
                         .when('/viList', {
                             templateUrl: 'partials/createVI/index.html',
                             controller: 'listVIController'
