@@ -1,0 +1,8 @@
+/.settings
+/target
+/.classpath
+/.project
+
+nb-configuration.xml
+node_modules/
+npm-debug.log

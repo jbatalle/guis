@@ -1,0 +1,36 @@
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Dashboard</h1>
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-image fa-fw"></i> Physical topology</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div grapheditor ng-show="networkId"></div>
+                        <h3>List of resources</h3>
+                        <ul>
+                            <li ng-repeat="res in networkElements" ng-if=" res !== 'CHANNEL-7' && res !== 'CHANNEL-8' ">
+                                <a ng-click="getResouceInfo(res)"> {{res}}</a>
+                            </li>
+                            <li>Wifi-4</li>
+                            <li>Wifi-5</li>
+                        </ul>
+                        <div ng-show="getSliceInfo">
+                            <h3>Resource Info</h3>
+                            Slice: {{getSliceInfo}}<br/>
+                            Units: <span ng-repeat="unit in getUnitsList"><a ng-click="openUnitDialog(unit)">{{unit}}</a> </span><br/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
