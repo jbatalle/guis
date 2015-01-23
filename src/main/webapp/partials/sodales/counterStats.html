@@ -1,0 +1,74 @@
+<table border="1" class="statsTable">
+    <tr>
+        <th>Counter key</th>
+        <th ng-repeat="header in content.headers track by $index">{{header}}</th>
+    </tr>
+    <tr>
+        <td>DropEvents</td>
+        <td ng-repeat="ary in content.values._dropEvents track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>Octets</td>
+        <td ng-repeat="ary in content.values._octets track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>Packets</td>
+        <td ng-repeat="ary in content.values._packets track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>Broadcast Packets</td>
+        <td ng-repeat="ary in content.values._broadcastPackets track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>Multicast Packets</td>
+        <td ng-repeat="ary in content.values._multicastPackets track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>CRC Align Errors</td>
+        <td ng-repeat="ary in content.values._crcAlignErrors track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>Undersize Packets</td>
+        <td ng-repeat="ary in content.values._undersizePackets track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>Oversize Packets</td>
+        <td ng-repeat="ary in content.values._oversizePackets track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>Fragments</td>
+        <td ng-repeat="ary in content.values._fragments track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>Jabbers</td>
+        <td ng-repeat="ary in content.values._jabbers track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>Collisions</td>
+        <td ng-repeat="ary in content.values._collisions track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>Packets 64 octets</td>
+        <td ng-repeat="ary in content.values._packets64Octets track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>Packets 65 to 127 octets</td>
+        <td ng-repeat="ary in content.values._packets65to127Octets track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>Packets 128 to 255 octets</td>
+        <td ng-repeat="ary in content.values._packets128to255Octets track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>Packets 256 to 511 octets</td>
+        <td ng-repeat="ary in content.values._packets256to511Octets track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>Packets 512 to 1023 octets</td>
+        <td ng-repeat="ary in content.values._packets512to1023Octets track by $index">{{ary}}</td>
+    </tr>
+    <tr>
+        <td>Packets 1024 to 1518 octets</td>
+        <td ng-repeat="ary in content.values._packets1024to1518Octets track by $index">{{ary}}</td>
+    </tr>
+</table>

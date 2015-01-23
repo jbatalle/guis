@@ -1,0 +1,24 @@
+<div class="container-fluid" ng-controller="editVIController">
+    <b>Mapping virtual resource to physical resource</b>
+    <br/>
+    <select placeholder="select virtual resource" bs-select ng-model="viRes" ng-options="viRes.name as (viRes.name + '(' + viRes.type + ')' ) for viRes in virtualResources" ></select>
+    <select placeholder="select physical resource" bs-select ng-model="piRes" ng-options="piRes for piRes in physicalResources" ></select>
+    <a href="" class="btn btn-sm btn-primary" ng-click="mapVirtualResourceToRealResource(viRes, piRes)">Map</a>
+
+    <div ng-show="mapPorts">
+        <select placeholder="select virtual port" bs-select ng-model="viPort" ng-options="port for port in virtualPorts.IResource.IResourceId" ></select>
+        <select placeholder="select physical port" bs-select ng-model="piPort" ng-options="port.onP  as (port.onP + '(' + port.real + ')' ) for port in physicalPorts" ></select>
+        <a href="" class="btn btn-sm btn-primary" ng-click="mapVirtualPorts(viPort, piPort)">Map</a> {{mappedPort}}
+
+        <br/>
+        Mapped ports:
+        <ul>
+            <li ng-repeat="port in mappedPorts">
+                VirtualPort: {{port.virt}} --> RealPort: {{port.real}}
+            </li>
+        </ul>
+    </div>
+    <div>
+        <a href="" class="btn btn-sm btn-primary" ng-click="closeThisDialog()">Close dialog</a>
+    </div>
+</div>

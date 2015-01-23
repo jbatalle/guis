@@ -1,0 +1,31 @@
+<div class="container-fluid" ng-controller="editVIController">
+    <h3>Configure virtual resource</h3>
+    <select placeholder="select virtual resource" bs-select ng-model="viRes" ng-options="viRes.name as (viRes.name + '(' + viRes.type + ')' ) for viRes in virtualResources" ng-change="c(viRes)" ></select>
+
+    <div ng-show="viRes">
+        Slice: {{getSliceInfo}}
+        <br/>
+        <select ng-model="typeUnit" >
+            <option value="port">port</option>
+            <option value="vlan">time</option>
+        </select>
+        <a href="" class="btn btn-sm btn-primary" ng-click="createUnit(viRes, slice, typeUnit)">Create unit</a>
+        <br/>
+        List units: <br/>
+        <ul>
+            <li ng-repeat="un in getUnitsList">
+                <a ng-click="getUnit(viRes, getSliceInfo, un)">{{un}}</a>
+            </li>
+        </ul>
+        <br/>
+        <div ng-show="unitInfo">
+            {{unitInfo.id}} -- {{unitInfo.name}} -- {{unitInfo.type}} <br/>
+            Set range: {{rangeSetOk}}<br/>
+            LowerBound: <input placeholder="1" type="text" ng-model="lowB" name="lowB" class="form-control" bs-typeahead><br/>
+            UpperBound: <input placeholder="1" type="text" ng-model="uppB" name="uppB" class="form-control" bs-typeahead><br/>
+            <a class="btn btn-sm btn-primary" ng-click="setRange(viRes, getSliceInfo, unitInfo.id, lowB, uppB)">Set range</a>
+        </div>
+    </div>
+    <br/>
+    <a href="" class="btn btn-sm btn-primary" ng-click="closeThisDialog()">Close</a>
+</div>
