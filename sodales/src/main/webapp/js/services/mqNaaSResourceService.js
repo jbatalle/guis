@@ -6,10 +6,6 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
             list: function (url) {
                 var promise = $http.get(genericUrl + url).then(function (response) {
                     var json = x2js.xml_str2json(response.data);
-                    var his = new HistoryService();
-                    his.content = response.status+" - GET List (IRootResourceAdministration): "+response.statusText;
-                    his.type = "INFO";
-                    his.$save();
                     return json;
                 }, function(response){
                     var his = new HistoryService();
@@ -21,11 +17,6 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
             },
             put: function (url, data) {
                 var promise = $http.put(genericUrl + url, data).then(function (response) {
-                    // convert the data to JSON and provide
-                    // it to the success function below
-                    //var x2js = new X2JS();
-                    console.log(response);
-//                    var json = x2js.xml_str2json(response.data);
                     var his = new HistoryService();
                     his.content = response.status+" - PUT (IRootResourceAdministration): "+response.data;
                     his.type = "INFO";
@@ -43,10 +34,6 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
             get: function (url) {
                 var promise = $http.get(genericUrl+url).then(function (response) {
                     var json = x2js.xml_str2json(response.data);
-                    var his = new HistoryService();
-                    his.content = response.status+" - GET (IRootResourceAdministration): "+response.statusText;
-                    his.type = "INFO";
-                    his.$save();
                     return json;
                 }, function(response){
                     var his = new HistoryService();

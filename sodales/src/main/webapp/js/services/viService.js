@@ -5,10 +5,6 @@ services.factory('viService', ['$http', 'HistoryService', function ($http, Histo
         return {
             list: function () {
                 var promise = $http.get("rest/vi").then(function (response) {
-                    var his = new HistoryService();
-                    his.content = response.status+" - GET (Get VI List)";
-                    his.type = "INFO";
-                    his.$save();
                     return response.data;
                 }, function(response){
                     var his = new HistoryService();
@@ -20,10 +16,6 @@ services.factory('viService', ['$http', 'HistoryService', function ($http, Histo
             },
             getVI: function (id) {
                 var promise = $http.get("rest/vi/"+id).then(function (response) {
-                    var his = new HistoryService();
-                    his.content = response.status+" - GET (Get VI): "+response.data.name;
-                    his.type = "INFO";
-                    his.$save();
                     return response.data;
                 }, function(response){
                     var his = new HistoryService();
@@ -65,10 +57,6 @@ services.factory('viService', ['$http', 'HistoryService', function ($http, Histo
             },
             getVIByName: function (viId) {
                 var promise = $http.get("rest/vi/getVIByName/"+viId).then(function (response) {
-                    var his = new HistoryService();
-                    his.content = response.status+" - GET (Get VI): "+response.data.name;
-                    his.type = "INFO";
-                    his.$save();
                     return response.data;
                 }, function(response){
                     var his = new HistoryService();

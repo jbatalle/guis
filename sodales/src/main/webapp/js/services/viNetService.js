@@ -5,14 +5,10 @@ services.factory('viNetService', ['$http', 'HistoryService', function ($http, Hi
         return {
             list: function () {
                 var promise = $http.get("rest/viNet").then(function (response) {
-                    var his = new HistoryService();
-                    his.content = response.status+" - GET (Get VI List)";
-                    his.type = "INFO";
-                    his.$save();
                     return response.data;
                 }, function(response){
                     var his = new HistoryService();
-                    his.content = response.status+" - GET (Get VI List): "+response.statusText;
+                    his.content = response.status+" - GET (Get Virtual Network List): "+response.statusText;
                     his.type = "ERROR";
                     his.$save();
                 });
@@ -20,14 +16,10 @@ services.factory('viNetService', ['$http', 'HistoryService', function ($http, Hi
             },
             getVI: function (id) {
                 var promise = $http.get("rest/viNet/"+id).then(function (response) {
-                    var his = new HistoryService();
-                    his.content = response.status+" - GET (Get VI): "+response.data.name;
-                    his.type = "INFO";
-                    his.$save();
                     return response.data;
                 }, function(response){
                     var his = new HistoryService();
-                    his.content = response.status+" - GET (Get VI): "+response.statusText;
+                    his.content = response.status+" - GET (Get Virtual Network): "+response.statusText;
                     his.type = "ERROR";
                     his.$save();
                 });
@@ -36,13 +28,13 @@ services.factory('viNetService', ['$http', 'HistoryService', function ($http, Hi
             createVI: function (data) {//data in json format {"name":"SP4"}
                 var promise = $http.post("rest/viNet/", data).then(function (response) {
                     var his = new HistoryService();
-                    his.content = response.status+" - POST (Create VI)";
+                    his.content = response.status+" - POST (Create Virtual Network)";
                     his.type = "INFO";
                     his.$save();
                     return response.data;
                 }, function(response){
                     var his = new HistoryService();
-                    his.content = response.status+" - POST (Create VI): "+response.statusText;
+                    his.content = response.status+" - POST (Create Virtual Network): "+response.statusText;
                     his.type = "ERROR";
                     his.$save();
                 });
@@ -51,13 +43,13 @@ services.factory('viNetService', ['$http', 'HistoryService', function ($http, Hi
             addResourceToVI: function (viId, resName, resType) {
                 var promise = $http.get("rest/viNet/"+viId+"/name/"+resName+"/type/"+resType).then(function (response) {
                     var his = new HistoryService();
-                    his.content = response.status+" - POST (Add Resource To VI)";
+                    his.content = response.status+" - POST (Add Resource To Virtual Network)";
                     his.type = "INFO";
                     his.$save();
                     return response.data;
                 }, function(response){
                     var his = new HistoryService();
-                    his.content = response.status+" - POST (Add Resource To VI): "+response.statusText;
+                    his.content = response.status+" - POST (Add Resource To Virtual Network): "+response.statusText;
                     his.type = "ERROR";
                     his.$save();
                 });
@@ -65,14 +57,10 @@ services.factory('viNetService', ['$http', 'HistoryService', function ($http, Hi
             },
             getVIByName: function (viId) {
                 var promise = $http.get("rest/viNet/getVIByName/"+viId).then(function (response) {
-                    var his = new HistoryService();
-                    his.content = response.status+" - GET (Get VI): "+response.data.name;
-                    his.type = "INFO";
-                    his.$save();
                     return response.data;
                 }, function(response){
                     var his = new HistoryService();
-                    his.content = response.status+" - GET (Get VI): "+response.statusText;
+                    his.content = response.status+" - GET (Get Virtual Network): "+response.statusText;
                     his.type = "ERROR";
                     his.$save();
                 });
@@ -81,13 +69,13 @@ services.factory('viNetService', ['$http', 'HistoryService', function ($http, Hi
             updateStatus: function (viId, status) {
                 var promise = $http.get("rest/viNet/updateStatus/"+viId+"/"+status).then(function (response) {
                     var his = new HistoryService();
-                    his.content = response.status+" - POST (Update VI status)";
+                    his.content = response.status+" - POST (Update Virtual Network status)";
                     his.type = "INFO";
                     his.$save();
                     return response.data;
                 }, function(response){
                     var his = new HistoryService();
-                    his.content = response.status+" - POST (Update VI status): "+response.statusText;
+                    his.content = response.status+" - POST (Update Virtual Network status): "+response.statusText;
                     his.type = "ERROR";
                     his.$save();
                 });
@@ -96,7 +84,7 @@ services.factory('viNetService', ['$http', 'HistoryService', function ($http, Hi
             removeVI: function (viId) {
                 var promise = $http.delete("rest/viNet/removeByName/"+viId).then(function (response) {
                     var his = new HistoryService();
-                    his.content = response.status+" - REMOVE (Remove VI)";
+                    his.content = response.status+" - REMOVE (Remove Virtual Network)";
                     his.type = "INFO";
                     his.$save();
                     return response.data;

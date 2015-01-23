@@ -7,10 +7,6 @@ services.factory('cpeService', ['$http', 'x2js', 'HistoryService', function ($ht
                 var promise = $http.get("rest/cpe/"+req).then(function (response) {
                     var x2js = new X2JS();
                     var json = x2js.xml_str2json(response.data);
-                    var his = new HistoryService();
-                    his.content = response.status+" - GET (CPE Service Statistics): "+ req;
-                    his.type = "INFO";
-                    his.$save();
                     return json;
                 }, function(response){
                     var his = new HistoryService();
@@ -24,10 +20,6 @@ services.factory('cpeService', ['$http', 'x2js', 'HistoryService', function ($ht
                 var promise = $http.post("rest/cpe", data).then(function (response) {
                     var x2js = new X2JS();
                     var json = x2js.xml_str2json(response.data);
-                    var his = new HistoryService();
-                    his.content = response.status+" - POST (CPE Service Statistics): "+ req;
-                    his.type = "INFO";
-                    his.$save();
                     return json;
                 }, function(response){
                     var his = new HistoryService();
