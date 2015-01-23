@@ -43,10 +43,10 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a  href="#!/home">Home</a>
+                            <a ng-show="hasRole('admin')" href="#!/home">Home</a>
                         </li>
                         <li>
-                            <a  href="#!/mgt">PHY Management</a>
+                            <a ng-show="hasRole('admin')" href="#!/mgt">PHY Management</a>
                         </li>
                         <li>
                             <a ng-show="hasRole('admin')" href="#!/monitoring">Monitoring</a>
@@ -83,14 +83,12 @@
                 </div>
             </div>
         </nav>
-
-
+        
         <div class="container ng-hide" ng-show="initialized">
             <!--<div class="alert alert-danger" ng-show="error">{{error}}</div>-->
              <div class="alert alert-info" ng-show="info">{{info}}</div>
             <div ng-view></div>
         </div>
-
 
         <script src="bower_components/angular/angular.js"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
@@ -104,8 +102,7 @@
         <script src="bower_components/tree-model-bower/TreeModel.js"></script>
         <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
         <script src="bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
-        
-        
+
         <!-- XML to JSON lib -->
         <script src="bower_components/x2js/xml2json.js"></script>
         <script src="bower_components/angular-x2js/src/x2js.js"></script>
@@ -130,12 +127,7 @@
         <script src="js/controllers/sodales/sodalesSlicesCtrl.js"></script>
         <script src="js/controllers/sodales/sodalespimgtCtrl.js"></script>
         <script src="js/controllers/sodales/spController.js"></script>
-        
-        <script src="js/controllers/SodalesController.js"></script>
-        <script src="js/controllers/SodalesStatisticsController.js"></script>
-        <script src="js/controllers/SodalesStatisticsController2.js"></script>
-        <script src="js/controllers/createVIController.js"></script>
-        
+
         <script src="js/services/sodales/arnService.js"></script>
         <script src="js/services/sodales/cpeService.js"></script>
         <script src="js/services/historyService.js"></script>
@@ -144,7 +136,7 @@
         <script src="js/services/viService.js"></script>
         <script src="js/services/viNetService.js"></script>
         <script src="js/services/rootResource.js"></script>
-        <script src="js/services.js"></script>
+        <script src="js/services/UserService.js"></script>
         
         <script src="js/directives/graph.js"></script>
 
