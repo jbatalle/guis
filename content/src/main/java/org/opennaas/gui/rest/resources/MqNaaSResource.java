@@ -12,7 +12,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
-import org.opennaas.gui.services.RestServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -27,7 +26,7 @@ public class MqNaaSResource {
     @GET
     @Path("/{res1:.*}")
     public @ResponseBody
-    String get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, RestServiceException, ServletException {
+    String get(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ServletException {
         this.logger.info("GET()");
         logger.info("URI: " + (String) request.getAttribute("uri"));
         HttpServletRequest req = (HttpServletRequest) request;
@@ -54,7 +53,7 @@ public class MqNaaSResource {
     @PUT
     @Path("/{res1:.*}")
     public @ResponseBody
-    void put(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, RestServiceException, ServletException {
+    void put(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ServletException {
         this.logger.info("PUT() ");
 
         String body = "";
@@ -99,7 +98,7 @@ public class MqNaaSResource {
 
     @DELETE
     @Path("/{res1:.*}")
-    public void delete(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, RestServiceException, ServletException {
+    public void delete(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException, ServletException {
         this.logger.info("DELETE() URI: " + (String) request.getAttribute("uri"));
         HttpServletRequest req = (HttpServletRequest) request;
         request.setAttribute("uri", req.getRequestURI().substring(req.getContextPath().length()));

@@ -63,9 +63,5 @@
         <property name="basename" value="/WEB-INF/config" />
         <property name="cacheSeconds" value="0" />
     </bean>
-        
-    <bean id="clientJersey" class="org.opennaas.gui.services.JerseyClient" /> 
-    <bean id="arnClient" class="org.opennaas.gui.services.ARNClient" /> 
-    <bean id="cpeClient" class="org.opennaas.gui.services.CPEClient" /> 
 
 </beans>
