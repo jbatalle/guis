@@ -12,7 +12,7 @@
 	font-style: normal;
 }
 
-body, html { font-size: 100%; 	padding: 0; margin: 0;}
+body, html { font-size: 100%; 	padding: 0; margin: 0; height: 100%;}
 
 /* Reset */
 *,
@@ -38,7 +38,7 @@ body {
 	font-family: 'Lato', Calibri, Arial, sans-serif;
 	/*color: #b1aea6;*/
 	background: #fffcf5;
-	min-height: 800px;
+/*	min-height: 800px;*/
 }
 
 a {
