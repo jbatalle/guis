@@ -568,8 +568,8 @@ angular.module('openNaaSApp')
                 var networkElements = [
                     {
                         x: 350,
-                        y: 200,
-                        "_id": "openflowswitch:OFSwitch-4",
+                        y: 250,
+                        "_id": "openflowswitch:OFSwitch-23",
                         "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
                         "_xsi:type": "switch",
                         ports: {
@@ -583,37 +583,9 @@ angular.module('openNaaSApp')
                         }
                     },
                     {
-                        x: 250,
-                        y: 100,
-                        "_id": "openflowswitch:OFSwitch-5",
-                        "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-                        "_xsi:type": "switch",
-                        ports: {
-                            port: [{
-                                "_id": "OF21"
-                            }, {
-                                "_id": "OF22"
-                            }]
-                        }
-                    },
-                    {
-                        x: 250,
-                        y: 300,
-                        "_id": "openflowswitch:OFSwitch-6",
-                        "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-                        "_xsi:type": "switch",
-                        ports: {
-                            port: [{
-                                "_id": "OF31"
-                            }, {
-                                "_id": "OF32"
-                            }]
-                        }
-                    },
-                    {
-                        x: 550,
-                        y: 200,
-                        "_id": "tson:Tson-9",
+                        x: 500,
+                        y: 250,
+                        "_id": "tson:Tson-24",
                         "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
                         "_xsi:type": "tson",
                         ports: {
@@ -627,9 +599,9 @@ angular.module('openNaaSApp')
                         }
                     },
                     {
-                        x: 650,
+                        x: 600,
                         y: 100,
-                        "_id": "tson:Tson-10",
+                        "_id": "tson:Tson-26",
                         "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
                         "_xsi:type": "tson",
                         ports: {
@@ -642,8 +614,8 @@ angular.module('openNaaSApp')
                     },
                     {
                         x: 650,
-                        y: 300,
-                        "_id": "tson:Tson-11",
+                        y: 250,
+                        "_id": "tson:Tson-25",
                         "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
                         "_xsi:type": "tson",
                         ports: {
@@ -655,23 +627,141 @@ angular.module('openNaaSApp')
                         }
                     },
                     {
-                        x: 100,
+                        x: 250,
+                        y: 350,
+                        "_id": "epc:EPC-20",
+                        "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                        "_xsi:type": "epc",
+                        ports: {
+                            port: [{
+                                "_id": "T31"
+                            }, {
+                                "_id": "T32"
+                            }]
+                        }
+                    },
+                    {
+                        x: 200,
+                        y: 300,
+                        "_id": "lte:LTE-21",
+                        "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                        "_xsi:type": "lte",
+                        ports: {
+                            port: [{
+                                "_id": "T31"
+                            }, {
+                                "_id": "T32"
+                            }]
+                        }
+                    },
+                    {
+                        x: 200,
+                        y: 400,
+                        "_id": "lte:LTE-22",
+                        "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                        "_xsi:type": "lte",
+                        ports: {
+                            port: [{
+                                "_id": "T31"
+                            }, {
+                                "_id": "T32"
+                            }]
+                        }
+                    },
+                    {
+                        x: 200,
                         y: 100,
-                        "_id": "tson:Wifi-4",
+                        "_id": "wifi:WNODE-14",
                         "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
                         "_xsi:type": "wifi",
                         ports: {
-                            port: []
+                            port: [{
+                                "_id": "CHANNEL-1"
+                            }]
+                        }
+                    },
+                    {
+                        x: 100,
+                        y: 100,
+                        "_id": "wifi:WNODE-15",
+                        "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                        "_xsi:type": "wifi",
+                        ports: {
+                            port: [{
+                                "_id": "T31"
+                            }, {
+                                "_id": "T32"
+                            }]
+                        }
+                    },
+                    {
+                        x: 100,
+                        y: 200,
+                        "_id": "tson:WNODE-16",
+                        "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                        "_xsi:type": "wifi",
+                        ports: {
+                            port: [{
+                                "_id": "T31"
+                            }, {
+                                "_id": "T32"
+                            }]
+                        }
+                    },
+                    {
+                        x: 200,
+                        y: 200,
+                        "_id": "tson:WNODE-17",
+                        "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                        "_xsi:type": "wifi",
+                        ports: {
+                            port: [{
+                                "_id": "T31"
+                            }, {
+                                "_id": "T32"
+                            }]
+                        }
+                    },
+                    {
+                        x: 100,
+                        y: 300,
+                        "_id": "tson:WNODE-18",
+                        "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                        "_xsi:type": "wifi",
+                        ports: {
+                            port: [{
+                                "_id": "T31"
+                            }, {
+                                "_id": "T32"
+                            }]
+                        }
+                    },
+                    {
+                        x: 100,
+                        y: 400,
+                        "_id": "tson:WNODE-19",
+                        "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                        "_xsi:type": "wifi",
+                        ports: {
+                            port: [{
+                                "_id": "T31"
+                            }, {
+                                "_id": "T32"
+                            }]
                         }
                     },
                     {
                         x: 100,
                         y: 150,
-                        "_id": "tson:Wifi-5",
+                        "_id": "tson:WNODE-9",
                         "_xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
                         "_xsi:type": "wifi",
                         ports: {
-                            port: []
+                            port: [{
+                                "_id": "T31"
+                            }, {
+                                "_id": "T32"
+                            }]
                         }
                     },
                         ];
@@ -792,13 +882,14 @@ angular.module('openNaaSApp')
                     createElement(nodes[i].id, nodes[i].type, divPos, data);
                     //                            localStorageService.set("graphNodes", graph.getNodes());
                 }
-                graph.addLink("OFSwitch-4", "OFSwitch-5");
-                graph.addLink("OFSwitch-5", "OFSwitch-6");
-                graph.addLink("OFSwitch-6", "OFSwitch-4");
-                graph.addLink("Tson-9", "Tson-10");
-                graph.addLink("Tson-10", "Tson-11");
-                graph.addLink("Tson-11", "Tson-9");
-                graph.addLink("Tson-9", "OFSwitch-4");
+                graph.addLink("OFSwitch-23", "Tson-24");
+                graph.addLink("Tson-24", "Tson-25");
+                graph.addLink("Tson-24", "Tson-26");
+                graph.addLink("Tson-25", "Tson-26");
+                graph.addLink("OFSwitch-23", "EPC-20");
+
+                graph.addLink("OFSwitch-23", "WNODE-14");
+                graph.addLink("OFSwitch-23", "WNODE-17");
             }
         };
             }]);
