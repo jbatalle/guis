@@ -72,7 +72,7 @@ angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSAp
                         var url = config.url;
 
                         if (status == 401) {
-                            $location.path("/login");
+                            //$location.path("/login");
                         } else {
                             $rootScope.error = method + " on " + url + " failed with status " + status;
                         }
@@ -134,7 +134,7 @@ angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSAp
 
         /* Try getting valid user from cookie or go to login page */
         var originalPath = $location.path();
-        $location.path("/login");
+        // $location.path("/login");
         var authToken = $cookieStore.get('authToken');
         if (authToken !== undefined) {
             $rootScope.authToken = authToken;

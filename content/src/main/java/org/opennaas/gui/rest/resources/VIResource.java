@@ -112,12 +112,7 @@ public class VIResource {
     @Path("{viName}/name/{resName}/type/{resType}")//rest/vi/"+viId+"/name/"+resName+"/type/"+resType
     public void addVI(@PathParam("viName") String viName, @PathParam("resName")String resName, @PathParam("resType")String resType) {
         this.logger.info("add vi(id, viId)");
-//        this.vIDao.add(this.vIDao.findByName(viName).getId(), resName, resType);
-        VI vi = this.vIDao.findByName(viName);
-        virtualResource vR = new virtualResource(resName, resType);
-        vi.getViRes().add(vR);
-        this.vIDao.save(vi);
-        this.logger.info(this.vIDao.findByName(viName).getStatus());
+        this.vIDao.add(this.vIDao.findByName(viName).getId(), resName, resType);
     }
     
     @GET

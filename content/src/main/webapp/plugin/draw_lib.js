@@ -15,13 +15,31 @@ function myGraph(el) {
 
     // Add and remove elements on the graph object
     this.addNode = function (id) {
-        nodes.push({id: id, fixed: true, type: "helpImage", transitions: [], x: 200, y: 200, width: "20px", height: "20px"});
+        nodes.push({
+            id: id,
+            fixed: true,
+            type: "helpImage",
+            transitions: [],
+            x: 200,
+            y: 200,
+            width: "20px",
+            height: "20px"
+        });
         update();
     };
 
     this.addNodewithPos = function (id, x, y) {
         console.log("Add node");
-        nodes.push({id: id, fixed: true, type: "helpImage", transitions: [], x: x, y: y, width: "20px", height: "20px"});
+        nodes.push({
+            id: id,
+            fixed: true,
+            type: "helpImage",
+            transitions: [],
+            x: x,
+            y: y,
+            width: "20px",
+            height: "20px"
+        });
         update();
     };
 
@@ -52,7 +70,7 @@ function myGraph(el) {
 
     this.removeNode = function (id) {
         var i = 0,
-                n = findNode(id);
+            n = findNode(id);
         while (i < links.length) {
             if ((links[i]['source'] == n) || (links[i]['target'] == n))
                 links.splice(i, 1);
@@ -67,7 +85,11 @@ function myGraph(el) {
         console.log("add link");
         console.log(findNode(source));
         update();
-        links.push({id: source + "-" + target, source: findNode(source), target: findNode(target)});
+        links.push({
+            id: source + "-" + target,
+            source: findNode(source),
+            target: findNode(target)
+        });
         console.log(links);
         update();
     };
@@ -76,28 +98,38 @@ function myGraph(el) {
         console.log(nodes);
         update();
         console.log("add link between ports");
-        console.log(source +" - "+target);
-//        links.push({id: source+"-"+target, source:findNode(source), target:findNode(target)});
-        links.push({id: source + "-" + target, source: findPortNode(source), target: findPortNode(target)});
+        console.log(source + " - " + target);
+        //        links.push({id: source+"-"+target, source:findNode(source), target:findNode(target)});
+        links.push({
+            id: source + "-" + target,
+            source: findPortNode(source),
+            target: findPortNode(target)
+        });
         console.log(links);
-                update();
-//DEMO        
+        update();
+        //DEMO        
         for (var j = 0; j < nodes.length; j++) {
             var d = nodes[j];
             for (var i = 0; i < d.ports.length; i++) {
-                d.ports[i].x =  d.ports[i].posx + d.x;
-                d.ports[i].y =  d.ports[i].posy + d.y;
-//                        console.log(d.ports[i]);
-console.log(d.ports[i]);
-console.log(d.ports[i].x);
+                d.ports[i].x = d.ports[i].posx + d.x;
+                d.ports[i].y = d.ports[i].posy + d.y;
+                //                        console.log(d.ports[i]);
+                console.log(d.ports[i]);
+                console.log(d.ports[i].x);
                 transform(d.ports[i]);
-                console.log(link.filter(function (l) {return l.source === d.ports[i];}));
-                link.filter(function (l) { return l.source.id === d.ports[i].id;}).attr("x1", d.ports[i].x).attr("y1", d.ports[i].y);
-                link.filter(function (l) { return l.target.id === d.ports[i].id;}).attr("x2", d.ports[i].x).attr("y2", d.ports[i].y);
+                console.log(link.filter(function (l) {
+                    return l.source === d.ports[i];
+                }));
+                link.filter(function (l) {
+                    return l.source.id === d.ports[i].id;
+                }).attr("x1", d.ports[i].x).attr("y1", d.ports[i].y);
+                link.filter(function (l) {
+                    return l.target.id === d.ports[i].id;
+                }).attr("x2", d.ports[i].x).attr("y2", d.ports[i].y);
             }
             console.log("update");
         }
-//DEMO        
+        //DEMO        
 
         //update();
     };
@@ -111,8 +143,7 @@ console.log(d.ports[i].x);
         for (var i in nodes) {
             if (nodes[i]["id"] === id)
                 return nodes[i]
-        }
-        ;
+        };
     }
 
     var findNodeGivenPort = function (id) {
@@ -121,8 +152,7 @@ console.log(d.ports[i].x);
                 console.log(nodes[i].ports[j]);
                 if (nodes[i].ports[j]["id"] === id)
                     return nodes[i];
-            }
-            ;
+            };
         }
     }
 
@@ -131,8 +161,7 @@ console.log(d.ports[i].x);
             for (var j in nodes[i].ports) {
                 if (nodes[i].ports[j]["id"] === id)
                     return nodes[i].ports[j];
-            }
-            ;
+            };
         }
     }
 
@@ -140,24 +169,21 @@ console.log(d.ports[i].x);
         for (var i in links) {
             if (link[i]["id"] === id)
                 return link[i]
-        }
-        ;
+        };
     }
 
     var findNodeIndex = function (id) {
         for (var i in nodes) {
             if (nodes[i]["id"] === id)
                 return i
-        }
-        ;
+        };
     }
 
     var findLinkIndex = function (id) {
         for (var i in links) {
             if (links[i]["id"] === id)
                 return i
-        }
-        ;
+        };
     };
 
     this.getNodes = function () {
@@ -182,7 +208,7 @@ console.log(d.ports[i].x);
 
     // set up the D3 visualisation in the specified element
     var w = $(el).innerWidth(),
-            h = $(el).innerHeight();
+        h = $(el).innerHeight();
 
     this.getWidth = function () {
         return w;
@@ -192,24 +218,24 @@ console.log(d.ports[i].x);
     }
 
     var vis = this.vis = d3.select(el)
-            .append("svg:svg")
-            .attr("width", w)
-            .attr("height", h)
-            .attr("pointer-events", "all") // Might need to come back to this
-//        .append('g')
-//        .call(d3.behavior.zoom().on("zoom", redraw))
-            ;
+        .append("svg:svg")
+        .attr("width", w)
+        .attr("height", h)
+        .attr("pointer-events", "all") // Might need to come back to this
+        //        .append('g')
+        //        .call(d3.behavior.zoom().on("zoom", redraw))
+    ;
 
     var containerSVG = vis.append("g")
-            .attr("id", "svgContainer")
-            .call(d3.behavior.zoom().on("zoom", redraw));
+        .attr("id", "svgContainer")
+        .call(d3.behavior.zoom().on("zoom", redraw));
 
     var force = d3.layout.force()
-            .linkDistance(30)
-            .size([w, h]);
+        .linkDistance(30)
+        .size([w, h]);
     var zoom = d3.behavior.zoom()
-            .scaleExtent(1, 10)
-            .on("zoom", zoomed);
+        .scaleExtent(1, 10)
+        .on("zoom", zoomed);
 
     function redraw() {
         var currentTranslateZoom = d3.event.translate;
@@ -218,7 +244,7 @@ console.log(d.ports[i].x);
         console.log(currentTranslateZoom);
         console.log("Zoom");
         vis.attr("transform",
-                "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
+            "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
     }
     this.zoomIn = function () {
         var currentZoom = zoom.scale();
@@ -227,15 +253,16 @@ console.log(d.ports[i].x);
         var newScale = zoom.scale() + 0.1;
         zoom.scale(newScale);
         containerSVG.attr("transform",
-                "translate(" + zoom.translate() + ")" + " scale(" + newScale + ")");
+            "translate(" + zoom.translate() + ")" + " scale(" + newScale + ")");
     }
     this.zoomOut = function () {
         var currentZoom = zoom.scale();
         var newScale = zoom.scale() - 0.1;
         zoom.scale(newScale);
         containerSVG.attr("transform",
-                "translate(" + zoom.translate() + ")" + " scale(" + newScale + ")");
+            "translate(" + zoom.translate() + ")" + " scale(" + newScale + ")");
     }
+
     function zoomed() { //handle the mousewheel zoom and mouse drag
         console.log("Zoomed");
         var t = d3.event.translate;
@@ -251,14 +278,17 @@ console.log(d.ports[i].x);
 
         //apply new zoom
         g.attr("transform", "translate(" + t + ")scale(" + s + ")")
-                //keep the border line of element proportional to the new zoom level
-                .selectAll('path').style("stroke-width", 1 / d3.event.scale + "px");
+            //keep the border line of element proportional to the new zoom level
+            .selectAll('path').style("stroke-width", 1 / d3.event.scale + "px");
     }
     drag_line = containerSVG.append('svg:path')
-            .attr({'class': 'dragline hidden', 'd': 'M0,0L0,0'});
+        .attr({
+            'class': 'dragline hidden',
+            'd': 'M0,0L0,0'
+        });
 
     var nodes = force.nodes(),
-            links = force.links();
+        links = force.links();
 
     var node = containerSVG.append("svg:g").selectAll("g.node");
     var link = containerSVG.append("svg:g").selectAll("link.sw");
@@ -269,96 +299,94 @@ console.log(d.ports[i].x);
         link = link.data(links);
 
         link.enter().append("svg:line")
-                .attr('id', function (d) {
-                    return d.id;
-                })
-                .attr("class", "link")
-                .attr("stroke", "black")
-                .on("mousedown", function (d) {
-                    linkMouseDown(d);
-                })
-                .on('mouseover', function (d) {
-                })
-                .on('mouseup', function (d) {
-                    linkMouseUp(d);
-                });
+            .attr('id', function (d) {
+                return d.id;
+            })
+            .attr("class", "link")
+            .attr("stroke", "black")
+            .on("mousedown", function (d) {
+                linkMouseDown(d);
+            })
+            .on('mouseover', function (d) {})
+            .on('mouseup', function (d) {
+                linkMouseUp(d);
+            });
         link
-                .attr("x1", function (d) {
-                    return d.source.x;
-                })
-                .attr("y1", function (d) {
-                    return d.source.y;
-                })
-                .attr("x2", function (d) {
-                    return d.target.x;
-                })
-                .attr("y2", function (d) {
-                    return d.target.y;
-                });
+            .attr("x1", function (d) {
+                return d.source.x;
+            })
+            .attr("y1", function (d) {
+                return d.source.y;
+            })
+            .attr("x2", function (d) {
+                return d.target.x;
+            })
+            .attr("y2", function (d) {
+                return d.target.y;
+            });
 
         link.exit().remove();
 
         var node = vis.selectAll("g.node")
-                .data(nodes);
+            .data(nodes);
 
         var nodeEnter = this.nodeEnter = node.enter().append("g")
-                .attr("class", "node")
-                .attr("px", function (d) {
-                    return d.x;
-                })
-                .attr("py", function (d) {
-                    return d.y;
-                })
-                .on("mousedown", function (d) {
-                    if (!ctrlKey) {
-//                    startState =d, endState = undefined;
-                        // reposition drag line
-//                    nodeMouseDown(d);
-                    }
-                })
-                .on('mouseover', function (d) {
+            .attr("class", "node")
+            .attr("px", function (d) {
+                return d.x;
+            })
+            .attr("py", function (d) {
+                return d.y;
+            })
+            .on("mousedown", function (d) {
+                if (!ctrlKey) {
+                    //                    startState =d, endState = undefined;
+                    // reposition drag line
+                    //                    nodeMouseDown(d);
+                }
+            })
+            .on('mouseover', function (d) {
 
-                })
-                .on('mouseup', function (d) {
-//                nodeMouseUp(d);
-                })
-                .call(drag);
+            })
+            .on('mouseup', function (d) {
+                //                nodeMouseUp(d);
+            })
+            .call(drag);
 
         nodeEnter.append("image")
-                .attr("xlink:href", function (d) {
-                    return graphImage[d.type];
-                })
-                .attr("fixed", false)
-                .attr("x", "-20px")//-8px
-                .attr("y", "-20px")
-                .attr("width", function (d) {
-                    return d.width;
-                })
-                .attr("height", function (d) {
-                    return d.height;
-                });
+            .attr("xlink:href", function (d) {
+                return graphImage[d.type];
+            })
+            .attr("fixed", false)
+            .attr("x", "-20px") //-8px
+            .attr("y", "-20px")
+            .attr("width", function (d) {
+                return d.width;
+            })
+            .attr("height", function (d) {
+                return d.height;
+            });
 
         nodeEnter.append("text")
-                .attr("class", "nodetext")
-                .attr("dx", function (d) {
-                    return d.text_x
-                })
-                .attr("dy", function (d) {
-                    return d.text_y
-                })
-                .text(function (d) {
-                    return d.id
-                });
+            .attr("class", "nodetext")
+            .attr("dx", function (d) {
+                return d.text_x
+            })
+            .attr("dy", function (d) {
+                return d.text_y
+            })
+            .text(function (d) {
+                return d.id
+            });
 
         nodeEnter.on("mousedown", function (d) {
             //if is a Virtual Resource
             if (!ctrlKey) {
                 console.log("Click on node " + d.name);
-//                    var parentNode = graph.getNodes().filter(function (p) { return d.parent == p.id})[0];
+                //                    var parentNode = graph.getNodes().filter(function (p) { return d.parent == p.id})[0];
                 var parentNode = graph.getNodes().filter(function (p) {
                     return d.name == p.name
-                })[0];
-                ;
+                })[0];;
                 console.log(parentNode);
                 startState = d, endState = undefined;
                 console.log(parentNode.x);
@@ -406,9 +434,9 @@ console.log(d.ports[i].x);
                 mousePosition = d3.mouse(canvas.node());
 
                 popup = canvas.append("div")
-                        .attr("class", "popup_context_menu")
-                        .style("left", mousePosition[0] + "px")
-                        .style("top", mousePosition[1] + "px");
+                    .attr("class", "popup_context_menu")
+                    .style("left", mousePosition[0] + "px")
+                    .style("top", mousePosition[1] + "px");
                 popup.append("h3").text(d.name);
                 popup.append("p").text("Ports: " + d.ports.length);
                 d.ports.forEach(function (entry) {
@@ -418,71 +446,71 @@ console.log(d.ports[i].x);
         });
 
         var portsTest = nodeEnter.append("g")
-                .attr("id", "ports").selectAll("g.ports")
-                .data(function (d) {
-                    return d.ports;
+            .attr("id", "ports").selectAll("g.ports")
+            .data(function (d) {
+                return d.ports;
+            });
+        /*
+                portsTest
+                        .enter().append("rect")
+                        .attr("id", function (d) {
+                            return d.id;
+                        })
+                        .attr("cx", function (d) {
+                            return d.posx;
+                        })
+                        .attr("cy", function (d) {
+                            return d.posy;
+                        })
+                        .attr("x", function (d) {
+                            return d.posx;
+                        })
+                        .attr("y", function (d) {
+                            return d.posy;
+                        })
+                        .attr("width", 12)
+                        .attr("height", 12)
+                        .on("mousedown", function (d) {
+                            if (!ctrlKey) {
+                                console.log("Click on port " + d.name);
+                                var parentNode = graph.getNodes().filter(function (p) {
+                                    return d.parent == p.id
+                                })[0];
+                                console.log(node);
+                                startState = d, endState = undefined;
+
+                                //startState = node;
+                                console.log("Change X " + (parentNode.x + d.posx));
+                                startState.x = (parentNode.x + d.posx);
+                                startState.y = (parentNode.y + d.posy);
+                                startState.testx = (parentNode.x + d.posx);
+                                startState.testy = (parentNode.y + d.posy);
+                                startState.transitions = [];
+                                nodeMouseDown(startState);
+                                console.log(startState);
+                            }
+                        }).on("mouseup", function (d) {
+                    var parentNode = graph.getNodes().filter(function (p) {
+                        return d.parent == p.id
+                    })[0];
+                    console.log(node);
+                    endState = d;
+
+                    //startState = node;
+                    console.log("Change X " + (parentNode.x + d.posx));
+                    endState.x = (parentNode.x + d.posx);
+                    endState.y = (parentNode.y + d.posy);
+                    endState.transitions = [];
+                    nodeMouseUp(endState);
                 });
-/*
-        portsTest
-                .enter().append("rect")
-                .attr("id", function (d) {
-                    return d.id;
-                })
-                .attr("cx", function (d) {
-                    return d.posx;
-                })
-                .attr("cy", function (d) {
-                    return d.posy;
-                })
-                .attr("x", function (d) {
-                    return d.posx;
-                })
-                .attr("y", function (d) {
-                    return d.posy;
-                })
-                .attr("width", 12)
-                .attr("height", 12)
-                .on("mousedown", function (d) {
-                    if (!ctrlKey) {
-                        console.log("Click on port " + d.name);
-                        var parentNode = graph.getNodes().filter(function (p) {
-                            return d.parent == p.id
-                        })[0];
-                        console.log(node);
-                        startState = d, endState = undefined;
-
-                        //startState = node;
-                        console.log("Change X " + (parentNode.x + d.posx));
-                        startState.x = (parentNode.x + d.posx);
-                        startState.y = (parentNode.y + d.posy);
-                        startState.testx = (parentNode.x + d.posx);
-                        startState.testy = (parentNode.y + d.posy);
-                        startState.transitions = [];
-                        nodeMouseDown(startState);
-                        console.log(startState);
-                    }
-                }).on("mouseup", function (d) {
-            var parentNode = graph.getNodes().filter(function (p) {
-                return d.parent == p.id
-            })[0];
-            console.log(node);
-            endState = d;
-
-            //startState = node;
-            console.log("Change X " + (parentNode.x + d.posx));
-            endState.x = (parentNode.x + d.posx);
-            endState.y = (parentNode.y + d.posy);
-            endState.transitions = [];
-            nodeMouseUp(endState);
-        });
-*/
+        */
         portsTest.exit().remove();
         nodeEnter.attr("transform", function (d) {
             return "translate(" + d.x + "," + d.y + ")";
         });
 
-//       portsTest.attr('x', function(d) { return d.x; })
-//                .attr('y', function(d) { return d.y; });
+        //       portsTest.attr('x', function(d) { return d.x; })
+        //                .attr('y', function(d) { return d.y; });
 
 
         node.exit().remove();
@@ -495,44 +523,44 @@ console.log(d.ports[i].x);
                 console.log("Selection enabled");
                 if (d3.event.target.tagName == 'svg') {
                     drag_line
-                            .classed('hidden', true)
-                            .style('marker-end', '');
+                        .classed('hidden', true)
+                        .style('marker-end', '');
                     startState = undefined;
                     if (!d3.event.ctrlKey) {
                         d3.selectAll('g.selected').classed("selected", false);
 
-                        d3.select(".popup_context_menu").remove();//Close popup
+                        d3.select(".popup_context_menu").remove(); //Close popup
                         contextMenuShowing = false;
                     }
                     if (multiSelectMode) {
                         var p = d3.mouse(this);
                         vis.append("rect")
-                                .attr({
-                                    rx: 6,
-                                    ry: 6,
-                                    class: "selection",
-                                    x: p[0],
-                                    y: p[1],
-                                    width: 0,
-                                    height: 0
-                                });
+                            .attr({
+                                rx: 6,
+                                ry: 6,
+                                class: "selection",
+                                x: p[0],
+                                y: p[1],
+                                width: 0,
+                                height: 0
+                            });
                     }
                 }
             },
             mousemove: function () {
                 var p = d3.mouse(this),
-                        s = vis.select("rect.selection");
+                    s = vis.select("rect.selection");
                 if (!s.empty()) {
                     var d = {
-                        x: parseInt(s.attr("x"), 10),
-                        y: parseInt(s.attr("y"), 10),
-                        width: parseInt(s.attr("width"), 10),
-                        height: parseInt(s.attr("height"), 10)
-                    },
-                    move = {
-                        x: p[0] - d.x,
-                        y: p[1] - d.y
-                    };
+                            x: parseInt(s.attr("x"), 10),
+                            y: parseInt(s.attr("y"), 10),
+                            width: parseInt(s.attr("width"), 10),
+                            height: parseInt(s.attr("height"), 10)
+                        },
+                        move = {
+                            x: p[0] - d.x,
+                            y: p[1] - d.y
+                        };
                     if (move.x < 1 || (move.x * 2 < d.width)) {
                         d.x = p[0];
                         d.width -= move.x;
@@ -554,14 +582,14 @@ console.log(d.ports[i].x);
                     console.log("Select");
                     d3.selectAll('g.node').each(function (state_data, i) {
                         if (!d3.select(this).classed("selected") &&
-                                // inner circle inside selection frame
-                                state_data.x - radius >= d.x && state_data.x + radius <= d.x + d.width &&
-                                state_data.y - radius >= d.y && state_data.y + radius <= d.y + d.height
-                                ) {
+                            // inner circle inside selection frame
+                            state_data.x - radius >= d.x && state_data.x + radius <= d.x + d.width &&
+                            state_data.y - radius >= d.y && state_data.y + radius <= d.y + d.height
+                        ) {
 
                             d3.select(this)
-                                    .classed("selection", true)
-                                    .classed("selected", true);
+                                .classed("selection", true)
+                                .classed("selected", true);
                         }
                     });
                 } else if (startState) {
@@ -641,8 +669,8 @@ function StaticForcealgorithm(nodes, edges) {
 
             u = nodes[j];
             // countin the attraction
-            v.net_force.x += 0.06 * (u.x - v.x);
-            v.net_force.y += 0.06 * (u.y - v.y);
+            v.net_force.x += 0.15 * (u.x - v.x);
+            v.net_force.y += 0.15 * (u.y - v.y);
         }
         // counting the velocity (with damping 0.85)
         v.velocity.x = (v.velocity.x + v.net_force.x) * 0.85;
@@ -653,8 +681,7 @@ function StaticForcealgorithm(nodes, edges) {
         if (v.isDragged) {
             v.x = mouseX;
             v.y = mouseY;
-        }
-        else {
+        } else {
             v.x += v.velocity.x;
             v.y += v.velocity.y;
         }

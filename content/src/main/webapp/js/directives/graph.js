@@ -24,11 +24,13 @@ angular.module('openNaaSApp')
                         "_xsi:type": "switch",
                         ports: {
                             port: [{
-                                "_id": "OF11"
+                                "_id": "port-29"
                             }, {
-                                "_id": "OF12"
+                                "_id": "port-30"
                             }, {
-                                "_id": "OF13"
+                                "_id": "port-31"
+                            }, {
+                                "_id": "port-32"
                             }]
                         }
                     },
@@ -40,11 +42,11 @@ angular.module('openNaaSApp')
                         "_xsi:type": "tson",
                         ports: {
                             port: [{
-                                "_id": "T11"
+                                "_id": "port-40"
                             }, {
-                                "_id": "T12"
+                                "_id": "port-41"
                             }, {
-                                "_id": "T13"
+                                "_id": "port-42"
                             }]
                         }
                     },
@@ -56,9 +58,9 @@ angular.module('openNaaSApp')
                         "_xsi:type": "tson",
                         ports: {
                             port: [{
-                                "_id": "T21"
+                                "_id": "port-47"
                             }, {
-                                "_id": "T22"
+                                "_id": "port-48"
                             }]
                         }
                     },
@@ -70,9 +72,11 @@ angular.module('openNaaSApp')
                         "_xsi:type": "tson",
                         ports: {
                             port: [{
-                                "_id": "T31"
+                                "_id": "port-43"
                             }, {
-                                "_id": "T32"
+                                "_id": "port-44"
+                            }, {
+                                "_id": "port-45"
                             }]
                         }
                     },
@@ -84,9 +88,9 @@ angular.module('openNaaSApp')
                         "_xsi:type": "epc",
                         ports: {
                             port: [{
-                                "_id": "T31"
+                                "_id": "port-21"
                             }, {
-                                "_id": "T32"
+                                "_id": "port-22"
                             }]
                         }
                     },
@@ -98,9 +102,9 @@ angular.module('openNaaSApp')
                         "_xsi:type": "lte",
                         ports: {
                             port: [{
-                                "_id": "T31"
+                                "_id": "port-36"
                             }, {
-                                "_id": "T32"
+                                "_id": "port-37"
                             }]
                         }
                     },
@@ -112,9 +116,9 @@ angular.module('openNaaSApp')
                         "_xsi:type": "lte",
                         ports: {
                             port: [{
-                                "_id": "T31"
+                                "_id": "port-38"
                             }, {
-                                "_id": "T32"
+                                "_id": "port-39"
                             }]
                         }
                     },
@@ -126,7 +130,9 @@ angular.module('openNaaSApp')
                         "_xsi:type": "wifi",
                         ports: {
                             port: [{
-                                "_id": "CHANNEL-1"
+                                "_id": "port-17"
+                            }, {
+                                "_id": "port-18"
                             }]
                         }
                     },
@@ -138,9 +144,9 @@ angular.module('openNaaSApp')
                         "_xsi:type": "wifi",
                         ports: {
                             port: [{
-                                "_id": "T31"
+                                "_id": "port-19"
                             }, {
-                                "_id": "T32"
+                                "_id": "port-20"
                             }]
                         }
                     },
@@ -152,9 +158,9 @@ angular.module('openNaaSApp')
                         "_xsi:type": "wifi",
                         ports: {
                             port: [{
-                                "_id": "T31"
+                                "_id": "port-21"
                             }, {
-                                "_id": "T32"
+                                "_id": "port-22"
                             }]
                         }
                     },
@@ -166,9 +172,9 @@ angular.module('openNaaSApp')
                         "_xsi:type": "wifi",
                         ports: {
                             port: [{
-                                "_id": "T31"
+                                "_id": "port-23"
                             }, {
-                                "_id": "T32"
+                                "_id": "port-24"
                             }]
                         }
                     },
@@ -180,9 +186,9 @@ angular.module('openNaaSApp')
                         "_xsi:type": "wifi",
                         ports: {
                             port: [{
-                                "_id": "T31"
+                                "_id": "port-25"
                             }, {
-                                "_id": "T32"
+                                "_id": "port-26"
                             }]
                         }
                     },
@@ -194,9 +200,9 @@ angular.module('openNaaSApp')
                         "_xsi:type": "wifi",
                         ports: {
                             port: [{
-                                "_id": "T31"
+                                "_id": "port-27"
                             }, {
-                                "_id": "T32"
+                                "_id": "port-28"
                             }]
                         }
                     },
@@ -546,25 +552,33 @@ angular.module('openNaaSApp')
             }
         };
             }])
-    .directive('grapheditorvi', ['localStorageService', '$timeout', function (localStorageService, timer) {
+    .directive('grapheditorvi', ['localStorageService', '$timeout', 'viService', function (localStorageService, timer, viService) {
         return {
             restrict: 'EA',
-            scope: {},
+            controller: function ($scope, viService) {
+                console.log($scope);
+                console.log($scope.$parent);
+                console.log($scope.$parent.viId);
+                viService.getVIByName($scope.$parent.viId).then(function (result) {
+                    console.log("Update VirtualElements");
+                    console.log(result);
+                    $scope.virtualElements = result.viRes;
+                    console.log($scope.virtualElements)
+                });
+            },
+            scope: {
+
+            },
             templateUrl: 'partials/d3/editorVI.html',
             link: function (scope, element, attrs) {
                 graph = new myGraph("#graph");
                 //                        graph.setNodes(localStorageService.get("graphNodes"));
                 scope.graph = graph;
-                timer(console.log("TIMER"), 0);
+                timer(console.log("TIMER"), 2);
                 console.log(localStorageService.get("graphNodes"));
                 console.log(localStorageService.get("virtualElements"));
+                console.log(scope);
 
-                var xmlTopology = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?> <ns2:topology xmlns:ns2="opennaas.api"> <networkElements> <networkElement xsi:type="switch" id="openflowswitch:s1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s1.1"> <state> <congested>false</congested> </state> </port> <port id="s1.2"> <state> <congested>false</congested> </state> </port> <port id="s1.3"> <state> <congested>false</congested> </state> </port> <port id="s1.4"> <state> <congested>false</congested> </state> </port> </ports> </networkElement> <networkElement xsi:type="switch" id="openflowswitch:s2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s2.1"> <state> <congested>false</congested> </state> </port> <port id="s2.2"> <state> <congested>false</congested> </state> </port> <port id="s2.3"> <state> <congested>false</congested> </state> </port> </ports> </networkElement><networkElement xsi:type="switch" id="openflowswitch:s3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> <state> <congested>false</congested> </state> <ports> <port id="s3.1"> <state> <congested>false</congested> </state> </port> <port id="s3.2"> <state> <congested>false</congested> </state> </port> <port id="s3.3"> <state> <congested>false</congested> </state> </port> <port id="s3.4"> <state> <congested>false</congested> </state> </port> </ports> </networkElement> </networkElements> <links> <link> <state> <congested>false</congested> </state> <srcPort>s1.1</srcPort> <dstPort>s2.1</dstPort> </link> <link> <state> <congested>false</congested> </state> <srcPort>s1.2</srcPort> <dstPort>s3.1</dstPort> </link>  <link> <state> <congested>false</congested> </state> <srcPort>s2.2</srcPort> <dstPort>s3.2</dstPort> </link>  </links>  </ns2:topology>';
-                var json = convertXml2JSonObject(xmlTopology);
-                console.log(json);
-
-                var networkElements = json.topology.networkElements.networkElement;
-                var links = json.topology.links.link;
                 var networkElements = [
                     {
                         x: 350,
@@ -791,11 +805,12 @@ angular.module('openNaaSApp')
                     }
                         ];
                 var nodes = [];
-                var virtualElements = localStorageService.get("virtualElements");
+                var virtualElements = scope.virtualElements;
+                console.log(scope.virtualElements);
                 console.log(virtualElements);
-                networkElements = networkElements.concat(virtualElements).filter(function (el) {
+                /*networkElements = networkElements.concat(virtualElements).filter(function (el) {
                     return el !== null;
-                });
+                });*/
                 //for each network element
                 for (var i = 0; i < networkElements.length; i++) {
                     console.log(networkElements[i]);
