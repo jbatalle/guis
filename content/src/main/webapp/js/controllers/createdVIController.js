@@ -17,7 +17,8 @@ angular.module('openNaaSApp')
             var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement";
             MqNaaSResourceService.list(urlListVI).then(function (result) {
                 console.log(result);
-                $scope.data = result.IRootResource.IRootResourceId;
+                //                $scope.data = result.IRootResource.IRootResourceId;
+                // $scope.data = result;
                 $scope.tableParams.reload();
             });
         };

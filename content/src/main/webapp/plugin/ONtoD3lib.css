@@ -1,46 +1,75 @@
-.node {
-}
+.node {}
 
-.group {
-}
+.group {}
 
 .port {
-  fill: #a7ceee;
+    fill: #a7ceee;
 }
 
 .link line {
-  stroke: #adadad;
-  stroke-width: 1.5;
+    stroke: #adadad;
+    stroke-width: 1.5;
 }
 
 .group path {
-  fill: #ccf;
-  fill-opacity: 1;
-  stroke: #ccf;
-  stroke-width: 50;
-  stroke-opacity: 1;
-  stroke-linecap: "round";
-  stroke-linejoin: "round";
+    fill: #ccf;
+    fill-opacity: 1;
+    stroke: #ccf;
+    stroke-width: 50;
+    stroke-opacity: 1;
+    stroke-linecap: "round";
+    stroke-linejoin: "round";
 }
-
-
 /* Stencil CSS */
-#stencil { width: 200px; height:500px; border:3px solid black; border-radius:12px; margin:auto; float: left;}
-/* D3JS graph */
-#graph { width: 80%; height:500px; /*border:3px solid black;*/ border-radius:12px; margin:auto; float: left}
 
+#stencil {
+    width: 200px;
+    height: 500px;
+    border: 3px solid black;
+    border-radius: 12px;
+    margin: auto;
+    float: left;
+}
+/* D3JS graph */
+
+#graph {
+    width: 80%;
+    height: 650px;
+    /*border:3px solid black;*/
+    
+    border-radius: 12px;
+    margin: auto;
+    float: left
+}
 /* ------------------------------------------------------ */
+
 .node rect {
-  fill: #cfcfcf;
-  stroke: #caeeff;
-  stroke-width: 1;
+    fill: #cfcfcf;
+    stroke: #caeeff;
+    stroke-width: 1;
 }
 
-.link { stroke: #DA8830/*#ccc*/; stroke-width: 4px;}
-.nodetext { pointer-events: none; font: 10px sans-serif; }
-body { width: 100%; height: 100%; margin: none; padding: none; }
+.link {
+    stroke: #DA8830
+    /*#ccc*/
+    
+    ;
+    stroke-width: 4px;
+}
 
+.nodetext {
+    pointer-events: none;
+    font: 10px sans-serif;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: none;
+    padding: none;
+}
 /** Selection CSS **/
+
 rect.selection {
     stroke: gray;
     stroke-dasharray: 2px;
@@ -67,32 +96,33 @@ g.transition path.foreground {
 
 g.transition.hover path.background {
     stroke-dasharray: none;
-    stroke : aliceblue;
-    stroke-opacity  : 1.0;
-    transition : all 0.5s;
+    stroke: aliceblue;
+    stroke-opacity: 1.0;
+    transition: all 0.5s;
 }
 
 g.transition path.background {
     stroke-dasharray: none;
     stroke-width: 8px;
-    stroke : transparent;
+    stroke: transparent;
 }
 
 g.transition.selected path.foreground {
     stroke-dasharray: 2px;
-    stroke-color    : gray;
+    stroke-color: gray;
 }
 
 g.transition path {
-    cursor : default;
+    cursor: default;
 }
 
 .end-arrow {
-    fill            : gray;
-    stroke-width    : 1px;
+    fill: gray;
+    stroke-width: 1px;
 }
 
-g.transition:not( .selected).hover *, path.dragline {
+g.transition:not( .selected).hover *,
+path.dragline {
     display: inline;
 }
 
@@ -109,8 +139,8 @@ path.dragline {
 path.dragline.hidden {
     stroke-width: 0;
 }
-
 /* disable text selection */
+
 svg *::selection {
     background: transparent;
 }
@@ -122,16 +152,17 @@ svg *::-moz-selection {
 svg *::-webkit-selection {
     background: transparent;
 }
-
 /* Information messages JQUERY ui */
-p{
+
+p {
     margin: 1em 0;
 }
+
 strong {
     font-weight: 900;
 }
 
-.popup_context_menu{
+.popup_context_menu {
     position: absolute;
     left: 0;
     top: 0;

@@ -1,9 +1,9 @@
-var stencil_image_width = 60;//px
+var stencil_image_width = 60; //px
 
 $(function () {
     /* Information message */
     $(".ui-widget").hide();
-console.log("SCRIPT");
+    console.log("SCRIPT");
     /* END Information message */
 
     /* Stencil - Images draggables to d3js */
@@ -16,21 +16,21 @@ console.log("SCRIPT");
             x = ui.helper.clone();
             ui.helper.remove();
             x.draggable({
-                	helper: 'original',
-                	cursor: 'move',
+                helper: 'original',
+                cursor: 'move',
                 //containment: '#droppable',
-	                tolerance: 'fit',
-                	drop: function (event, ui) {
-	                    $(ui.draggable).remove();
-	        	}
+                tolerance: 'fit',
+                drop: function (event, ui) {
+                    $(ui.draggable).remove();
+                }
             });
             console.log("Create");
-            var nodeType = ui.draggable.attr("id"),//select the id of the element
+            var nodeType = ui.draggable.attr("id"), //select the id of the element
                 divPos = {},
                 $div = $("#graph"),
                 e = window.event;
 
-            divPos = {//position where the element is dropped
+            divPos = { //position where the element is dropped
                 x: e.pageX - $div.offset().left,
                 y: e.pageY - $div.offset().top
             };
@@ -46,65 +46,121 @@ console.log("SCRIPT");
 function createElement(name, type, divPos, data) {
     console.log("Create element " + type + " " + divPos);
     switch (type) {
-        case "ofSwitch":
-        case "ofswitch":
-            console.log(jQuery.isEmptyObject(data));
-            if (jQuery.isEmptyObject(data))
-                createofSwitch(divPos);
-            else
-                createofSwitchwithData(divPos, data);
-//showInfoMessage("Element added");
-            break;
-        case "router":
-            createRouter(divPos);
-            showInfoMessage("Element added");
-            break;
-        case "ofController":
-            createofController(divPos);
-            break;
-        case "host":
-            createHost(divPos);
-            break;
-        case "laptop":
-            console.log("Element not defined yet");
-            createLaptop(divPos);
-            break;
-        case "arn":
-//            if (jQuery.isEmptyObject(data))
-                createARN(name, divPos);
-//            else
-//                createARN(divPos, data);
-            //showInfoMessage("Element added");
-            break;
-        case "cpe":
-                createCPE(name, divPos);
-//            showInfoMessage("Element added");
-            break;
-        case "tson":
-            console.log(data);
-            console.log(jQuery.isEmptyObject(data));
-            if (jQuery.isEmptyObject(data))
-                createTSON(name, divPos);
-            else
-                createTSONwithData(name, divPos, data);
-            break;
-            case "wifi":
-            if (jQuery.isEmptyObject(data))
-                createWIFI(name, divPos);
-            else
-                createWIFIwithData(name, divPos, data);
-            break;
-        default:
-//            console.log("Element not defined");
-            return;
+    case "ofSwitch":
+    case "ofswitch":
+        console.log(jQuery.isEmptyObject(data));
+        if (jQuery.isEmptyObject(data))
+            createofSwitch(divPos);
+        else
+            createofSwitchwithData(divPos, data);
+        //showInfoMessage("Element added");
+        break;
+    case "router":
+        createRouter(divPos);
+        showInfoMessage("Element added");
+        break;
+    case "ofController":
+        createofController(divPos);
+        break;
+    case "host":
+        createHost(divPos);
+        break;
+    case "laptop":
+        console.log("Element not defined yet");
+        createLaptop(divPos);
+        break;
+    case "arn":
+        //            if (jQuery.isEmptyObject(data))
+        createARN(name, divPos);
+        //            else
+        //                createARN(divPos, data);
+        //showInfoMessage("Element added");
+        break;
+    case "cpe":
+        createCPE(name, divPos);
+        //            showInfoMessage("Element added");
+        break;
+    case "tson":
+        console.log(data);
+        console.log(jQuery.isEmptyObject(data));
+        if (jQuery.isEmptyObject(data))
+            createTSON(name, divPos);
+        else
+            createTSONwithData(name, divPos, data);
+        break;
+    case "wifi":
+        if (jQuery.isEmptyObject(data))
+            createWIFI(name, divPos);
+        else
+            createWIFIwithData(name, divPos, data);
+        break;
+    case "epc":
+        if (jQuery.isEmptyObject(data))
+            createEPC(name, divPos);
+        else
+            createEPCwithData(name, divPos, data);
+        break;
+    case "lte":
+        if (jQuery.isEmptyObject(data))
+            createLTE(name, divPos);
+        else
+            createLTEwithData(name, divPos, data);
+        break;
+    default:
+        //            console.log("Element not defined");
+        return;
     }
 
+}
+
+function createEPC(name, divPos) {
+    EPC.prototype = new NetworkElement();
+    EPC.prototype.constructor = EPC;
+    var tson = new EPC(name);
+    tson.id = name;
+    tson.setX(divPos.x);
+    tson.setY(divPos.y);
+    graph.addNodewithData(tson);
+}
+
+function createEPCwithData(name, divPos, data) {
+    EPC.prototype = new NetworkElement();
+    EPC.prototype.constructor = EPC;
+    //    var name = "cpe" + graph.getNodes().length;
+    var tson = new EPC(name);
+    tson.id = name;
+    tson.setX(divPos.x);
+    tson.setY(divPos.y);
+    tson.setPorts(data.ports, tson.id);
+    graph.addNodewithData(tson);
+}
+
+function createLTE(name, divPos) {
+    LTE.prototype = new NetworkElement();
+    LTE.prototype.constructor = LTE;
+    var tson = new LTE(name);
+    tson.id = name;
+    tson.setX(divPos.x);
+    tson.setY(divPos.y);
+    graph.addNodewithData(tson);
+}
+
+function createLTEwithData(name, divPos, data) {
+    LTE.prototype = new NetworkElement();
+    LTE.prototype.constructor = LTE;
+    //    var name = "cpe" + graph.getNodes().length;
+    var tson = new LTE(name);
+    tson.id = name;
+    tson.setX(divPos.x);
+    tson.setY(divPos.y);
+    tson.setPorts(data.ports, tson.id);
+    graph.addNodewithData(tson);
 }
 
 function createWIFI(name, divPos) {
     WIFI.prototype = new NetworkElement();
     WIFI.prototype.constructor = WIFI;
-//    var name = "cpe" + graph.getNodes().length;
+    //    var name = "cpe" + graph.getNodes().length;
     var tson = new WIFI(name);
     console.log(tson);
     console.log(tson instanceof NetworkElement);
@@ -122,7 +178,7 @@ function createWIFI(name, divPos) {
 function createWIFIwithData(name, divPos, data) {
     WIFI.prototype = new NetworkElement();
     WIFI.prototype.constructor = WIFI;
-//    var name = "cpe" + graph.getNodes().length;
+    //    var name = "cpe" + graph.getNodes().length;
     var tson = new WIFI(name);
     console.log(tson);
     console.log(tson instanceof NetworkElement);
@@ -141,7 +197,7 @@ function createWIFIwithData(name, divPos, data) {
 function createTSON(name, divPos) {
     TSON.prototype = new NetworkElement();
     TSON.prototype.constructor = TSON;
-//    var name = "cpe" + graph.getNodes().length;
+    //    var name = "cpe" + graph.getNodes().length;
     var tson = new TSON(name);
     console.log(tson);
     console.log(tson instanceof NetworkElement);
@@ -159,7 +215,7 @@ function createTSON(name, divPos) {
 function createTSONwithData(name, divPos, data) {
     TSON.prototype = new NetworkElement();
     TSON.prototype.constructor = TSON;
-//    var name = "cpe" + graph.getNodes().length;
+    //    var name = "cpe" + graph.getNodes().length;
     var tson = new TSON(name);
     console.log(tson);
     console.log(tson instanceof NetworkElement);
@@ -178,7 +234,7 @@ function createTSONwithData(name, divPos, data) {
 function createofSwitch(divPos) {
     OfSwitch.prototype = new NetworkElement();
     OfSwitch.prototype.constructor = OfSwitch;
-//    var name = "ofSw" + graph.getNodes().length;
+    //    var name = "ofSw" + graph.getNodes().length;
     var ofSw = new OfSwitch(name);
     console.log(ofSw);
     console.log(ofSw instanceof NetworkElement);
@@ -187,11 +243,12 @@ function createofSwitch(divPos) {
     ofSw.setX(divPos.x);
     ofSw.setY(divPos.y);
     //var ports = [{"id": ofSw.id+"1", "name": "ge-0/1", x: (ofSw.x-23), y: (ofSw.x+12), posx: -23, posy: 12, parent: ofSw.id},
-	   //          {"id": ofSw.id+"2", "name": "ge-2/1", x: (ofSw.x+45), y: (ofSw.y+12), posx: 45, posy: 12, parent: ofSw.id}];
+    //          {"id": ofSw.id+"2", "name": "ge-2/1", x: (ofSw.x+45), y: (ofSw.y+12), posx: 45, posy: 12, parent: ofSw.id}];
     //ofSw.setPorts(ports);
     console.log(ofSw);
     graph.addNodewithData(ofSw);
 }
+
 function createofSwitchwithData(divPos, data) {
     console.log("Creating Switch with data");
     OfSwitch.prototype = new NetworkElement();
@@ -224,35 +281,39 @@ function createRouter(divPos) {
     graph.addNodewithData(router);
 }
 
-function showInfoMessage(message){
+function showInfoMessage(message) {
     document.getElementById("info_message_text").innerHTML = message;
     $("#info_message").show();
-    setInterval(function () { $("#info_message").hide();}, 3000);
+    setInterval(function () {
+        $("#info_message").hide();
+    }, 3000);
 }
 
-function showErrorMessage(message){
+function showErrorMessage(message) {
     document.getElementById("error_message_text").innerHTML = message;
     $("#error_message").show();
-    setInterval(function () { $("#error_message").hide();}, 3000);
+    setInterval(function () {
+        $("#error_message").hide();
+    }, 3000);
 }
 
-function createLaptop(){
+function createLaptop() {
     showErrorMessage("Element not defined");
 }
 
-function createStencil(){
+function createStencil() {
     console.log(graphImage);
     var stencilDiv = document.getElementById("stencil");
     for (key in graphImage) {
         console.log(key);
         el = generateHtmlDivElement(key);
-	stencilDiv.appendChild(el);
+        stencilDiv.appendChild(el);
     }
-/*	el = generateHtmlDivElement("ofSwitch");
-	stencilDiv.appendChild(el);
-    el = generateHtmlDivElement("laptop");
-	stencilDiv.appendChild(el);
-*/
+    /*	el = generateHtmlDivElement("ofSwitch");
+    	stencilDiv.appendChild(el);
+        el = generateHtmlDivElement("laptop");
+    	stencilDiv.appendChild(el);
+    */
 }
 
 function generateHtmlDivElement(type) {
@@ -266,4 +327,3 @@ function generateHtmlDivElement(type) {
     el.appendChild(imgEl);
     return el;
 }
-

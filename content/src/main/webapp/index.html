@@ -83,7 +83,7 @@
                         <ul class="list-unstyled collapse" id="menu3">
                             <li><a href="#!/resourcesMgt"><i class="glyphicon glyphicon-link"></i> Management</a>
                             </li>
-                            <li><a href="#!/resourcesInfo"><i class="glyphicon glyphicon-list"></i> Resources</a>
+                            <li><a href="#!/resourcesList"><i class="glyphicon glyphicon-list"></i> Resources</a>
                             </li>
                             <!--li><a href="#!/networkActions"><i class="glyphicon glyphicon-circle"></i> Actions</a></li-->
                         </ul>
@@ -110,8 +110,9 @@
             </div>
             <!-- /col-3 -->
             <div class="col-sm-10">
-                <a href="#!/"><strong><i class="glyphicon"></i> {{viewName}}</strong></a>
-                <hr>
+                <div class="page-header">
+                    <h3> {{viewName}}</h3>
+                </div>
                 <div class="container-non-responsive ng-hide" ng-show="initialized">
                     <!--<div class="alert alert-danger" ng-show="error">{{error}}</div>-->
                     <div class="alert alert-info" ng-show="info">{{info}}</div>
@@ -167,6 +168,7 @@
     <script src="js/controllers/createVI.js"></script>
     <script src="js/controllers/createdVIController.js"></script>
     <script src="js/controllers/options.js"></script>
+    <script src="js/controllers/resources.js"></script>
 
     <script src="js/services/historyService.js"></script>
     <script src="js/services/mqNaaSResourceService.js"></script>

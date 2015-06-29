@@ -30,6 +30,14 @@ angular.module('openNaaSApp', ['ngResource', 'ngRoute', 'ngCookies', 'openNaaSAp
                     templateUrl: 'partials/createdVI/index.html',
                     controller: 'createdVIController'
                 })
+                .when('/resourcesList', {
+                    templateUrl: 'partials/resourceList.html',
+                    controller: 'resourcesListCtrl'
+                })
+                .when('/resourcesList/:id', {
+                    templateUrl: 'partials/resourceList.html',
+                    controller: 'resourcesListCtrl'
+                })
                 .when('/mgt', {
                     templateUrl: 'partials/mgt.html',
                     controller: 'MgtCtrl'

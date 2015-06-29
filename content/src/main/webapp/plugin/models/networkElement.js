@@ -9,6 +9,8 @@ addJSFile('../plugin/models/arn.js');
 addJSFile('../plugin/models/cpe.js');
 addJSFile('../plugin/models/tson.js');
 addJSFile('../plugin/models/wifi.js');
+addJSFile('../plugin/models/epc.js');
+addJSFile('../plugin/models/lte.js');
 
 function NetworkElement(name, data, ports) {
     this.name = name;
