@@ -1,0 +1,26 @@
+require 'yard'
+require 'yaml'
+require 'sinatra/activerecord'
+require 'sinatra/activerecord/rake'
+
+namespace(:db) do
+  task(:load_config)
+end
+
+def config
+  @config ||= YAML.load_file File.join(rakefile_directory, 'config/config.yml')
+end
+
+
+desc "Start The Application"
+task :start do
+	environment = ENV['FOG_ENV'] || 'development'
+	conf = File.expand_path('config.ru', File.dirname(__FILE__))
+	conf2 = File.expand_path('config/config.yml', File.dirname(__FILE__))
+	exec("thin -e #{environment} -R #{conf} -C #{conf2} --debug start")
+end
+
+YARD::Rake::YardocTask.new do |t|
+	t.files = ['main.rb', 'helpers/authentication.rb', 'routes/authentication.rb']
+end
+

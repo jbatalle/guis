@@ -1,0 +1,7 @@
+fog_security
+fog_security_test
+log/*
+!log/.gitadd
+config/database.yml
+config/config.yml
+.bundle/

@@ -1,0 +1,37 @@
+source 'https://rubygems.org'
+
+gem 'sinatra', '~>1.4'
+gem 'thin'
+gem 'json', '~>1.8'
+gem 'sinatra-contrib'
+gem 'nokogiri', '~>1.6'
+gem 'json-schema', '~>2.5'
+gem 'rest-client', '~>1.8'
+
+group :development do
+	gem 'rerun'
+	gem 'sqlite3'
+end
+
+group :devel do
+	gem 'pg'
+end
+
+group :testing do
+	gem 'pg'
+end
+
+group :production do
+	gem 'pg'
+end
+
+group :doc do
+	gem 'yard', '~>0.8'
+end
+
+gem 'sinatra-activerecord'
+gem 'bcrypt'
+gem 'sinatra-cross_origin'
+gem 'mail'
+gem 'rack-ssl-enforcer'
+gem 'rack-ssl'
