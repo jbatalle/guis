@@ -1,0 +1,141 @@
+<!doctype html>
+<html class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <title>SODALES | SOftware-Defined Access using Low-Energy Subsystems</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/ionicons/css/ionicons.css" />
+    <link rel="stylesheet" href="bower_components/nvd3/src/nv.d3.css" />
+    <link rel="stylesheet" href="bower_components/metrics-graphics/dist/metricsgraphics.css" />
+    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" />
+    <link rel="stylesheet" href="bower_components/vis/dist/vis.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css(.tmp) styles/main.css -->
+    <!-- endbuild -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles/custom.css">
+    <link type="text/css" media="screen" href="plugin/ONtoD3lib.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/shop-item.css">
+
+    <!-- Ionicons -->
+    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body ng-app="mqnaasApp">
+
+    <div ui-view=""></div>
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/icheck/icheck.min.js"></script>
+    <script src="bower_components/ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.js"></script>
+    <script src="bower_components/angular-translate-loader-partial/angular-translate-loader-partial.js"></script>
+    <script src="bower_components/angular-svg-round-progressbar/build/roundProgress.min.js"></script>
+    <script src="bower_components/d3/d3.js"></script>
+    <script src="bower_components/nvd3/nv.d3.js"></script>
+    <script src="bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
+    <script src="bower_components/metrics-graphics/dist/metricsgraphics.js"></script>
+    <script src="bower_components/ng-tags-input/ng-tags-input.min.js"></script>
+    <script src="bower_components/mg-line-brushing/dist/mg_line_brushing.js"></script>
+    <script src="bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+    <script src="bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.js"></script>
+    <script src="bower_components/vis/dist/vis.min.js"></script>
+    <script src="bower_components/angular-visjs/angular-vis.js"></script>
+    <script src="bower_components/x2js/xml2json.min.js"></script>
+    <script src="bower_components/angular-x2js/dist/x2js.min.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/config.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="config.js"></script>
+    <script src="scripts/controllers.js"></script>
+    <script src="scripts/directives.js"></script>
+    <script src="scripts/translations.js"></script>
+
+    <script src="scripts/controllers/auth.js"></script>
+    <script src="scripts/controllers/dashboard.js"></script>
+    <script src="scripts/controllers/users.js"></script>
+    <script src="scripts/controllers/profile.js"></script>
+
+    <script src="scripts/controllers/sodales/0_home.js"></script>
+    <script src="scripts/controllers/sodales/1_pi_mgt.js"></script>
+    <script src="scripts/controllers/sodales/2_monitoring.js"></script>
+    <script src="scripts/controllers/sodales/3_oa_dashboard.js"></script>
+    <script src="scripts/controllers/sodales/4_oa_history.js"></script>
+    <script src="scripts/controllers/sodales/5_oa_vi.js"></script>
+    <script src="scripts/controllers/sodales/6_slices.js"></script>
+
+    <script src="scripts/services/auth.js"></script>
+    <script src="scripts/services/users.js"></script>
+    <script src="scripts/services/profile.js"></script>
+    <script src="scripts/services/tenants.js"></script>
+    <script src="scripts/services/services.js"></script>
+    <script src="scripts/services/userStatistics.js"></script>
+
+    <script src="scripts/services/sodales/arnService.js"></script>
+    <script src="scripts/services/sodales/cpeService.js"></script>
+    <script src="scripts/services/sodales/spService.js"></script>
+    <script src="scripts/services/viNetService.js"></script>
+    <script src="scripts/services/viService.js"></script>
+    <script src="scripts/services/mqNaaSResourceService.js"></script>
+    <script src="scripts/services/historyService.js"></script>
+    <script src="scripts/services/rootResource.js"></script>
+
+    <script src="scripts/mqnaasTemplates.js"></script>
+
+
+    <script src="scripts/interceptors/auth.js"></script>
+
+    <script src="scripts/directives/auth.js"></script>
+    <script src="scripts/directives/contentEditable.js"></script>
+    <script src="scripts/directives/widgetGauge.js"></script>
+    <script src="scripts/directives/widgetMetrics.js"></script>
+    <script src="scripts/directives/graph.js"></script>
+
+    <script src="scripts/filters/json-beautify.js"></script>
+    <script src="scripts/filters/sodales/viDuplicates.js"></script>
+
+    <script src="scripts/utils.js"></script>
+    <!-- endbuild -->
+
+    <script type="text/javascript" src="plugin/ONtoD3lib.js"></script>
+    <script type="text/javascript" src="plugin/on_lib/script_html.js"></script>
+    <script type="text/javascript" src="plugin/on_lib/initial_vars.js"></script>
+    <script type="text/javascript" src="plugin/on_lib/multiselect.js"></script>
+    <script type="text/javascript" src="plugin/on_lib/link_mgt.js"></script>
+    <script type="text/javascript" src="plugin/draw_lib.js"></script>
+
+
+
+    <!--script src="views/layout/controller/sidebarMenu.controller.js"></script-->
+</body>
+
+</html>

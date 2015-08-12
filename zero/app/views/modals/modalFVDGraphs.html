@@ -1,0 +1,71 @@
+<div class="modal" tabindex="-1" role="dialog" ng-controller="FvdsModalCtrl">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row text-center">
+                            CPU (%)
+                        </div>
+                        <div class="row text-center">
+                             
+                             <span ng-repeat="group in graphDataFVDCPU.groups._data" class="{{group.className}} text_legend">{{group.content}}</span>
+                             
+                        </div>
+                        <div class="row">
+                           <vis-graph2d data="graphDataFVDCPU" options="graphOptionsFVDCPU" ></vis-graph2d>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row text-center">
+                            Memory (%)
+                        </div>
+                        <div class="row text-center">
+                             
+                             <span ng-repeat="group in graphDataFVDMemory.groups._data" class="{{group.className}} text_legend">{{group.content}}</span>
+                             
+                        </div>
+                        <div class="row">
+                           <vis-graph2d data="graphDataFVDMemory" options="graphOptionsFVDMemory" ></vis-graph2d>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row text-center">
+                            I/O
+                        </div>
+                        <div class="row text-center">
+                             
+                             <span ng-repeat="group in graphDataFVDIo.groups._data" class="{{group.className}} text_legend">{{group.content}}</span>
+                             
+                        </div>
+                        <div class="row">
+                           <vis-graph2d data="graphDataFVDIo" options="graphOptionsFVDIo" ></vis-graph2d>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row text-center">
+                            Disk Usage (%)
+                        </div>
+                        <div class="row text-center">
+                             
+                             <span ng-repeat="group in graphDataFVDDisk.groups._data" class="{{group.className}} text_legend">{{group.content}}</span>
+                             
+                        </div>
+                        <div class="row">
+                           <vis-graph2d data="graphDataFVDDisk" options="graphOptionsFVDDisk" ></vis-graph2d>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

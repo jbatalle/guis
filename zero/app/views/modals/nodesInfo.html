@@ -1,0 +1,126 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <div class="modal-body">
+                <accordion close-others="true">
+                    <accordion-group heading="{{current_node.hostname}}" ng-repeat="(id, current_node) in nodes">
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-6 col-xs-6">
+                                <div class="form-group">
+                                    <label for="node_os">OS:</label>
+                                    <input type="text" readonly class="form-control" id="node_os" value="{{current_node.os.capitalizeFirstLetter();}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-6">
+                                <div class="form-group">
+                                    <label for="node_os_version">Version:</label>
+                                    <input type="text" readonly class="form-control" id="node_os_version" value="{{current_node.os_version}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-6 col-xs-6">
+                                <div class="form-group">
+                                    <label for="node_platform">Platform:</label>
+                                    <input type="text" readonly class="form-control" id="node_platform" value="{{current_node.platform.capitalizeFirstLetter();}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-6">
+                                <div class="form-group">
+                                    <label for="node_platform_version">Version:</label>
+                                    <input type="text" readonly class="form-control" id="node_platform_version" value="{{current_node.platform_version}}">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-6 col-xs-6">
+                                <div class="form-group">
+                                    <label for="node_state">State:</label>
+                                    <input type="text" readonly class="form-control" id="node_state" value="{{current_node.state}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-6">
+                                <div class="form-group">
+                                    <label for="node_fog">Fog:</label>
+                                    <input ng-show="current_node.fog_base.fog_capable" type="text" readonly class="form-control" id="node_fog" value="Supported Fog">
+                                    <input ng-hide="current_node.fog_base.fog_capable" type="text" readonly class="form-control" id="node_fog" value="Not supported Fog">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-6 col-xs-6">
+                                <div class="form-group">
+                                    <label for="node_memory">Memory:</label>
+                                    <input type="text" readonly class="form-control" id="node_memory" value="{{current_node.memory.total}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-6">
+                                <div class="form-group">
+                                    <label for="node_cpu">CPU Cores:</label>
+                                    <input type="text" readonly class="form-control" id="node_cpu" value="{{current_node.cpu.total}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="sensors">Capabilities:</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <i id="sensors" title="camera sensor" ng-show="current_node.current_capabilities.videocamera" class="fa fa-video-camera fa-3x"></i>
+                                    <i id="sensors" title="door sensor" ng-show="current_node.current_capabilities.door" class="fa fa-home fa-3x"></i>
+                                    <i id="sensors" title="noise sensor" ng-show="current_node.current_capabilities.noise" class="fa fa-microphone fa-3x"></i>
+                                    <i id="sensors" title="humidity sensor" ng-show="current_node.current_capabilities.humidity" class="fa fa-tint fa-3x"></i>
+                                    <i id="sensors" title="temperature sensor" ng-show="current_node.current_capabilities.temperature" class="ion-thermometer fa-3x"></i>
+                                    <i id="sensors" title="network sensor" ng-show="current_node.current_capabilities.network" class="fa fa-wifi fa-3x"></i>
+                                    <i id="sensors" title="energy sensor" ng-show="current_node.current_capabilities.energy" class="fa fa-bolt fa-3x"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="current_node.fog_base.fog_capable == true">
+                            <div class="col-md-6 col-xs-6">
+                                <div class="form-group">
+                                    <label for="node_fog_agent">Fog Agent:</label>
+                                    <input type="text" readonly class="form-control" id="node_fog_agent" value="{{current_node.fog_agent.global_agent.name}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-6">
+                                <div class="form-group">
+                                    <label for="node_fog_agent_version">Version:</label>
+                                    <input type="text" readonly class="form-control" id="node_fog_agent_version" value="{{current_node.fog_agent.global_agent.version}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-6 col-xs-6">
+                                <div class="form-group">
+                                    <label for="node_vsr_image">Virtual Switch Router image:</label>
+                                    <input type="text" readonly class="form-control" id="node_memory" value="{{current_node.fog_vsr.image_name}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-6">
+                                <div class="form-group">
+                                    <label for="node_vsr_version">Virtual Switch Router version:</label>
+                                    <input type="text" readonly class="form-control" id="node_memory" value="{{current_node.fog_vsr.version}}">
+                                </div>
+                            </div>
+                        </div>
+                    </accordion-group>
+                </accordion>
+                <!-- /.box-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="$hide()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

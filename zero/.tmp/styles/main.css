@@ -1,0 +1,223 @@
+/* line 4, ../../app/styles/main.scss */
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+/* line 10, ../../app/styles/main.scss */
+body {
+  padding: 0;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+/* line 16, ../../app/styles/main.scss */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+/* line 25, ../../app/styles/main.scss */
+.header {
+  /* Make the masthead heading the same height as the navigation */
+}
+/* line 29, ../../app/styles/main.scss */
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+  padding-bottom: 19px;
+}
+
+/* Custom page footer */
+/* line 39, ../../app/styles/main.scss */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* line 44, ../../app/styles/main.scss */
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+/* line 50, ../../app/styles/main.scss */
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+/* line 53, ../../app/styles/main.scss */
+.jumbotron .btn {
+  font-size: 21px;
+  padding: 14px 24px;
+}
+
+/* Supporting marketing content */
+/* line 61, ../../app/styles/main.scss */
+.marketing {
+  margin: 40px 0;
+}
+/* line 63, ../../app/styles/main.scss */
+.marketing p + h4 {
+  margin-top: 28px;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  /* line 71, ../../app/styles/main.scss */
+  .container {
+    /*max-width: 730px;*/
+  }
+
+  /* Remove the padding we set earlier */
+  /* line 75, ../../app/styles/main.scss */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Space out the masthead */
+  /* line 82, ../../app/styles/main.scss */
+  .header {
+    margin-bottom: 30px;
+  }
+
+  /* Remove the bottom border on the jumbotron for visual effect */
+  /* line 86, ../../app/styles/main.scss */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
+/* Start AdminLTE.css fixes*/
+/* line 93, ../../app/styles/main.scss */
+.box-header > .box-tools {
+  /*left: 5px;*/
+}
+
+/* line 96, ../../app/styles/main.scss */
+.box-header > .box-tools button {
+  margin: 0 1px;
+}
+
+/* line 99, ../../app/styles/main.scss */
+.fullscreen-wrapper {
+  top: 0;
+  left: 0;
+  position: absolute;
+  z-index: 99999;
+  background-color: #d2d6de;
+  height: 100%;
+  width: 100%;
+  /*overflow: hidden;*/
+  background-image: url("../images/bcn_login.jpg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* End AdminLTE.css fixes*/
+/* Start of Smart Table Styles */
+/* line 119, ../../app/styles/main.scss */
+.st-sort-ascent:before {
+  content: '\25B2';
+}
+
+/* line 122, ../../app/styles/main.scss */
+.st-sort-descent:before {
+  content: '\25BC';
+}
+
+/* End of Smart Table styles*/
+/* add button over tables  */
+/* line 131, ../../app/styles/main.scss */
+.add-button {
+  float: right;
+}
+
+/*Modal opacity */
+/* line 137, ../../app/styles/main.scss */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* line 140, ../../app/styles/main.scss */
+.ion-spin-animation {
+  -webkit-animation: spin 1s infinite linear;
+  animation: spin 1s infinite linear;
+}
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+  }
+}
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+  }
+}
+/* line 186, ../../app/styles/main.scss */
+.ion-load-a.ion-spin-animation {
+  -webkit-animation-timing-function: steps(8, start);
+  animation-timing-function: steps(8, start);
+}
+
+/* line 191, ../../app/styles/main.scss */
+pre .beautify {
+  outline: 1px solid #ccc;
+  padding: 5px;
+  margin: 5px;
+}
+
+/* line 196, ../../app/styles/main.scss */
+.string {
+  color: green;
+}
+
+/* line 199, ../../app/styles/main.scss */
+.number {
+  color: darkorange;
+}
+
+/* line 202, ../../app/styles/main.scss */
+.boolean {
+  color: blue;
+}
+
+/* line 205, ../../app/styles/main.scss */
+.null {
+  color: magenta;
+}
+
+/* line 208, ../../app/styles/main.scss */
+.key {
+  color: red;
+}
+
+/* line 211, ../../app/styles/main.scss */
+.dropdown-menu-language {
+  min-width: 39px;
+}
+
+/* line 214, ../../app/styles/main.scss */
+.menu-a-used {
+  border-left-color: #12191B;
+  background: #12191B;
+}
+
+/*# sourceMappingURL=main.css.map */

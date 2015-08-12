@@ -1,0 +1,56 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <div class="modal-body">
+                <h5>Please select the fog node for instantiation:</h5>
+                <form role="form">
+                    <accordion close-others="true">
+                        <accordion-group heading="Map">
+                            <div class="col-md-12 col-xs-12" id="cabinet_map" changeCSS>
+                                <leaflet style="height: 50vh" center="center_map" layers="layers" markers="markers" event-broadcast="events" id="map2" dragmap></leaflet>
+                                <tags-input ng-model="listNodes" display-property="hostname" placeholder="Add nodes" replace-spaces-with-dashes="false" add-from-autocomplete-only="true" template="tag-template">
+                                    <auto-complete source="loadNodes($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>
+                                </tags-input>
+                            </div>
+                        </accordion-group>
+                        <accordion-group heading="Select nodes">
+                            <tags-input ng-model="listNodes" display-property="hostname" placeholder="Add nodes" replace-spaces-with-dashes="false" add-from-autocomplete-only="true" template="tag-template">
+                                <auto-complete source="loadNodes($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>
+                            </tags-input>
+                            <script type="text/ng-template" id="tag-template">
+                                <div class="tag-template">
+                                    <div class="right-panel">
+                                        <span>{{$getDisplayText()}}</span>
+                                        <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+                                    </div>
+                                </div>
+                            </script>
+
+                            <script type="text/ng-template" id="autocomplete-template">
+                                <div class="autocomplete-template">
+                                    <div class="right-panel">
+                                        <span ng-bind-html="$highlight($getDisplayText())"></span>
+                                        <span>({{data.os}})</span>
+                                    </div>
+                                </div>
+                            </script>
+
+                        </accordion-group>
+                        <accordion-group heading="Select all nodes">
+                            <div class="box-footer">
+                                <input type="checkbox" ng-model="checked.selectAll"> Select all nodes
+                            </div>
+                        </accordion-group>
+                    </accordion>
+                    <div class="box-footer">
+                        <button ng-click="deployDialog(serviceToDeployId)" type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

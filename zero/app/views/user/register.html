@@ -1,0 +1,64 @@
+<div class="fullscreen-wrapper">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="#/"><b>Barcelona</b>Fog PoC</a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <p class="login-box-msg">{{ 'Register_new_message' | translate }}</p>
+            <div ng-if="loginError" class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <i class="icon fa fa-ban"></i> {{loginError}}
+            </div>
+            <form name="registerForm" ng-submit="register()">
+                <div class="form-group has-feedback" ng-class="{ 'has-error' : registerForm.usernameError }">
+                    <input ng-model="username" type="text" class="form-control" placeholder="Username" />
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback" ng-class="{ 'has-error' : registerForm.fullnameError }">
+                    <input ng-model="fullname" type="test" class="form-control" placeholder="{{ 'Full_name' | translate }}" />
+                    <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback" ng-class="{ 'has-error' : registerForm.emailError }">
+                    <input ng-model="email" type="email" class="form-control" placeholder="Email" />
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback" ng-class="{ 'has-error' : registerForm.orgError }">
+                    <input ng-model="tenant" type="test" class="form-control" placeholder="{{ 'Tenant' | translate }}" />
+                    <span class="glyphicon glyphicon-cloud form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback" ng-class="{ 'has-error' : registerForm.passError }">
+                    <input ng-model="password" type="password" class="form-control" placeholder="{{ 'Password' | translate }}" />
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback" ng-class="{ 'has-error' : registerForm.repassError }">
+                    <input ng-model="re_password" type="password" class="form-control" placeholder="{{ 'Re_Password' | translate }}" />
+                    <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                </div>
+                <div class="row">
+
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">{{ 'Register' | translate }}</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+
+            <a href="#/login" class="text-center">{{ 'I_have_member' | translate }}</a>
+        </div>
+        <!-- /.login-box-body -->
+    </div>
+    <!-- /.login-box -->
+
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+        });
+    </script>
+</div>
+<!-- /.login-box-wrapper -->

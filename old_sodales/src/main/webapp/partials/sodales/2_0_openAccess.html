@@ -1,0 +1,42 @@
+
+<h2 class="page-header">OpenAccess <small>Dashboard</small></h2>
+<ol class="breadcrumb">
+            <li>
+                <i class="fa fa-dashboard"></i>  <a href="#!/openaccess/vicreation">Virtual slices</a>
+            </li>
+            <li class="active">
+                <i class="fa fa-history"></i>  <a href="#!/openaccess/history">Historic</a>
+            </li>
+        </ol>
+
+<h3>List of Service Providers <a href="" class="btn btn-sm btn-primary" ng-click="openSPCreationDialog()">Add new Service Provider</a></h3>
+
+<div class="pull-right">
+    <button ng-click="tableParams.reload()" class="btn btn-default">Reload</button>
+    <button ng-click="tableParams.sorting({})" class="btn btn-default">Clear sorting</button>
+</div>
+<table ng-table="tableParams" class="table ng-table-responsive">
+    <tr ng-repeat="iface in $data">
+        <td data-title="'Service Provider name'" sortable="'name'"  class="col-sm-2 col-md-2 col-lg-2">{{iface.name}}</td>
+        <td data-title="'Created date'" sortable="'date'" class="col-sm-2 col-md-2 col-lg-2">{{iface.date| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+        <td data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">{{iface.vi}}</td>
+        <td data-title="'Add VI'" class="col-sm-1 col-md-1 col-lg-1">
+            <select ng-model="selectedAddVi">
+                <option ng-repeat="item in listVi | viDuplicates:iface.vi">{{item}}</option>
+            </select> 
+            <a href="" ng-click="addVI(iface.id, selectedAddVi)" title="View">Add</a>
+        </td>
+        <td data-title="'Remove VI'" class="col-sm-1 col-md-1 col-lg-1">
+            <select ng-model="selectedRemoveVi">
+                <option ng-repeat="item in iface.vi track by $index">{{item}}</option>
+            </select> 
+            <a href="" ng-click="removeVI(iface.id, selectedRemoveVi)" title="View">Del</a>
+        </td>
+        <td data-title="'Remove SP'" class="col-sm-1 col-md-1 col-lg-1">
+            <a href="" ng-click="removeSP(iface.id)" title="View">Remove</a>
+        </td>
+    </tr>
+</table>
+
+
+

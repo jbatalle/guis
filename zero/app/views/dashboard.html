@@ -1,0 +1,491 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+            Dashboard
+            <small>General overview</small>
+          </h1>
+    <div class="input-group">
+        <span class="input-group-addon fa fa-refresh" id="basic-addon1"></span>
+        <button type="button" class="btn btn-default" aria-describedby="basic-addon1" ng-click="initNetwork()">Update</button>
+    </div>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> system</a>
+        </li>
+        <li class="active">dashboard</li>
+    </ol>
+</section>
+<!-- Leaflet Map with event view -->
+<section class="content" data-ng-controller="DashboardCtrl" data-ng-init="initNetwork();">
+    <div class="row">
+        <div ng-class="{'col-md-6':collapsed,'col-md-4':collpased_node_metrics}" id="cabinet_map" changeCSS>
+            <leaflet center="center_map" layers="layers" markers="markers" event-broadcast="events" id="map" maxbounds="maxbounds" dragmap></leaflet>
+        </div>
+        <div class="nav-tabs-custom dashboard_box" ng-class="{'col-md-6':collapsed, 'col-md-8':collpased_node_metrics}" id="info_map" ng-show="current_cabinet != null || current_node != null">
+            <div class="row content-header">
+                <h2 ng-show="current_cabinet != null">
+                    {{current_cabinet.name}} 
+                </h2>
+                <h2 ng-show="current_node != null">
+                    {{current_node.hostname}}
+                </h2>
+            </div>
+            <div ng-show="current_cabinet != null">
+
+                <div class="row" ng-show="current_cabinet != null">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="cabinet_address">Address:</label>
+                            <input type="text" readonly class="form-control" id="cabinet_address" value="{{current_cabinet.address}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="current_cabinet != null">
+                    <div class="col-md-6 col-xs-4">
+                        <div class="form-group">
+                            <label for="lat_cab">Latitude:</label>
+                            <input type="text" readonly class="form-control" id="lab_cad" value="{{current_cabinet.lat}}">
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 col-xs-4">
+                        <div class="form-group">
+                            <label for="long_cab">Longitude:</label>
+                            <input type="text" readonly class="form-control" id="long_cab" value="{{current_cabinet.lng}}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" ng-show="current_cabinet != null">
+                    <div class="col-md-12 form-group">
+                        <label for="cabinet_list_nodes">Nodes:</label>
+                        <ul id="cabinet_list_nodes">
+                            <li ng-repeat="n  in current_cabinet.nodes">
+                                <a ng-click="updateNode(n.name)">{{ n.hostname }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Small boxes (Stat box) -->
+                <div class="row">
+                    <div class="col-lg-6 col-xs-12">
+                        <div class="info-box bg-green">
+                            <span class="info-box-icon"><i class="ion ion-cube"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Tenants</span>
+                                <span class="info-box-number">{{selected_cabinet.tenants.length}}</span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-6 col-xs-12">
+                        <div class="info-box bg-green">
+                            <span class="info-box-icon"><i class="ion ion-load-a"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Instantiated services</span>
+                                <span class="info-box-number">{{servicesPerCabinet}}</span>
+                            </div>
+                            <!-- /.info-box-content -->
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                </div>
+                <div class="row" ng-show="current_cabinet != null">
+                    <div class="col-md-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <!--h3 class="box-title">{{ 'List_of_nodes' | translate }}</h3-->
+                                <h3 class="box-title">Log Events</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <table st-table="displayedCollection" st-safe-src="dataCollection" class="table table-striped">
+                                    <thead>
+                                        <!--tr>
+                                        <th colspan="4">
+                                            <label for="search">Search</label><input id="search" st-search="" class="form-control" placeholder="Search ..." type="text" />
+                                        </th>
+                                    </tr-->
+                                        <tr>
+                                            <th st-sort="message">Message</th>
+                                            <th st-sort="from">From</th>
+                                            <th st-sort>When</th>
+                                            <th>{{ 'Type' | translate }}</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="row in displayedCollection">
+                                            <td>{{row.message}}</td>
+                                            <td>{{row.from}}</td>
+                                            <td>{{row.ts | date: 'medium'}}</i>
+                                            </td>
+                                            <td ng-class="{INFO:'info', ALARM:'danger'}[row.type]">
+                                                {{row.type}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td class="text-center" st-pagination="" st-items-by-page="10" colspan="3">
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="current_node !=null">
+
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li ng-repeat="tab in node_tabs" ng-class="{active:isActiveTab(tab.url)}" ng-click="chooseClickTab(tab);onClickTab(tab)">
+                            <a>{{tab.title}}</a>
+                        </li>
+                    </ul>
+                    <div id="mainView">
+                        <div class="tab-content">
+                            <div ng-include="currentTab"></div>
+                        </div>
+                    </div>
+                    <script type="text/ng-template" id="tab_status">
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-6 col-xs-4">
+                                <div class="form-group">
+                                    <label for="node_os">OS:</label>
+                                    <input type="text" readonly class="form-control" id="node_os" value="{{current_node.os.capitalizeFirstLetter();}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-4">
+                                <div class="form-group">
+                                    <label for="node_os_version">Version:</label>
+                                    <input type="text" readonly class="form-control" id="node_os_version" value="{{current_node.os_version}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-6 col-xs-4">
+                                <div class="form-group">
+                                    <label for="node_platform">Platform:</label>
+                                    <input type="text" readonly class="form-control" id="node_platform" value="{{current_node.platform.capitalizeFirstLetter();}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-4">
+                                <div class="form-group">
+                                    <label for="node_platform_version">Version:</label>
+                                    <input type="text" readonly class="form-control" id="node_platform_version" value="{{current_node.platform_version}}">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-6 col-xs-4">
+                                <div class="form-group">
+                                    <label for="node_state">Status:</label>
+                                    <input type="text" readonly class="form-control" id="node_state" value="{{current_node.state}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-4">
+                                <div class="form-group">
+                                    <label for="node_fog">Fog:</label>
+                                    <input ng-show="current_node.fog_base.fog_capable" type="text" readonly class="form-control" id="node_fog" value="Supported Fog">
+                                    <input ng-hide="current_node.fog_base.fog_capable" type="text" readonly class="form-control" id="node_fog" value="Not supported Fog">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-6 col-xs-4">
+                                <div class="form-group">
+                                    <label for="node_memory">Memory:</label>
+                                    <input type="text" readonly class="form-control" id="node_memory" value="{{current_node.memory.total}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-4">
+                                <div class="form-group">
+                                    <label for="node_cpu">CPU Cores:</label>
+                                    <input type="text" readonly class="form-control" id="node_cpu" value="{{current_node.cpu.total}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="sensors">Capabilities:</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <i id="sensors" title="Video camera: can be used for streaming live video upon detecting a set of configurable events" ng-show="current_node.current_capabilities.videocamera" class="fa fa-video-camera fa-3x"></i>
+                                    <i id="sensors" title="Door sensor: detects whether the cabinet door is open or closed" ng-show="current_node.current_capabilities.door" class="fa fa-home fa-3x"></i>
+                                    <i id="sensors" title="Noise sensor: capable of detecting different sources of noise and generating events based on predefined thresholds" ng-show="current_node.current_capabilities.noise" class="fa fa-microphone fa-3x"></i>
+                                    <i id="sensors" title="Humidity sensor: measures the humidity inside the cabinet" ng-show="current_node.current_capabilities.humidity" class="fa fa-tint fa-3x"></i>
+                                    <i id="sensors" title="Temperature sensor: measures the temperature inside the cabinet" ng-show="current_node.current_capabilities.temperature" class="ion-thermometer fa-3x"></i>
+                                    <i id="sensors" title="Analytics on WiFi: performs analytics on public WiFi" ng-show="current_node.current_capabilities.network" class="fa fa-wifi fa-3x"></i>
+                                    <i id="sensors" title="Energy Control: monitors and manages the distribution board within the cabinet" ng-show="current_node.current_capabilities.energy" class="fa fa-bolt fa-3x"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="current_node.fog_base.fog_capable == true">
+                            <div class="col-md-6 col-xs-4">
+                                <div class="form-group">
+                                    <label for="node_fog_agent">Fog Agent:</label>
+                                    <input type="text" readonly class="form-control" id="node_fog_agent" value="{{current_node.fog_agent.global_agent.name}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-4">
+                                <div class="form-group">
+                                    <label for="node_fog_agent_version">Version:</label>
+                                    <input type="text" readonly class="form-control" id="node_fog_agent_version" value="{{current_node.fog_agent.global_agent.version}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-6 col-xs-4">
+                                <div class="form-group">
+                                    <label for="node_vsr_image">Virtual Switch Router image:</label>
+                                    <input type="text" readonly class="form-control" id="node_vsr_image" value="{{current_node.fog_vsr.image_name}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-4">
+                                <div class="form-group">
+                                    <label for="node_vsr_version">Virtual Switch Router version:</label>
+                                    <input type="text" readonly class="form-control" id="node_vsr_version" value="{{current_node.fog_vsr.version}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-6 col-xs-4">
+                                <div class="form-group">
+                                    <label for="node_tenants">Tenants using this node:</label>
+                                    <input type="text" readonly class="form-control" id="node_tenants" value="{{current_node.tenants_total}}">
+                                    <!--ul>
+                                        <li ng-repeat="tenant in current_node.nodeTenants">
+                                            {{tenant}}
+                                        </li>
+                                    </ul-->
+                                </div>
+                            </div>
+                        </div>
+                    </script>
+                    <script type="text/ng-template" id="tab_metrics">
+                        <br/>
+                        <accordion close-others="true">
+                            <accordion-group heading="Node" is-open="true">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="row text-center">
+                                            CPU (%)
+                                        </div>
+                                        <div class="row text-center">
+                                             
+                                             <span ng-repeat="group in graphDataCPU.groups._data" class="{{group.className}} text_legend">{{group.content}}</span>
+                                             
+                                        </div>
+                                        <div class="row">
+                                           <vis-graph2d data="graphDataCPU" options="graphOptionsCPU" ></vis-graph2d>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row text-center">
+                                            Memory (%)
+                                        </div>
+                                        <div class="row text-center">
+                                             
+                                             <span ng-repeat="group in graphDataRAM.groups._data" class="{{group.className}} text_legend">{{group.content}}</span>
+                                             
+                                        </div>
+                                        <div class="row">
+                                           <vis-graph2d data="graphDataRAM" options="graphOptionsRAM" ></vis-graph2d>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="row text-center">
+                                            I/O
+                                        </div>
+                                        <div class="row text-center">
+                                             
+                                             <span ng-repeat="group in graphDataIO.groups._data" class="{{group.className}} text_legend">{{group.content}}</span>
+                                             
+                                        </div>
+                                        <div class="row">
+                                           <vis-graph2d data="graphDataIO" options="graphOptionsIO" ></vis-graph2d>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+
+                                        <div class="row text-center">
+                                            Disk Usage (%)
+                                        </div>
+                                        <div class="row text-center">
+                                             
+                                             <span ng-repeat="group in graphDataDISK.groups._data" class="{{group.className}} text_legend">{{group.content}}</span>
+                                             
+                                        </div>
+                                        <div class="row">
+                                           <vis-graph2d data="graphDataDISK" options="graphOptionsDISK" ></vis-graph2d>
+                                        </div>
+                                    </div>
+                                </div>
+                            </accordion-group>
+                            <accordion-group heading="Fog node agents">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="row text-center">
+                                            CPU (%)
+                                        </div>
+                                        <div class="row text-center">
+                                             
+                                             <span ng-repeat="group in graphDataAgentCPU.groups._data" class="{{group.className}} text_legend">{{group.content}}</span>
+                                             
+                                        </div>
+                                        <div class="row">
+                                           <vis-graph2d data="graphDataAgentCPU" options="graphOptionsAgentCPU" ></vis-graph2d>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row text-center">
+                                            Memory (%)
+                                        </div>
+                                        <div class="row text-center">
+                                             
+                                             <span ng-repeat="group in graphDataAgentRAM.groups._data" class="{{group.className}} text_legend">{{group.content}}</span>
+                                             
+                                        </div>
+                                        <div class="row">
+                                           <vis-graph2d data="graphDataAgentRAM" options="graphOptionsAgentRAM" ></vis-graph2d>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="row text-center">
+                                            I/O
+                                        </div>
+                                        <div class="row text-center">
+                                             
+                                             <span ng-repeat="group in graphDataAgentIO.groups._data" class="{{group.className}} text_legend">{{group.content}}</span>
+                                             
+                                        </div>
+                                        <div class="row">
+                                           <vis-graph2d data="graphDataAgentIO" options="graphOptionsAgentIO" ></vis-graph2d>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+
+                                        <div class="row text-center">
+                                            Disk Usage (%)
+                                        </div>
+                                        <div class="row text-center">
+                                             
+                                             <span ng-repeat="group in graphDataAgentDISK.groups._data" class="{{group.className}} text_legend">{{group.content}}</span>
+                                             
+                                        </div>
+                                        <div class="row">
+                                           <vis-graph2d data="graphDataAgentDISK" options="graphOptionsAgentDISK" ></vis-graph2d>
+                                        </div>
+                                    </div>
+                                </div>
+                            </accordion-group>
+                        </accordion>
+                    </script>
+                    <script type="text/ng-template" id="tab_power_control">
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-6 col-xs-6">
+
+
+                            Select Device:
+                            <select ng-model="selectedCapability" ng-change="getCabinetEnergyStats(current_node.name, selectedCapability)">
+                              <option ng-repeat="fog_capability in current_node.fog_capabilities" 
+                              ng-if="fog_capability.type == 'energy'"
+                                    value="{{fog_capability}}">{{fog_capability.subtype}} {{fog_capability.description.component}} unit: {{fog_capability.description.unit}} </option>
+                              
+                             </select>
+
+                             </div>
+                             <div class="col-md-6 col-xs-6" ng-show="current_capabilities.description.control_capable">
+                                       
+                                           Actived unit: <input bs-switch ng-model="current_capabilities.state" type="checkbox">
+                                        
+                            </div>
+
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row text-center">
+                                    {{current_power_graph_name}}
+                                </div>
+
+                                <div class="row text-center">
+                                     
+                                     <span ng-repeat="group in graphDataPOWER.groups._data" class="{{group.className}} text_legend">{{group.content}}</span>
+                                     
+                                </div>
+                                <div class="row">
+                                   <vis-graph2d data="graphDataPOWER" options="graphOptionsPower" ></vis-graph2d>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row text-center">
+                                    
+                                    {{current_consumption_graph_name}}
+                                </div>
+                                <div class="row text-center">
+                                     
+                                     <span ng-repeat="group in graphDataCurrent.groups._data" class="{{group.className}} text_legend">{{group.content}}</span>
+                                     
+                                </div>
+                                <div class="row">
+                                   <vis-graph2d data="graphDataCurrent" options="graphOptionsCurrent" ></vis-graph2d>
+                                </div>
+                            </div>
+                        </div>
+                    </script>
+                    <script type="text/ng-template" id="tab_services">
+                        <div class="row" ng-show="current_node != null">
+                            <div class="col-md-12">
+                                <div ng-class="active[tenant.id] ? '': 'collapsed-box'" class="box box-default" ng-repeat="tenant in current_node.tenants track by $index" ng-click="showTenantDetail(tenant.id)" ng-if="tenant.name" style="margin-bottom: 0px;">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">{{tenant.name}}</h3>
+                                        <div class="box-tools pull-right">
+                                            <button class="btn btn-primary btn-xs" type="button">
+                                                Instances <span class="badge">{{tenant.services.length}}</span>
+                                            </button>
+                                            <button class="btn btn-box-tool" role="button" data-toggle="collapse" href="#{{tenant.id}}" aria-expanded="false" aria-controls="{{tenant.id}}">
+                                                <!--i ng-hide="active==tenant.id" class="fa fa-plus"></i><i ng-show="active==tenant.id" class="fa fa-minus"></i-->
+                                                <i class="fa" ng-class="active[tenant.id] ? 'fa-minus': 'fa-plus'" active-class="fa-minus"></i>
+                                            </button>
+
+                                        </div>
+                                        <!-- /.box-tools -->
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div ng-class="active[tenant.id] ? '': 'collapse'" class="box-body" id="{{tenant.id}}">
+                                        <ul>
+                                            <li ng-repeat="service in tenant.services track by $index">
+                                                <a href=" ">{{service.name}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                                <!-- /.box -->
+                            </div>
+                        </div>
+                    </script>
+
+                </div>
+            </div>
+        </div>
+</section>

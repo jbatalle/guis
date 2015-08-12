@@ -1,0 +1,49 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <div class="modal-body">
+                <h5>Please, fill all the fields:</h5>
+            <form name="userRegisterForm" ng-submit="register()">
+                <div class="form-group has-feedback" ng-class="{ 'has-error' : userRegisterForm.usernameError }">
+                    <input ng-model="username" type="text" class="form-control" placeholder="Username" />
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback" ng-class="{ 'has-error' : userRegisterForm.fullnameError }">
+                    <input ng-model="fullname" type="test" class="form-control" placeholder="{{ 'Full_name' | translate }}" />
+                    <span class="glyphicon glyphicon-pencil form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback" ng-class="{ 'has-error' : userRegisterForm.emailError }">
+                    <input ng-model="email" type="email" class="form-control" placeholder="Email" />
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback" ng-class="{ 'has-error' : userRegisterForm.orgError }">
+                    <input ng-model="tenant" type="test" class="form-control" placeholder="{{ 'Tenant' | translate }}" />
+                    <span class="glyphicon glyphicon-cloud form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback" ng-class="{ 'has-error' : userRegisterForm.passError }">
+                    <input ng-model="password" type="password" class="form-control" placeholder="{{ 'Password' | translate }}" />
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback" ng-class="{ 'has-error' : userRegisterForm.repassError }">
+                    <input ng-model="re_password" type="password" class="form-control" placeholder="{{ 'Re_Password' | translate }}" />
+                    <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                </div>
+                <div class="row">
+                <div class="col-xs-3">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">{{ 'Create' | translate }}</button>
+                    </div>
+                    <!-- /.col -->
+                    <!--<div class="box-footer">
+                        <button ng-click="create(object)" type="submit" class="btn btn-primary">Create</button>
+                    </div>-->
+                    <!-- /.col -->
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <form action="createARN" method="post" name="editForm">
+        <div>
+	<h3>Service Provider information</h3>
+            <div class="col-xs-9">
+                <b>Name:</b> <input type="text" ng-model="sp.name" name="name" class="form-control" bs-typeahead><br/>
+		<b>Description:</b> <input type="text" ng-model="sp.description" name="description" class="form-control" bs-typeahead><br/>
+		<b>Url:</b> <input type="text" ng-model="sp.url" name="url" class="form-control" bs-typeahead><br/>
+            </div>
+            <br/>
+            <div class="col-xs-9">
+                <a href="" class="btn btn-sm btn-primary" ng-click="addSP(sp)">Add</a>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,63 @@
+<div class="fullscreen-wrapper">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="#/"><b>SODALES</b>
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <p class="login-box-msg">{{ 'Sign_in_message' | translate }}</p>
+            <div ng-if="loginError" class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <i class="icon fa fa-ban"></i> {{loginError}}
+            </div>
+            <form ng-submit="login()">
+                <div class="form-group has-feedback">
+                    <input ng-model="username" type="text" name="user" class="form-control" placeholder="Username" />
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input ng-model="password" type="password" name="pass" class="form-control" placeholder="Password" />
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+
+            <a href="#/recover_pass">{{ 'forgot_pass' | translate }}</a>
+            <br>
+            <a href="#/register" class="text-center">{{ 'new_member' | translate }}</a>
+            <div class="btn-group" style="float: right">
+
+                <li style="list-style: none" dropdown>
+                    <a href="#" dropdown-toggle>{{usedLanguage}} <span class="caret"></span></a>
+                    <ul class="dropdown-menu dropdown-menu-language" role="menu">
+                        <li ng-repeat="lang in languages"><a ng-click="changeLanguage(lang)">{{lang}}</a>
+                        </li>
+
+                    </ul>
+                </li>
+            </div>
+        </div>
+        <!-- /.login-box-body -->
+    </div>
+    <!-- /.login-box -->
+
+    <script>
+        $(function() {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+        });
+
+    </script>
+</div>
+<!-- /.login-box-wrapper -->

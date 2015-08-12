@@ -1,0 +1,58 @@
+<h2 class="page-header">OpenAccess <small>Dashboard</small></h2>
+<ol class="breadcrumb">
+    <li>
+        <i class="fa fa-dashboard"></i> <a ui-sref="root.vicreation">Virtual slices</a>
+    </li>
+    <li class="active">
+        <i class="fa fa-history"></i> <a ui-sref="root.history">Historic</a>
+    </li>
+</ol>
+
+<h3>List of Service Providers <a class="btn btn-sm btn-primary" ng-click="openSPCreationDialog()">Add new Service Provider</a></h3>
+
+<div class="pull-right">
+    <button ng-click="tableParams.reload()" class="btn btn-default">Reload</button>
+</div>
+<table st-table="displayedCollection" st-safe-src="dataCollection" class="table table-striped">
+    <thead>
+        <tr>
+            <th st-sort="name">Name</th>
+            <th data-title="'Created date'">Created date</th>
+            <th data-title="'description'" class="col-sm-2 col-md-2 col-lg-2">Description</th>
+            <th data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">VI List</th>
+            <th data-title="'Add VI'" class="col-sm-1 col-md-1 col-lg-1">Add VI</th>
+            <th data-title="'Remove VI'" class="col-sm-1 col-md-1 col-lg-1">Remove VI</th>
+            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Actions</th>
+        </tr>
+        <tr>
+            <th colspan="2">
+                <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="row in displayedCollection">
+            <td><a ng-click="viewService(row.id, row.name)">{{row.name}}</a></td>
+            <td>{{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>{{row.description}}</td>
+            <td data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">{{row.vis}}</td>
+            <td>
+                <select ng-model="selectedAddVi">
+                    <option ng-repeat="item in listVi | viDuplicates:row.vis track by $index">{{item}}</option>
+                </select>
+                <a href="" ng-click="addVI(row.id, selectedAddVi)" title="View">Add</a></td>
+            <td>
+                <select ng-model="selectedRemoveVi">
+                    <option ng-repeat="item in row.vis track by $index">{{item.name}}</option>
+                </select>
+                <a href="" ng-click="removeVI(row.id, selectedRemoveVi)" title="View">Del</a></td>
+            <td><a href="" ng-click="removeSP(row.id)" title="View">Remove</a></td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="text-center" st-pagination="" st-items-by-page="5" colspan="3">
+            </td>
+        </tr>
+    </tfoot>
+</table>

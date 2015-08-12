@@ -1,0 +1,25 @@
+<div class="container-fluid" ng-controller="editVIController">
+    <b>Do you want to add a new virtual {{ngDialogData.nodeType}}?</b>
+    <form action="createARN" method="post" name="editForm">
+        <div>
+            <div ng-hide='resourceRequest'>
+                <a href="" class="btn btn-sm btn-primary" ng-click="addResourceToVI(ngDialogData.nodeType)">Add {{ngDialogData.nodeType}} resource</a>
+            </div>
+            <div ng-show='resourceRequest'>
+                <h4>Resource added correctly with the name: {{resourceRequest}}.</h4>
+                <span>
+                    Add ports to the recent created resource: <a href="" class="btn btn-sm btn-primary" ng-click="addVirtualPortToResource(resourceRequest)">Add port</a>
+                </span>
+                <ul>
+                    <li ng-repeat=" vPort in virtualPort">
+                        {{vPort}}
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <a href="" class="btn btn-sm btn-primary" ng-click="closeThisDialog()">Add</a>
+            </div>
+        </div>
+    </form>
+</div>

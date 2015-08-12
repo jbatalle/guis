@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-md-3">
+        <p class="lead">Networks</p>
+        {{listNetworks}}    
+        <select ng-change="setNetworkId(selectedNetwork)" bs-select ng-model="selectedNetwork" ng-options="network for network in listNetworks" ></select>
+        <p class="lead">List of physical resources</p>
+        <div class="list-group">
+            <a href="" class="list-group-item">
+                <div class="ui-widget-content netEl-drag" id="arn">
+                    <img id="arn" draggable src="../plugin/img/SODALES_ARN.png" width="60" style="z-index:1090"> ARN
+                </div>
+            </a>
+            <a href="" class="list-group-item">
+                <div class="ui-widget-content netEl-drag" id="cpe">
+                    <img id="cpe" draggable src="../plugin/img/SODALES_CPE.png" width="60" style="z-index:1090"> CPE
+                </div>
+            </a>
+        </div>
+    </div>
+    <div id="piMgt" class="col-md-9" ng-controller="sodalesPiMgtCtrl">
+        <h2 class="page-header">PHY Management <small>Physical resources management</small></h2>
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-image fa-fw"></i> Topology graph</h3>
+                    </div>
+                    <div class="panel-body" style="text-align: center;">
+                        <a href="" ng-hide="networkId" ng-click="createNetwork()" class="btn btn-xs btn-default" title="Create Network">Create Network</a>
+                        <div grapheditor ng-model="sodalesPiMgtCtrl" ng-show="networkId"></div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div ng-show="networkId">
+                        <h3>List of resources</h3>
+                        <ul>
+                            <li ng-repeat="res in networkElements" >
+                                <a ng-click="getResouceInfo(res)"> {{res}}</a>
+                                <a ng-click="deleteResource(res)"> Remove </a>
+                            </li>
+                        </ul>
+                        <h3>Links</h3>
+                        <ul>
+                            <li ng-repeat="link in createdLinkInfo" >
+                                {{createdLink}}: {{link.s}} to {{link.t}}
+                                <a ng-click="deleteResource(link)"> Remove </a>
+                            </li>
+                        </ul>
+                    </div>
+            </div>
+        </div><!--close row-->
+    </div><!--close row-->
+</div><!--close col-md-9-->
+

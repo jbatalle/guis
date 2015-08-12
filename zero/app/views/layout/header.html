@@ -1,0 +1,57 @@
+<nav class="navbar navbar-inverse navbar-fixed-top navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" ui-sref="root.dashboard">
+                <img src="images/sodales_logo_alfa.png" alt="" style="width: 120px;">
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a ui-sref="root.dashboard">Home</a>
+                </li>
+                <li>
+                    <a restrict access="ip" ui-sref="root.mgt">PHY Management</a>
+                </li>
+                <li>
+                    <a restrict access="ip" ui-sref="root.monitoring">Monitoring</a>
+                </li>
+                <li restrict access="ip" id="openAccessLi" class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                        OpenAccess<b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                        <li><a tabindex="-1" ui-sref="root.vimgt">Service Provider</a></li>
+                        <li><a tabindex="-1" ui-sref="root.vicreation">Virtual slices</a></li>
+                        <li><a tabindex="-1" ui-sref="root.history">Historic</a></li>
+                    </ul>
+                </li>
+                <li restrict access="sp">
+                    <a href="#!/spInfo">Virtual Slice Management</a>
+                </li>
+                <li restrict access="sp">
+                    <a href="#!/spVIInfo/1">Virtual Resource Operation</a>
+                </li>
+                <li restrict access="sp">
+                    <a href="#!/spStats/1">Monitoring</a>
+                </li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown" ng-show="user">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown">{{user.name}} <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="" ng-click="logout()"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

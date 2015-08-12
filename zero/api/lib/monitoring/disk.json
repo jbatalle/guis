@@ -1,0 +1,64 @@
+[{
+                  "timestamp": 1436351012,
+                  "partitions": [
+                    {
+                        "name": "/",
+                        "used": 737418240,
+                        "total": 10737418240
+                    },
+                    {
+                        "name": "/boot/efi",
+                        "used": 737418240,
+                        "total": 10737418240
+
+                    }
+                    ]
+              },
+              {
+                  "timestamp": 1436351082,
+                  "partitions": [
+                    {
+                        "name": "/",
+                        "used": 737418240,
+                        "total": 10737418240
+                    },
+                    {
+                        "name": "/boot/efi",
+                        "used": 737418240,
+                        "total": 10737418240
+
+                    }
+                    ]
+              },
+              {
+                  "timestamp": 1436351132,
+                  "partitions": [
+                    {
+                        "name": "/",
+                        "used": 737418240,
+                        "total": 10737418240
+                    },
+                    {
+                        "name": "/boot/efi",
+                        "used": 737418240,
+                        "total": 10737418240
+
+                    }
+                    ]
+              },
+              {
+                  "timestamp": 1436351192,
+                  "partitions": [
+                    {
+                        "name": "/",
+                        "used": 737418240,
+                        "total": 10737418240
+                    },
+                    {
+                        "name": "/boot/efi",
+                        "used": 737418240,
+                        "total": 10737418240
+
+                    }
+                    ]
+              }]
