@@ -2,7 +2,7 @@
 
 angular.module('mqnaasApp')
     .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, viService, localStorageService, $interval, viNetService) {
-        console.log("LIST VI");
+
         //            $rootScope.networkId = "Network-Internal-1.0-2";//to remove
         var promise;
         $scope.data = [];
@@ -20,6 +20,9 @@ angular.module('mqnaasApp')
         };
 
         $scope.updateSpList();
+        promise = $interval(function () {
+            $scope.updateSpList();
+        }, 2000);
         $scope.createVIRequest = function () {
             var urlCreateVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
             MqNaaSResourceService.put(urlCreateVI).then(function (result) {
@@ -87,6 +90,12 @@ angular.module('mqnaasApp')
             $rootScope.info = viReq + " created";
             $scope.updateSpList();
         };
+
+        $scope.$on("$destroy", function () {
+            if (promise) {
+                $interval.cancel(promise);
+            }
+        });
 
     })
     .controller('editVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, $modal, viService, localStorageService, $interval) {

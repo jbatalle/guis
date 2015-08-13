@@ -8,6 +8,7 @@ angular.module('mqnaasApp')
         $scope.dataCollection = [];
         $scope.collapsed = false;
         $scope.current_sp = null;
+        $scope.spUsers = [];
 
         $scope.updateSpList = function () {
 
@@ -26,18 +27,6 @@ angular.module('mqnaasApp')
                         $scope.listVi.push(vi.name);
                 });
             });
-
-            /*
-            viNetService.list().then(function (data) {
-                $scope.listVi = [];
-                if (data === undefined) return;
-                data.forEach(function (vi) {
-                    console.log(vi);
-                    if (vi.status === "Created")
-                        $scope.listVi.push(vi.name);
-                });
-
-            });*/
         };
 
         $scope.updateSpList();
@@ -125,6 +114,12 @@ angular.module('mqnaasApp')
             });
         };
 
+        $scope.removeUser = function (user) {
+            console.log(user);
+            spService.delUser(user.id, user.sp_id).then(function (data) {
+                console.log(data);
+            });
+        };
 
     }).filter('exclude', function () {
         return function (items, exclude) {

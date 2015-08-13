@@ -2,7 +2,6 @@
 
 angular.module('mqnaasApp')
     .factory('spService', function ($http, $window, $q, AUTHENTICATION) {
-
         var getList = function () {
             var url = AUTHENTICATION + 'sp';
             var deferred = $q.defer();
@@ -141,7 +140,21 @@ angular.module('mqnaasApp')
             return promise;
         };
 
+        var removeUser = function (object_id, spId) {
+            var url = AUTHENTICATION + 'users/' + object_id + '/sp/' + spId;
+            var deferred = $q.defer();
 
+            var promise = $http.delete(url, {}).then(
+                function (response) {
+                    return response.data;
+                },
+                function (response) {
+                    deferred.reject(response.data);
+                    deferred.reject(response.data.error);
+                }
+            );
+            return promise;
+        };
 
         return {
             getList: function () {
@@ -170,7 +183,9 @@ angular.module('mqnaasApp')
             },
             addUser: function (id, spId) {
                 return addUser(id, spId);
+            },
+            removeUser: function (id, spId) {
+                return removeUser(id, spId);
             }
         };
-
     });

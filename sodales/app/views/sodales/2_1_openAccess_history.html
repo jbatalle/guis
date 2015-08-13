@@ -15,7 +15,7 @@
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <button ng-click="tableParams.sorting({})" class="btn btn-default">Clear</button>
+                    <button ng-click="clearHistory()" class="btn btn-default">Clear</button>
                     <table st-table="displayedCollection" st-safe-src="dataCollection" class="table table-striped">
                         <thead>
                             <tr>
@@ -38,19 +38,10 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td class="text-center" st-pagination="" st-items-by-page="5" colspan="3">
+                                <td class="text-center" st-pagination="" st-items-by-page="20" colspan="3">
                                 </td>
                             </tr>
                         </tfoot>
-                    </table>
-
-
-                    <table ng-table="tableParams" class="table ng-table-responsive">
-                        <tr ng-repeat="hist in $data">
-                            <td data-title="'Date'" sortable="'date'" class="col-sm-2 col-md-2 col-lg-2">{{hist.date| date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                            <td data-title="'Type'" sortable="'type'" class="col-sm-1 col-md-1 col-lg-1">{{hist.type}}</td>
-                            <td data-title="'Information'">{{hist.content}}</td>
-                        </tr>
                     </table>
                 </div>
             </div>

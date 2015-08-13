@@ -36,3 +36,8 @@ a {
 #myDraggableZone {
     height: 500px;
 }
+footer.main-footer.ng-scope {
+    background-color: #FDF5D7;
+    background-size: 100% 100%;
+    padding: 10px;
+}
