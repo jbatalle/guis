@@ -28,18 +28,6 @@ end
 #	puts '>>> Tenants not created!'
 #end
 
-#User.destroy_all
-salt = BCrypt::Engine.generate_salt
-users = User.create([
-	{roles: [roles[0]], name: 'admin',  password: 'adminpass',  password_confirmation: 'adminpass', password_salt: salt,
-		password_hash: BCrypt::Engine.hash_secret("adminpass", salt), email: "josep.batalle@i2cat.net", active: 1}
-])
-if users[0].save
-	puts "Default users: " + users.map(&:name).join(', ')
-else
-	puts '>>> Users not created!'
-end
-
 vi = Vi.create({name: "vi-req-1", status: "Created"})
 if vi.save
 	puts "VI Created"
@@ -47,9 +35,24 @@ else
 	puts '>>> VI not created!'
 end
 
-sp = SP.create({name: "sdfaaafsaaad222", url: "fsdfsd", description: "fsdfsd", vis: [vi]})
+sp = SP.create({name: "sp1", url: "test", description: "test", vis: [vi]})
 if sp.save
 	puts "SP Created"
 else
 	puts '>>> SP not created!'
 end
+
+
+#User.destroy_all
+salt = BCrypt::Engine.generate_salt
+users = User.create([
+	{roles: [roles[0]], name: 'admin',  password: 'adminpass',  password_confirmation: 'adminpass', password_salt: salt,
+		sp_id: sp.id, password_hash: BCrypt::Engine.hash_secret("adminpass", salt), email: "josep.batalle@i2cat.net", active: 1}
+])
+if users[0].save
+	puts "Default users: " + users.map(&:name).join(', ')
+else
+	puts '>>> Users not created!'
+end
+
+

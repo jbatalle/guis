@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 	validates_presence_of     :password, :on => :create
 	validates_length_of       :password, :minimum => 6, :on => create
 	validates_confirmation_of :password
-	#belongs_to :tenant
+	belongs_to :sp
 	has_and_belongs_to_many :roles
 	
 	serialize :roles
@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
 	
 	def as_json(options={})
 		super(
-			:include => [ :roles],
+			:include => [ :roles ],
 			:except => [ :password_hash, :password_salt, :activation_hash, :password_reset_hash]
 		)
 	end

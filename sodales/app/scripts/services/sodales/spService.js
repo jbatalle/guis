@@ -109,6 +109,40 @@ angular.module('mqnaasApp')
             return promise;
         };
 
+        var getUsers = function (object_id) {
+            var url = AUTHENTICATION + 'sp/' + object_id + '/users';
+            var deferred = $q.defer();
+
+            var promise = $http.get(url, {}).then(
+                function (response) {
+                    return response.data;
+                },
+                function (response) {
+                    deferred.reject(response.data);
+                    deferred.reject(response.data.error);
+                }
+            );
+            return promise;
+        };
+
+        var addUser = function (object_id, spId) {
+            var url = AUTHENTICATION + 'users/' + object_id + '/sp/' + spId;
+            var deferred = $q.defer();
+
+            var promise = $http.post(url, {}).then(
+                function (response) {
+                    return response.data;
+                },
+                function (response) {
+                    deferred.reject(response.data);
+                    deferred.reject(response.data.error);
+                }
+            );
+            return promise;
+        };
+
+
+
         return {
             getList: function () {
                 return getList();
@@ -130,6 +164,12 @@ angular.module('mqnaasApp')
             },
             remove: function (id) {
                 return remove(id);
+            },
+            getUsers: function (id) {
+                return getUsers(id);
+            },
+            addUser: function (id, spId) {
+                return addUser(id, spId);
             }
         };
 

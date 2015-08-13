@@ -7,7 +7,8 @@ class CreateUser < ActiveRecord::Migration
       t.string :password_hash
       t.string :password_salt
       t.integer :active
-      t.integer :tenant_id
+      #t.integer :tenant_id
+      t.integer :sp_id
       
       t.string :language
       

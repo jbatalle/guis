@@ -41,11 +41,12 @@ class Authentication < Sinatra::Application
 		if(params["id"] == 'null')
 			halt 200, {'Content-Type' => 'text/plain'}, ''
 		end
-		tenant = SP.find(params["id"])
-        unless tenant
+		sp = SP.find(params["id"])
+        unless sp
 			halt 404, {'Content-Type' => 'text/plain'}, 'This tenant no exists.'
         end
-        users = User.where(:tenant_id => params["id"])
+        logger.error sp.id
+        users = User.where(:sp_id => sp.id)
 		return users.to_json
 	end
 	

@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('SodalesOpenaccessDashCtrl', function ($scope, $filter, spService, viService, $modal, viNetService) {
+    .controller('SodalesOpenaccessDashCtrl', function ($scope, $filter, spService, viService, $modal, viNetService, UsersService) {
 
         $scope.listVi = [];
         $scope.data = [];
         $scope.dataCollection = [];
+        $scope.collapsed = false;
+        $scope.current_sp = null;
 
         $scope.updateSpList = function () {
 
@@ -85,6 +87,67 @@ angular.module('mqnaasApp')
             spService.remove(data).then(function (response) {
                 console.log(response);
                 $scope.updateSpList();
+            });
+        };
+
+        $scope.selectedSP = function (row) {
+            $scope.current_sp = row;
+            $scope.collapsed = true;
+            spService.getUsers(row.id).then(function (data) {
+                console.log(data);
+                $scope.dataCollection2 = data;
+            });
+        };
+
+        $scope.addUserDialog = function (row) {
+
+            UsersService.getUsers().then(function (data) {
+                $scope.users = data;
+            });
+
+            spService.getUsers(row.id).then(function (data) {
+                $scope.spUsers = data;
+            });
+
+            $modal({
+                title: 'Adding user to SP ' + row.name + '.',
+                template: 'views/sodales/sp/addUser.html',
+                show: true,
+                scope: $scope,
+            });
+        };
+
+        $scope.addUser = function (row) {
+            console.log(row);
+
+            spService.addUser(row.id, $scope.current_sp.id).then(function (data) {
+                console.log(data);
+            });
+        };
+
+
+    }).filter('exclude', function () {
+        return function (items, exclude) {
+            if (exclude === []) return;
+            if (items === undefined) return;
+            if (items === 0) return;
+            if (items instanceof Array) {} else {
+                return;
+            }
+            return items.filter(function (item) {
+                return exclude.indexOf(item) === -1;
+            });
+        };
+    }).filter('excludeByName', function () {
+        return function (items, exclude) {
+            if (exclude === []) return;
+            if (items === undefined) return;
+            if (items === 0) return;
+            if (items instanceof Array) {} else {
+                return;
+            }
+            return items.filter(function (item) {
+                return exclude.indexOf(item.name) === -1;
             });
         };
     });

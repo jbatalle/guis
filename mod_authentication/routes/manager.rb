@@ -13,12 +13,12 @@ class Authentication < Sinatra::Application
 		end
 	end
 
-	get "/users", :auth => [:sysadmin] do
+	get "/users", :auth => [:ip] do
 		#get "/users" do
 		return User.all.to_json
 	end
 	#remove users
-	delete "/users/:id", :auth => [:sysadmin] do
+	delete "/users/:id", :auth => [:ip] do
 		#if user is itself
 		token = Token.where(:token => request.env['HTTP_X_AUTH_TOKEN']).first
         if token
@@ -44,6 +44,19 @@ class Authentication < Sinatra::Application
 	post "/users/:id/disable", :auth => [:sysadmin, :tenantadmin] do
 		user = User.find(params[:id])
 		user.update_attribute(:active, 0)
+		status 200
+	end
+	
+	#add user to SP
+	post "/users/:id/sp/:spId" do
+		logger.error params[:id]
+		logger.error params[:spId]
+		user = User.find(params[:id])
+		logger.error user.name
+		sp = SP.find(params[:spId])
+		logger.error sp.name
+		#user.sp = sp
+		user.update_attribute(:sp_id, sp.id)
 		status 200
 	end
 	

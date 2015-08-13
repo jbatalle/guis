@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(version: 20150812102131) do
     t.string   "password_hash"
     t.string   "password_salt"
     t.integer  "active"
-    t.integer  "tenant_id"
+    t.integer  "sp_id"
     t.string   "language"
     t.string   "password_reset_hash"
     t.string   "password_reset_timestamp"
