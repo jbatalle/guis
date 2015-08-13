@@ -70,12 +70,13 @@ angular.module('mqnaasApp')
             //$scope.nodes = new vis.DataSet();
             data.forEach(function (node) {
                 console.log(node);
-                $scope.nodes.add({
-                    id: $scope.nodes.lentgh,
-                    label: node.id,
-                    image: 'images/SODALES_' + node.type + '.png',
-                    shape: 'image'
-                });
+                if (node.type !== undefined)
+                    $scope.nodes.add({
+                        id: $scope.nodes.lentgh,
+                        label: node.id,
+                        image: 'images/SODALES_' + node.type + '.png',
+                        shape: 'image'
+                    });
             });
         };
     }).controller('editNetwork', function ($scope, $rootScope, MqNaaSResourceService, localStorageService, $modal, RootResourceService, arnService, cpeService) {
@@ -201,12 +202,13 @@ angular.module('mqnaasApp')
             //$scope.nodes = new vis.DataSet();
             data.forEach(function (node) {
                 console.log(node);
-                $scope.nodes.add({
-                    id: $scope.nodes.lentgh,
-                    label: node.id,
-                    image: 'images/SODALES_' + node.type + '.png',
-                    shape: 'image'
-                });
+                if (node.type !== undefined)
+                    $scope.nodes.add({
+                        id: $scope.nodes.lentgh,
+                        label: node.id,
+                        image: 'images/SODALES_' + node.type + '.png',
+                        shape: 'image'
+                    });
             });
         };
     });;
