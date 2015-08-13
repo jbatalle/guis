@@ -46,7 +46,7 @@ angular.module('mqnaasApp')
                 title: 'Create new SP.',
                 template: 'views/sodales/spCreationDialog.html',
                 show: true,
-                scope: $scope,
+                scope: $scope
             });
         };
 
