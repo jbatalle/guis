@@ -142,12 +142,13 @@ angular.module('mqnaasApp')
                     endpoint: "http://fibra2222tv.dtdns.net:41081"
                 };
                 $scope.openAddResourceDialog = function (nodeType, divPos) {
-                    //                            $scope.arn = {endpoint: "asdasdsa"};
-
+                    $scope.resource = {};
+                    $scope.resource.type = nodeType;
                     $modal({
                         title: 'Adding a new ' + nodeType,
                         template: 'views/sodales/resourceDialog.html',
                         show: true,
+                        scope: $scope,
                         data: {
                             "nodeType": nodeType,
                             "divPos": divPos

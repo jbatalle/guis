@@ -1,7 +1,6 @@
 <div class="row">
     <div class="col-md-9">
         <h2 class="page-header">Dashboard <small>Information Overview</small></h2>
-
         <div class="row">
             <div class="col-lg-4 col-md-6">
                 <div class="panel panel-primary">
@@ -80,7 +79,10 @@
                     <div class="panel-body">
                         <span ng-hide="networkId">The physical infrastructure is empty. <br/>
                             Create one in the <a ui-sref="root.mgt" >Physical Infrastructure Management tab.</a></span>
-                        <div graphview ng-show="networkId"></div>
+                        <div ng-controller="viewNetwork" id="myDraggableZone" droppable2 ng-show="networkId">
+                            <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
+                            </vis-network>
+                        </div>
                     </div>
                 </div>
             </div>

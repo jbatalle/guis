@@ -1,11 +1,9 @@
 body {
     padding-top: 60px;
 }
-
 ng-hide {
     display: none;
 }
-
 .loader {
     font-size: 36px;
     line-height: 36px;
@@ -23,10 +21,18 @@ ng-hide {
 .statsTable {
     width: 340px;
 }
-statsTable, th.ng-binding.ng-scope{
+statsTable,
+th.ng-binding.ng-scope {
     width: 50px;
     text-align: center;
 }
-statsTable, td.ng-binding.ng-scope{
+statsTable,
+td.ng-binding.ng-scope {
     text-align: center;
+}
+a {
+    cursor: pointer;
+}
+#myDraggableZone {
+    height: 500px;
 }

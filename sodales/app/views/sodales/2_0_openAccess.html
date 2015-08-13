@@ -37,7 +37,9 @@
                     <td><a ng-click="selectedSP(row)">{{row.name}}</a></td>
                     <td>{{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}</td>
                     <td>{{row.description}}</td>
-                    <td data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">{{row.vis}}</td>
+                    <td data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">
+                        <b ng-repeat="vis in row.vis">{{vis.name}}{{$last ? '' : ', '}}</b>
+                    </td>
                     <td>
                         <select ng-model="selectedAddVi">
                             <option ng-repeat="item in listVi | viDuplicates:row.vis track by $index">{{item}}</option>

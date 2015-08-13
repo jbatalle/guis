@@ -1,25 +1,26 @@
 <div class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" ng-controller="sodalesPiMgtCtrl">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" ng-show="title">
                 <button type="button" class="close" ng-click="$hide()">&times;</button>
                 <h4 class="modal-title" ng-bind="title"></h4>
             </div>
             <div class="modal-body">
+                {{resource}}
                 <div>
                     <div>Select network
-                        <select ng-model="arn.network">
+                        <select ng-model="resource.network">
                             <option selected>{{networkId}}</option>
                         </select>
                     </div>
                     <div>Enter the endpoint (URL)
-                        <input type="text" class="form-control" ng-model="arn.endpoint" name="endpoint">
+                        <input type="text" class="form-control" ng-model="resource.endpoint" name="endpoint">
                     </div>
                     <br/>
                 </div>
                 <!-- /.box-body -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="addResource(arn)">Add</button>
+                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="addResource(resource)">Add</button>
                 </div>
             </div>
         </div>

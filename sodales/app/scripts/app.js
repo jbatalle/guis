@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 
-angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqnaasApp.controllers', 'mqnaasApp.directives', 'mqnaasApp.services', 'smart-table', 'mgcrea.ngStrap', 'pascalprecht.translate', 'angularTranslateApp', 'ngTagsInput', 'ngVis', 'cb.x2js', 'LocalStorageModule'])
+angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqnaasApp.controllers', 'mqnaasApp.directives', 'mqnaasApp.services', 'smart-table', 'mgcrea.ngStrap', 'pascalprecht.translate', 'angularTranslateApp', 'ngTagsInput', 'cb.x2js', 'LocalStorageModule'])
 
 .run(
   ['$rootScope', '$state', '$stateParams', '$timeout',

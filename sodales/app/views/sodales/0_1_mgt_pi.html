@@ -18,7 +18,7 @@
             </a>
         </div>
     </div>
-    <div id="piMgt" class="col-md-9" ng-controller="sodalesPiMgtCtrl">
+    <div id="piMgt" class="col-md-9">
         <h2 class="page-header">PHY Management <small>Physical resources management</small></h2>
         <div class="row">
             <div class="col-lg-9">
@@ -28,6 +28,10 @@
                     </div>
                     <div class="panel-body" style="text-align: center;">
                         <a href="" ng-hide="networkId" ng-click="createNetwork()" class="btn btn-xs btn-default" title="Create Network">Create Network</a>
+                        <div ng-controller="editNetwork" id="myDraggableZone" droppable2 ng-show="networkId">
+                            <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
+                            </vis-network>
+                        </div>
                         <div grapheditor ng-model="sodalesPiMgtCtrl" ng-show="networkId"></div>
                     </div>
 

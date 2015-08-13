@@ -12,6 +12,7 @@ angular.module('mqnaasApp')
             if (data) $scope.viSize = data.length;
             else $scope.viSize = 0;
         });
+    
         $scope.slicesSize = 0;
         /*            viService.list().then(function (data) {
          console.log("GET Slices SIZE");
