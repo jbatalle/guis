@@ -79,7 +79,8 @@ angular.module('mqnaasApp')
                     });
             });
         };
-    }).controller('editNetwork', function ($scope, $rootScope, MqNaaSResourceService, localStorageService, $modal, RootResourceService, arnService, cpeService) {
+    })
+    .controller('editNetwork', function ($scope, $rootScope, MqNaaSResourceService, localStorageService, $modal, RootResourceService, arnService, cpeService) {
         var url = '';
 
         $scope.nodes = new vis.DataSet();
@@ -117,6 +118,7 @@ angular.module('mqnaasApp')
             MqNaaSResourceService.list(url).then(function (data) {
                 console.log(data);
                 $scope.generateNodeData(data.resource.resources.resource);
+                $scope.generateLinkData(data.resource.resources.resource);
             });
         };
 
@@ -171,6 +173,9 @@ angular.module('mqnaasApp')
                     // filling in the popup DOM elements
                 },
                 addEdge: function (data, callback) {
+                    console.log("Adding link");
+                    console.log("Open Dialog");
+                    $scope.createLinkDialog(data.from, data.to);
                     if (data.from == data.to) {
                         var r = confirm('Do you want to connect the node to itself?');
                         if (r == true) {
@@ -181,6 +186,63 @@ angular.module('mqnaasApp')
                     }
                 }
             }
+        };
+
+        $scope.createLinkDialog = function (source, dest) {
+            console.log("Create Link dialog");
+            console.log(source);
+            console.log(dest);
+            $scope.source = $scope.nodes.get(source).label;
+            $scope.dest = $scope.nodes.get(dest).label;
+
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + $scope.source + "/IPortManagement";
+            MqNaaSResourceService.get(url).then(function (result) {
+                $scope.physicalPorts1 = result;
+            });
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + $scope.dest + "/IPortManagement";
+            MqNaaSResourceService.get(url).then(function (result) {
+                $scope.physicalPorts2 = result;
+            });
+
+            $modal({
+                title: 'Adding a new link',
+                template: 'views/sodales/createLinkDialog.html',
+                show: true,
+                scope: $scope
+            });
+        };
+        $scope.attachPortsToLink = function (type, portId) {
+            var linkId = $scope.createdLink;
+            var url;
+            if (type === "source") {
+                url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement/" + linkId + "/ILinkAdministration/srcPort?arg0=" + portId;
+                $scope.srcPortAttahed = "Source port Attached";
+            } else if (type === "dest") {
+                url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement/" + linkId + "/ILinkAdministration/destPort?arg0=" + portId;
+                $scope.dstPortAttahed = "Source port Attached";
+            }
+            MqNaaSResourceService.put(url).then(function (response) {}); //empty
+
+        };
+
+        $scope.getLinks = function () {
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + slice + "/IUnitManagement/" + unitId;
+            MqNaaSResourceService.get(url).then(function (response) {
+                console.log(response.unit);
+                $scope.links = response.unit;
+            });
+        };
+
+        $scope.mappingPortsToLink = function (res1, port1, portInternalId, portEth) {
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + res1 + "/IPortManagement/" + port1 + "/IAttributeStore/attribute/?arg0=" + portInternalId + "&arg1=" + portEth;
+            MqNaaSResourceService.put(url).then(function (result) {
+                $scope.resRoot = result; //empty
+                $scope.mappedPort = "Mapped";
+                $scope.mappedPorts.push({
+                    virt: virtualPort,
+                    real: realPort
+                });
+            });
         };
 
         $scope.onNodeSelect = function (properties) {
@@ -199,13 +261,87 @@ angular.module('mqnaasApp')
             //$scope.nodes = new vis.DataSet();
             data.forEach(function (node) {
                 console.log(node);
-                if (node.type !== undefined)
+                if (node.type !== undefined && node.type !== 'link')
                     $scope.nodes.add({
                         id: $scope.nodes.lentgh,
                         label: node.id,
                         image: 'images/SODALES_' + node.type + '.png',
                         shape: 'image'
                     });
+            });
+        };
+
+        $scope.generateLinkData = function (data) {
+            //$scope.nodes = new vis.DataSet();
+            console.log(data);
+            data.forEach(function (node) {
+                //console.log(node);
+                if (node.type === 'link') {
+                    console.log(node);
+
+                    var src = {},
+                        dst = {};
+                    data.forEach(function (element) {
+                        if (element.type !== 'link') {
+                            var t = checkIfIsArray(element.resources.resource);
+                            t.forEach(function (port) {
+                                console.log(t);
+                                if (port.id === node.resources.resource[0].id)
+                                    src = element;
+                            });
+                        }
+                    });
+
+                    data.forEach(function (element) {
+                        if (element.type !== 'link') {
+                            var t = checkIfIsArray(element.resources.resource);
+                            t.forEach(function (port) {
+                                console.log(t);
+                                if (port.id === node.resources.resource[1].id)
+                                    dst = element;
+                            });
+                        }
+                    });
+                    console.log(src);
+                    console.log(dst);
+                    console.log($scope.nodes);
+                    var srcNode = $scope.nodes.get({
+                        filter: function (item) {
+                            return item.label == src.id;
+                        }
+                    })[0];
+                    var dstNode = $scope.nodes.get({
+                        filter: function (item) {
+                            return item.label == dst.id;
+                        }
+                    })[0];
+                    console.log(srcNode);
+                    //var t = 
+
+                    $scope.edges.add({
+                        id: $scope.edges.lentgh,
+                        from: srcNode.id,
+                        to: dstNode.id
+                    });
+                    console.log($scope.edges);
+                }
+            });
+        };
+
+        $scope.createPort = function (resourceName) {
+            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IPortManagement';
+            MqNaaSResourceService.put(url).then(function (data) {});
+        };
+
+        $scope.mappingPortsToLink = function (res1, port1, portInternalId, portEth) {
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + res1 + "/IPortManagement/" + port1 + "/IAttributeStore/attribute/?arg0=" + portInternalId + "&arg1=" + portEth;
+            MqNaaSResourceService.put(url).then(function (result) {
+                $scope.resRoot = result; //empty
+                $scope.mappedPort = "Mapped";
+                $scope.mappedPorts.push({
+                    virt: virtualPort,
+                    real: realPort
+                });
             });
         };
     });;

@@ -7,22 +7,26 @@ angular.module('mqnaasApp')
         var promise;
         $scope.data = [];
         $scope.updateSpList = function () {
-            viService.list().then(function (result) {
-                console.log(result);
-                $scope.data = result;
-                $scope.dataCollection = result;
-            });
             var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
             MqNaaSResourceService.list(urlListVI).then(function (result) {
                 console.log(result);
+                $scope.dataCollection = result.IResource.IResourceId;
                 //                    $scope.data = result.IResource.IResourceId;
             });
+
+
+            viService.list().then(function (result) {
+                console.log(result);
+                $scope.data = result;
+                // $scope.dataCollection = result;
+            });
+
         };
 
         $scope.updateSpList();
         promise = $interval(function () {
             $scope.updateSpList();
-        }, 2000);
+        }, 200000);
         $scope.createVIRequest = function () {
             var urlCreateVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
             MqNaaSResourceService.put(urlCreateVI).then(function (result) {

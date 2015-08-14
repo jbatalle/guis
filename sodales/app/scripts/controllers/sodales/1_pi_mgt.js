@@ -6,6 +6,7 @@ angular.module('mqnaasApp')
 
         $scope.nodes = new vis.DataSet();
         $scope.edges = new vis.DataSet();
+        $scope.listNetworks = [];
 
         if (localStorageService.get('networkId')) $rootScope.netId = localStorageService.get('networkId');
         else $rootScope.netId = null;
@@ -15,8 +16,13 @@ angular.module('mqnaasApp')
                 if (!data) return;
                 data = checkIfIsArray(data.IRootResource.IRootResourceId);
                 console.log('UpdateList nts');
+
+                console.log($scope.listNetworks.length);
                 $scope.listNetworks = data;
-                if ($scope.listNetworks.length === 0) localStorageService.set('networkId', '');
+                if ($scope.listNetworks.length === 1) {
+                    $rootScope.networkId = '';
+                    localStorageService.set('networkId', '');
+                }
                 if (!$rootScope.networkId) {
                     $rootScope.networkId = data[1];
                     localStorageService.set('networkId', data[1]);
@@ -142,6 +148,7 @@ angular.module('mqnaasApp')
         };
 
         $scope.createLink = function () {
+            console.log("Creating link");
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement";
             MqNaaSResourceService.put(url).then(function (data) {
                 $scope.createdLink = data;

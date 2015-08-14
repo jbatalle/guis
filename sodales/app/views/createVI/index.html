@@ -28,13 +28,13 @@
     </thead>
     <tbody>
         <tr ng-repeat="row in displayedCollection">
-            <td><a ng-click="viewService(row.id, row.name)">{{row.name}}</a></td>
+            <td><a ng-click="viewService(row.id, row.name)">{{row}}</a></td>
             <td>{{row.date| date:'yyyy-MM-dd HH:mm:ss'}}</td>
             <td>{{row.status}}</td>
             <td>{{row.vi}}</td>
             <td><a ng-show="vi.status !== 'Created'" href="" ng-click="sendVIR(vi.name)" class="btn btn-default" title="process">Send to Process</a>
-                <a ng-show="vi.status !== 'Created'" ui-sref="root.editVIRequest({ id:row.name })" class="btn btn-default" title="edit">Edit</a>
-                <a ng-show="vi.status === 'Created'" ui-sref="root.editVIRequest({ id:row.name })" class="btn btn-default" title="edit">View</a></td>
+                <a ng-show="vi.status !== 'Created'" ui-sref="root.editVIRequest({ id:row })" class="btn btn-default" title="edit">Edit</a>
+                <a ng-show="vi.status === 'Created'" ui-sref="root.editVIRequest({ id:row })" class="btn btn-default" title="edit">View</a></td>
             <td><a href="" ng-click="deleteVIRequest(vi.name)" class="btn btn-default" title="process">Remove</a></td>
             <td>
             </td>
