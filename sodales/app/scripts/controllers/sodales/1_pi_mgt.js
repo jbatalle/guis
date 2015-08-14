@@ -16,15 +16,12 @@ angular.module('mqnaasApp')
                 data = checkIfIsArray(data.IRootResource.IRootResourceId);
                 console.log('UpdateList nts');
                 $scope.listNetworks = data;
+                if ($scope.listNetworks.length === 0) localStorageService.set('networkId', '');
                 if (!$rootScope.networkId) {
                     $rootScope.networkId = data[1];
                     localStorageService.set('networkId', data[1]);
                 }
                 $scope.selectedNetwork = $rootScope.networkId;
-                console.log('Clean localStorage networkElements due network is not created.');
-                localStorageService.set('networkElements', []);
-                localStorageService.set('link', []);
-                console.log($rootScope.networkId);
                 //                getMqNaaSResource($rootScope.networkId);
                 $scope.getNetworkModel();
 
@@ -144,5 +141,50 @@ angular.module('mqnaasApp')
             this.$hide();
         };
 
+        $scope.createLink = function () {
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement";
+            MqNaaSResourceService.put(url).then(function (data) {
+                $scope.createdLink = data;
+                $scope.createdLinkInfo = [{
+                    s: $scope.source,
+                    t: $scope.dest
+                }];
+                localStorageService.set("link", [{
+                    s: $scope.source,
+                    t: $scope.dest
+                }]);
+                return data;
+            });
+        };
+
+        $scope.createPort = function (resourceName) {
+            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IPortManagement';
+            MqNaaSResourceService.put(url).then(function (data) {});
+        };
+
+        $scope.mappingPortsToLink = function (res1, port1, portInternalId, portEth) {
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + res1 + "/IPortManagement/" + port1 + "/IAttributeStore/attribute/?arg0=" + portInternalId + "&arg1=" + portEth;
+            MqNaaSResourceService.put(url).then(function (result) {
+                $scope.resRoot = result; //empty
+                $scope.mappedPort = "Mapped";
+                $scope.mappedPorts.push({
+                    virt: virtualPort,
+                    real: realPort
+                });
+            });
+        };
+
+        $scope.attachPortsToLink = function (linkId, type, portId) {
+            var url;
+            if (type === "source") {
+                url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement/" + linkId + "/ILinkAdministration/srcPort?arg0=" + portId;
+                $scope.srcPortAttahed = "Source port Attached";
+            } else if (type === "dest") {
+                url = "IRootResourceAdministration/" + $rootScope.networkId + "/ILinkManagement/" + linkId + "/ILinkAdministration/destPort?arg0=" + portId;
+                $scope.dstPortAttahed = "Source port Attached";
+            }
+            MqNaaSResourceService.put(url).then(function (response) {}); //empty
+
+        };
 
     });

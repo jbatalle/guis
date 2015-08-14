@@ -120,13 +120,10 @@ angular.module('mqnaasApp')
             });
         };
 
-
         $scope.deleteResource = function (resName) {
             url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceAdministration/' + resName);
             MqNaaSResourceService.remove(url).then(function (data) {});
         };
-
-
 
         $scope.addResource = function (data) {
             console.log(data);
