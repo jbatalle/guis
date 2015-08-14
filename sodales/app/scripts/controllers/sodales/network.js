@@ -80,6 +80,49 @@ angular.module('mqnaasApp')
                     });
             });
         };
+
+        $scope.generateLinkData = function (data) {
+            //$scope.nodes = new vis.DataSet();
+            data.forEach(function (node) {
+                if (node.type === 'link') {
+                    var src = {},
+                        dst = {};
+                    data.forEach(function (element) {
+                        if (element.type !== 'link') {
+                            var t = checkIfIsArray(element.resources.resource);
+                            t.forEach(function (port) {
+                                if (port.id === node.resources.resource[0].id) src = element;
+                            });
+                        }
+                    });
+
+                    data.forEach(function (element) {
+                        if (element.type !== 'link') {
+                            var t = checkIfIsArray(element.resources.resource);
+                            t.forEach(function (port) {
+                                if (port.id === node.resources.resource[1].id) dst = element;
+                            });
+                        }
+                    });
+                    var srcNode = $scope.nodes.get({
+                        filter: function (item) {
+                            return item.label == src.id;
+                        }
+                    })[0];
+                    var dstNode = $scope.nodes.get({
+                        filter: function (item) {
+                            return item.label == dst.id;
+                        }
+                    })[0];
+
+                    $scope.edges.add({
+                        id: $scope.edges.lentgh,
+                        from: srcNode.id,
+                        to: dstNode.id
+                    });
+                }
+            });
+        };
     })
     .controller('editNetwork', function ($scope, $rootScope, MqNaaSResourceService, localStorageService, $modal, RootResourceService, arnService, cpeService) {
         var url = '';
@@ -275,21 +318,15 @@ angular.module('mqnaasApp')
 
         $scope.generateLinkData = function (data) {
             //$scope.nodes = new vis.DataSet();
-            console.log(data);
             data.forEach(function (node) {
-                //console.log(node);
                 if (node.type === 'link') {
-                    console.log(node);
-
                     var src = {},
                         dst = {};
                     data.forEach(function (element) {
                         if (element.type !== 'link') {
                             var t = checkIfIsArray(element.resources.resource);
                             t.forEach(function (port) {
-                                console.log(t);
-                                if (port.id === node.resources.resource[0].id)
-                                    src = element;
+                                if (port.id === node.resources.resource[0].id) src = element;
                             });
                         }
                     });
@@ -298,15 +335,10 @@ angular.module('mqnaasApp')
                         if (element.type !== 'link') {
                             var t = checkIfIsArray(element.resources.resource);
                             t.forEach(function (port) {
-                                console.log(t);
-                                if (port.id === node.resources.resource[1].id)
-                                    dst = element;
+                                if (port.id === node.resources.resource[1].id) dst = element;
                             });
                         }
                     });
-                    console.log(src);
-                    console.log(dst);
-                    console.log($scope.nodes);
                     var srcNode = $scope.nodes.get({
                         filter: function (item) {
                             return item.label == src.id;
@@ -317,15 +349,12 @@ angular.module('mqnaasApp')
                             return item.label == dst.id;
                         }
                     })[0];
-                    console.log(srcNode);
-                    //var t = 
 
                     $scope.edges.add({
                         id: $scope.edges.lentgh,
                         from: srcNode.id,
                         to: dstNode.id
                     });
-                    console.log($scope.edges);
                 }
             });
         };
