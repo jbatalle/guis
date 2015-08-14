@@ -33,8 +33,9 @@ module.exports = function (app) {
                 headers: {
                     'Content-Type': 'application/xml'
                 }
-                //json: req.body
-            });
+            }).pipe(res);
+
+
         } else if (req.method === 'DELETE') {
             r = request.delete({
                 uri: url,
@@ -48,13 +49,13 @@ module.exports = function (app) {
 
         console.log("Prepare request");
         console.log(req.rawBody);
-        request.put({
+        /*request.put({
             uri: url,
             body: req.rawBody,
             headers: {
                 'Content-Type': 'application/xml'
             }
-        }).pipe(res);
+        }).pipe(res);*/
         //req.pipe(r).pipe(res);
 
         // do the piping

@@ -67,10 +67,11 @@ angular.module('mqnaasApp')
             },
         ]);
         $scope.generateNodeData = function (data) {
+            data = checkIfIsArray(data);
             //$scope.nodes = new vis.DataSet();
             data.forEach(function (node) {
                 console.log(node);
-                if (node.type !== undefined)
+                if (node.type !== undefined && node.type !== 'link')
                     $scope.nodes.add({
                         id: $scope.nodes.lentgh,
                         label: node.id,
@@ -258,6 +259,7 @@ angular.module('mqnaasApp')
             },
         ]);
         $scope.generateNodeData = function (data) {
+            data = checkIfIsArray(data);
             //$scope.nodes = new vis.DataSet();
             data.forEach(function (node) {
                 console.log(node);

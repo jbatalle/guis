@@ -28,6 +28,14 @@ angular.module('mqnaasApp')
             restrict: 'AE',
             controller: function ($scope, $modal) {
                 $scope.openAddResourceDialog = function (nodeType, divPos) {
+                    $scope.arn = {
+                        network: "Network-Internal-1.0-2",
+                        endpoint: "http://fibratv.dtdns.net:41080"
+                    };
+                    $scope.cpe = {
+                        network: "Network-Internal-1.0-2",
+                        endpoint: "http://fibra2222tv.dtdns.net:41081"
+                    };
                     $scope.resource = {};
                     $scope.resource.type = nodeType;
                     $modal({
