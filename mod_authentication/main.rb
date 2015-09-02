@@ -4,7 +4,6 @@ require 'sinatra'
 require 'sinatra/config_file'
 require 'yaml'
 require "bcrypt"
-require 'rack/ssl'
 
 # Require the bundler gem and then call Bundler.require to load in all gems
 # listed in Gemfile.

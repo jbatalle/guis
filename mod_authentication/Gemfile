@@ -32,6 +32,3 @@ end
 gem 'sinatra-activerecord'
 gem 'bcrypt'
 gem 'sinatra-cross_origin'
-gem 'mail'
-gem 'rack-ssl-enforcer'
-gem 'rack-ssl'
