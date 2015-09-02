@@ -1,25 +1,47 @@
-<div class="container-fluid" ng-controller="editVIController">
+<div class="container-fluid">
     <b>Do you want to add a new virtual {{ngDialogData.nodeType}}?</b>
-    <form action="createARN" method="post" name="editForm">
-        <div>
-            <div ng-hide='resourceRequest'>
-                <a href="" class="btn btn-sm btn-primary" ng-click="addResourceToVI(ngDialogData.nodeType)">Add {{ngDialogData.nodeType}} resource</a>
+
+</div>
+
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
             </div>
-            <div ng-show='resourceRequest'>
-                <h4>Resource added correctly with the name: {{resourceRequest}}.</h4>
-                <span>
+            <div class="modal-body">
+                <div>
+                    <div>Creating a resource ({{resource.type}}) inside the VIR
+                        <select ng-model="resource.network" disabled>
+                            <option selected>{{viId}}</option>
+                        </select>
+                    </div>
+                    <form action="createARN" method="post" name="editForm">
+                        <div>
+                            <div ng-hide='resourceRequest'>
+                                <a href="" class="btn btn-sm btn-primary" ng-click="addResourceToVI(resource.type)">Add {{resource.type}} resource</a>
+                            </div>
+                            <div ng-show='resourceRequest'>
+                                <h4>Resource added correctly with the name: {{resourceRequest}}.</h4>
+                                <span>
                     Add ports to the recent created resource: <a href="" class="btn btn-sm btn-primary" ng-click="addVirtualPortToResource(resourceRequest)">Add port</a>
                 </span>
-                <ul>
-                    <li ng-repeat=" vPort in virtualPort">
-                        {{vPort}}
-                    </li>
-                </ul>
-            </div>
-
-            <div>
-                <a href="" class="btn btn-sm btn-primary" ng-click="closeThisDialog()">Add</a>
+                                <ul>
+                                    <li ng-repeat=" vPort in virtualPort">
+                                        {{vPort}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                    <br/>
+                </div>
+                <!-- /.box-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="addResource(resource)">Add</button>
+                </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>

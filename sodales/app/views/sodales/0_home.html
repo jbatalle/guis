@@ -79,7 +79,7 @@
                     <div class="panel-body">
                         <span ng-hide="networkId">The physical infrastructure is empty. <br/>
                             Create one in the <a ui-sref="root.mgt" >Physical Infrastructure Management tab.</a></span>
-                        <div ng-controller="viewNetwork" id="myDraggableZone" droppable2 ng-show="networkId">
+                        <div ng-controller="viewNetwork" id="myDraggableZone" ng-show="networkId">
                             <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
                             </vis-network>
                         </div>

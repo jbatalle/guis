@@ -28,7 +28,7 @@
                     </div>
                     <div class="panel-body" style="text-align: center;">
                         <a href="" ng-hide="networkId" ng-click="createNetwork()" class="btn btn-xs btn-default" title="Create Network">Create Network</a>
-                        <div ng-controller="editNetwork" id="myDraggableZone" droppable2 ng-show="networkId">
+                        <div ng-controller="editPhyNetwork" id="myDraggableZone" phydroppable ng-show="networkId">
                             <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
                             </vis-network>
                         </div>

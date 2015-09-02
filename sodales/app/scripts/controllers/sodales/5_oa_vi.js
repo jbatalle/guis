@@ -114,7 +114,7 @@ angular.module('mqnaasApp')
         };
         $scope.updateVirtualElements();
         console.log(localStorageService.get("virtualElements"));
-        $scope.viId = $stateParams.id;
+        $rootScope.viId = $stateParams.id;
         $scope.virtualPort = [];
         $scope.mapPorts = false;
         $scope.mappedPorts = [];
@@ -136,6 +136,7 @@ angular.module('mqnaasApp')
             MqNaaSResourceService.put(urlPeriod, onPeriod).then(function () { //the response is empty
             });
         };
+
         $scope.addResourceToVI = function (resourceType) { //resourceType TSON/ARN/CPE...
             console.log("ADD RESOURCE TO VI");
             resourceType = resourceType.toUpperCase();

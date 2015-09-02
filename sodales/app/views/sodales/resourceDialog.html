@@ -6,10 +6,9 @@
                 <h4 class="modal-title" ng-bind="title"></h4>
             </div>
             <div class="modal-body">
-                {{resource}}
                 <div>
-                    <div>Select network
-                        <select ng-model="resource.network">
+                    <div>Creating a resource inside the network
+                        <select ng-model="resource.network" disabled>
                             <option selected>{{networkId}}</option>
                         </select>
                     </div>

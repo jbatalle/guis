@@ -45,7 +45,6 @@ angular.module('mqnaasApp')
             });
         };
 
-
         $scope.setNetworkId = function (netId) {
             console.log('Select networkId to rootScope: ' + netId);
             $rootScope.networkId = netId;
@@ -61,6 +60,7 @@ angular.module('mqnaasApp')
                 $scope.updateListNetworks();
             });
         };
+
         $scope.deleteResource = function (resName) {
             url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceAdministration/' + resName);
             MqNaaSResourceService.remove(url).then(function (data) {});
@@ -84,7 +84,7 @@ angular.module('mqnaasApp')
                 $scope.generateNodeData(data.IRootResource.IRootResourceId);
 
                 localStorageService.set('networkElements', data);
-                console.log('GEt and store ports');
+                console.log('Get and store ports');
 
             }, function (error) {
                 console.log('ERROR');
@@ -141,7 +141,10 @@ angular.module('mqnaasApp')
                     id: $scope.nodes.length,
                     label: res,
                     image: 'images/SODALES_' + data.type.toUpperCase() + '.png',
-                    shape: 'image'
+                    shape: 'image',
+                    x: 50,
+                    y: 50,
+                    group: 'physical'
                 });
             });
             this.$hide();
