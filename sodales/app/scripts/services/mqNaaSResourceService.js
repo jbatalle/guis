@@ -16,7 +16,10 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
             return promise;
         },
         put: function (url, data) {
-            var promise = $http.put('rest/mqnaas/' + url + '/', data).then(function (response) {
+            var finalUrl;
+            if (url.match(/\?./)) finalUrl = 'rest/mqnaas/' + url;
+            else finalUrl = 'rest/mqnaas/' + url + '/';
+            var promise = $http.put(finalUrl, data).then(function (response) {
                 var his = new HistoryService();
                 his.content = response.status + " - PUT (IRootResourceAdministration): " + response.data;
                 his.type = "INFO";
