@@ -1,21 +1,41 @@
 <div class="row">
     <div class="col-md-3">
-        <p class="lead">Networks</p>
-        <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network for network in listNetworks" bs-select>
-            Select <span class="caret"></span>
-        </button>
-        <p class="lead">List of physical resources</p>
-        <div class="list-group">
-            <a href="" class="list-group-item">
-                <div class="ui-widget-content netEl-drag" id="arn">
-                    <img id="arn" draggable src="../plugin/img/SODALES_ARN.png" width="60" style="z-index:1090"> ARN
-                </div>
-            </a>
-            <a href="" class="list-group-item">
-                <div class="ui-widget-content netEl-drag" id="cpe">
-                    <img id="cpe" draggable src="../plugin/img/SODALES_CPE.png" width="60" style="z-index:1090"> CPE
-                </div>
-            </a>
+        <div class="row">
+            <p class="lead">Networks</p>
+            <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network for network in listNetworks" bs-select ng-change="setNetworkId(network)">
+                Select <span class="caret"></span>
+            </button>
+            <p class="lead">List of physical resources</p>
+            <div class="list-group">
+                <a href="" class="list-group-item">
+                    <div class="ui-widget-content netEl-drag" id="arn">
+                        <img id="arn" draggable src="../plugin/img/SODALES_ARN.png" width="60" style="z-index:1090"> ARN
+                    </div>
+                </a>
+                <a href="" class="list-group-item">
+                    <div class="ui-widget-content netEl-drag" id="cpe">
+                        <img id="cpe" draggable src="../plugin/img/SODALES_CPE.png" width="60" style="z-index:1090"> CPE
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div ng-show="networkId">
+                <h3>Resources</h3>
+                <ul>
+                    <li ng-repeat="res in physicalResources">
+                        <a ng-click="getResouceInfo(res)"> {{res}}</a> -
+                        <a ng-click="deleteDialog(res)"> Remove </a>
+                    </li>
+                </ul>
+                <h3>Links</h3>
+                <ul>
+                    <li ng-repeat="link in createdLinkInfo">
+                        {{createdLink}}: {{link.s}} to {{link.t}}
+                        <a ng-click="deleteResource(link)"> Remove </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     <div id="piMgt" class="col-md-9">
@@ -32,27 +52,19 @@
                             <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
                             </vis-network>
                         </div>
-                        <div grapheditor ng-model="sodalesPiMgtCtrl" ng-show="networkId"></div>
                     </div>
 
                 </div>
             </div>
             <div class="col-lg-3">
                 <div ng-show="networkId">
-                    <h3>List of resources</h3>
+                    <h3>Ports</h3>
                     <ul>
-                        <li ng-repeat="res in networkElements">
-                            <a ng-click="getResouceInfo(res)"> {{res}}</a>
-                            <a ng-click="deleteResource(res)"> Remove </a>
+                        <li ng-repeat="res in resourceInfo">
+                            <a ng-click="getResouceInfo(res)"> {{res.attributes.entry[0].value}}</a>
                         </li>
                     </ul>
-                    <h3>Links</h3>
-                    <ul>
-                        <li ng-repeat="link in createdLinkInfo">
-                            {{createdLink}}: {{link.s}} to {{link.t}}
-                            <a ng-click="deleteResource(link)"> Remove </a>
-                        </li>
-                    </ul>
+
                 </div>
             </div>
         </div>
