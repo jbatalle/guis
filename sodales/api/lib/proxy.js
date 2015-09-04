@@ -6,12 +6,6 @@ module.exports = function (app) {
     var http = require('http');
 
     /* your app config here */
-
-
-
-
-
-
     app.use('/rest/mqnaas', function (req, res) {
         console.log(req.method + ": " + req.url);
         var url = 'http://localhost:9000/mqnaas' + req.url;
@@ -37,10 +31,10 @@ module.exports = function (app) {
 
 
         } else if (req.method === 'DELETE') {
-            r = request.delete({
+            r = request.del({
                 uri: url,
-                body: req.body
-            });
+                body: ''
+            }).pipe(res);
         } else {
             r = request(url);
             r.pipe(request(url)).pipe(res);
