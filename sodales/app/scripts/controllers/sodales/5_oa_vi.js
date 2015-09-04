@@ -13,20 +13,13 @@ angular.module('mqnaasApp')
                 $scope.dataCollection = result.IResource.IResourceId;
                 //                    $scope.data = result.IResource.IResourceId;
             });
-
-
-            viService.list().then(function (result) {
-                console.log(result);
-                $scope.data = result;
-                // $scope.dataCollection = result;
-            });
-
         };
 
         $scope.updateSpList();
         promise = $interval(function () {
             $scope.updateSpList();
         }, 200000);
+
         $scope.createVIRequest = function () {
             var urlCreateVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
             MqNaaSResourceService.put(urlCreateVI).then(function (result) {
@@ -105,14 +98,15 @@ angular.module('mqnaasApp')
     .controller('editVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, $modal, viService, localStorageService, $interval) {
         console.log("Edit VI : " + $stateParams.id);
         var promise;
-        $scope.updateVirtualElements = function () {
-            viService.getVIByName($scope.viId).then(function (result) {
-                console.log(result);
-                localStorageService.set("virtualElements", result.viRes);
-                $scope.virtualElements = result.viRes;
-            });
-        };
-        $scope.updateVirtualElements();
+        /*        $scope.updateVirtualElements = function () {
+                    viService.getVIByName($scope.viId).then(function (result) {
+                        console.log(result);
+                        localStorageService.set("virtualElements", result.viRes);
+                        $scope.virtualElements = result.viRes;
+                    });
+                };
+                */
+        // $scope.updateVirtualElements();
         console.log(localStorageService.get("virtualElements"));
         $rootScope.viId = $stateParams.id;
         $scope.virtualPort = [];
@@ -205,7 +199,7 @@ angular.module('mqnaasApp')
         $scope.addResourceToGraph = function (name) {
             console.log($scope.ngDialogData);
             console.log(name);
-            createElement(name, $scope.ngDialogData.nodeType.toLowerCase(), $scope.ngDialogData.divPos);
+            //createElement(name, $scope.ngDialogData.nodeType.toLowerCase(), $scope.ngDialogData.divPos);
         };
 
         $scope.getVirtualPorts = function (virtualRes) {

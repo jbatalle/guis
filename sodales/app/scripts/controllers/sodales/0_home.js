@@ -1,18 +1,23 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('SodalesHomeCtrl', function ($scope, HistoryService, spService, viService) {
+    .controller('SodalesHomeCtrl', function ($scope, $rootScope, HistoryService, spService, viService, MqNaaSResourceService) {
 
         spService.getList().then(function (data) {
             if (data) $scope.spSize = data.length;
             else $scope.spSize = 0;
         });
 
-        viService.list().then(function (data) {
-            if (data) $scope.viSize = data.length;
-            else $scope.viSize = 0;
+        var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
+        MqNaaSResourceService.list(urlListVI).then(function (result) {
+            console.log(result);
+            if (result === undefined) $scope.viSize = 0;
+            else {
+                var data = checkIfIsArray(result.IResource.IResourceId);
+                $scope.viSize = data.length;
+            }
         });
-    
+
         $scope.slicesSize = 0;
         /*            viService.list().then(function (data) {
          console.log("GET Slices SIZE");
