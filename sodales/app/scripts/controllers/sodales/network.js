@@ -163,7 +163,7 @@ angular.module('mqnaasApp')
             MqNaaSResourceService.list(url).then(function (data) {
                 console.log(data);
                 $scope.generateNodeData(data.resource.resources.resource);
-                $scope.generateLinkData(data.resource.resources.resource);
+                //$scope.generateLinkData(data.resource.resources.resource);
             });
         };
 
@@ -291,8 +291,25 @@ angular.module('mqnaasApp')
         };
 
         $scope.onNodeSelect = function (properties) {
-            var selected = $scope.task_nodes.get(properties.nodes[0]);
-            console.log(selected);
+            console.log(properties);
+            console.log($scope);
+            console.log($scope.nodes);
+            var resourceName = $scope.nodes.get({
+                filter: function (item) {
+                    console.log(item);
+                    return item.id == properties.nodes[0];
+                }
+            })[0].label;
+            console.log(resourceName);
+
+            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel';
+            MqNaaSResourceService.list(url).then(function (data) {
+                console.log(data.resource.resources.resource);
+                $rootScope.resourceInfo = checkIfIsArray(data.resource.resources.resource);
+                //$scope.generateNodeData(data.resource.resources.resource);
+                //$scope.generateLinkData(data.resource.resources.resource);
+            });
+
         };
 
         $scope.edges.add([
@@ -492,15 +509,6 @@ angular.module('mqnaasApp')
             console.log(dest);
             $scope.source = $scope.nodes.get(source).label;
             $scope.dest = $scope.nodes.get(dest).label;
-
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + $scope.source + "/IPortManagement";
-            MqNaaSResourceService.get(url).then(function (result) {
-                $scope.physicalPorts1 = result;
-            });
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + $scope.dest + "/IPortManagement";
-            MqNaaSResourceService.get(url).then(function (result) {
-                $scope.physicalPorts2 = result;
-            });
 
             $modal({
                 title: 'Adding a new link',
