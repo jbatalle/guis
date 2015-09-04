@@ -15,22 +15,28 @@
                         <div ng-show="createdLink">
                             Link: {{createdLink}}
                             <br/>
-                            <div ng-show="!!physicalPorts1.IResource.IResourceId.length">
-                                Select source port of {{source}}:
-                                <select placeholder="select virtual port" bs-select ng-model="piPort1" ng-options="port for port in physicalPorts1.IResource.IResourceId"></select>
+                            <div ng-show="!!physicalPorts1.length">
+                                Select source port ({{source}}): {{physicalPorts1}}
+
+                                <button type="button" class="btn btn-default" ng-model="piPort1" data-html="1" bs-options="port for port in physicalPorts1" bs-select>
+                                    Action <span class="caret"></span>
+                                </button>
+
                                 <a class="btn btn-sm btn-primary" ng-click="createPort(source)">Create Port</a>
-                                <a ng-show="dstPortAttahed" class="btn btn-sm btn-primary" ng-click="attachPortsToLink('source', piPort1)">Attach source port</a> {{dstPortAttahed}}
+                                <a ng-show="piPort1" class="btn btn-sm btn-primary" ng-click="attachPortsToLink(createdLink, 'source', piPort1)">Attach source port</a> {{dstPortAttahed}}
                             </div>
-                            <div ng-show=" !!!physicalPorts1.IResource.IResourceId.length">
+                            <div ng-show=" !!!physicalPorts1.length">
                                 The resource {{source}} has no ports!
                             </div>
                             <br/>
-                            <div ng-show="!!physicalPorts1.IResource.IResourceId.length">Select target port of {{dest}}:
-                                <select placeholder="select virtual port" bs-select ng-model="piPort2" ng-options="port for port in physicalPorts2.IResource.IResourceId"></select>
+                            <div ng-show="!!physicalPorts1.length">Select target port ({{dest}}):
+                                <button type="button" class="btn btn-default" ng-model="piPort2" data-html="1" bs-options="port for port in physicalPorts2" bs-select>
+                                    Action <span class="caret"></span>
+                                </button>
                                 <a class="btn btn-sm btn-primary" ng-click="createPort(dest)">Create Port</a>
-                                <a ng-show="dstPortAttahed" class="btn btn-sm btn-primary" ng-click="attachPortsToLink('dest', piPort2)">Attach destination port</a> {{dstPortAttahed}}
+                                <a ng-show="dstPortAttahed" class="btn btn-sm btn-primary" ng-click="attachPortsToLink(createdLink, 'dest', piPort2)">Attach destination port</a> {{dstPortAttahed}}
                             </div>
-                            <div ng-show=" !!!physicalPorts1.IResource.IResourceId.length">
+                            <div ng-show=" !!!physicalPorts1.length">
                                 The resource {{dest}} has no ports!
                             </div>
                         </div>
