@@ -39,6 +39,13 @@ angular.module('mqnaasApp')
 
                 });
 
+                network.on("click", function (params) {
+                    console.log("Click");
+                    console.log(params);
+                    //$rootSscope.resourceInfo = "test"
+                    //$scope.
+                });
+
             }
 
         }
@@ -51,7 +58,7 @@ angular.module('mqnaasApp')
                 $scope.openAddResourceDialog = function (nodeType, divPos) {
                     $scope.resource = {};
                     if (nodeType == 'arn') $scope.resource.endpoint = "http://fibratv.dtdns.net:41080";
-                    else if (nodeType == 'arn') $scope.resource.endpoint = "http://fibra2222tv.dtdns.net:41081";
+                    else if (nodeType == 'cpe') $scope.resource.endpoint = "http://fibra2222tv.dtdns.net:41081";
                     $scope.resource.type = nodeType;
                     $modal({
                         title: 'Adding a new ' + nodeType,
@@ -149,7 +156,7 @@ angular.module('mqnaasApp')
                                                     scope.openCPEDialog(nodeType, divPos);
                                                 }*/
                         console.log("Create with draw");
-                        console.log(graph.getNodes());
+                        //console.log(graph.getNodes());
                         //                                createElement(nodeType, divPos);
 
                         var dragIndex = angular.element(ui.draggable).data('index'),
