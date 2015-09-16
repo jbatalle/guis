@@ -29,14 +29,15 @@
                                 The resource {{source}} has no ports!
                             </div>
                             <br/>
-                            <div ng-show="!!physicalPorts1.length">Select target port ({{dest}}):
+                            <div ng-show="!!physicalPorts2.length">Select target port ({{dest}}):
                                 <button type="button" class="btn btn-default" ng-model="piPort2" data-html="1" bs-options="port for port in physicalPorts2" bs-select>
                                     Action <span class="caret"></span>
                                 </button>
+
                                 <a class="btn btn-sm btn-primary" ng-click="createPort(dest)">Create Port</a>
-                                <a ng-show="dstPortAttahed" class="btn btn-sm btn-primary" ng-click="attachPortsToLink(createdLink, 'dest', piPort2)">Attach destination port</a> {{dstPortAttahed}}
+                                <a ng-show="piPort2" class="btn btn-sm btn-primary" ng-click="attachPortsToLink(createdLink, 'dest', piPort2)">Attach destination port</a> {{dstPortAttahed}}
                             </div>
-                            <div ng-show=" !!!physicalPorts1.length">
+                            <div ng-show=" !!!physicalPorts2.length">
                                 The resource {{dest}} has no ports!
                             </div>
                         </div>
