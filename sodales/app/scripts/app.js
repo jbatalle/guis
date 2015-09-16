@@ -56,7 +56,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
             // login
             .state('login', {
                     url: '/login',
-                    templateUrl: 'views/login.html',
+                    templateUrl: 'views/user/login.html',
                     controller: 'AuthCtrl'
                 })
                 .state('register', {
@@ -215,6 +215,14 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                         controller: 'spStatsController'
                     }
                 }
+            }).state('root.settings', {
+                url: '/settings',
+                views: {
+                    'master@root': {
+                        templateUrl: 'views/sodales/settings.html',
+                        controller: 'settingsController'
+                    }
+                }
             });
 
             $urlRouterProvider.otherwise('/login');
@@ -248,12 +256,15 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                         var url = config.url;
                         console.log(status);
                         console.log($window.localStorage);
+                        console.log($window.localStorage.expiration);
+                        console.log(Math.floor(Date.now() / 1000) > $window.localStorage.expiration);
+                        console.log($window.localStorage.token !== null);
                         console.log(Math.floor(Date.now() / 1000));
                         console.log(Math.floor(Date.now() / 1000) > $window.localStorage.expiration);
 
                         if (Math.floor(Date.now() / 1000) > $window.localStorage.expiration)
                             $rootScope.logout();
-                        else if (status === 401 && $window.localStorage.token !== null) {
+                        else if (status === 401 && $window.localStorage.token !== null && $window.localStorage.token !== undefined) {
                             $location.path('/dashboard');
                         } else if (status === 401) {
                             $location.path('/login');
@@ -267,8 +278,8 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
             });
 
 
-    }
-  ]
+}
+]
 ).run(function ($window, $rootScope, $location, $state, $translate, AuthService, UserStatisticsService) {
     if ($window.localStorage.userId) $rootScope.username = $window.localStorage.username;
     if ($window.localStorage.userImg) $rootScope.user_img = $window.localStorage.userImg;
@@ -298,45 +309,6 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                 //$location.path('/login');
             }
         });
-
-    $rootScope
-        .$on('$locationChangeStart', function (event, next, current) {
-            if ($rootScope.user) {
-                var stat = {
-                    'user_id': $rootScope.user.id,
-                    'view': $location.path()
-                };
-
-                //insert value in statistics db
-                //UserStatisticsService.post(stat).then(function () {});
-            }
-            // check for the user's token and that we aren't going to the login view
-            if ($window.localStorage.token === 'null' && ($location.path() !== '/register' && $location.path() !== '/recover_pass')) {
-                // go to the login view
-                $location.path('/login');
-            }
-        });
-
-    $rootScope.removeUsedLanguage = function (array, itemToRemove) {
-        for (var index = 0; index < array.length; index++) {
-            if (array[index] === itemToRemove) {
-                array.splice(index, 1);
-                return array;
-            }
-        }
-        return array;
-    };
-
-    $rootScope.languageArray = function () {
-        $rootScope.usedLanguage = $translate.use();
-        $rootScope.languages = $rootScope.removeUsedLanguage(['en', 'ca'], $translate.use());
-    };
-    $rootScope.languageArray();
-    $rootScope.changeLanguage = function (langKey) {
-        $translate.use(langKey);
-        $rootScope.languageArray();
-    };
-
 });
 
 var services = angular.module('mqnaasApp.services', ['ngResource']);
