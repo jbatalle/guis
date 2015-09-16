@@ -16,16 +16,17 @@ angular.module('mqnaasApp')
                 if (!data) return;
                 data = checkIfIsArray(data.IRootResource.IRootResourceId);
                 console.log('UpdateList nts');
+                console.log(data);
 
                 console.log($scope.listNetworks.length);
                 $scope.listNetworks = data;
-                if ($scope.listNetworks.length === 1) {
+                if ($scope.listNetworks.length === 0) {
                     $rootScope.networkId = '';
                     $window.localStorage.networkId = '';
                 }
                 if (!$rootScope.networkId) {
-                    $rootScope.networkId = data[1];
-                    $window.localStorage.networkId = data[1];
+                    $rootScope.networkId = data[0];
+                    $window.localStorage.networkId = data[0];
                 }
                 $scope.selectedNetwork = $rootScope.networkId;
                 //                getMqNaaSResource($rootScope.networkId);
