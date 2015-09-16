@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, viService, localStorageService, $interval, viNetService) {
+    .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, localStorageService, $interval, viNetService) {
 
         //            $rootScope.networkId = "Network-Internal-1.0-2";//to remove
         var promise;
@@ -31,58 +31,32 @@ angular.module('mqnaasApp')
                     "name": result,
                     "status": "PLANNED"
                 };
-                viService.createVI(vi).then(function () {
-                    localStorageService.set("virtualElements", []);
-                    $scope.updateSpList();
-                });
 
             });
         };
         $scope.deleteVIRequest = function (viReq) {
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + viReq;
             MqNaaSResourceService.remove(url).then(function (result) {
-                //                    viService.createVI(vi);
                 $scope.updateSpList();
                 $scope.tableParams.reload();
             });
-            viService.removeVI(viReq).then(function (result) {});
         };
 
         $scope.sendVIR = function (viReq) {
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/?arg0=" + viReq;
-            viService.updateStatus(viReq, "Processing");
             MqNaaSResourceService.put(url).then(function (result) {
                 console.log(result);
                 $scope.resRoot = result; //empty
-                //                    viService.updateStatus(viReq, "Processing");
                 $rootScope.info = viReq + " created";
                 var vi = {
                     "name": result,
                     "status": "Created"
                 };
                 $scope.virtNet = result;
-                viNetService.createVI(vi).then(function () {
-                    viService.updateStatus(viReq, "Created");
-                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + vi.name + "/IRootResourceProvider/";
-                    MqNaaSResourceService.list(url).then(function (result) {
-                        console.log(result);
-                        var listRes = result.IRootResource.IRootResourceId;
-                        listRes.forEach(function (entry) {
-                            console.log(entry);
-                            viNetService.addResourceToVI($scope.virtNet, entry, entry.split("-")[0]).then(function () {});
-                        })
-                    });
-                    $rootScope.info = "200 - Virtual slice created";
-                    $scope.updateSpList();
-                });
+
+                //$rootScope.info = "200 - Virtual slice created";
+                //$scope.updateSpList();
             });
-            /*                promise = $interval(function () {
-             viService.updateStatus(viReq, "Created");
-             $scope.updateSpList();
-             $rootScope.info = " OK " + viReq + " Created, received 200 from IML";
-             }, 4000);
-             */
-            viService.updateStatus(viReq, "Created");
 
             $rootScope.info = viReq + " created";
             $scope.updateSpList();
@@ -138,7 +112,7 @@ angular.module('mqnaasApp')
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/?arg0=" + resourceType;
             MqNaaSResourceService.put(url).then(function (virtualResource) {
                 $scope.resourceRequest = virtualResource;
-                viService.addResourceToVI($scope.viId, virtualResource, resourceType).then(function () {
+                /*viService.addResourceToVI($scope.viId, virtualResource, resourceType).then(function () {
                     console.log("Added resource with name: " + virtualResource);
                     var vEl = localStorageService.get("virtualElements");
                     vEl.push({
@@ -149,7 +123,7 @@ angular.module('mqnaasApp')
                     $scope.addResourceToGraph(virtualResource);
                     $scope.updateVirtualElements();
                     $scope.configureVirtualResource(virtualResource);
-                });
+                });*/
             });
         };
         $scope.addVirtualPortToResource = function (resourceRequest) {
@@ -206,16 +180,17 @@ angular.module('mqnaasApp')
             console.log(virtualRes);
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtualRes + "/IPortManagement";
             MqNaaSResourceService.get(url).then(function (result) {
-                $scope.virtualPorts = result;
+                $scope.virtualPorts = checkIfIsArray(result.IResource.IResourceId);
             });
         };
         $scope.getPhysicalPorts = function (resourceName) {
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/IPortManagement";
             MqNaaSResourceService.get(url).then(function (result) {
                 console.log(result.IResource.IResourceId);
+                var ports = checkIfIsArray(result.IResource.IResourceId);
                 $scope.physicalPorts = [];
-                result.IResource.IResourceId.forEach(function (entry) {
-                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/IPortManagement/" + entry + "/IAttributeStore/attribute/?arg0=portInternalId";
+                ports.forEach(function (entry) {
+                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/IPortManagement/" + entry + "/IAttributeStore/attribute/?arg0=resource.external.id";
                     MqNaaSResourceService.getText(url).then(function (realPort) {
                         var result = {
                             onP: entry,
