@@ -94,6 +94,12 @@ function createElement(name, type, divPos, data) {
         else
             createWIFIwithData(name, divPos, data);
         break;
+    case "wnode":
+        if (jQuery.isEmptyObject(data))
+            createWIFI(name, divPos);
+        else
+            createWIFIwithData(name, divPos, data);
+        break;
     case "epc":
         if (jQuery.isEmptyObject(data))
             createEPC(name, divPos);
