@@ -54,24 +54,10 @@ angular.module('mqnaasApp')
         return {
             // A = attribute, E = Element, C = Class and M = HTML Comment
             restrict: 'AE',
-            controller: function ($scope, $modal) {
-                $scope.openAddResourceDialog = function (nodeType, divPos) {
-                    $scope.resource = {};
-                    if (nodeType == 'arn') $scope.resource.endpoint = "http://fibratv.dtdns.net:41080";
-                    else if (nodeType == 'cpe') $scope.resource.endpoint = "http://fibra2222tv.dtdns.net:41081";
-                    $scope.resource.type = nodeType;
-                    $modal({
-                        title: 'Adding a new ' + nodeType,
-                        template: 'views/sodales/resourceDialog.html',
-                        show: true,
-                        scope: $scope,
-                        data: {
-                            "nodeType": nodeType,
-                            "divPos": divPos
-                        }
-                    });
-                };
-            },
+            scope: '&',
+            /*controller: function ($scope, $modal) {
+                
+            },*/
             link: function (scope, element, attrs) {
                 element.droppable({
                     drop: function (e, ui) {
@@ -87,15 +73,10 @@ angular.module('mqnaasApp')
                         };
                         console.log(divPos);
                         scope.openAddResourceDialog(nodeType, divPos);
-                        /*                        if (nodeType === "arn") {
-                                                    scope.openARNDialog(nodeType, divPos);
-                                                } else if (nodeType === "cpe") {
-                                                    scope.openCPEDialog(nodeType, divPos);
-                                                }*/
-                        console.log("Create with draw");
-                        console.log(graph.getNodes());
-                        //                                createElement(nodeType, divPos);
 
+                        console.log("Create with draw");
+
+                        //to remove??
                         var dragIndex = angular.element(ui.draggable).data('index'),
                             reject = angular.element(ui.draggable).data('reject'),
                             dragEl = angular.element(ui.draggable).parent(),
