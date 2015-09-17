@@ -6,20 +6,27 @@ angular.module('mqnaasApp')
         //            $rootScope.networkId = "Network-Internal-1.0-2";//to remove
         var promise;
         $scope.data = [];
-        $scope.updateSpList = function () {
+        $scope.updateVIReqList = function () {
             var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
             MqNaaSResourceService.list(urlListVI).then(function (result) {
                 console.log(result);
                 if (result === undefined) return;
-                $scope.dataCollection = result.IResource.IResourceId;
+                $scope.dataCollection = checkIfIsArray(result.IResource.IResourceId);
+                //                    $scope.data = result.IResource.IResourceId;
+            });
+            var urlVirtNets = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement';
+            MqNaaSResourceService.list(urlVirtNets).then(function (result) {
+                console.log(result);
+                if (result === undefined) return;
+                $scope.networkCollection = checkIfIsArray(result.IRootResource.IRootResourceId);
                 //                    $scope.data = result.IResource.IResourceId;
             });
         };
 
-        $scope.updateSpList();
+        $scope.updateVIReqList();
         promise = $interval(function () {
-            $scope.updateSpList();
-        }, 2000);
+            $scope.updateVIReqList();
+        }, 20000000);
 
         $scope.createVIRequest = function () {
             var urlCreateVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
@@ -38,8 +45,7 @@ angular.module('mqnaasApp')
         $scope.deleteVIRequest = function (viReq) {
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + viReq;
             MqNaaSResourceService.remove(url).then(function (result) {
-                $scope.updateSpList();
-                $scope.tableParams.reload();
+                $scope.updateVIReqList();
             });
         };
 
@@ -60,7 +66,7 @@ angular.module('mqnaasApp')
             });
 
             $rootScope.info = viReq + " created";
-            $scope.updateSpList();
+            $scope.updateVIReqList();
         };
 
         $scope.$on("$destroy", function () {

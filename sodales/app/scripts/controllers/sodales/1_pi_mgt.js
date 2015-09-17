@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('sodalesPiMgtCtrl', function ($scope, $rootScope, MqNaaSResourceService, $window, $modal, RootResourceService, arnService, cpeService, $alert) {
+    .controller('sodalesPiMgtCtrl', function ($scope, $rootScope, MqNaaSResourceService, $window, $modal, RootResourceService, arnService, cpeService, $alert, $interval) {
         var url = '';
 
         $scope.nodes = new vis.DataSet();
@@ -42,9 +42,18 @@ angular.module('mqnaasApp')
                 $scope.physicalResources = checkIfIsArray(data.IRootResource.IRootResourceId);
             });
         };
-
         $scope.updateListNetworks();
         $scope.updateResourceList();
+        var promise = $interval(function () {
+            //$scope.updateListNetworks();
+            $scope.updateResourceList();
+        }, 2000000);
+
+        $scope.$on('$destroy', function () {
+            if (promise) {
+                $interval.cancel(promise);
+            }
+        });
 
         //to remove
         $scope.getNetworkModel = function () {
@@ -95,6 +104,15 @@ angular.module('mqnaasApp')
                     container: '#alerts-container',
                     duration: 5
                 });
+                $scope.updateResourceList();
+                var n = $rootScope.network_data.nodes.get({
+                    filter: function (item) {
+                        return item.label == id;
+                    }
+                })[0];
+                $rootScope.network_data.nodes.remove({
+                    id: n.id
+                });
             });
             this.$hide();
         };
@@ -114,7 +132,7 @@ angular.module('mqnaasApp')
                     });
                 }
 
-                $scope.generateNodeData(data.IRootResource.IRootResourceId);
+                $scope.generateNodeData(checkIfIsArray(data.IRootResource.IRootResourceId));
 
                 $window.localStorage.networkElements = data;
                 console.log('Get and store ports');
@@ -162,7 +180,7 @@ angular.module('mqnaasApp')
             $scope.resource = {};
             $scope.resource.type = nodeType;
             if (nodeType == 'arn') $scope.resource.endpoint = "http://fibratv.dtdns.net:41080";
-            else if (nodeType == 'cpe') $scope.resource.endpoint = "http://fibra2222tv.dtdns.net:41081";
+            else if (nodeType == 'cpe') $scope.resource.endpoint = "http://fibratv.dtdns.net:41081";
             $scope.createDialog = $modal({
                 title: 'Adding a new ' + nodeType,
                 template: 'views/sodales/resourceDialog.html',
@@ -188,19 +206,17 @@ angular.module('mqnaasApp')
             MqNaaSResourceService.put(url, resource).then(function (res) {
                 console.log(res);
                 $scope.dataARN = res;
-                //$scope.configurePhysicalResource(data);
-                //createElement(data, $scope.ngDialogData.nodeType, $scope.ngDialogData.divPos);
-                $scope.nodes.add({
+                $rootScope.network_data.nodes.add({
                     id: $scope.nodes.length,
                     label: res,
                     image: 'images/SODALES_' + data.type.toUpperCase() + '.png',
                     shape: 'image',
                     x: 50,
                     y: 50,
-                    group: 'physical'
                 });
                 $scope.creating = false;
                 $scope.createDialog.hide();
+                $scope.updateResourceList();
             });
         };
 
@@ -260,6 +276,16 @@ angular.module('mqnaasApp')
                 $scope.dstPortAttahed = "Target port Attached";
             }
             MqNaaSResourceService.put(url).then(function (response) {}); //empty
+
+        };
+
+        $scope.getResourceInfo = function (id) {
+            console.log(id);
+
+            var d = '<?xml version="1.0" encoding="UTF-8"?><request ><operation token="58" type="show" entity="equipment"><equipment id="0"></equipment></operation></request>';
+            arnService.put(d).then(function (data) {
+                console.log(data);
+            });
 
         };
 

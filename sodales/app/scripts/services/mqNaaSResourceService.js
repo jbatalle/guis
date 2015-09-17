@@ -84,4 +84,5 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
     }]).config(function ($httpProvider) {
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/xml';
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/xml';
+    $httpProvider.defaults.timeout = 5000;
 });

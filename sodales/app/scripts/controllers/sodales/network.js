@@ -64,7 +64,7 @@ angular.module('mqnaasApp')
         };
 
     })
-    .controller('editPhyNetwork', function ($scope, $rootScope, MqNaaSResourceService, localStorageService, $modal, RootResourceService) {
+    .controller('editPhyNetwork', function ($scope, $rootScope, MqNaaSResourceService, localStorageService, $modal, RootResourceService, $interval) {
         var url = '';
         $scope.nodes = new vis.DataSet();
         $scope.edges = new vis.DataSet();
@@ -93,6 +93,24 @@ angular.module('mqnaasApp')
             });
         };
         $scope.updateListNetworks();
+        var promise = $interval(function () {
+
+            // $scope.updateNetwork();
+            //$scope.nodes = new vis.DataSet();
+            //$scope.edges = new vis.DataSet();
+
+            //$scope.getNetworkModel();
+            /*$scope.network_data = {
+                nodes: $scope.nodes,
+                edges: $scope.edges
+            };*/
+        }, 5000);
+
+        $scope.$on('$destroy', function () {
+            if (promise) {
+                $interval.cancel(promise);
+            }
+        });
 
         $scope.getNetworkModel = function () {
             url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IResourceModelReader/resourceModel');
@@ -106,6 +124,9 @@ angular.module('mqnaasApp')
         $scope.deleteResource = function (resName) {
             url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceAdministration/' + resName);
             MqNaaSResourceService.remove(url).then(function (data) {});
+            $scope.nodes = new vis.DataSet();
+            $scope.edges = new vis.DataSet();
+            $scope.updateListNetworks();
         };
 
         $scope.addResource = function (data) {
@@ -130,7 +151,7 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.network_data = {
+        $rootScope.network_data = {
             nodes: $scope.nodes,
             edges: $scope.edges
         };
@@ -266,6 +287,8 @@ angular.module('mqnaasApp')
                 });
             });
         };
+
+
     }).controller('editVINetwork', function ($scope, $rootScope, MqNaaSResourceService, localStorageService, $modal, RootResourceService, arnService, cpeService) {
         var url = '';
 
@@ -448,7 +471,7 @@ angular.module('mqnaasApp')
                 } else if (node.type === undefined && node.type !== 'link' && node.type !== 'Network') { //VIR
                     console.log("We are takling about virtual resources");
                     console.log(node);
-                    //if (vir.resources) {
+                    if (node.id !== $scope.viId) return;
                     var vir = checkIfIsArray(node.resources.resource);
                     vir.forEach(function (node) {
                         $scope.nodes.add({

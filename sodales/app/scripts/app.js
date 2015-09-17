@@ -175,6 +175,14 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                         controller: 'sodalesPiMgtCtrl'
                     }
                 }
+            }).state('root.resources', {
+                url: '/mgt/resources',
+                views: {
+                    'master@root': {
+                        templateUrl: 'views/sodales/0_2_mgt_res.html',
+                        controller: 'sodalesPiResourcesCtrl'
+                    }
+                }
             }).state('root.viList', {
                 url: '/viList',
                 views: {
@@ -280,7 +288,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
 
 }
 ]
-).run(function ($window, $rootScope, $location, $state, $translate, AuthService, UserStatisticsService) {
+).run(function ($window, $rootScope, $location, $state, $translate, AuthService, UserStatisticsService, $alert) {
     if ($window.localStorage.userId) $rootScope.username = $window.localStorage.username;
     if ($window.localStorage.userImg) $rootScope.user_img = $window.localStorage.userImg;
     if ($window.localStorage.user) $rootScope.user = JSON.parse($window.localStorage.user);

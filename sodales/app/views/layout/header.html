@@ -17,8 +17,11 @@
                 <li>
                     <a ui-sref="root.dashboard">Home</a>
                 </li>
-                <li>
+                <li class="dropdown">
                     <a restrict access="ip" ui-sref="root.mgt">PHY Management</a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                        <li><a tabindex="-1" ui-sref="root.resources">Resource information</a></li>
+                    </ul>
                 </li>
                 <li>
                     <a restrict access="ip" ui-sref="root.monitoring">Monitoring</a>

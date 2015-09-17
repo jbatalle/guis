@@ -4,7 +4,8 @@ services.factory('RootResourceService', ['$http', 'x2js', 'HistoryService', func
     console.log("PUT RootResource MqNaaS");
     return {
         list: function () {
-            var promise = $http.get('rest/mqnaas/IRootResourceProvider/?arg0=NETWORK').then(function (response) {
+            //var promise = $http.get('rest/mqnaas/IRootResourceProvider/?arg0=NETWORK').then(function (response) {
+            var promise = $http.get('rest/mqnaas/IRootResourceProvider/').then(function (response) {
                 var json = x2js.xml_str2json(response.data);
                 return json;
             }, function (response) {

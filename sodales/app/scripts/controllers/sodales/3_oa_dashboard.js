@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('SodalesOpenaccessDashCtrl', function ($scope, $filter, spService, viService, $modal, viNetService, UsersService) {
+    .controller('SodalesOpenaccessDashCtrl', function ($rootScope, $scope, $filter, spService, viService, $modal, viNetService, UsersService, MqNaaSResourceService) {
 
         $scope.listVi = [];
         $scope.data = [];
@@ -17,14 +17,23 @@ angular.module('mqnaasApp')
                 $scope.data = data;
                 $scope.dataCollection = data;
             });
-
-            viService.list().then(function (data) {
-                $scope.listVi = [];
-                if (data === undefined) return;
-                data.forEach(function (vi) {
+            /*
+                        viService.list().then(function (data) {
+                            $scope.listVi = [];
+                            if (data === undefined) return;
+                            data.forEach(function (vi) {
+                                console.log(vi);
+                                if (vi.status === "Created")
+                                    $scope.listVi.push(vi.name);
+                            });
+                        });*/
+            var urlVirtNets = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement';
+            MqNaaSResourceService.list(urlVirtNets).then(function (result) {
+                if (result === undefined) return;
+                $scope.networkCollection = checkIfIsArray(result.IRootResource.IRootResourceId);
+                $scope.networkCollection.forEach(function (vi) {
                     console.log(vi);
-                    if (vi.status === "Created")
-                        $scope.listVi.push(vi.name);
+                    $scope.listVi.push(vi);
                 });
             });
         };

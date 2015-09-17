@@ -8,6 +8,7 @@ angular.module('mqnaasApp')
         MqNaaSResourceService.list(urlListVI).then(function (result) {
             console.log(result);
             if (result === undefined) {
+                $rootScope.networkId = undefined;
                 $scope.alert.title = "Opennaas is offline!";
                 $scope.alert.content = "No connection with the machine.";
                 $scope.alert.type = 'danger';
@@ -26,15 +27,7 @@ angular.module('mqnaasApp')
         };
 
         // Service usage
-        var myAlert = $alert({
-            title: $scope.alert.title,
-            content: $scope.alert.content,
-            placement: 'top',
-            type: $scope.alert.type,
-            keyboard: true,
-            show: false,
-            container: '#alerts-container'
-        });
+
 
 
         spService.getList().then(function (data) {
