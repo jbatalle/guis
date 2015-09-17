@@ -1,61 +1,45 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spController', function ($scope, $rootScope, MqNaaSResourceService, $filter, ngTableParams, spService, viNetService, localStorageService) {
+    .controller('spController', function ($scope, $rootScope, MqNaaSResourceService, $filter, spService, viNetService, localStorageService) {
         console.log("sp");
         $rootScope.networkId = localStorageService.get("networkId");
         $rootScope.spName = "SP1";
         $scope.data = [];
         $scope.updateSpList = function () {
-            spService.list().then(function (data) {
+            /*spService.list().then(function (data) {
                 console.log(data);
-            });
+            });*/
             var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
             MqNaaSResourceService.list(urlListVI).then(function (result) {
                 console.log(result);
                 //                    $scope.data = result.IResource.IResourceId;
-                $scope.tableParams.reload();
             });
-            spService.getSPByName($rootScope.spName).then(function (result) {
-                console.log(result);
-                result.vi.forEach(function (vi) {
-                    viNetService.getVIByName(vi).then(function (viInfo) {
-                        console.log(viInfo);
-                        $scope.data.push({
-                            name: viInfo.name,
-                            date: viInfo.date,
-                            status: "Created"
-                        });
-                        $scope.tableParams.reload();
-                        //                        $scope.data.push(viNetService.getVIByName(vi));
-                    });
-                });
-                //                    $scope.data = result.vi;
-            });
+            /*
+                        spService.getSPByName($rootScope.spName).then(function (result) {
+                            console.log(result);
+                            result.vi.forEach(function (vi) {
+                                viNetService.getVIByName(vi).then(function (viInfo) {
+                                    console.log(viInfo);
+                                    $scope.data.push({
+                                        name: viInfo.name,
+                                        date: viInfo.date,
+                                        status: "Created"
+                                    });
+                                    $scope.dataCollection = checkIfIsArray($scope.data);
+                                    //$scope.tableParams.reload();
+                                    //                        $scope.data.push(viNetService.getVIByName(vi));
+                                });
+                            });
+                            //                    $scope.data = result.vi;
+                        });*/
         };
         $scope.updateSpList();
-        $scope.tableParams = new ngTableParams({
-            page: 1, // show first page
-            count: 10, // count per page
-            sorting: {
-                date: 'desc' // initial sorting
-            }
-        }, {
-            total: $scope.data.length,
-            getData: function ($defer, params) {
-                var data = checkIfIsArray($scope.data);
-                var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-            },
-            $scope: {
-                $data: {}
-            }
-        });
 
     })
-    .controller('spVIController', function ($scope, $rootScope, MqNaaSResourceService, $routeParams, ngDialog, viNetService, localStorageService) {
-        console.log("Edit VI : " + $routeParams.id);
-        $scope.virtNetId = $routeParams.id;
+    .controller('spVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, viNetService, localStorageService, $modal) {
+        console.log("Edit VI : " + $stateParams.id);
+        $scope.virtNetId = $stateParams.id;
         $scope.virtualPort = [];
 
         $scope.getNetworkResources = function () {
@@ -70,7 +54,7 @@ angular.module('mqnaasApp')
         };
         $scope.getNetworkResources();
         $scope.createOperation = function () {
-            ngDialog.open({
+            $modal({
                 template: 'partials/sodales/sp/arnOpDialog.html',
                 scope: $scope
             });
@@ -79,7 +63,7 @@ angular.module('mqnaasApp')
             console.log("Dialog call");
             $scope.virtualResourceOp = resourceName;
             $scope.arn = new Object;
-            ngDialog.open({
+            $modal({
                 template: 'partials/sodales/sp/arnOpDialog.html',
                 scope: $scope
             });
@@ -88,7 +72,7 @@ angular.module('mqnaasApp')
         $scope.openOperationCPEDialog = function (resourceName, type) {
             $scope.virtualResourceOp = resourceName;
             $scope.cpe = new Object;
-            ngDialog.open({
+            $modal({
                 template: 'partials/sodales/sp/cpeOpDialog.html',
                 scope: $scope
             });
@@ -123,11 +107,11 @@ angular.module('mqnaasApp')
             ngDialog.close();
         };
     })
-    .controller('spStatsController', function ($scope, ngTableParams, $filter, $routeParams, localStorageService, ngDialog, arnService, cpeService, $interval, viNetService) {
+    .controller('spStatsController', function ($scope, ngTableParams, $filter, $stateParams, localStorageService, ngDialog, arnService, cpeService, $interval, viNetService) {
         var promise;
         var availableResources = [];
         $scope.selected = "";
-        $scope.vi = $routeParams.id;
+        $scope.vi = $stateParams.id;
         $scope.vi = "vi-1";
         viNetService.getVIByName($scope.vi).then(function (result) {
             console.log(result);
@@ -197,7 +181,7 @@ angular.module('mqnaasApp')
                 oldData.forEach(function (entry) {
                     if (entry._name == "Eth 1" || entry._name == "intEth 1") data.push(entry);
                 })
-                $scope.element = $routeParams.id;
+                $scope.element = $stateParams.id;
                 //                $scope.data = data.response.operation.interfaceList.interface;
                 //                localStorageService.set("mqNaaSElements", data);
                 //                console.log($scope.data);
