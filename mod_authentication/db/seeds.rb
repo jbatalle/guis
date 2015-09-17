@@ -47,9 +47,11 @@ end
 salt = BCrypt::Engine.generate_salt
 users = User.create([
 	{roles: [roles[0]], name: 'admin',  password: 'adminpass',  password_confirmation: 'adminpass', password_salt: salt,
-		sp_id: sp.id, password_hash: BCrypt::Engine.hash_secret("adminpass", salt), email: "josep.batalle@i2cat.net", active: 1}
+		sp_id: sp.id, password_hash: BCrypt::Engine.hash_secret("adminpass", salt), email: "josep.batalle@i2cat.net", active: 1},
+	{roles: [roles[1]], name: 'sp_user',  password: 'userpass',  password_confirmation: 'userpass', password_salt: salt,
+                sp_id: sp.id, password_hash: BCrypt::Engine.hash_secret("userpass", salt), email: "sp_user@sp.net", active: 1}
 ])
-if users[0].save
+if users[0].save && users[1].save
 	puts "Default users: " + users.map(&:name).join(', ')
 else
 	puts '>>> Users not created!'
