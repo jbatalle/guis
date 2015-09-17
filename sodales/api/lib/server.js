@@ -29,6 +29,7 @@ app.configure(function () {
 
 require('./monitoring')(app);
 require('./proxy')(app);
+require('./arn')(app);
 //require(fs)(app);
 
 app.configure(function () {
