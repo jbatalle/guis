@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('sodalesPiMgtCtrl', function ($scope, $rootScope, MqNaaSResourceService, $window, $modal, RootResourceService, arnService, cpeService) {
+    .controller('sodalesPiMgtCtrl', function ($scope, $rootScope, MqNaaSResourceService, $window, $modal, RootResourceService, arnService, cpeService, $alert) {
         var url = '';
 
         $scope.nodes = new vis.DataSet();
@@ -20,13 +20,13 @@ angular.module('mqnaasApp')
 
                 console.log($scope.listNetworks.length);
                 $scope.listNetworks = data;
-                if ($scope.listNetworks.length === 0) {
+                if ($scope.listNetworks.length === 1) {
                     $rootScope.networkId = '';
                     $window.localStorage.networkId = '';
                 }
                 if (!$rootScope.networkId) {
-                    $rootScope.networkId = data[0];
-                    $window.localStorage.networkId = data[0];
+                    $rootScope.networkId = data[1];
+                    $window.localStorage.networkId = data[1];
                 }
                 $scope.selectedNetwork = $rootScope.networkId;
                 //                getMqNaaSResource($rootScope.networkId);
@@ -84,7 +84,19 @@ angular.module('mqnaasApp')
 
         $scope.deleteItem = function (id) {
             url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceAdministration/' + id);
-            MqNaaSResourceService.remove(url).then(function (data) {});
+            MqNaaSResourceService.remove(url).then(function (data) {
+                $alert({
+                    title: "Resource removed",
+                    content: "The resource was removed correctly",
+                    placement: 'top',
+                    type: 'success',
+                    keyboard: true,
+                    show: true,
+                    container: '#alerts-container',
+                    duration: 5
+                });
+            });
+            this.$hide();
         };
 
         var getMqNaaSResource = function (root, url) {
@@ -146,8 +158,28 @@ angular.module('mqnaasApp')
             });
         };
 
+        $scope.openAddResourceDialog = function (nodeType, divPos) {
+            $scope.resource = {};
+            $scope.resource.type = nodeType;
+            if (nodeType == 'arn') $scope.resource.endpoint = "http://fibratv.dtdns.net:41080";
+            else if (nodeType == 'cpe') $scope.resource.endpoint = "http://fibra2222tv.dtdns.net:41081";
+            $scope.createDialog = $modal({
+                title: 'Adding a new ' + nodeType,
+                template: 'views/sodales/resourceDialog.html',
+                show: true,
+                scope: $scope,
+                data: {
+                    "nodeType": nodeType,
+                    "divPos": divPos
+                },
+                keyboard: false,
+                backdrop: 'static'
+            });
+        };
+
         $scope.addResource = function (data) {
             console.log(data);
+            $scope.creating = true;
             if (data.type === 'arn') var resource = getResource('ARN', data.endpoint + '/cgi-bin/xml-parser.cgi');
             else if (data.type === 'cpe') var resource = getResource('CPE', data.endpoint);
             console.log(resource);
@@ -167,8 +199,9 @@ angular.module('mqnaasApp')
                     y: 50,
                     group: 'physical'
                 });
+                $scope.creating = false;
+                $scope.createDialog.hide();
             });
-            this.$hide();
         };
 
         $scope.createLink = function () {
