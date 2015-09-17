@@ -10,6 +10,7 @@ angular.module('mqnaasApp')
             var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
             MqNaaSResourceService.list(urlListVI).then(function (result) {
                 console.log(result);
+                if (result === undefined) return;
                 $scope.dataCollection = result.IResource.IResourceId;
                 //                    $scope.data = result.IResource.IResourceId;
             });
@@ -18,7 +19,7 @@ angular.module('mqnaasApp')
         $scope.updateSpList();
         promise = $interval(function () {
             $scope.updateSpList();
-        }, 200000);
+        }, 2000);
 
         $scope.createVIRequest = function () {
             var urlCreateVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
@@ -196,7 +197,6 @@ angular.module('mqnaasApp')
                             onP: entry,
                             real: realPort
                         };
-                        console.log($scope.physicalPorts);
                         $scope.physicalPorts.push(result);
                     });
                 });
