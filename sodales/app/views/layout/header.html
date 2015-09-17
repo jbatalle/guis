@@ -34,17 +34,20 @@
                     </ul>
                 </li>
                 <li restrict access="sp">
-                    <a href="#!/spInfo">Virtual Slice Management</a>
+                    <a ui-sref="root.spInfo">Virtual Slice Management</a>
                 </li>
                 <li restrict access="sp">
-                    <a href="#!/spVIInfo/1">Virtual Resource Operation</a>
+                    <a ui-sref="root.spVIInfo">Virtual Resource Operation</a>
                 </li>
                 <li restrict access="sp">
-                    <a href="#!/spStats/1">Monitoring</a>
+                    <a ui-sref="root.spStats/1">Monitoring</a>
                 </li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li restrict access="ip">
+                    <a ui-sref="root.settings">Settings</a>
+                </li>
                 <li class="dropdown" ng-show="user">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">{{user.name}} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
