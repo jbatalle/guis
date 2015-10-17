@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, viService, localStorageService, $interval, viNetService) {
+    .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, viService, localStorageService, $interval) {
         console.log("LIST VI");
         //            $rootScope.networkId = "Network-Internal-1.0-2";//to remove
         var promise;
@@ -63,20 +63,18 @@ angular.module('mqnaasApp')
                     "status": "Created"
                 };
                 $scope.virtNet = result;
-                viNetService.createVI(vi).then(function () {
-                    viService.updateStatus(viReq, "Created");
-                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + vi.name + "/IRootResourceProvider/";
-                    MqNaaSResourceService.list(url).then(function (result) {
-                        console.log(result);
-                        var listRes = result.IRootResource.IRootResourceId;
-                        listRes.forEach(function (entry) {
-                            console.log(entry);
-                            viNetService.addResourceToVI($scope.virtNet, entry, entry.split("-")[0]).then(function () {});
-                        })
-                    });
-                    $rootScope.info = "200 - Virtual slice created";
-                    $scope.updateSpList();
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + vi.name + "/IRootResourceProvider/";
+                MqNaaSResourceService.list(url).then(function (result) {
+                    console.log(result);
+                    var listRes = result.IRootResource.IRootResourceId;
+                    listRes.forEach(function (entry) {
+                        console.log(entry);
+                        //viNetService.addResourceToVI($scope.virtNet, entry, entry.split("-")[0]).then(function () {});
+                    })
                 });
+                $rootScope.info = "200 - Virtual slice created";
+                $scope.updateSpList();
+
             });
             /*                promise = $interval(function () {
              viService.updateStatus(viReq, "Created");

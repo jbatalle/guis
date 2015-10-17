@@ -1,19 +1,67 @@
 <div class="row">
     <div class="col-md-2">
         <p class="lead">List of resources</p>
-        <div class="list-group" >
-            <a ng-if="resource.type == 'ARN'" ng-repeat="resource in availableResources" href="" ng-click="selectedResource(resource.name, resource.type)" 
-               class="list-group-item" ng-class="navClass('{{resource.name}}')" 
-               data-animation="am-flip-x" bs-dropdown="dropdown2">{{resource.name}}</a>
-            <a ng-if="resource.type == 'CPE'" ng-repeat="resource in availableResources" href="" ng-click="selectedResource(resource.name, resource.type)" 
-               class="list-group-item" ng-class="navClass('{{resource.name}}')" 
-               data-animation="am-flip-x" bs-dropdown="dropdown">{{resource.name}}</a>
+        <div class="list-group">
+            <ul>
+                <li ng-repeat="resource in physicalResources">
+                    <a ng-click="selectResource(resource.name, resource.type)" bs-dropdown="resource.type == 'ARN' ? dropdown:dropdown2" aria-haspopup="true" aria-expanded="false">{{resource.name}}</a>
+                </li>
+            </ul>
+
+            <a ng-if="resource.type == 'ARN'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.name, resource.type)" class="list-group-item" ng-class="navClass('{{resource.name}}')" data-animation="am-flip-x" bs-dropdown="dropdown">{{resource.name}}</a>
+            <a ng-if="resource.type == 'CPE'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.name, resource.type)" class="list-group-item" ng-class="navClass('{{resource.name}}')" data-animation="am-flip-x" bs-dropdown="dropdown2">{{resource.name}}</a>
         </div>
-        
+
     </div>
     <div class="col-md-10">
         <h2 class="page-header">Performance monitoring <small>Statistics</small></h2>
-        <div ng-show="ARNStats">
+        <div ng-show="arnLinkStatus">
+            <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateCard()"></select>
+            <select placeholder="select interface" bs-select ng-model="interface" bs-options="interface._name for interface in interfaces" ng-change="updateInterface()"></select>
+            <table st-table="displayedCollection" st-safe-src="arnLinkStatus" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Name</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2">Description</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2">Admin</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2">Eqpmt ID</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2">MediaType</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2">Collisions</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2">Link</th>
+                        <th class="col-sm-1 col-md-1 col-lg-1">Tx</th>
+                        <th class="col-sm-1 col-md-1 col-lg-1">Rx</th>
+                        <th class="col-sm-1 col-md-1 col-lg-1">Statistics</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in displayedCollection">
+                        <td><a ng-click="showDescriptor(row)" data-trigger="hover" data-type="success" data-title="Description" bs-tooltip>{{row._interfaceId}}</a></td>
+                        <td>{{row._name}}</td>
+                        <td>{{row._cardId}}</td>
+                        <td>{{row._admin}}</td>
+                        <td>{{row._equipmentId}}</td>
+                        <td>{{row.ethStatus._mediaType}}</td>
+                        <td>{{row.ethStatus._collision}}</td>
+                        <td>{{row.ethStatus._link}}</td>
+                        <td>{{row.ethStatus._txStatus}}</td>
+                        <td>{{row.ethStatus._rxStatus}}</td>
+                        <td data-title="'Statistics'" class="col-sm-1 col-md-1 col-lg-1">
+                            <a href="" ng-click="viewStatistics(row._interfaceId)" title="View">View</a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center" st-pagination="" st-items-by-page="5" colspan="3">
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
             <table ng-table="tableParams" class="table ng-table-responsive" style="text-align: center">
                 <tr ng-repeat="iface in $data">
                     <td data-title="'Eth-ID'" sortable="'_name'" class="col-sm-1 col-md-1 col-lg-1">{{iface._name}}</td>
@@ -165,12 +213,12 @@
                 </table>
             </div>
         </div>
-        <div ng-show="ARN_OAM">
+        <div ng-show="arnOAM">
             <h3>Notifications logging</h3>
             <div>
-                <table ng-table="tableParamsBoard" class="table ng-table-responsive" style="text-align: center">
-                    <tr ng-repeat="iface in $data">
-                        <td data-title="'id'" sortable="'_id'" class="col-sm-1 col-md-1 col-lg-1">{{iface._id}}</td>
+                <table class="table ng-table-responsive" style="text-align: center">
+                    <tr ng-repeat="iface in arnOAM">
+                        <td data-title="'id'" sortable="'_id'" class="col-sm-1 col-md-1 col-lg-1">{{iface}}{{iface._id}}</td>
                         <td data-title="'Code'" class="col-sm-1 col-md-1 col-lg-1">{{iface._code}}</td>
                         <td data-title="'Access Type'" class="col-sm-1 col-md-1 col-lg-1">{{iface._accessType}}</td>
                         <td data-title="'Start or End'" class="col-sm-1 col-md-1 col-lg-1">{{iface._startOrEnd}}</td>

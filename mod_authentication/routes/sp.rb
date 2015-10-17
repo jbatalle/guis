@@ -73,6 +73,11 @@ class Authentication < Sinatra::Application
 	post "/sp/:id/vi/:name" do
 		sp = SP.find(params[:id])
 		vi = Vi.where(:name => params[:name]).first
+		print vi
+		if vi === nil
+			vi = Vi.new({name: params[:name], status: "Created"})
+		end
+		
 		#sp.vis << vi
 		sp.vis << vi unless sp.vis.include?(vi)
 		return sp.to_json

@@ -289,7 +289,8 @@ angular.module('mqnaasApp')
         };
 
 
-    }).controller('editVINetwork', function ($scope, $rootScope, MqNaaSResourceService, localStorageService, $modal, RootResourceService, arnService, cpeService) {
+    })
+    .controller('editVINetwork', function ($scope, $rootScope, MqNaaSResourceService, localStorageService, $modal, RootResourceService, arnService, cpeService) {
         var url = '';
 
         $scope.nodes = new vis.DataSet();
@@ -335,25 +336,19 @@ angular.module('mqnaasApp')
             MqNaaSResourceService.remove(url).then(function (data) {});
         };
 
-        $scope.addResource = function (data) {
-            console.log(data);
-            if (data.type === 'arn') var resource = getResource('ARN', data.endpoint + '/cgi-bin/xml-parser.cgi');
-            else if (data.type === 'cpe') var resource = getResource('CPE', data.endpoint);
-            console.log(resource);
-            url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceAdministration');
-            //arnService.setUrl(data.endpoint);
-            MqNaaSResourceService.put(url, resource).then(function (res) {
-                console.log(res);
-                $scope.dataARN = res;
-                //$scope.configurePhysicalResource(data);
-                //createElement(data, $scope.ngDialogData.nodeType, $scope.ngDialogData.divPos);
+        $scope.addResource = function (resourceType) {
+
+            resourceType = resourceType.toUpperCase();
+            console.log(resourceType);
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/?arg0=" + resourceType;
+            MqNaaSResourceService.put(url).then(function (virtualResource) {
+                $scope.resourceRequest = virtualResource;
                 $scope.nodes.add({
                     id: $scope.nodes.length,
-                    label: res,
-                    image: 'images/SODALES_' + data.type.toUpperCase() + '.png',
+                    label: virtualResource,
+                    image: 'images/SODALES_' + resourceType.toUpperCase() + '.png',
                     shape: 'image'
                 });
-                this.$hide();
             });
 
         };

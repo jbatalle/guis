@@ -3,6 +3,11 @@
         <div class="row">
             <p class="lead">List of physical resources</p>
             <div class="list-group">
+                <select placeholder="select resource" bs-select ng-model="resource" bs-options="resource for resource in resources" ng-change="updateResource()"></select>
+            </div>
+
+            <p class="lead">Resource Information</p>
+            <div class="list-group">
                 <div class="fx-form-block-controls fx-first collapse am-collapse in" data-uxfwk-collapse-target="">
                     <div class="form-group">
                         <label class="col-sm-4 control-label ng-binding">Name</label>
@@ -65,6 +70,7 @@
     <div id="piMgt" class="col-md-9">
         <h2 class="page-header">PHY Management <small>Physical resources management</small></h2>
         <div class="row">
+            <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateCard()"></select>
             <div class="col-lg-12">
                 <table st-table="displayedCollection" st-safe-src="dataCollection" class="table table-striped">
                     <thead>
@@ -84,22 +90,55 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="row in displayedCollection">
-                            <td><a ng-click="selectedSP(row)" data-trigger="hover" data-type="success" data-title="Created at: {{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}" bs-tooltip>{{row._interfaceId}}</a></td>
+                            <td><a ng-click="showDescriptor(row)" data-trigger="hover" data-type="success" data-title="Description" bs-tooltip>{{row._interfaceId}}</a></td>
                             <td>{{row._name}}</td>
                             <td>{{row._type}}</td>
                             <td>{{row._cardId}}</td>
-                            <td>{{row._name}}</td>
-                            <td>{{row._name}}</td>
-                            <td data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">
-                                <b ng-repeat="vis in row.vis">{{vis.name}}{{$last ? '' : ', '}}</b>
-                            </td>
+                            <td>{{row._admin}}</td>
+                            <td>{{row._equipmentId}}</td>
+                            <td>{{row._type}}</td>
+                            <td>{{row._description}}</td>
+                            <td><a ng-click="showCoS(row.cos)">CoS</a></td>
+                            <td><a ng-click="">Ethernet</a></td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td class="text-center" st-pagination="" st-items-by-page="5" colspan="3">
+                            <td class="text-center" st-pagination="" st-items-by-page="10" colspan="3">
                             </td>
                         </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            CoS {{cos}}
+            <div class="col-lg-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="col-sm-1 col-md-1 col-lg-1">Id</th>
+                            <th data-title="'description'" class="col-sm-2 col-md-2 col-lg-2">MaxBwPercentage</th>
+                            <th data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">MinBwPercentage</th>
+                            <th data-title="'Add VI'" class="col-sm-2 col-md-2 col-lg-2">QueueManagementType</th>
+                            <th data-title="'Remove VI'" class="col-sm-2 col-md-2 col-lg-2">Scheduler</th>
+                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">TrafficProfileId</th>
+                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Weight</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{cos._id}}</td>
+                            <td>{{cos._maxBwPercentage}}</td>
+                            <td>{{cos._minBwPercentage}}</td>
+                            <td>{{cos._queueManagementType}}</td>
+                            <td>{{cos._scheduler}}</td>
+                            <td>{{cos._trafficProfileId}}</td>
+                            <td>{{cos._weight}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
                     </tfoot>
                 </table>
             </div>

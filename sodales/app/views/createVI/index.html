@@ -12,10 +12,9 @@ Requested:
 <table st-table="displayedNetworkCollection" st-safe-src="networkCollection" class="table table-striped">
     <thead>
         <tr>
-            <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Id</th>
-            <th data-title="'Created date'" class="col-sm-1 col-md-1 col-lg-1">Created date</th>
-            <th data-title="'Status'" class="col-sm-1 col-md-1 col-lg-1">Status</th>
-            <th data-title="'Add VI'" class="col-sm-2 col-md-2 col-lg-2">Actions</th>
+            <th st-sort="name" class="col-sm-3 col-md-3 col-lg-3">Id</th>
+            <th data-title="'Created date'" class="col-sm-3 col-md-3 col-lg-3">Created date</th>
+            <th class="col-sm-6 col-md-6 col-lg-6">Actions</th>
         </tr>
         <tr>
             <th colspan="2">
@@ -25,10 +24,9 @@ Requested:
     </thead>
     <tbody>
         <tr ng-repeat="row in displayedNetworkCollection">
-            <td><a ng-click="viewService(row.id, row.name)">{{row}}</a></td>
-            <td>{{row.date| date:'yyyy-MM-dd HH:mm:ss'}}</td>
-            <td>{{row.status}}</td>
-            <td><a ng-show="vi.status !== 'Created'" ng-click="sendVIR(row)" class="btn btn-default" title="process">Send to Process</a>
+            <td><a ng-click="viewService(row.id, row.name)">{{row.id}}</a></td>
+            <td>{{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>
                 <a ng-show="vi.status !== 'Created'" ui-sref="root.editVIRequest({ id:row })" class="btn btn-default" title="edit">Edit</a>
                 <a ng-show="vi.status === 'Created'" ui-sref="root.editVIRequest({ id:row })" class="btn btn-default" title="edit">View</a>
                 <a ng-click="deleteVIRequest(row)" class="btn btn-default" title="process">Remove</a>
@@ -51,10 +49,9 @@ Requests:
 <table st-table="displayedCollection" st-safe-src="dataCollection" class="table table-striped">
     <thead>
         <tr>
-            <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Id</th>
-            <th data-title="'Created date'" class="col-sm-1 col-md-1 col-lg-1">Created date</th>
-            <th data-title="'Status'" class="col-sm-1 col-md-1 col-lg-1">Status</th>
-            <th data-title="'Add VI'" class="col-sm-2 col-md-2 col-lg-2">Actions</th>
+            <th st-sort="name" class="col-sm-3 col-md-3 col-lg-3">Id</th>
+            <th data-title="'Created date'" class="col-sm-3 col-md-3 col-lg-3">Created date</th>
+            <th class="col-sm-6 col-md-6 col-lg-6">Actions</th>
         </tr>
         <tr>
             <th colspan="2">
@@ -66,7 +63,6 @@ Requests:
         <tr ng-repeat="row in displayedCollection">
             <td><a ng-click="viewService(row.id, row.name)">{{row}}</a></td>
             <td>{{row.date| date:'yyyy-MM-dd HH:mm:ss'}}</td>
-            <td>{{row.status}}</td>
             <td><a ng-show="vi.status !== 'Created'" ng-click="sendVIR(row)" class="btn btn-default" title="process">Send to Process</a>
                 <a ng-show="vi.status !== 'Created'" ui-sref="root.editVIRequest({ id:row })" class="btn btn-default" title="edit">Edit</a>
                 <a ng-show="vi.status === 'Created'" ui-sref="root.editVIRequest({ id:row })" class="btn btn-default" title="edit">View</a>

@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, localStorageService, $interval, viNetService) {
+    .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, localStorageService, $interval) {
 
         //            $rootScope.networkId = "Network-Internal-1.0-2";//to remove
         var promise;
         $scope.data = [];
+        $scope.networkCollection = [];
         $scope.updateVIReqList = function () {
             var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
             MqNaaSResourceService.list(urlListVI).then(function (result) {
@@ -18,7 +19,19 @@ angular.module('mqnaasApp')
             MqNaaSResourceService.list(urlVirtNets).then(function (result) {
                 console.log(result);
                 if (result === undefined) return;
-                $scope.networkCollection = checkIfIsArray(result.IRootResource.IRootResourceId);
+                var viNets = checkIfIsArray(result.IRootResource.IRootResourceId);
+                viNets.forEach(function (viNet) {
+                    var urlVirtNets = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + viNet + '/IResourceModelReader/resourceModel';
+                    MqNaaSResourceService.list(urlVirtNets).then(function (viInfo) {
+                        console.log(viInfo);
+
+                        $scope.networkCollection.push({
+                            id: viNet,
+                            created_at: viInfo.resource.attributes.entry.value
+                        });
+                    });
+                });
+
                 //                    $scope.data = result.IResource.IResourceId;
             });
         };
@@ -31,15 +44,9 @@ angular.module('mqnaasApp')
         $scope.createVIRequest = function () {
             var urlCreateVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
             MqNaaSResourceService.put(urlCreateVI).then(function (result) {
-                //                    $scope.data.push(result);
                 console.log(result);
-                if (result == null)
-                    return;
-                var vi = {
-                    "name": result,
-                    "status": "PLANNED"
-                };
-
+                if (result == null) return;
+                $scope.updateVIReqList();
             });
         };
         $scope.deleteVIRequest = function (viReq) {
@@ -55,18 +62,9 @@ angular.module('mqnaasApp')
                 console.log(result);
                 $scope.resRoot = result; //empty
                 $rootScope.info = viReq + " created";
-                var vi = {
-                    "name": result,
-                    "status": "Created"
-                };
-                $scope.virtNet = result;
-
                 //$rootScope.info = "200 - Virtual slice created";
-                //$scope.updateSpList();
+                $scope.updateVIReqList();
             });
-
-            $rootScope.info = viReq + " created";
-            $scope.updateVIReqList();
         };
 
         $scope.$on("$destroy", function () {
@@ -79,14 +77,7 @@ angular.module('mqnaasApp')
     .controller('editVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, $modal, viService, localStorageService, $interval) {
         console.log("Edit VI : " + $stateParams.id);
         var promise;
-        /*        $scope.updateVirtualElements = function () {
-                    viService.getVIByName($scope.viId).then(function (result) {
-                        console.log(result);
-                        localStorageService.set("virtualElements", result.viRes);
-                        $scope.virtualElements = result.viRes;
-                    });
-                };
-                */
+
         // $scope.updateVirtualElements();
         console.log(localStorageService.get("virtualElements"));
         $rootScope.viId = $stateParams.id;
@@ -98,8 +89,7 @@ angular.module('mqnaasApp')
 
         var urlPeriod = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestAdministration/period";
         MqNaaSResourceService.get(urlPeriod).then(function (result) {
-            if (result == null)
-                return;
+            if (result == null) return;
             $scope.period = result.period;
             $scope.period.startDate = parseInt($scope.period.startDate * 1000);
             $scope.period.endDate = parseInt($scope.period.endDate * 1000);
@@ -162,21 +152,18 @@ angular.module('mqnaasApp')
         };
         $scope.sendVIR = function (viReq) {
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/?arg0=" + viReq;
-            viService.updateStatus(viReq, "Processing");
             MqNaaSResourceService.put(url).then(function (result) {
                 $scope.resRoot = result; //empty
-                viService.updateStatus(viReq, "Processing");
                 $rootScope.info = viReq + " created";
             });
             /*                promise = $interval(function () {
-             viService.updateStatus(viReq, "Created");
              $scope.updateSpList();
              $rootScope.info = " OK " + viReq + " Created, received 200 from IML";
              }, 4000);
              */
-            viService.updateStatus(viReq, "Created");
             $rootScope.info = viReq + " created";
         };
+
         $scope.addResourceToGraph = function (name) {
             console.log($scope.ngDialogData);
             console.log(name);
@@ -208,6 +195,7 @@ angular.module('mqnaasApp')
                 });
             });
         };
+
         $scope.openMappingDialog = function (source, target) {
             console.log("FUNCTION IS CALLED");
             $scope.getListVirtualResources();
@@ -252,13 +240,6 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.getSliceResource = function (virtResource) {
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/slice";
-            MqNaaSResourceService.gut(url).then(function (result) {
-                localStorageService.set("virtualSlices", result);
-            });
-        };
-
         $scope.createUnitRange = function (virtResource) {
             var range = getRangeUnit(1, 2);
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId + "/IUnitManagement";
@@ -277,6 +258,7 @@ angular.module('mqnaasApp')
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/ISliceAdministration/cubes";
             MqNaaSResourceService.put(url, cube).then(function () {});
         };
+
         $scope.getSlice = function (resourceName) {
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + resourceName + "/ISliceProvider/slice";
             console.log(url);
@@ -346,7 +328,7 @@ angular.module('mqnaasApp')
             MqNaaSResourceService.getText(url).then(function (data) {
                 var sliceId = data;
                 var unitType = "port";
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement?arg0=" + unitType;
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement/?arg0=" + unitType;
                 MqNaaSResourceService.put(url).then(function (data) {
                     console.log("SET unit" + data);
                     var unitId = data;
@@ -355,7 +337,7 @@ angular.module('mqnaasApp')
                     MqNaaSResourceService.put(url, range).then(function () {
 
                         var unitType = "vlan";
-                        var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement?arg0=" + unitType;
+                        var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement/?arg0=" + unitType;
                         MqNaaSResourceService.put(url).then(function (data) {
                             var unitId = data;
                             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId + "/IUnitAdministration/range";
@@ -363,14 +345,13 @@ angular.module('mqnaasApp')
                             MqNaaSResourceService.put(url, range).then(function () {
 
                                 var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/ISliceAdministration/cubes";
-                                var cubes = getCubeforTSON(1, 1, 2, 2);
+                                var cubes = getCube(1, 1, 2, 2);
                                 MqNaaSResourceService.put(url, cubes).then(function () {});
                             });
                         });
                     });
                 });
-
-
             });
         };
+
     });

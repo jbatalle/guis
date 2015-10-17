@@ -262,13 +262,6 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                         var config = rejection.config;
                         var method = config.method;
                         var url = config.url;
-                        console.log(status);
-                        console.log($window.localStorage);
-                        console.log($window.localStorage.expiration);
-                        console.log(Math.floor(Date.now() / 1000) > $window.localStorage.expiration);
-                        console.log($window.localStorage.token !== null);
-                        console.log(Math.floor(Date.now() / 1000));
-                        console.log(Math.floor(Date.now() / 1000) > $window.localStorage.expiration);
 
                         if (Math.floor(Date.now() / 1000) > $window.localStorage.expiration)
                             $rootScope.logout();

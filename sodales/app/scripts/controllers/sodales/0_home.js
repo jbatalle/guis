@@ -3,9 +3,11 @@
 angular.module('mqnaasApp')
     .controller('SodalesHomeCtrl', function ($scope, $rootScope, HistoryService, spService, viService, MqNaaSResourceService, $modal, $alert) {
 
+        var url = '';
+
         //heartbeat mqnaas
-        var urlListVI = 'IRootResourceProvider';
-        MqNaaSResourceService.list(urlListVI).then(function (result) {
+        var url = 'IRootResourceProvider';
+        MqNaaSResourceService.list(url).then(function (result) {
             console.log(result);
             if (result === undefined) {
                 $rootScope.networkId = undefined;
@@ -26,19 +28,19 @@ angular.module('mqnaasApp')
             type: 'danger'
         };
 
-        // Service usage
-
-
-
         spService.getList().then(function (data) {
             if (data) $scope.spSize = data.length;
             else $scope.spSize = 0;
         });
 
-        if ($rootScope.networkId === undefined) $scope.viSize = 0;
-        else {
-            var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
-            MqNaaSResourceService.list(urlListVI).then(function (result) {
+        $scope.viSize = 0;
+        $scope.resourcesSize = 0
+        if ($rootScope.networkId === undefined) {
+            $scope.viSize = 0;
+            $scope.resourcesSize = 0;
+        } else {
+            url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
+            MqNaaSResourceService.list(url).then(function (result) {
                 console.log(result);
                 if (result === undefined) $scope.viSize = 0;
                 else {
@@ -46,14 +48,15 @@ angular.module('mqnaasApp')
                     $scope.viSize = data.length;
                 }
             });
-        }
 
-        $scope.slicesSize = 0;
-        /*            viService.list().then(function (data) {
-         console.log("GET Slices SIZE");
-         $scope.slicesSize = data.length;
-         });
-         */
+            url = "http://localhost:9000/mqnaas/IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceProvider";
+            MqNaaSResourceService.list(url).then(function (result) {
+                console.log(result);
+                if (result === undefined) $scope.resourcesSize = 0;
+                else $scope.resourcesSize = checkIfIsArray(result.IRootResource.IRootResourceId).length;
+            });
+
+        }
 
         HistoryService.query({}, function (data) {
             data.splice(10, Number.MAX_VALUE);

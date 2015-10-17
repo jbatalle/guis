@@ -8,8 +8,8 @@ module.exports = function (app) {
     /* your app config here */
     app.use('/rest/mqnaas', function (req, res) {
         console.log(req.method + ": " + req.url);
-        //var url = 'http://localhost:9000/mqnaas' + req.url;
-        var url = 'http://84.88.40.174:9000/mqnaas' + req.url;
+        var url = 'http://localhost:9000/mqnaas' + req.url;
+//        var url = 'http://84.88.40.174:9000/mqnaas' + req.url;
         var r = null;
 
         if (req.method === 'POST') {
@@ -38,7 +38,7 @@ module.exports = function (app) {
             }).pipe(res);
         } else {
             r = request(url);
-            r.pipe(request(url)).pipe(res).setTimeout(2000);
+            r.pipe(request(url)).pipe(res) /*.setTimeout(2000)*/ ;
             return;
         }
 

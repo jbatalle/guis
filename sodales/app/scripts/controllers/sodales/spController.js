@@ -1,11 +1,35 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spController', function ($scope, $rootScope, MqNaaSResourceService, $filter, spService, viNetService, localStorageService) {
+    .controller('spController', function ($scope, $rootScope, MqNaaSResourceService, $filter, spService, localStorageService, AuthService) {
         console.log("sp");
         $rootScope.networkId = localStorageService.get("networkId");
         $rootScope.spName = "SP1";
         $scope.data = [];
+        $scope.networkCollection = [];
+
+        AuthService.profile().then(function (data) {
+            console.log(data);
+            //get vi nets ids
+            spService.get(data.sp_id).then(function (data) {
+                console.log(data);
+                $scope.networks = data.vis;
+                data.vis.forEach(function (viNet) {
+                    console.log(viNet);
+                    var urlVirtNets = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + viNet.name + '/IResourceModelReader/resourceModel';
+                    MqNaaSResourceService.list(urlVirtNets).then(function (viInfo) {
+                        console.log(viInfo);
+
+                        $scope.networkCollection.push({
+                            id: viNet.name,
+                            created_at: viInfo.resource.attributes.entry.value
+                        });
+                    });
+                });
+            });
+
+        });
+
         $scope.updateSpList = function () {
             /*spService.list().then(function (data) {
                 console.log(data);
@@ -15,29 +39,12 @@ angular.module('mqnaasApp')
                 console.log(result);
                 //                    $scope.data = result.IResource.IResourceId;
             });
-            /*
-                        spService.getSPByName($rootScope.spName).then(function (result) {
-                            console.log(result);
-                            result.vi.forEach(function (vi) {
-                                viNetService.getVIByName(vi).then(function (viInfo) {
-                                    console.log(viInfo);
-                                    $scope.data.push({
-                                        name: viInfo.name,
-                                        date: viInfo.date,
-                                        status: "Created"
-                                    });
-                                    $scope.dataCollection = checkIfIsArray($scope.data);
-                                    //$scope.tableParams.reload();
-                                    //                        $scope.data.push(viNetService.getVIByName(vi));
-                                });
-                            });
-                            //                    $scope.data = result.vi;
-                        });*/
+
         };
         $scope.updateSpList();
 
     })
-    .controller('spVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, viNetService, localStorageService, $modal) {
+    .controller('spVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, localStorageService, $modal) {
         console.log("Edit VI : " + $stateParams.id);
         $scope.virtNetId = $stateParams.id;
         $scope.virtualPort = [];
@@ -79,9 +86,9 @@ angular.module('mqnaasApp')
         };
 
         $scope.getListVirtualResources = function () {
-            viNetService.getVIByName($scope.viId).then(function (response) {
-                $scope.virtualResources = response.viRes;
-            });
+            /* viNetService.getVIByName($scope.viId).then(function (response) {
+                 $scope.virtualResources = response.viRes;
+             });*/
         };
         $scope.getListRealResources = function () {
             $scope.physicalResources = localStorageService.get("networkElements");
@@ -107,17 +114,13 @@ angular.module('mqnaasApp')
             ngDialog.close();
         };
     })
-    .controller('spStatsController', function ($scope, ngTableParams, $filter, $stateParams, localStorageService, ngDialog, arnService, cpeService, $interval, viNetService) {
+    .controller('spStatsController', function ($scope, ngTableParams, $filter, $stateParams, localStorageService, ngDialog, arnService, cpeService, $interval) {
         var promise;
         var availableResources = [];
         $scope.selected = "";
         $scope.vi = $stateParams.id;
         $scope.vi = "vi-1";
-        viNetService.getVIByName($scope.vi).then(function (result) {
-            console.log(result);
-            console.log(result.viRes);
-            $scope.availableResources;
-        });
+
 
         localStorageService.get("networkElements").forEach(function (el) {
             console.log(el);

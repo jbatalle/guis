@@ -8,9 +8,6 @@ services.factory('arnService', ['$http', 'x2js', 'HistoryService', function ($ht
                 // it to the success function below
                 var x2js = new X2JS();
                 var json = x2js.xml_str2json(response.data);
-                console.log(json);
-                console.log(json.response.operation._type);
-                console.log(json.response.operation._entity);
                 return json;
             }, function (response) {
                 var his = new HistoryService();

@@ -20,7 +20,7 @@
                     <form action="createARN" method="post" name="editForm">
                         <div>
                             <div ng-hide='resourceRequest'>
-                                <a href="" class="btn btn-sm btn-primary" ng-click="addResourceToVI(resource.type)">Add {{resource.type}} resource</a>
+                                <a href="" class="btn btn-sm btn-primary" ng-click="addResource(resource.type)">Add {{resource.type}} resource</a>
                             </div>
                             <div ng-show='resourceRequest'>
                                 <h4>Resource added correctly with the name: {{resourceRequest}}.</h4>

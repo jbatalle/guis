@@ -36,12 +36,29 @@
             </div>
         </div>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-6">
         <h2 class="page-header">OpenAccess slice creation: {{viId}}</h2>
         <div id="viMgt" ng-controller="editVIController">
             <div ng-controller="editVINetwork" id="myDraggableZone" vidroppable ng-show="networkId">
                 <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
                 </vis-network>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <div class="col-md-3">
+        <p class="lead">Edit virtual resource</p>
+        <div>
+            <div class="form-group">
+                Actual info
+
+            </div>
+        </div>
+        <div>
+            <div class="form-group">
+                <label class="control-label"><i class="fa fa-calendar"></i> <i class="fa fa-arrows-h"></i>
+                    <i class="fa fa-calendar"></i> Add port </label>
+                <br> button
             </div>
         </div>
         <!-- /.row -->

@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('SodalesOpenaccessDashCtrl', function ($rootScope, $scope, $filter, spService, viService, $modal, viNetService, UsersService, MqNaaSResourceService) {
+    .controller('SodalesOpenaccessDashCtrl', function ($rootScope, $scope, $filter, spService, viService, $modal, UsersService, MqNaaSResourceService) {
 
+        var url;
         $scope.listVi = [];
         $scope.data = [];
         $scope.dataCollection = [];
@@ -12,30 +13,45 @@ angular.module('mqnaasApp')
 
         $scope.updateSpList = function () {
 
-            spService.getList().then(function (data) {
-                console.log("SP List update");
-                $scope.data = data;
-                $scope.dataCollection = data;
-            });
-            /*
-                        viService.list().then(function (data) {
-                            $scope.listVi = [];
-                            if (data === undefined) return;
-                            data.forEach(function (vi) {
-                                console.log(vi);
-                                if (vi.status === "Created")
-                                    $scope.listVi.push(vi.name);
-                            });
-                        });*/
+
+
             var urlVirtNets = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement';
             MqNaaSResourceService.list(urlVirtNets).then(function (result) {
                 if (result === undefined) return;
                 $scope.networkCollection = checkIfIsArray(result.IRootResource.IRootResourceId);
+                spService.getList().then(function (data) {
+                    console.log("SP List update");
+                    $scope.dataCollection = data;
+                    console.log($scope.networkCollection);
+                    console.log($scope.dataCollection);
+                    if ($scope.networkCollection.length === 0) {
+                        for (var i = 0; i < $scope.dataCollection.length; i++) {
+                            console.log($scope.dataCollection);
+                            for (var j = 0; j < $scope.dataCollection[i].vis.length; j++) {
+                                $scope.removeVI($scope.dataCollection[i].id, $scope.dataCollection[i].vis[j].name);
+                            }
+                        }
+                    } else {
+                        for (var i = 0; i < $scope.dataCollection.length; i++) {
+                            for (var j = 0; j < $scope.dataCollection[i].vis.length; j++) {
+                                url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + $scope.dataCollection[i].vis[j];
+                                MqNaaSResourceService.list(urlVirtNets).then(function (result) {
+                                    console.log(result);
+                                    if (result === undefined) $scope.removeVI($scope.dataCollection[i].id, $scope.dataCollection[i].vis[j].name);
+                                });
+                            };
+                        }
+                    }
+                });
+
+
                 $scope.networkCollection.forEach(function (vi) {
                     console.log(vi);
                     $scope.listVi.push(vi);
                 });
             });
+
+            //$scope.removeVI
         };
 
         $scope.updateSpList();
