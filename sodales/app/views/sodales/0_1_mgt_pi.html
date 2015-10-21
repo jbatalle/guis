@@ -30,6 +30,12 @@
                 </ul>
                 <h3>Links</h3>
                 <ul>
+                    <li ng-repeat="link in physicalLinks">
+                        {{link.id}}: {{link.from}} to {{link.to}}
+                        <a ng-click="deleteResource(link.id)"> Remove </a>
+                    </li>
+                </ul>
+                <ul>
                     <li ng-repeat="link in createdLinkInfo">
                         {{createdLink}}: {{link.s}} to {{link.t}}
                         <a ng-click="deleteResource(link)"> Remove </a>
@@ -57,14 +63,30 @@
                 </div>
             </div>
             <div class="col-lg-3">
-                <div ng-show="networkId">
+                <div ng-show="networkId && resourceInfo.ports">
                     <h3>Ports</h3>
-                    <div style="overflow-y: scroll; height:400px;">
+                    <div style="overflow-y: scroll; height:250px;">
                         <ul>
-                            <li ng-repeat="res in resourceInfo">
-                                <a ng-click="getResouceInfo(res)"> {{res.attributes.entry[0].value}}</a>
+                            <li ng-repeat="res in resourceInfo.ports">
+                                <a ng-click="getResourceInfo(res)"> {{res.attributes.entry[0].value}}</a>
                             </li>
                         </ul>
+                    </div>
+                    <h3>Slice information</h3>
+                    <div style="overflow-y: scroll; height:400px;">
+                        Units
+                        <ul>
+                            <li ng-repeat="res in resourceInfo.slicing.slices.units">
+                                <a ng-click="getRangeInfo(res)"> {{res.id}}</a>
+                            </li>
+                        </ul>
+                        Cubes
+                        <ul>
+                            <li ng-repeat="res in resourceInfo.slicing.slices.cubes">
+                                <a ng-click="getCubeInfo(res)"> Cube</a>
+                            </li>
+                        </ul>
+
                     </div>
                 </div>
             </div>

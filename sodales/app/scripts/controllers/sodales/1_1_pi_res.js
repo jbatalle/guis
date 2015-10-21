@@ -12,7 +12,6 @@ angular.module('mqnaasApp')
             url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceProvider');
             MqNaaSResourceService.list(url).then(function (data) {
                 console.log(data);
-
                 $scope.resources = checkIfIsArray(data.IRootResource.IRootResourceId);
             });
         };

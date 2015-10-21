@@ -12,21 +12,14 @@ angular.module('mqnaasApp')
         $scope.spUsers = [];
 
         $scope.updateSpList = function () {
-
-
-
             var urlVirtNets = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement';
             MqNaaSResourceService.list(urlVirtNets).then(function (result) {
                 if (result === undefined) return;
                 $scope.networkCollection = checkIfIsArray(result.IRootResource.IRootResourceId);
                 spService.getList().then(function (data) {
-                    console.log("SP List update");
                     $scope.dataCollection = data;
-                    console.log($scope.networkCollection);
-                    console.log($scope.dataCollection);
                     if ($scope.networkCollection.length === 0) {
                         for (var i = 0; i < $scope.dataCollection.length; i++) {
-                            console.log($scope.dataCollection);
                             for (var j = 0; j < $scope.dataCollection[i].vis.length; j++) {
                                 $scope.removeVI($scope.dataCollection[i].id, $scope.dataCollection[i].vis[j].name);
                             }
@@ -36,7 +29,6 @@ angular.module('mqnaasApp')
                             for (var j = 0; j < $scope.dataCollection[i].vis.length; j++) {
                                 url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + $scope.dataCollection[i].vis[j];
                                 MqNaaSResourceService.list(urlVirtNets).then(function (result) {
-                                    console.log(result);
                                     if (result === undefined) $scope.removeVI($scope.dataCollection[i].id, $scope.dataCollection[i].vis[j].name);
                                 });
                             };
@@ -44,17 +36,14 @@ angular.module('mqnaasApp')
                     }
                 });
 
-
                 $scope.networkCollection.forEach(function (vi) {
-                    console.log(vi);
                     $scope.listVi.push(vi);
                 });
             });
-
-            //$scope.removeVI
         };
 
         $scope.updateSpList();
+
         $scope.openSPCreationDialog = function () {
             $modal({
                 title: 'Create new SP.',
@@ -65,15 +54,12 @@ angular.module('mqnaasApp')
         };
 
         $scope.addVI = function (spName, vi) {
-            console.log(spName);
-            console.log(vi);
             spService.addViToSP(spName, vi).then(function (response) {
                 $scope.updateSpList();
             });
         };
 
         $scope.removeVI = function (spName, vi) {
-            console.log(vi);
             spService.removeVIOfSP(spName, vi).then(function (response) {
                 $scope.updateSpList();
             });
@@ -89,7 +75,6 @@ angular.module('mqnaasApp')
                 "description": data.description
             };
             spService.post(sp).then(function (response) {
-                console.log(response);
                 $scope.updateSpList();
             });
             this.$hide();
@@ -114,15 +99,12 @@ angular.module('mqnaasApp')
         };
 
         $scope.addUserDialog = function (row) {
-
             UsersService.getUsers().then(function (data) {
                 $scope.users = data;
             });
-
             spService.getUsers(row.id).then(function (data) {
                 $scope.spUsers = data;
             });
-
             $modal({
                 title: 'Adding user to SP ' + row.name + '.',
                 template: 'views/sodales/sp/addUser.html',

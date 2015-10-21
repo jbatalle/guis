@@ -1,7 +1,6 @@
 'use strict';
 
 services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', function ($http, x2js, HistoryService) {
-    console.log("MqNaaS Resource Service");
     return {
         list: function (url) {
             var promise = $http.get('rest/mqnaas/' + url + '/').then(function (response) {

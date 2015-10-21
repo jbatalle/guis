@@ -1,5 +1,5 @@
 <div class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" ng-controller="sodalesPiMgtCtrl">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" ng-show="title">
                 <button type="button" class="close" ng-click="$hide()">&times;</button>
@@ -8,21 +8,17 @@
             <div class="modal-body">
                 <form action="createARN" method="post" name="editForm">
                     <div>
-                        <h3>Connection between resources </h3>({{source}}, {{dest}})
-                        <div ng-hide="createdLink">
-                            Create link <a href="" class="btn btn-sm btn-primary" ng-click="createLink()">Add</a> {{createdLink}}
-                        </div>
+                        From resource ({{source}} to {{dest}})
                         <div ng-show="createdLink">
-                            Link: {{createdLink}}
+                            <b>Link id</b>: {{createdLink}}
                             <br/>
                             <div ng-show="!!physicalPorts1.length">
-                                Select source port ({{source}}): {{physicalPorts1}}
+                                Select source port ({{source}}):
 
                                 <button type="button" class="btn btn-default" ng-model="piPort1" data-html="1" bs-options="port for port in physicalPorts1" bs-select>
                                     Action <span class="caret"></span>
                                 </button>
 
-                                <a class="btn btn-sm btn-primary" ng-click="createPort(source)">Create Port</a>
                                 <a ng-show="piPort1" class="btn btn-sm btn-primary" ng-click="attachPortsToLink(createdLink, 'source', piPort1)">Attach source port</a> {{dstPortAttahed}}
                             </div>
                             <div ng-show=" !!!physicalPorts1.length">
@@ -34,7 +30,6 @@
                                     Action <span class="caret"></span>
                                 </button>
 
-                                <a class="btn btn-sm btn-primary" ng-click="createPort(dest)">Create Port</a>
                                 <a ng-show="piPort2" class="btn btn-sm btn-primary" ng-click="attachPortsToLink(createdLink, 'dest', piPort2)">Attach destination port</a> {{dstPortAttahed}}
                             </div>
                             <div ng-show=" !!!physicalPorts2.length">
@@ -47,7 +42,7 @@
                 </form>
                 <!-- /.box-body -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="addResource(arn)">Add</button>
+                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="">Add</button>
                 </div>
             </div>
         </div>
