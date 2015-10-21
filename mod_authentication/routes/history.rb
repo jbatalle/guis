@@ -28,6 +28,10 @@ class Authentication < Sinatra::Application
 			halt 401, {'Content-Type' => 'text/plain'}, 'Token invalid'
 		end
 	end
+
+	delete "/history" do
+		History.delete_all
+	end
 	
 	get "/history" do
 		return History.all.to_json
