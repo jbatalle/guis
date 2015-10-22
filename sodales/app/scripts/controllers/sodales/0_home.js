@@ -72,8 +72,8 @@ angular.module('mqnaasApp')
         );
 
         HistoryService.query({}, function (data) {
-            data.splice(10, Number.MAX_VALUE);
-            $scope.lastHistory = data;
+            data.reverse().splice(10, Number.MAX_VALUE);
+            $scope.lastHistory = data.reverse();
             console.log(data);
         });
     });

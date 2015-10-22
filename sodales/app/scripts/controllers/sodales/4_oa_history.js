@@ -2,9 +2,8 @@
 
 angular.module('mqnaasApp')
     .controller('SodalesHistoryController', function ($scope, HistoryService, $filter) {
-        $scope.dataCollection = HistoryService.query({}, function (result) {
-
-            console.log(result);
+        HistoryService.query({}, function (result) {
+            $scope.dataCollection = result.reverse();
         });
 
 

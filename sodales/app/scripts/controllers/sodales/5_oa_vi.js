@@ -179,6 +179,10 @@ angular.module('mqnaasApp')
                     MqNaaSResourceService.get(url).then(function (ports) {
 
                         $scope.listVirtualPorts = checkIfIsArray(ports.IResource.IResourceId);
+                        if ($scope.listVirtualPorts.length === 0) {
+                            //create cube?
+                            return; //for the moment
+                        }
                         var currentRequest = 0;
                         var deferred = $q.defer();
                         makeNextRequest();
@@ -263,8 +267,6 @@ angular.module('mqnaasApp')
             return getCubes(cubes);
         };
 
-
-
         $scope.mapVirtualPorts = function (virtualPort, realPort) {
             console.log("Map virtual ports");
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceMapping/defineMapping/?arg0=" + virtualPort + "&arg1=" + realPort;
@@ -277,6 +279,7 @@ angular.module('mqnaasApp')
                 });
             });
         };
+
         $scope.sendVIR = function (viReq) {
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/?arg0=" + viReq;
             MqNaaSResourceService.put(url).then(function (result) {
@@ -304,7 +307,21 @@ angular.module('mqnaasApp')
                 $scope.virtualPorts = checkIfIsArray(result.IResource.IResourceId);
             });
         };
+
         $scope.getPhysicalPorts = function (resourceName) {
+            $scope.physicalPorts = [];
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/IResourceModelReader/resourceModel";
+            MqNaaSResourceService.get(url).then(function (result) {
+                if (result === undefined) return;
+                $scope.physicalPorts = [];
+                checkIfIsArray(result.resource.resources.resource).forEach(function (port) {
+                    $scope.physicalPorts.push({
+                        onP: port.id,
+                        real: port.attributes.entry[0].value
+                    });
+                });
+            });
+            /*
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/IPortManagement";
             MqNaaSResourceService.get(url).then(function (result) {
                 console.log(result.IResource.IResourceId);
@@ -321,6 +338,7 @@ angular.module('mqnaasApp')
                     });
                 });
             });
+            */
         };
 
         $scope.openMappingDialog = function (source, target) {

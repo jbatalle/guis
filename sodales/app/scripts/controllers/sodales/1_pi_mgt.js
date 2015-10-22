@@ -36,6 +36,7 @@ angular.module('mqnaasApp')
         };
 
         $scope.updateResourceList = function () {
+            if ($rootScope.networkId === undefined) return;
             url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceProvider');
             MqNaaSResourceService.list(url).then(function (data) {
                 if (data === undefined) return;
@@ -393,6 +394,25 @@ angular.module('mqnaasApp')
                 console.log(data);
                 $rootScope.resourceInfo.slicing.slices.cubes = checkIfIsArray(data.cubesList.cubes);
                 return data;
+            });
+        };
+
+        $scope.getRangeInfo = function (unit) {
+            $scope.unit = unit;
+            $modal({
+                title: 'Unit information about ' + unit.id,
+                template: 'views/modals/rangeInfo.html',
+                show: true,
+                scope: $scope,
+            });
+        };
+        $scope.getCubeInfo = function (cube) {
+            $scope.cubes = cube;
+            $modal({
+                title: 'Cubes information',
+                template: 'views/modals/cubesInfo.html',
+                show: true,
+                scope: $scope,
             });
         };
     });
