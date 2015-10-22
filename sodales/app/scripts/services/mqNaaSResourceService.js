@@ -8,7 +8,7 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
                 return json;
             }, function (response) {
                 var his = new HistoryService();
-                his.content = response.status + " - GET List (IRootResourceAdministration): " + response.statusText;
+                his.content = response.status + " - GET List (" + url + "): " + response.statusText;
                 his.type = "ERROR";
                 his.$save();
             });
@@ -20,13 +20,13 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
             else finalUrl = 'rest/mqnaas/' + url + '/';
             var promise = $http.put(finalUrl, data).then(function (response) {
                 var his = new HistoryService();
-                his.content = response.status + " - PUT (IRootResourceAdministration): " + response.data;
+                his.content = response.status + " - PUT (" + url + "): " + response.data;
                 his.type = "INFO";
                 his.$save();
                 return response.data;
             }, function (response) {
                 var his = new HistoryService();
-                his.content = response.status + " - PUT (IRootResourceAdministration): " + response.statusText;
+                his.content = response.status + " - PUT (" + url + "): " + response.statusText;
                 his.type = "ERROR";
                 his.$save();
             });
@@ -38,7 +38,7 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
                 return json;
             }, function (response) {
                 var his = new HistoryService();
-                his.content = response.status + " - GET (IRootResourceAdministration): " + response.statusText;
+                his.content = response.status + " - GET (" + url + "): " + response.statusText;
                 his.type = "ERROR";
                 his.$save();
             });
@@ -47,13 +47,13 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
         getText: function (url) {
             var promise = $http.get(genericUrl + url).then(function (response) {
                 var his = new HistoryService();
-                his.content = response.status + " - GET (IRootResourceAdministration): " + response.statusText;
+                his.content = response.status + " - GET (" + url + "): " + response.statusText;
                 his.type = "INFO";
                 his.$save();
                 return response.data;
             }, function (response) {
                 var his = new HistoryService();
-                his.content = response.status + " - GET (IRootResourceAdministration): " + response.statusText;
+                his.content = response.status + " - GET (" + url + "): " + response.statusText;
                 his.type = "ERROR";
                 his.$save();
             });
@@ -80,7 +80,7 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
             return promise;
         }
     };
-    }]).config(function ($httpProvider) {
+}]).config(function ($httpProvider) {
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/xml';
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/xml';
     $httpProvider.defaults.timeout = 5000;

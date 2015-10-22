@@ -7,7 +7,10 @@
             </div>
 
             <p class="lead">Resource Information</p>
-            <div class="list-group">
+            <div class="list-group" ng-show="!equipmentInfo">
+                No information
+            </div>
+            <div class="list-group" ng-show="equipmentInfo">
                 <div class="fx-form-block-controls fx-first collapse am-collapse in" data-uxfwk-collapse-target="">
                     <div class="form-group">
                         <label class="col-sm-4 control-label ng-binding">Name</label>
@@ -69,21 +72,25 @@
     </div>
     <div id="piMgt" class="col-md-9">
         <h2 class="page-header">PHY Management <small>Physical resources management</small></h2>
-        <div class="row">
-            <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateCard()"></select>
+        <div class="row" ng-show="type === 'ARN'">
+            <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateARNCard()"></select>
             <div class="col-lg-12">
                 <table st-table="displayedCollection" st-safe-src="dataCollection" class="table table-striped">
                     <thead>
                         <tr>
-                            <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Name</th>
-                            <th data-title="'description'" class="col-sm-2 col-md-2 col-lg-2">Description</th>
-                            <th data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">VI List</th>
-                            <th data-title="'Add VI'" class="col-sm-2 col-md-2 col-lg-2">Add VI</th>
-                            <th data-title="'Remove VI'" class="col-sm-2 col-md-2 col-lg-2">Remove VI</th>
-                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Actions</th>
+                            <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Interface id</th>
+                            <th data-title="'description'" class="col-sm-2 col-md-2 col-lg-2">Name</th>
+                            <th data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">Type</th>
+                            <th data-title="'Add VI'" class="col-sm-2 col-md-2 col-lg-2">Card id</th>
+                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Admin</th>
+                            <th data-title="'Remove VI'" class="col-sm-2 col-md-2 col-lg-2">Equipment id</th>
+                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Type</th>
+                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Description</th>
+                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">CoS</th>
+                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Info</th>
                         </tr>
                         <tr>
-                            <th colspan="2">
+                            <th>
                                 <input st-search="" class="form-control" placeholder="global search ..." type="text" />
                             </th>
                         </tr>
@@ -98,13 +105,13 @@
                             <td>{{row._equipmentId}}</td>
                             <td>{{row._type}}</td>
                             <td>{{row._description}}</td>
-                            <td><a ng-click="showCoS(row.cos)">CoS</a></td>
+                            <td><a ng-click="showARNCoS(row.cosList.cos)">CoS</a></td>
                             <td><a ng-click="">Ethernet</a></td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td class="text-center" st-pagination="" st-items-by-page="10" colspan="3">
+                            <td class="text-center" st-pagination="" st-items-by-page="10" colspan="5">
                             </td>
                         </tr>
                     </tfoot>
@@ -112,10 +119,9 @@
             </div>
         </div>
 
-        <div class="row">
-            CoS {{cos}}
+        <div class="row" ng-show="type === 'ARN'"> CoS
             <div class="col-lg-12">
-                <table class="table table-striped">
+                <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
                     <thead>
                         <tr>
                             <th class="col-sm-1 col-md-1 col-lg-1">Id</th>
@@ -128,14 +134,35 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <tr ng-repeat="row in displayedCollection2">
+                            <td>{{row._id}}</td>
+                            <td>{{row._maxBwPercentage}}</td>
+                            <td>{{row._minBwPercentage}}</td>
+                            <td>{{row._queueManagementType}}</td>
+                            <td>{{row._scheduler}}</td>
+                            <td>{{row._trafficProfileId}}</td>
+                            <td>{{row._weight}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="row" ng-show="type === 'CPE'"> Ports
+            <div class="col-lg-12">
+                <table st-table="displayedCollection3" st-safe-src="dataCollection" class="table table-striped">
+                    <thead>
                         <tr>
-                            <td>{{cos._id}}</td>
-                            <td>{{cos._maxBwPercentage}}</td>
-                            <td>{{cos._minBwPercentage}}</td>
-                            <td>{{cos._queueManagementType}}</td>
-                            <td>{{cos._scheduler}}</td>
-                            <td>{{cos._trafficProfileId}}</td>
-                            <td>{{cos._weight}}</td>
+                            <th class="col-sm-1 col-md-1 col-lg-1">Port id</th>
+                            <th data-title="'unit'" class="col-sm-2 col-md-2 col-lg-2">Unit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in displayedCollection3">
+                            <td>{{row.port}}</td>
+                            <td>{{row.unit}}</td>
                         </tr>
                     </tbody>
                     <tfoot>
