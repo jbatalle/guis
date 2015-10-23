@@ -1,0 +1,21 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <div class="modal-body">
+<h5>Ranges</h5>
+<div ng-repeat="range in cubes.cube.ranges.range">
+<b>Lower Bound:</b>
+                    <input type="text" name="name" class="form-control" value="{{range.lowerBound}}"/>
+<b>Upper Bound:</b>
+                    <input type="text" name="name" class="form-control" value="{{range.upperBound}}"/>
+<br/>
+</div>
+
+            </div>
+        </div>
+    </div>
+</div>
