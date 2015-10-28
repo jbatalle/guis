@@ -207,7 +207,7 @@ angular.module('mqnaasApp')
                                             break;
                                         }
                                     };
-                                    if (currentRequest < $scope.listVirtualPorts.length) {
+                                    if (currentRequest < $scope.listVirtualPorts.length - 1) {
 
                                         makeNextRequest();
                                     } else {
@@ -244,7 +244,7 @@ angular.module('mqnaasApp')
                 obj.final = arr[i];
                 if (arr[i + 1] == arr[i] + 1) {
                     obj.final = arr[i + 1];
-                    results.push(i);
+                    //results.push(i);
 
                     // loop through next numbers, to prevent repeating longer sequences
                     while (arr[i] + 1 == arr[i + 1]) {
