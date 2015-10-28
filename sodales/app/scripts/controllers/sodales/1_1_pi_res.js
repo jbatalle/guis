@@ -25,9 +25,9 @@ angular.module('mqnaasApp')
             MqNaaSResourceService.get(url).then(function (data) {
                 console.log(data);
                 $scope.type = data.resource.type;
-                var req;
+                var req, url;
                 if ($scope.type === 'ARN') {
-                    url = '<?xml version="1.0" encoding="UTF-8"?><request ><operation token="58" type="show" entity="equipment"><equipment id="0"></equipment></operation></request>';
+                    req = '<?xml version="1.0" encoding="UTF-8"?><request ><operation token="58" type="show" entity="equipment"><equipment id="0"></equipment></operation></request>';
                     arnService.put(req).then(function (data) {
                         if (data === null) return;
                         console.log(data);
