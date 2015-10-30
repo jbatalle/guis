@@ -37,7 +37,9 @@ angular.module('mqnaasApp')
                 } else if ($scope.type === 'CPE') {
                     url = 'meaPortMapping.xml';
                     cpeService.get(url).then(function (data) {
+                        $scope.equipmentInfo = null;
                         console.log(data);
+                        $scope.dataCollection = data.meaPortMapping.portMapping;
                     });
                 }
             });
