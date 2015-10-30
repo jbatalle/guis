@@ -19,7 +19,7 @@
     "ionicons": "~2.0.1",
     "angular-svg-round-progressbar": "0.2.7",
     "ng-tags-input": "~3.0.0",
-    "angular-visjs": "4.0.2",
+    "vis": "4.9.0",
     "x2js": "*",
     "angular-x2js": "~0.1.1",
     "d3": "3.5.2",

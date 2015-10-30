@@ -41,7 +41,6 @@ module.exports = function(config) {
       'bower_components/angular-svg-round-progressbar/build/roundProgress.min.js',
       'bower_components/ng-tags-input/ng-tags-input.min.js',
       'bower_components/vis/dist/vis.min.js',
-      'bower_components/angular-visjs/angular-vis.js',
       'bower_components/x2js/xml2json.min.js',
       'bower_components/angular-x2js/dist/x2js.min.js',
       'bower_components/d3/d3.js',
