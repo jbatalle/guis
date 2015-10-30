@@ -197,12 +197,22 @@ angular.module('mqnaasApp')
 
         };
 
-        $scope.viewStatistics = function (interfaceId) {
+        $scope.viewStatistics = function (cardId, interfaceId) {
             $scope.infId = interfaceId;
-            $modal({
-                template: 'views/sodales/counterStats.html',
-                controller: 'statisticsCtrl',
-                scope: $scope
+
+            var requestData = getCounters(cardId, interfaceId);
+            arnService.put(requestData).then(function (response) {
+                var data = response.response.operation.interfaceList.interface.ethernet.counters;
+                console.log(data)
+                data = transpose(data);
+                $scope.content = data;
+                $modal({
+                    title: 'Counter statistics of interface ' + interfaceId,
+                    template: 'views/sodales/counterStats.html',
+                    show: true,
+                    scope: $scope
+                        //,controller: 'statisticsCtrl',
+                });
             });
         };
 

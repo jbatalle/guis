@@ -29,6 +29,10 @@ getCounter = function (interfaceId) {
     return '<?xml version="1.0" encoding="utf-8"?><request><operation token="33" type="showCounters" entity="interface/ethernet"><ethernet equipmentId="0" interfaceId="' + interfaceId + '"/></operation></request>';
 };
 
+getCounters = function (cardId, interfaceId) {
+    return '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="showCounters" entity="interface/ethernet"><ethernet equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '"/></operation></request>';
+};
+
 getSFPSlot = function (slot) {
     return '<?xml version="1.0" encoding="utf-8"?><request><operation type="showStatus" entity="interfaceOptical"><interfaceOptical equipmentId="0" interfaceId="' + slot + '" /></operation></request>';
 };
