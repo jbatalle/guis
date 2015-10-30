@@ -25,6 +25,8 @@ function anyBodyParser(req, res, next) {
     });
 }
 app.mqnaas = 'http://84.88.40.174:9000/mqnaas';
+app.arn = 'http://fibratv.dtdns.net:41080';
+app.cpe = 'http://fibratv.dtdns.net:41081';
 
 app.configure(function () {
     app.use(anyBodyParser);

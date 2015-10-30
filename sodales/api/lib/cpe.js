@@ -9,7 +9,8 @@ module.exports = function (app) {
     app.use('/rest/cpe', function (req, res) {
         console.log(req.method + ": " + req.url);
         //var url = 'http://localhost:9000/mqnaas' + req.url;
-        var url = 'http://fibratv.dtdns.net:41081/' + req.url;
+        //var url = 'http://fibratv.dtdns.net:41081/' + req.url;
+        var url = app.mqnaas + req.url;
         console.log(url);
         var r = null;
 
