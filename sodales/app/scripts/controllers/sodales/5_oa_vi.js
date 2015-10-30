@@ -502,4 +502,43 @@ angular.module('mqnaasApp')
             });
         };
 
+        $scope.getMappedResources = function () {
+            $scope.virtualResources = [];
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement";
+
+            MqNaaSResourceService.get(url).then(function (response) {
+                var virtualResources = checkIfIsArray(response.IResource.IResourceId);
+                angular.forEach(virtualResources, function (viRes) {
+                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceMapping/mapping/?arg0=" + viRes;
+                    MqNaaSResourceService.getText(url).then(function (response) {
+                        $scope.virtualResources.push({
+                            id: viRes,
+                            mapped: response,
+                            ports: []
+                        });
+
+                        //http://localhost:9000/mqnaas/IRootResourceAdministration/Network-Internal-1.0-2/IRequestManagement/req-1/IRequestResourceManagement/req_root-1/IPortManagement
+                        url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + viRes + "/IPortManagement";
+                        MqNaaSResourceService.get(url).then(function (response) {
+                            var virtualPorts = checkIfIsArray(response.IResource.IResourceId);
+                            angular.forEach(virtualPorts, function (viPort) {
+                                url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceMapping/mapping/?arg0=" + viPort;
+                                MqNaaSResourceService.getText(url).then(function (response) {
+                                    $scope.virtualResources[$scope.virtualResources.length - 1].ports.push({
+                                        id: viPort,
+                                        mapped: response
+                                    })
+                                });
+                            });
+                        });
+
+                    });
+
+                    //request ports, and 
+                })
+            });
+        };
+
+        $scope.getMappedResources();
+
     });
