@@ -118,15 +118,7 @@ angular.module('mqnaasApp')
             }, // just to make sure th layout is the same when the locale is changed
             locale: 'en',
             manipulation: {
-                addNode: function (data, callback) {
-                    //loadModal
-                    console.log(data);
-                    console.log(callback);
-                    data.id = data.id;
-                    data.label = data.id;
-                    clearPopUp();
-                    callback(data);
-                },
+                addNode: false,
                 editNode: function (data, callback) {
                     // filling in the popup DOM elements
                 },
@@ -364,15 +356,7 @@ angular.module('mqnaasApp')
             }, // just to make sure th layout is the same when the locale is changed
             locale: 'en',
             manipulation: {
-                addNode: function (data, callback) {
-                    //loadModal
-                    console.log(data);
-                    console.log(callback);
-                    data.id = data.id;
-                    data.label = data.id;
-                    clearPopUp();
-                    callback(data);
-                },
+                addNode: false,
                 editNode: function (data, callback) {
                     // filling in the popup DOM elements
                 },
