@@ -67,6 +67,7 @@ angular.module('mqnaasApp')
 
         $scope.updateARNCard = function () {
             $scope.getEthernetInterfaces($scope.card._id);
+            $scope.cos = [];
         }
 
         $scope.updateResource = function () {
@@ -77,5 +78,16 @@ angular.module('mqnaasApp')
             console.log(CoS);
             $scope.cos = CoS;
         };
+
+        $scope.getEthernet = function (ethernet) {
+            $scope.ethernet = ethernet;
+            $modal({
+                title: 'Ethernet information',
+                template: 'views/modals/ethernetInfo.html',
+                show: true,
+                scope: $scope
+            });
+
+        }
 
     });
