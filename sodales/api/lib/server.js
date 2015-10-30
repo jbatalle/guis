@@ -27,7 +27,6 @@ app.configure(function () {
     app.use(anyBodyParser);
 });
 
-require('./monitoring')(app);
 require('./proxy')(app);
 require('./arn')(app);
 require('./cpe')(app);
