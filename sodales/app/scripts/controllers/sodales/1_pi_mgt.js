@@ -296,8 +296,10 @@ angular.module('mqnaasApp')
             url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel';
             MqNaaSResourceService.list(url).then(function (data) {
                 console.log(data.resource.resources.resource);
-                $rootScope.resourceInfo = checkIfIsArray(data.resource.resources.resource);
+                $rootScope.resourceInfo = {};
+                $rootScope.resourceInfo.ports = checkIfIsArray(data.resource.resources.resource);
                 $rootScope.resourceInfo.slicing = {};
+
                 $scope.getSlice(resourceName);
             });
 
@@ -313,6 +315,7 @@ angular.module('mqnaasApp')
             console.log(url);
 
             MqNaaSResourceService.getText(url).then(function (data) {
+                if (data === undefined) return;
                 console.log('Slice: ' + data);
                 var sliceId = data;
                 var unitType = 'port';
