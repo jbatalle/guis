@@ -47,13 +47,18 @@
         <!-- /.row -->
     </div>
     <div class="col-md-3">
-        <p class="lead">Edit virtual resource</p>
-        <div>
-            <div class="form-group">
-                Actual info
-
-            </div>
-        </div>
+        <p class="lead">Mapped resources</p>
+        {{virtualResources}}
+        <ul>
+            <li ng-repeat="viRes in virtualResources">
+                {{viRes.id}} -> {{viRes.mapped}} {{viRes.ports}}
+                <ul>
+                    <li ng-repeat="viPorts in viRes.ports">
+                        {{viPorts.id}} -> {{viPorts.mapped}}
+                    </li>
+                </ul>
+            </li>
+        </ul>
         <div>
             <div class="form-group">
                 <label class="control-label"><i class="fa fa-calendar"></i> <i class="fa fa-arrows-h"></i>
