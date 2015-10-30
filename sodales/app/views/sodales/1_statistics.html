@@ -21,8 +21,9 @@
             <table st-table="displayedCollection" st-safe-src="arnLinkStatus" class="table table-striped">
                 <thead>
                     <tr>
-                        <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Name</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2">Description</th>
+                        <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Interface id</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2">Name</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2">Card ID</th>
                         <th class="col-sm-2 col-md-2 col-lg-2">Admin</th>
                         <th class="col-sm-2 col-md-2 col-lg-2">Eqpmt ID</th>
                         <th class="col-sm-2 col-md-2 col-lg-2">MediaType</th>
@@ -33,7 +34,7 @@
                         <th class="col-sm-1 col-md-1 col-lg-1">Statistics</th>
                     </tr>
                     <tr>
-                        <th colspan="2">
+                        <th colspan="6">
                             <input st-search="" class="form-control" placeholder="global search ..." type="text" />
                         </th>
                     </tr>
@@ -51,13 +52,13 @@
                         <td>{{row.ethStatus._txStatus}}</td>
                         <td>{{row.ethStatus._rxStatus}}</td>
                         <td data-title="'Statistics'" class="col-sm-1 col-md-1 col-lg-1">
-                            <a href="" ng-click="viewStatistics(row._interfaceId)" title="View">View</a>
+                            <a href="" ng-click="viewStatistics(row._cardId, row._interfaceId)" title="View">View</a>
                         </td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td class="text-center" st-pagination="" st-items-by-page="5" colspan="3">
+                        <td class="text-center" st-pagination="" st-items-by-page="5" colspan="10">
                         </td>
                     </tr>
                 </tfoot>
