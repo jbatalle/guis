@@ -6,15 +6,14 @@
                 <h4 class="modal-title" ng-bind="title"></h4>
             </div>
             <div class="modal-body">
-<h5>Ranges</h5>
-<div ng-repeat="range in cubes.cube.ranges.range">
-<b>Lower Bound:</b>
-                    <input type="text" name="name" class="form-control" value="{{range.lowerBound}}"/>
-<b>Upper Bound:</b>
-                    <input type="text" name="name" class="form-control" value="{{range.upperBound}}"/>
-<br/>
-</div>
-
+                <h5>Ranges</h5>
+                <div ng-repeat="range in cubes.cube.ranges.range">
+                    <b>Lower Bound:</b>
+                    <input type="text" name="name" class="form-control" value="{{range.lowerBound}}" />
+                    <b>Upper Bound:</b>
+                    <input type="text" name="name" class="form-control" value="{{range.upperBound}}" />
+                    <br/>
+                </div>
             </div>
         </div>
     </div>
