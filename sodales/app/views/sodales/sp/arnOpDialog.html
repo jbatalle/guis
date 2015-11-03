@@ -1,27 +1,37 @@
-<div class="container-fluid" ng-controller="spVIController">
-    <b>Configuration VLAN conectivity ARN</b>
-        <div>
-            <div>Up link iface
-                <input placeholder="16842752" type="text" class="form-control" ng-model="arn.upLinkIfaces1" name="endpoint" >
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
             </div>
-            <div>Up link iface
-                <input placeholder="83951616" type="text" class="form-control" ng-model="arn.upLinkIfaces2" name="endpoint" >
-            </div>
-            <div>Down link iface
-                <input placeholder="50397184" type="text" class="form-control" ng-model="arn.downLinkIfaces1" name="endpoint" >
-            </div>
-            <div>Down link iface
-                <input placeholder="67174400" type="text" class="form-control" ng-model="arn.downLinkIfaces2" name="endpoint" >
-            </div>
-            <div>Down link vlan
-                <input placeholder="100" type="text" class="form-control" ng-model="arn.upLinkVlan" name="endpoint" >
-            </div>
-            <div>Down link vlan
-                <input placeholder="200" type="text" class="form-control" ng-model="arn.downLinkVlan" name="endpoint" >
-            </div>
-            <br/>
-            <div>
-                <a href="" class="btn btn-sm btn-primary" ng-click="Configure('arn', arn)">Add</a>
+            <div class="modal-body">
+                <b>Configuration VLAN conectivity ARN</b>
+                <div>
+                    <div>Up link iface
+                        <input placeholder="16842752" type="text" class="form-control" ng-model="arn.upLinkIfaces1" name="endpoint">
+                    </div>
+                    <div>Up link iface
+                        <input placeholder="83951616" type="text" class="form-control" ng-model="arn.upLinkIfaces2" name="endpoint">
+                    </div>
+                    <div>Down link iface
+                        <input placeholder="50397184" type="text" class="form-control" ng-model="arn.downLinkIfaces1" name="endpoint">
+                    </div>
+                    <div>Down link iface
+                        <input placeholder="67174400" type="text" class="form-control" ng-model="arn.downLinkIfaces2" name="endpoint">
+                    </div>
+                    <div>Down link vlan
+                        <input placeholder="100" type="text" class="form-control" ng-model="arn.upLinkVlan" name="endpoint">
+                    </div>
+                    <div>Down link vlan
+                        <input placeholder="200" type="text" class="form-control" ng-model="arn.downLinkVlan" name="endpoint">
+                    </div>
+                    <br/>
+                    <div>
+                        <a href="" class="btn btn-sm btn-primary" ng-click="Configure('arn', arn)">Add</a>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 </div>
