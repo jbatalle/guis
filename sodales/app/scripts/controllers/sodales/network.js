@@ -502,6 +502,106 @@ angular.module('mqnaasApp')
             });
         };
 
+    })
+    .controller('spViewNetwork', function ($scope, $rootScope, MqNaaSResourceService, $modal, RootResourceService) {
+        var url = '';
+
+        $scope.nodes = new vis.DataSet();
+        $scope.edges = new vis.DataSet();
+
+        console.log($rootScope.virtNetId);
+
+        $scope.getNetworkModel = function () {
+
+            $scope.$watch(function (rootScope) {
+                    return rootScope.networkId
+                },
+                function () {
+                    if ($rootScope.networkId === undefined) return;
+                    url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRequestBasedNetworkManagement/' + $rootScope.virtNetId + '/IResourceModelReader/resourceModel');
+                    MqNaaSResourceService.list(url).then(function (data) {
+                        if (data === undefined) {
+                            $rootScope.networkId = undefined;
+                            return;
+                        }
+                        console.log(data);
+                        $scope.nodes.add(generateNodeData(data.resource.resources.resource));
+                        $scope.edges.add(generateLinkData(data.resource.resources.resource, $scope.nodes));
+                    });
+                });
+        };
+
+        $scope.getNetworkModel();
+
+        $scope.network_data = {
+            nodes: $scope.nodes,
+            edges: $scope.edges
+        };
+
+        $scope.network_options = {
+            layout: {
+                randomSeed: 3
+            }, // just to make sure th layout is the same when the locale is changed
+            locale: 'en'
+        };
+
+        $scope.onNodeSelect = function (properties) {
+            console.log(properties);
+            console.log($scope);
+            console.log($scope.nodes);
+            var virtualResource = $scope.nodes.get({
+                filter: function (item) {
+                    console.log(item);
+                    return item.id == properties.nodes[0];
+                }
+            })[0].label;
+            console.log($rootScope.virtNetId)
+
+            console.log(virtualResource);
+            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + $rootScope.virtNetId + '/IRootResourceProvider/' + virtualResource + '/IResourceModelReader/resourceModel';
+            MqNaaSResourceService.list(url).then(function (data) {
+                console.log(data);
+                console.log(data.resource.resources.resource);
+                $rootScope.virtualResource = data.resource;
+                $rootScope.physicalPorts = checkIfIsArray(data.resource.resources.resource);
+                console.log($rootScope.physicalPorts);
+                //$rootScope.resourceInfo.ports = checkIfIsArray(data.resource.resources.resource);
+                //$scope.getSlice(virtualResource);
+
+                $rootScope.virtualResource.ports = [];
+                /* var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider/" + virtualResource + "/IPortManagement";
+                 MqNaaSResourceService.get(url).then(function (result) {
+                     var ports = checkIfIsArray(result.IResource.IResourceId);
+                     */
+                var ports = $rootScope.physicalPorts;
+                url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider/" + virtualResource + "/ISliceProvider/slice";
+                MqNaaSResourceService.getText(url).then(function (result) {
+                    var slice = result;
+                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider/" + virtualResource + "/ISliceProvider/" + slice + "/ISliceAdministration/cubes";
+                    MqNaaSResourceService.get(url).then(function (result) {
+                        console.log(result);
+                        var cubes = checkIfIsArray(result.cubesList.cubes);
+                        console.log(cubes);
+                        cubes.forEach(function (cube) {
+                            console.log(cube);
+                            if (cube.cube.ranges.range.lowerBound === cube.cube.ranges.range.upperBound) {
+                                $rootScope.virtualResource.ports.push(ports[cube.cube.ranges.range.lowerBound]);
+                            } else {
+                                var k = cube.cube.ranges.range.lowerBound;
+                                while (k < cube.cube.ranges.range.upperBound) {
+                                    $rootScope.virtualResource.ports.push(ports[cube.cube.ranges.range.lowerBound]);
+                                    k++;
+                                }
+                            }
+                        });
+                    });
+                });
+                //});
+            });
+
+
+        };
+
     });
 
 function generateNodeData(data) {
