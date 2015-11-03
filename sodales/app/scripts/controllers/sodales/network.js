@@ -585,11 +585,11 @@ angular.module('mqnaasApp')
                         cubes.forEach(function (cube) {
                             console.log(cube);
                             if (cube.cube.ranges.range.lowerBound === cube.cube.ranges.range.upperBound) {
-                                $rootScope.virtualResource.ports.push(ports[cube.cube.ranges.range.lowerBound]);
+                                $rootScope.virtualResource.ports.push(ports[parseInt(cube.cube.ranges.range.lowerBound)]);
                             } else {
-                                var k = cube.cube.ranges.range.lowerBound;
-                                while (k < cube.cube.ranges.range.upperBound) {
-                                    $rootScope.virtualResource.ports.push(ports[cube.cube.ranges.range.lowerBound]);
+                                var k = parseInt(cube.cube.ranges.range.lowerBound);
+                                while (k <= parseInt(cube.cube.ranges.range.upperBound)) {
+                                    $rootScope.virtualResource.ports.push(ports[k]);
                                     k++;
                                 }
                             }
