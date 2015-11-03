@@ -128,110 +128,113 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
 
             //sodales
             .state('root.monitoring', {
-                url: '/monitoring',
-                views: {
-                    'master@root': {
-                        templateUrl: 'views/sodales/1_statistics.html',
-                        controller: 'SodalesMonitoringController'
+                    url: '/monitoring',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/1_statistics.html',
+                            controller: 'SodalesMonitoringController'
+                        }
                     }
-                }
-            }).state('root.cfm', {
-                url: '/cfm',
-                views: {
-                    'master@root': {
-                        templateUrl: 'views/sodales/CFM-OAM.html',
-                        controller: 'SodalesMonitoringController'
+                }).state('root.cfm', {
+                    url: '/cfm',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/CFM-OAM.html',
+                            controller: 'SodalesMonitoringController'
+                        }
                     }
-                }
-            }).state('root.history', {
-                url: '/openaccess/history',
-                views: {
-                    'master@root': {
-                        templateUrl: 'views/sodales/2_1_openAccess_history.html',
-                        controller: 'SodalesHistoryController'
+                }).state('root.history', {
+                    url: '/openaccess/history',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/2_1_openAccess_history.html',
+                            controller: 'SodalesHistoryController'
+                        }
                     }
-                }
-            }).state('root.vimgt', {
-                url: '/openaccess/vimgt',
-                views: {
-                    'master@root': {
-                        templateUrl: 'views/sodales/2_0_openAccess.html',
-                        controller: 'SodalesOpenaccessDashCtrl'
+                }).state('root.vimgt', {
+                    url: '/openaccess/vimgt',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/2_0_openAccess.html',
+                            controller: 'SodalesOpenaccessDashCtrl'
+                        }
                     }
-                }
-            }).state('root.vicreation', {
-                url: '/openaccess/vicreation',
-                views: {
-                    'master@root': {
-                        templateUrl: 'views/createVI/index.html',
-                        controller: 'listVIController'
+                }).state('root.vicreation', {
+                    url: '/openaccess/vicreation',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/createVI/index.html',
+                            controller: 'listVIController'
+                        }
                     }
-                }
-            }).state('root.mgt', {
-                url: '/mgt',
-                views: {
-                    'master@root': {
-                        templateUrl: 'views/sodales/0_1_mgt_pi.html',
-                        controller: 'sodalesPiMgtCtrl'
+                }).state('root.mgt', {
+                    url: '/mgt',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/0_1_mgt_pi.html',
+                            controller: 'sodalesPiMgtCtrl'
+                        }
                     }
-                }
-            }).state('root.resources', {
-                url: '/mgt/resources',
-                views: {
-                    'master@root': {
-                        templateUrl: 'views/sodales/0_2_mgt_res.html',
-                        controller: 'sodalesPiResourcesCtrl'
+                }).state('root.resources', {
+                    url: '/mgt/resources',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/0_2_mgt_res.html',
+                            controller: 'sodalesPiResourcesCtrl'
+                        }
                     }
-                }
-            }).state('root.viList', {
-                url: '/viList',
-                views: {
-                    'master@root': {
-                        templateUrl: 'views/createVI/index.html',
-                        controller: 'listVIController'
+                }).state('root.viList', {
+                    url: '/viList',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/createVI/index.html',
+                            controller: 'listVIController'
+                        }
                     }
-                }
-            }).state('root.editVIRequest', {
-                url: '/editVIRequest/:id',
-                views: {
-                    'master@root': {
-                        templateUrl: 'views/createVI/editor.html',
-                        controller: 'editVIController'
+                }).state('root.editVIRequest', {
+                    url: '/editVIRequest/:id',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/createVI/editor.html',
+                            controller: 'editVIController'
+                        }
                     }
-                }
-            }).state('root.spInfo', {
-                url: '/spInfo',
-                views: {
-                    'master@root': {
-                        templateUrl: 'views/sodales/sp/spInfo.html',
-                        controller: 'spController'
+                })
+                //SP
+                .state('root.spInfo', {
+                    url: '/spInfo',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/sp/spInfo.html',
+                            controller: 'spController'
+                        }
                     }
-                }
-            }).state('root.spVIInfo', {
-                url: '/spVIInfo',
-                views: {
-                    'master@root': {
-                        templateUrl: 'views/sodales/sp/spVIInfo.html',
-                        controller: 'spVIController'
+                }).state('root.spVIInfo', {
+                    url: '/spVIInfo/:id',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/sp/spVIInfo.html',
+                            controller: 'spVIController'
+                        }
                     }
-                }
-            }).state('root.spStats', {
-                url: '/spStats',
-                views: {
-                    'master@root': {
-                        templateUrl: 'views/sodales/sp/spStats.html',
-                        controller: 'spStatsController'
+                }).state('root.spStats', {
+                    url: '/spStats/:id',
+                    views: {
+                        'master@root': {
+                            //templateUrl: 'views/sodales/sp/spStats.html',
+                            templateUrl: 'views/sodales/1_statistics.html',
+                            controller: 'spStatsController'
+                        }
                     }
-                }
-            }).state('root.settings', {
-                url: '/settings',
-                views: {
-                    'master@root': {
-                        templateUrl: 'views/sodales/settings.html',
-                        controller: 'settingsController'
+                }).state('root.settings', {
+                    url: '/settings',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/settings.html',
+                            controller: 'settingsController'
+                        }
                     }
-                }
-            });
+                });
 
             $urlRouterProvider.otherwise('/login');
 
