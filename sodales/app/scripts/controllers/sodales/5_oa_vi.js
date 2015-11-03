@@ -200,7 +200,7 @@ angular.module('mqnaasApp')
                                 MqNaaSResourceService.get(url).then(function (result) {
                                     console.log(result);
                                     var physicalPorts = checkIfIsArray(result.IResource.IResourceId);
-                                    currentRequest++;
+
                                     for ($scope.j = 0; $scope.j < physicalPorts.length; $scope.j++) {
                                         if (physicalPorts[$scope.j] === virtualPort) {
                                             cube.push($scope.j + 1);
@@ -208,7 +208,7 @@ angular.module('mqnaasApp')
                                         }
                                     };
                                     if (currentRequest < $scope.listVirtualPorts.length - 1) {
-
+                                        currentRequest++;
                                         makeNextRequest();
                                     } else {
                                         console.log(currentRequest);
@@ -223,6 +223,7 @@ angular.module('mqnaasApp')
 
                                         deferred.resolve();
                                     }
+
                                 });
                             });
                             //});
