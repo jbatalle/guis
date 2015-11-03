@@ -332,21 +332,21 @@ angular.module('mqnaasApp')
                         console.log('Set Range1');
                         unitType = 'vlan';
                         url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/' + sliceId + '/IUnitManagement/?arg0=' + unitType;
-                        MqNaaSResourceService.put(url).then(function (data) {
-                            if (data === undefined) return;
-                            console.log('Set unit:' + data);
-                            var unitId = data;
+//                        MqNaaSResourceService.put(url).then(function (data) {
+//                            if (data === undefined) return;
+//                            console.log('Set unit:' + data);
+//                            var unitId = data;
                             url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/' + sliceId + '/IUnitManagement/' + unitId + '/IUnitAdministration/range';
                             var range = getRangeUnit(1, 2048);
-                            MqNaaSResourceService.put(url, range).then(function () {
+//                            MqNaaSResourceService.put(url, range).then(function () {
                                 console.log('Set Range2');
 
 
                                 url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/' + sliceId + '/ISliceAdministration/cubes';
-                                var cubes = getCube(1, ports.length, 1, 2048);
+                                var cubes = getCube3(1, ports.length);
                                 MqNaaSResourceService.put(url, cubes).then(function () {});
-                            });
-                        });
+//                            });
+//                        });
                     });
                 });
             });
