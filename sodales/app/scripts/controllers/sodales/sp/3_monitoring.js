@@ -1,15 +1,16 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spStatsController', function ($scope, ngTableParams, $filter, $stateParams, localStorageService, ngDialog, arnService, cpeService, $interval) {
+    .controller('spStatsController', function ($rootScope, $scope, $filter, localStorageService, $modal, arnService, cpeService, $interval, $window, MqNaaSResourceService, $stateParams) {
 
         var promise;
         var availableResources = [];
         $scope.selected = "";
         $scope.vi = $stateParams.id;
+        var url;
+        $scope.physicalResources = [];
 
         $scope.selectedResource = "";
-
 
         if ($window.localStorage.networkId) $rootScope.netId = $window.localStorage.networkId;
         else $rootScope.netId = null;

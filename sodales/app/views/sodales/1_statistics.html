@@ -1,6 +1,6 @@
 <div class="row">
-    <div class="col-md-2">
-        <p class="lead">List of resources</p>
+    <div class="col-md-3">
+        <h3 class="page-header">Physical resources</h3>
         <div class="list-group">
             <ul>
                 <li ng-repeat="resource in physicalResources">
@@ -13,7 +13,7 @@
         </div>
 
     </div>
-    <div class="col-md-10">
+    <div class="col-md-9">
         <h2 class="page-header">Performance monitoring <small>Statistics</small></h2>
         <div ng-show="arnLinkStatus">
             <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateCard()"></select>

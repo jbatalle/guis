@@ -1,55 +1,54 @@
 <div class="row">
     <div class="col-md-3">
-        <div class="row">
-            <p class="lead">List of physical resources</p>
-            <div class="list-group">
-                <select placeholder="select resource" bs-select ng-model="resource" bs-options="resource for resource in resources" ng-change="updateResource()"></select>
-            </div>
+        <h3 class="page-header">Physical resources</h3>
+        <div class="list-group">
+            <select placeholder="select resource" bs-select ng-model="resource" bs-options="resource for resource in resources" ng-change="updateResource()"></select>
+        </div>
 
-            <p class="lead">Resource Information</p>
-            <div class="list-group" ng-show="!equipmentInfo">
-                No information
-            </div>
-            <div class="list-group" ng-show="equipmentInfo">
-                <div class="fx-form-block-controls fx-first collapse am-collapse in" data-uxfwk-collapse-target="">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label ng-binding">Name</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-static ng-binding ng-scope">
-                                {{equipmentInfo.system._name}}
-                            </p>
+        <p class="lead">Resource Information</p>
+        <div class="list-group" ng-show="!equipmentInfo">
+            No information
+        </div>
+        <div class="list-group" ng-show="equipmentInfo">
+            <div class="fx-form-block-controls fx-first collapse am-collapse in" data-uxfwk-collapse-target="">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label ng-binding">Name</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static ng-binding ng-scope">
+                            {{equipmentInfo.system._name}}
+                        </p>
 
-                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label ng-binding">Description</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-static ng-binding ng-scope">
-                                {{equipmentInfo.system._name}}
-                            </p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label ng-binding">Description</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static ng-binding ng-scope">
+                            {{equipmentInfo.system._name}}
+                        </p>
 
-                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label ng-binding">Administrative state</label>
-                        <div class="col-sm-8">
-                            <p class="form-control-static ng-binding ng-scope">
-                                {{equipmentInfo.system._name}}
-                            </p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label ng-binding">Administrative state</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static ng-binding ng-scope">
+                            {{equipmentInfo.system._name}}
+                        </p>
 
-                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label ng-binding">Type</label>
-                        <div class="col-sm-8">
-                            <!-- ngIf: coreEquipmentForm.dataReady -->
-                            <p class="form-control-static ng-scope">
-                                <span data-translate="" class="ng-scope ng-binding">OLT1T1</span>
-                            </p>
-                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label ng-binding">Type</label>
+                    <div class="col-sm-8">
+                        <!-- ngIf: coreEquipmentForm.dataReady -->
+                        <p class="form-control-static ng-scope">
+                            <span data-translate="" class="ng-scope ng-binding">OLT1T1</span>
+                        </p>
                     </div>
+                </div>
 
-                    <!--div class="form-group">
+                <!--div class="form-group">
                      <label  class="col-sm-4 control-label">{{:: 'TEXT.CORE.EQUIPMENT.COMMON.CONNECTIVITY' | translate }}</label>
                      <div class="col-sm-8">
                         <p class="form-control-static" data-ng-if="coreEquipmentForm.dataReady" data-uxfwk-rm-core-equipment-connectivity="coreEquipmentForm.data"></p>
@@ -61,7 +60,6 @@
                         <p class="form-control-static" data-ng-if="coreEquipmentForm.dataReady" data-uxfwk-core-equipment-operational-state="coreEquipmentForm.data"></p>
                      </div>
                   </div-->
-                </div>
             </div>
         </div>
         <div class="row">
