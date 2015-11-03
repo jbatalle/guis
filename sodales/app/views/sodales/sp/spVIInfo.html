@@ -1,8 +1,48 @@
-<div class="row" >
-    <div class="col-md-12">
+<div class="row">
+    <div class="col-md-4">
+        <h3 class="page-header">Resource Information</h3>
+        <div class="list-group" ng-show="!virtualResource">
+            No information
+        </div>
+        <div class="list-group" ng-show="virtualResource">
+            <div class="fx-form-block-controls fx-first collapse am-collapse in" data-uxfwk-collapse-target="">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label ng-binding">Name</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static ng-binding ng-scope">
+                            {{virtualResource.id}}
+                        </p>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label ng-binding">Type</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static ng-binding ng-scope">
+                            {{virtualResource.type}}
+                        </p>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label ng-binding">Ports</label>
+                    <div class="col-sm-8">
+                        <p class="form-control-static ng-binding ng-scope">
+                            {{virtualResource.ports}}
+                        </p>
+
+                    </div>
+                </div>
+                <button ng-click="openOperationARNDialog(virtualResource.id, virtualResource.type)">Operation</button>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <div class="col-md-8">
         <h2 class="page-header">Virtual resource Operation</h2>
-        <div id="viNetMgt" ng-controller="spVIController">
-            <div grapheditorsp></div>
+        <div ng-controller="spViewNetwork" id="myDraggableZone" ng-show="virtNetId">
+            <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
+            </vis-network>
         </div>
         <!-- /.row -->
     </div>
