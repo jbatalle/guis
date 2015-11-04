@@ -1,0 +1,37 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <div class="modal-body">
+                <b>General characteristics</b>
+
+                <b>Create network service</b> id, name, uplinkVlanId, uniVlanId Activate network service
+                <div>
+                    <div>Name
+                        <input placeholder="16842752" type="text" class="form-control" ng-model="arn.upLinkIfaces1" name="endpoint">
+                    </div>
+                    <div>Administrative state
+                        <input placeholder="83951616" type="text" class="form-control" ng-model="arn.upLinkIfaces2" name="endpoint">
+                    </div>
+                    <div>Service type
+                        <input placeholder="50397184" type="text" class="form-control" ng-model="arn.downLinkIfaces1" name="endpoint">
+                    </div>
+                    <div>NNI S-TAG
+                        <input placeholder="67174400" type="text" class="form-control" ng-model="arn.downLinkIfaces2" name="endpoint">
+                    </div>
+                    <div>UNI C-TAG
+                        <input placeholder="100" type="text" class="form-control" ng-model="arn.upLinkVlan" name="endpoint">
+                    </div>Interfaces
+                    <br/>
+                </div>
+                <!-- /.box-body -->
+                <div class="modal-footer">
+                    <button ng-click="createNS()">Create LAG</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

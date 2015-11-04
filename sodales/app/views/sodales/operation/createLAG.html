@@ -1,0 +1,33 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <div class="modal-body">
+                <b>LAGs</b>
+                <div>
+                    <div>Description
+                        <input placeholder="16842752" type="text" class="form-control" ng-model="arn.upLinkIfaces1" name="endpoint">
+                    </div>
+                    <div>Administrative state
+                        <input placeholder="83951616" type="text" class="form-control" ng-model="arn.upLinkIfaces2" name="endpoint">
+                    </div>
+                    <div>Load balance
+                        <input placeholder="50397184" type="text" class="form-control" ng-model="arn.downLinkIfaces1" name="endpoint">
+                    </div>
+                    <div>Mode
+                        <input placeholder="67174400" type="text" class="form-control" ng-model="arn.downLinkIfaces2" name="endpoint">
+                    </div>
+                    Select interface
+                    <br/>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="modal-footer">
+                <button ng-click="createLAG()">Create LAG</button>
+            </div>
+        </div>
+    </div>
+</div>
