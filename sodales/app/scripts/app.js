@@ -222,7 +222,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                     views: {
                         'master@root': {
                             //templateUrl: 'views/sodales/sp/spStats.html',
-                            templateUrl: 'views/sodales/1_statistics.html',
+                            templateUrl: 'views/sodales/sp/spStats.html',
                             controller: 'spStatsController'
                         }
                     }
