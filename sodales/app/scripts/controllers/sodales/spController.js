@@ -6,7 +6,7 @@ angular.module('mqnaasApp')
         $rootScope.networkId = localStorageService.get("networkId");
         $rootScope.spName = "SP1";
         $scope.data = [];
-        $scope.networkCollection = [];
+        $rootScope.networkCollection = [];
 
         $rootScope.networkId = "Network-Internal-1.0-2";
 
@@ -18,14 +18,24 @@ angular.module('mqnaasApp')
                 $scope.networks = data.vis;
                 data.vis.forEach(function (viNet) {
                     console.log(viNet);
-                    var urlVirtNets = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + viNet.name + '/IResourceModelReader/resourceModel';
-                    MqNaaSResourceService.list(urlVirtNets).then(function (viInfo) {
-                        console.log(viInfo);
-                        if (!viInfo) return;
-                        $scope.networkCollection.push({
-                            id: viNet.name,
-                            created_at: viInfo.resource.attributes.entry.value
-                        });
+
+                    var url = "IRootResourceProvider";
+                    MqNaaSResourceService.list(url).then(function (result) {
+                        var physicalNetworks = checkIfIsArray(result.IRootResource.IRootResourceId);
+                        console.log(physicalNetworks);
+
+                        physicalNetworks.forEach(function (phyNet) {
+                            var urlVirtNets = 'IRootResourceAdministration/' + phyNet + '/IRequestBasedNetworkManagement/' + viNet.name + '/IResourceModelReader/resourceModel';
+                            MqNaaSResourceService.list(urlVirtNets).then(function (viInfo) {
+                                console.log(viInfo);
+                                if (!viInfo) return;
+                                $rootScope.networkCollection.push({
+                                    id: viNet.name,
+                                    physicalNetwork: phyNet,
+                                    created_at: viInfo.resource.attributes.entry.value
+                                });
+                            });
+                        })
                     });
                 });
             });
@@ -118,7 +128,7 @@ angular.module('mqnaasApp')
                 MqNaaSResourceService.put(url, data).then(function (result) {});
             }
             $rootScope.info = "200 - Operation done";
-            $this.close();
+            this.$hide();
         };
 
 
