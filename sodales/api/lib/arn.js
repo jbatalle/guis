@@ -9,7 +9,7 @@ module.exports = function (app) {
     app.use('/rest/arn', function (req, res) {
         console.log(req.method + ": " + req.url);
         //var url = 'http://localhost:9000/mqnaas' + req.url;
-        var url = 'http://fibratv.dtdns.net:41080/cgi-bin/xml-parser.cgi';
+        var url = app.arn;
         console.log(url);
         var r = null;
 
