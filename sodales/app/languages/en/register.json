@@ -1,8 +1,0 @@
-{
-    'Full_name': 'Full name',
-    'Tenant': 'Tenant',
-    'Password': 'Password',
-    'Re_Password': 'Retype password',
-    'Recover_message': 'Recover user/password',
-    'Restart_password': 'Restart password',
-}

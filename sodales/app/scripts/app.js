@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 
-angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqnaasApp.controllers', 'mqnaasApp.directives', 'mqnaasApp.services', 'smart-table', 'mgcrea.ngStrap', 'pascalprecht.translate', 'angularTranslateApp', 'ngTagsInput', 'cb.x2js', 'LocalStorageModule'])
+angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqnaasApp.controllers', 'mqnaasApp.directives', 'mqnaasApp.services', 'smart-table', 'mgcrea.ngStrap', 'ngTagsInput', 'cb.x2js', 'LocalStorageModule'])
 
 .run(
   ['$rootScope', '$state', '$stateParams', '$timeout',
@@ -125,9 +125,8 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                         }
                     }
                 })
-
-            //sodales
-            .state('root.monitoring', {
+                //monitoring
+                .state('root.monitoring', {
                     url: '/monitoring',
                     views: {
                         'master@root': {
@@ -221,7 +220,6 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                     url: '/spStats/:id',
                     views: {
                         'master@root': {
-                            //templateUrl: 'views/sodales/sp/spStats.html',
                             templateUrl: 'views/sodales/sp/spStats.html',
                             controller: 'spStatsController'
                         }
@@ -284,7 +282,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
 
 }
 ]
-).run(function ($window, $rootScope, $location, $state, $translate, AuthService, UserStatisticsService, $alert) {
+).run(function ($window, $rootScope, $location, $state, AuthService, UserStatisticsService, $alert) {
     if ($window.localStorage.userId) $rootScope.username = $window.localStorage.username;
     if ($window.localStorage.userImg) $rootScope.user_img = $window.localStorage.userImg;
     if ($window.localStorage.user) $rootScope.user = JSON.parse($window.localStorage.user);

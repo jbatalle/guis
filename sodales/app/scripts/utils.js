@@ -53,10 +53,6 @@ function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-String.prototype.capitalizeFirstLetter = function () {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-}
-
 Date.prototype.addHours = function (h) {
     this.setHours(this.getHours() + h);
     return this;
