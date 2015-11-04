@@ -15,22 +15,40 @@
                         <input placeholder="blocked" value="2" type="text" class="form-control" ng-model="lag.admin" name="endpoint">
                     </div>
                     <div>Load balance
-                        <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network for network in listNetworks" bs-select>
+                        <button type="button" class="btn btn-default" ng-model="lag.loadBalance" data-html="1" bs-options="balance.name for balance in lag_load_balances" bs-select>
                             Select <span class="caret"></span>
                         </button>
                     </div>
                     <div>Mode
-                        <input placeholder="67174400" type="text" class="form-control" ng-model="arn.downLinkIfaces2" name="endpoint">
+                        <input placeholder="67174400" type="text" class="form-control" ng-model="lag.downLinkIfaces2" name="endpoint">
                     </div>
-                    Table Select interface, avalilable interfaces
-
                     <br/>
+                    <tags-input ng-model="listPorts" display-property="id" placeholder="Add interfaces" replace-spaces-with-dashes="false" add-from-autocomplete-only="true" template="tag-template">
+                        <auto-complete source="loadNodes($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>
+                    </tags-input>
+                    <script type="text/ng-template" id="tag-template">
+                        <div class="tag-template">
+                            <div class="right-panel">
+                                <span>{{$getDisplayText()}}</span>
+                                <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+                            </div>
+                        </div>
+                    </script>
+                    <script type="text/ng-template" id="autocomplete-template">
+                        <div class="autocomplete-template">
+                            <div class="right-panel">
+                                <span ng-bind-html="$highlight($getDisplayText())"></span>
+                                <span>({{data.attributes.entry[0].value}})</span>
+                            </div>
+                        </div>
+                    </script>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-primary" ng-click="createLAG(lag)">Create LAG</button>
                 </div>
             </div>
             <!-- /.box-body -->
-            <div class="modal-footer">
-                <button ng-click="createLAG()">Create LAG</button>
-            </div>
+
         </div>
     </div>
 </div>

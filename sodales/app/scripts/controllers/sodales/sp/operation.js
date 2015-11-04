@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, localStorageService, $modal, arnService) {
+    .controller('spVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, localStorageService, $modal, arnService, $http) {
         console.log("Edit VI : " + $stateParams.id);
         $rootScope.virtNetId = $stateParams.id;
         $scope.virtualPort = [];
@@ -58,9 +58,12 @@ angular.module('mqnaasApp')
                             scope: $scope
                         });*/
         };
-
-        $scope.createLAG = function (cardId, interfaceId, lagIfIndex, ethIfIndex, description) {
-            arnService.put(createLAG(cardId, interfaceId, lagIfIndex, ethIfIndex, description)).then(function (response) {
+        $scope.lag = {};
+        $scope.createLAG = function (lag) {
+            console.log(lag);
+            console.log($scope.listPorts);
+            return;
+            arnService.put(createLAG(cardId, interfaceId, lagIfIndex, ethIfIndex, lag.description)).then(function (response) {
                 console.log(response);
                 //$scope.LAGs = response.response.operation.interfaceList.interface;
             });
@@ -88,9 +91,45 @@ angular.module('mqnaasApp')
 
             $modal({
                 template: template,
-                scope: $scope
+                scope: $scope,
+                title: mode,
             });
-        }
+        };
+
+        $scope.lag_load_balances = [{
+            id: 1,
+            name: "Source MAC"
+        }, {
+            id: 1,
+            name: "Destination MAC"
+        }, {
+            id: 1,
+            name: "Destination and source MAC"
+        }];
+        $scope.lag_modes = [{
+            id: 1,
+            name: "Static"
+        }, {
+            id: 1,
+            name: "Dynamic (LACP)"
+        }];
+
+        $scope.listPorts = [];
+        $scope.loadNodes = function (query) {
+            return $http.get('', {
+                cache: true
+            }).then(function () {
+                var ports = $scope.virtualResource.ports
+                return ports.filter(function (port) {
+                    return port.id.toLowerCase().indexOf(query.toLowerCase()) != -1;
+                    //return node.name.toLowerCase().indexOf(query.toLowerCase()) != -1;
+                });
+                /*var nodes = $scope.nodes;
+                return nodes.filter(function (node) {
+                    return node.name.toLowerCase().indexOf(query.toLowerCase()) != -1;
+                });*/
+            });
+        };
 
         $scope.openOperationCPEDialog = function (resourceName, type) {
             $scope.virtualResourceOp = resourceName;
