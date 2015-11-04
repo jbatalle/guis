@@ -87,12 +87,7 @@ angular.module('mqnaasApp')
             var password = $scope.password;
             $rootScope.username = username;
             if (username && password) {
-                AuthService.getIP().then(function (data) {
-                        $scope.loginProcess(username, password, data.ip);
-                    },
-                    function (error) {
-                        $scope.loginProcess(username, password, "");
-                    });
+                $scope.loginProcess(username, password, "");
             } else {
                 $scope.loginError = 'Username and password required';
             }
