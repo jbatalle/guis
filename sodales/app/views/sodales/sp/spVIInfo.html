@@ -1,8 +1,11 @@
-<div class="row">
+<div class="row" ng-show="!virtNetId">
+    No virtual network selected. Please select.
+</div>
+<div class="row" ng-show="virtNetId">
     <div class="col-md-4">
         <h3 class="page-header">Resource Information</h3>
         <div class="list-group" ng-show="!virtualResource">
-            No information
+            No resource selected.
         </div>
         <div class="list-group" ng-show="virtualResource">
             <div class="fx-form-block-controls fx-first collapse am-collapse in" data-uxfwk-collapse-target="">
@@ -38,7 +41,7 @@
         <!-- /.row -->
     </div>
     <div class="col-md-8" ng-show="operation">
-        <h2 class="page-header">Operation</h2>
+        <h3 class="page-header">Operation</h3>
         <b>LAGs</b>
         <table>
             <thead>
@@ -68,8 +71,8 @@
 
         <b>Create network service</b> id, name, uplinkVlanId, uniVlanId Activate network service
     </div>
-    <div class="col-md-8" ng-show="!operation">
-        <h2 class="page-header">Virtual topology</h2>
+    <div class="col-md-8">
+        <h3 class="page-header">Virtual topology -  {{virtNetId}}</h3>
         <div ng-controller="spViewNetwork" id="myDraggableZone" ng-show="virtNetId">
             <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
             </vis-network>

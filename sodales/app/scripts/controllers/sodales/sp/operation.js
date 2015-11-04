@@ -12,11 +12,12 @@ angular.module('mqnaasApp')
 
         //hardcoded
         $rootScope.networkId = "Network-Internal-1.0-2";
-        $scope.virtNetId = "Network-virtual-7";
+        $rootScope.virtNetId = "Network-virtual-7";
 
         $scope.getNetworkResources = function () {
             console.log("NETWORK GET RESOURCE");
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider";
+            console.log($rootScope.virtNetId);
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider";
             MqNaaSResourceService.get(url).then(function (result) {
                 console.log(result);
                 var netEls = checkIfIsArray(result.IRootResource.IRootResourceId);
@@ -106,14 +107,14 @@ angular.module('mqnaasApp')
                 console.log(form);
                 var arn = form;
                 var data = getARNVlanConnectivity(arn.upLinkIfaces1, arn.upLinkIfaces2, arn.downLinkIfaces1, arn.downLinkIfaces2, arn.upLinkVlan, arn.downLinkVlan);
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider/" + $scope.virtualResourceOp + "/IVlanConnectivity/vlanConnectivity";
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider/" + $scope.virtualResourceOp + "/IVlanConnectivity/vlanConnectivity";
                 MqNaaSResourceService.put(url, data).then(function (result) {});
 
             } else if (type === "cpe") {
                 console.log(form);
                 var cpe = form;
                 var data = getCPEVlanConnectivity(cpe.egressPortId, cpe.egressVlan, cpe.ingressPortId, cpe.ingressVlan, cpe.unitId);
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider/" + $scope.virtualResourceOp + "/IVlanConnectivity/vlanConnectivity";
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider/" + $scope.virtualResourceOp + "/IVlanConnectivity/vlanConnectivity";
                 MqNaaSResourceService.put(url, data).then(function (result) {});
             }
             $rootScope.info = "200 - Operation done";
