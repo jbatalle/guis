@@ -68,7 +68,7 @@
                     <div style="overflow-y: scroll; height:250px;">
                         <ul>
                             <li ng-repeat="res in resourceInfo.ports">
-                                <a ng-click="getResourceInfo(res)"> {{res.attributes.entry[0].value}}</a>
+                                {{res.attributes.entry[0].value}}
                             </li>
                         </ul>
                     </div>
