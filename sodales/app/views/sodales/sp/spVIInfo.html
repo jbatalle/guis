@@ -26,14 +26,13 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-4 control-label ng-binding">Ports</label>
-                    <div class="col-sm-8">
-                        <p class="form-control-static ng-binding ng-scope">
-                            {{virtualResource.ports}}
-                        </p>
-
-                    </div>
+                    <p class="form-control-static ng-binding ng-scope">
+                        <li ng-repeat="res in virtualResource.ports">
+                            {{res.id}} - {{res.attributes.entry[0].value}}
+                        </li>
+                    </p>
                 </div>
-                <button ng-click="openOperationARNDialog(virtualResource.id, virtualResource.type)">Operation</button>
+                <button class="btn btn-sm btn-primary" ng-click="openOperationARNDialog(virtualResource.id, virtualResource.type)">Operation</button>
             </div>
         </div>
         <!-- /.row -->
