@@ -8,6 +8,7 @@ angular.module('mqnaasApp')
         $scope.virtualResources = [];
 
         $scope.operation = false;
+        $rootScope.virtualResource = null;
 
         //hardcoded
         $rootScope.networkId = "Network-Internal-1.0-2";
@@ -27,6 +28,7 @@ angular.module('mqnaasApp')
                 });
             });
         };
+
         $scope.getNetworkResources();
         $scope.createOperation = function () {
             $modal({
@@ -34,6 +36,7 @@ angular.module('mqnaasApp')
                 scope: $scope
             });
         };
+
         $scope.openOperationARNDialog = function (resourceName, type) {
             $scope.operation = true;
             console.log("Dialog call");

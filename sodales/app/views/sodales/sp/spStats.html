@@ -1,17 +1,69 @@
 <div class="row">
-    <div class="col-md-2">
-        <p class="lead">List of resources</p>
-        <div class="list-group" >
-            <a ng-repeat="resource in availableResources" href="" ng-click="selectedResource(resource.name, resource.type)" 
-               class="list-group-item" ng-class="navClass('{{resource.name}}')" 
-               data-animation="am-flip-x" bs-dropdown="dropdown">{{resource.name}}</a>
+    <div class="col-md-3">
+        <h3 class="page-header">Physical resources</h3>
+        <div class="list-group">
+            <ul>
+                <li ng-repeat="resource in virtualResources">
+                    <a ng-click="selectResource(resource.name, resource.type)" bs-dropdown="resource.type == 'ARN' ? dropdown:dropdown2" aria-haspopup="true" aria-expanded="false">{{resource.name}}</a>
+                </li>
+            </ul>
+
+            <a ng-if="resource.type == 'ARN'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.name, resource.type)" class="list-group-item" ng-class="navClass('{{resource.name}}')" data-animation="am-flip-x" bs-dropdown="dropdown">{{resource.name}}</a>
+            <a ng-if="resource.type == 'CPE'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.name, resource.type)" class="list-group-item" ng-class="navClass('{{resource.name}}')" data-animation="am-flip-x" bs-dropdown="dropdown2">{{resource.name}}</a>
         </div>
-        </div>
-    <div class="col-md-10">
-        <h2 class="page-header">Status <small>Statistics</small></h2>
-        <div ng-show="ARNStats">
+
+    </div>
+    <div class="col-md-9">
+        <h2 class="page-header">Performance monitoring <small>Statistics</small></h2>
+        <div ng-show="virtualResource.ports">
+            <select placeholder="select interface" bs-select ng-model="interface" bs-options="interface.id for interface in virtualResource.ports" ng-change="updateInterface()"></select>
+            <table st-table="displayedCollection" st-safe-src="arnLinkStatus" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Id</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2">Name</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2">Card ID</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2">Admin</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2">Eqpmt ID</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2">MediaType</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2">Collisions</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2">Link</th>
+                        <th class="col-sm-1 col-md-1 col-lg-1">Tx</th>
+                        <th class="col-sm-1 col-md-1 col-lg-1">Rx</th>
+                        <th class="col-sm-1 col-md-1 col-lg-1">Statistics</th>
+                    </tr>
+                    <tr>
+                        <th colspan="6">
+                            <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in displayedCollection">
+                        <td><a ng-click="showDescriptor(row)" data-trigger="hover" data-type="success" data-title="Description" bs-tooltip>{{row._interfaceId}}</a></td>
+                        <td>{{row._name}}</td>
+                        <td>{{row._cardId}}</td>
+                        <td>{{row._admin}}</td>
+                        <td>{{row._equipmentId}}</td>
+                        <td>{{row.ethStatus._mediaType}}</td>
+                        <td>{{row.ethStatus._collision}}</td>
+                        <td>{{row.ethStatus._link}}</td>
+                        <td>{{row.ethStatus._txStatus}}</td>
+                        <td>{{row.ethStatus._rxStatus}}</td>
+                        <td data-title="'Statistics'" class="col-sm-1 col-md-1 col-lg-1">
+                            <a href="" ng-click="viewStatistics(row._cardId, row._interfaceId)" title="View">View</a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center" st-pagination="" st-items-by-page="5" colspan="10">
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
             <table ng-table="tableParams" class="table ng-table-responsive" style="text-align: center">
-                <tr ng-repeat="iface in $data" ng-if="iface._name =='Eth 1' || iface._name =='Eth 2' || iface._name == 'intEth 1'">
+                <tr ng-repeat="iface in $data">
                     <td data-title="'Eth-ID'" sortable="'_name'" class="col-sm-1 col-md-1 col-lg-1">{{iface._name}}</td>
                     <td data-title="'Card ID'" sortable="'_cardId'" class="col-sm-1 col-md-1 col-lg-1">{{iface._cardId}}</td>
                     <td data-title="'Admin'" sortable="'_admin'" class="col-sm-1 col-md-1 col-lg-1">{{iface._admin}}</td>
@@ -30,7 +82,7 @@
         <div ng-show="CPEStats">
             <ol class="breadcrumb">
                 <li class="active"><i class="fa fa-dashboard"></i> Port:</li>
-                <li ng-if="portMap.port == 105 || portMap.port == 104" ng-repeat="portMap in cpePortList" style="content:'/'; padding:'0';">
+                <li ng-if="portMap.port > 99" ng-repeat="portMap in cpePortList" style="content:'/'; padding:'0';">
                     <a href="" ng-click="getCPEStats(portMap.port)">{{portMap.port}}</a></li>
             </ol>
             <table class="table ng-table-responsive" style="text-align: center">
@@ -157,6 +209,22 @@
                         <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.num_Of_Bits_Error}}</td>
                         <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.seq_ID_err}}</td>
                         <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.seq_ID_reorder}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div ng-show="arnOAM">
+            <h3>Notifications logging</h3>
+            <div>
+                <table class="table ng-table-responsive" style="text-align: center">
+                    <tr ng-repeat="iface in arnOAM">
+                        <td data-title="'id'" sortable="'_id'" class="col-sm-1 col-md-1 col-lg-1">{{iface}}{{iface._id}}</td>
+                        <td data-title="'Code'" class="col-sm-1 col-md-1 col-lg-1">{{iface._code}}</td>
+                        <td data-title="'Access Type'" class="col-sm-1 col-md-1 col-lg-1">{{iface._accessType}}</td>
+                        <td data-title="'Start or End'" class="col-sm-1 col-md-1 col-lg-1">{{iface._startOrEnd}}</td>
+                        <td data-title="'TimeStamp'" class="col-sm-1 col-md-1 col-lg-1">{{iface._timeStamp}}</td>
+                        <td data-title="'LocalTimeStamp'" class="col-sm-1 col-md-1 col-lg-1">{{iface._localTimeStamp}}</td>
+                        <td data-title="'InterfaceId'" class="col-sm-1 col-md-1 col-lg-1">{{iface._interfaceId}}</td>
                     </tr>
                 </table>
             </div>

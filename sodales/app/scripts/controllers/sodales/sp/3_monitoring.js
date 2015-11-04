@@ -3,26 +3,31 @@
 angular.module('mqnaasApp')
     .controller('spStatsController', function ($rootScope, $scope, $filter, localStorageService, $modal, arnService, cpeService, $interval, $window, MqNaaSResourceService, $stateParams) {
 
+        //hardcoded
+        $rootScope.networkId = "Network-Internal-1.0-2";
+        $scope.virtNetId = "Network-virtual-7";
+
         var promise;
         var availableResources = [];
         $scope.selected = "";
         $scope.vi = $stateParams.id;
         var url;
-        $scope.physicalResources = [];
+        $scope.virtualResources = [];
 
         $scope.selectedResource = "";
 
         if ($window.localStorage.networkId) $rootScope.netId = $window.localStorage.networkId;
         else $rootScope.netId = null;
 
-        $scope.updateResourceList = function () {
-            url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceProvider');
-            MqNaaSResourceService.list(url).then(function (data) {
+        $scope.getNetworkResources = function () {
+            console.log("NETWORK GET RESOURCE");
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider";
+            MqNaaSResourceService.get(url).then(function (data) {
                 console.log(data);
                 var resourceArray = checkIfIsArray(data.IRootResource.IRootResourceId);
                 //guarrades.... due mqnaas
                 resourceArray.forEach(function (res) {
-                    $scope.physicalResources.push({
+                    $scope.virtualResources.push({
                         name: res,
                         type: res.split("-")[0]
                     });
@@ -30,7 +35,7 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.updateResourceList();
+        $scope.getNetworkResources();
 
         $scope.dropdown = [{
             "text": "System notifications",
@@ -50,19 +55,6 @@ angular.module('mqnaasApp')
             "text": "CFM/OAM",
             "click": "selectResource('" + $scope.selectedResource + "', 'CFM/OAM')"
         }];
-
-        $scope.updateCard = function () {
-            console.log($scope.card);
-            var data = getCardInterfaces($scope.card._id);
-            arnService.put(data).then(function (response) {
-                console.log(response);
-                $scope.interfaces = response.response.operation.interfaceList.interface;
-            });
-        };
-
-        $scope.updateInterface = function () {
-
-        };
 
         $scope.selectResource = function (resourceName, resourceType) {
             $scope.selectedResource = resourceName;
@@ -84,25 +76,52 @@ angular.module('mqnaasApp')
             } else if (resourceType === 'ARN/OAM') {
                 $scope.getNotificationsLogging();
             }
+        };
 
+        $scope.updateInterface = function () {
+            console.log($scope.interface);
+            console.log($scope.interface.attributes.entry[0].value);
+            var data = getInterface($scope.interface.attributes.entry[0].value);
+            arnService.put(data).then(function (response) {
+                console.log(response);
+                //var data = response.response.operation.interfaceList.interface;
+                $scope.arnLinkStatus = response.response.operation.interfaceList.interface;
+            });
         };
 
         $scope.getARNStats = function () {
-            $scope.cardId;
-            //get CardList:
-            var data = getCards();
-            arnService.put(data).then(function (response) {
-                console.log(response);
-                $scope.cards = response.response.operation.cardList.card;
+            //get OpenNaaS Ports
+            var virtualResource = $scope.selectedResource;
+            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + $scope.virtNetId + '/IRootResourceProvider/' + virtualResource + '/IResourceModelReader/resourceModel';
+            MqNaaSResourceService.list(url).then(function (data) {
+                $rootScope.virtualResource = data.resource;
+                $rootScope.physicalPorts = checkIfIsArray(data.resource.resources.resource);
+
+                $rootScope.virtualResource.ports = [];
+
+                var ports = $rootScope.physicalPorts;
+                url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider/" + virtualResource + "/ISliceProvider/slice";
+                MqNaaSResourceService.getText(url).then(function (result) {
+                    var slice = result;
+                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider/" + virtualResource + "/ISliceProvider/" + slice + "/ISliceAdministration/cubes";
+                    MqNaaSResourceService.get(url).then(function (result) {
+                        var cubes = checkIfIsArray(result.cubesList.cubes);
+                        cubes.forEach(function (cube) {
+                            if (cube.cube.ranges.range.lowerBound === cube.cube.ranges.range.upperBound) {
+                                $rootScope.virtualResource.ports.push(ports[parseInt(cube.cube.ranges.range.lowerBound)]);
+                            } else {
+                                var k = parseInt(cube.cube.ranges.range.lowerBound);
+                                while (k <= parseInt(cube.cube.ranges.range.upperBound)) {
+                                    $rootScope.virtualResource.ports.push(ports[k]);
+                                    k++;
+                                }
+                            }
+                        });
+                    });
+                });
             });
 
-            var data = getLinkStatus();
-            arnService.put(data).then(function (response) {
-                console.log(response);
-                var data = response.response.operation.interfaceList.interface;
-                console.log(data);
-                $scope.arnLinkStatus = data;
-            });
+
         };
         $scope.getCPEPortList = function () {
             var reqListPortsUrl = "meaPortMapping.xml?unit=0";
@@ -121,7 +140,6 @@ angular.module('mqnaasApp')
                 });
             }, 1000);
         };
-
 
         $scope.getCCM = function (portId) {
             var reqUrl = "meaGetCcmDefectState.xml?unit=0&streamId=1";
@@ -172,7 +190,6 @@ angular.module('mqnaasApp')
                 $scope.arnOAM = $scope.notiLog;
             });
             $scope.equipmentBoards();
-
         };
 
         $scope.equipmentBoards = function () {
@@ -185,10 +202,6 @@ angular.module('mqnaasApp')
             //                arnService.put(requestData).then(function (json.response.operation.alarmRegisterList) {
             var data = json.response.operation.alarmRegisterList.alarmRegister;
             console.log(data);
-            //                $scope.data = data.response.operation.interfaceList.interface;
-            //                localStorageService.set("mqNaaSElements", data);
-            //                console.log($scope.data);
-
         };
 
         $scope.viewStatistics = function (cardId, interfaceId) {

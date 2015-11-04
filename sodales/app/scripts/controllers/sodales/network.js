@@ -294,7 +294,7 @@ angular.module('mqnaasApp')
         };
 
     })
-    .controller('editVINetwork', function ($scope, $rootScope, MqNaaSResourceService, $modal, RootResourceService, arnService, cpeService) {
+    .controller('editVINetwork', function ($scope, $rootScope, MqNaaSResourceService, $modal, RootResourceService) {
         var url = '';
 
         $scope.nodes = new vis.DataSet();
