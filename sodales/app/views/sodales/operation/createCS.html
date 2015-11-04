@@ -10,25 +10,22 @@
 
                 <div>
                     <div>Name
-                        <input placeholder="16842752" type="text" class="form-control" ng-model="arn.upLinkIfaces1" name="endpoint">
+                        <input type="text" class="form-control" ng-model="cs.upLinkIfaces1" name="endpoint">
                     </div>
                     <div>Administrative state
-                        <input placeholder="83951616" type="text" class="form-control" ng-model="arn.upLinkIfaces2" name="endpoint">
-                    </div>
-                    <div>Service
-                        <input placeholder="50397184" type="text" class="form-control" ng-model="arn.downLinkIfaces1" name="endpoint">
+                        <input type="text" class="form-control" ng-model="cs.admin" name="endpoint">
                     </div>
                     <div>Card
-                        <input placeholder="67174400" type="text" class="form-control" ng-model="arn.downLinkIfaces2" name="endpoint">
+                        <input type="text" class="form-control" ng-model="cs.cardID" name="endpoint">
                     </div>
                     <div>Network service
-                        <input placeholder="100" type="text" class="form-control" ng-model="arn.upLinkVlan" name="endpoint">
+                        <input type="text" class="form-control" ng-model="cs.ns" name="endpoint">
                     </div>Interfaces
                     <br/>
                 </div>
                 <!-- /.box-body -->
                 <div class="modal-footer">
-                    <button ng-click="createNetworkService()">createNetworkService</button>
+                    <button ng-click="createNetworkService(cs)">createNetworkService</button>
                 </div>
             </div>
         </div>

@@ -6,22 +6,7 @@
                 <h4 class="modal-title" ng-bind="title"></h4>
             </div>
             <div class="modal-body">
-                <b>LAGs</b>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Administrtive state</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <b>Create network service</b> id, name, uplinkVlanId, uniVlanId Activate network service
+                <b>Configuration VLAN conectivity ARN</b>
                 <div>
                     <div>Up link iface
                         <input placeholder="16842752" type="text" class="form-control" ng-model="arn.upLinkIfaces1" name="endpoint">
@@ -42,13 +27,9 @@
                         <input placeholder="200" type="text" class="form-control" ng-model="arn.downLinkVlan" name="endpoint">
                     </div>
                     <br/>
-                </div>
-                <!-- /.box-body -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="addResource(arn)">Add</button>
-                </div>
-                <div>
-                    <a href="" class="btn btn-sm btn-primary" ng-click="Configure('arn', arn)">Add</a>
+                    <div>
+                        <a href="" class="btn btn-sm btn-primary" ng-click="Configure('arn', arn)">Add</a>
+                    </div>
                 </div>
             </div>
         </div>

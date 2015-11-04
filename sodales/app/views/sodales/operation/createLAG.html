@@ -9,18 +9,21 @@
                 <b>LAGs</b>
                 <div>
                     <div>Description
-                        <input placeholder="16842752" type="text" class="form-control" ng-model="arn.upLinkIfaces1" name="endpoint">
+                        <input placeholder="" type="text" class="form-control" ng-model="lag.description" name="endpoint">
                     </div>
                     <div>Administrative state
-                        <input placeholder="83951616" type="text" class="form-control" ng-model="arn.upLinkIfaces2" name="endpoint">
+                        <input placeholder="blocked" value="2" type="text" class="form-control" ng-model="lag.admin" name="endpoint">
                     </div>
                     <div>Load balance
-                        <input placeholder="50397184" type="text" class="form-control" ng-model="arn.downLinkIfaces1" name="endpoint">
+                        <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network for network in listNetworks" bs-select>
+                            Select <span class="caret"></span>
+                        </button>
                     </div>
                     <div>Mode
                         <input placeholder="67174400" type="text" class="form-control" ng-model="arn.downLinkIfaces2" name="endpoint">
                     </div>
-                    Select interface
+                    Table Select interface, avalilable interfaces
+
                     <br/>
                 </div>
             </div>

@@ -7,29 +7,29 @@
             </div>
             <div class="modal-body">
                 <b>General characteristics</b>
-
-                <b>Create network service</b> id, name, uplinkVlanId, uniVlanId Activate network service
                 <div>
                     <div>Name
-                        <input placeholder="16842752" type="text" class="form-control" ng-model="arn.upLinkIfaces1" name="endpoint">
+                        <input type="text" class="form-control" ng-model="ns.id" name="endpoint">
                     </div>
                     <div>Administrative state
-                        <input placeholder="83951616" type="text" class="form-control" ng-model="arn.upLinkIfaces2" name="endpoint">
+                        <input type="text" class="form-control" ng-model="ns.admin" name="endpoint">
                     </div>
                     <div>Service type
-                        <input placeholder="50397184" type="text" class="form-control" ng-model="arn.downLinkIfaces1" name="endpoint">
+                        <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network for network in listNetworks" bs-select>
+                            Select <span class="caret"></span>
+                        </button>
                     </div>
                     <div>NNI S-TAG
-                        <input placeholder="67174400" type="text" class="form-control" ng-model="arn.downLinkIfaces2" name="endpoint">
+                        <input placeholder="67174400" type="text" class="form-control" ng-model="ns.uplinkVlanId" name="endpoint">
                     </div>
                     <div>UNI C-TAG
-                        <input placeholder="100" type="text" class="form-control" ng-model="arn.upLinkVlan" name="endpoint">
+                        <input placeholder="100" type="text" class="form-control" ng-model="ns.uniVlanId" name="endpoint">
                     </div>Interfaces
                     <br/>
                 </div>
                 <!-- /.box-body -->
                 <div class="modal-footer">
-                    <button ng-click="createNS()">Create LAG</button>
+                    <button ng-click="createNS(ns)">Create LAG</button>
                 </div>
             </div>
         </div>
