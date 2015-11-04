@@ -37,8 +37,40 @@
         </div>
         <!-- /.row -->
     </div>
-    <div class="col-md-8">
-        <h2 class="page-header">Virtual resource Operation</h2>
+    <div class="col-md-8" ng-show="operation">
+        <h2 class="page-header">Operation</h2>
+        <b>LAGs</b>
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-sm-2 col-md-2 col-lg-2">Name</th>
+                    <th class="col-sm-3 col-md-3 col-lg-3">Administrtive state</th>
+                    <th class="col-sm-3 col-md-3 col-lg-3">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="interface in LAGs" ng-if="interface.lag">
+                    <td>{{interface._name}}</td>
+                    <td>
+                        <span ng-if="interface._admin === '1'">In service</span>
+                        <span ng-if="interface._admin === '0'">Blocked</span>
+                    </td>
+                    <td>{{interface._description}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button ng-click="openModal('createLAG')">Create LAG</button>
+        <button ng-click="openModal('createLAG')">Active LAG</button>
+        <button ng-click="openModal('createNS')">createNetworkService</button>
+        <button ng-click="openModal('createCS')">createClientService</button>
+
+
+
+        <b>Create network service</b> id, name, uplinkVlanId, uniVlanId Activate network service
+    </div>
+    <div class="col-md-8" ng-show="!operation">
+        <h2 class="page-header">Virtual topology</h2>
         <div ng-controller="spViewNetwork" id="myDraggableZone" ng-show="virtNetId">
             <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
             </vis-network>
