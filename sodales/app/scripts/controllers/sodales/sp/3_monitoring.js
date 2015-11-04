@@ -20,12 +20,9 @@ angular.module('mqnaasApp')
         else $rootScope.netId = null;
 
         $scope.getNetworkResources = function () {
-            console.log("NETWORK GET RESOURCE");
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider";
             MqNaaSResourceService.get(url).then(function (data) {
-                console.log(data);
                 var resourceArray = checkIfIsArray(data.IRootResource.IRootResourceId);
-                //guarrades.... due mqnaas
                 resourceArray.forEach(function (res) {
                     $scope.virtualResources.push({
                         name: res,
@@ -79,8 +76,6 @@ angular.module('mqnaasApp')
         };
 
         $scope.updateInterface = function () {
-            console.log($scope.interface);
-            console.log($scope.interface.attributes.entry[0].value);
             var data = getInterface($scope.interface.attributes.entry[0].value);
             arnService.put(data).then(function (response) {
                 console.log(response);
@@ -120,9 +115,8 @@ angular.module('mqnaasApp')
                     });
                 });
             });
-
-
         };
+
         $scope.getCPEPortList = function () {
             var reqListPortsUrl = "meaPortMapping.xml?unit=0";
             cpeService.get(reqListPortsUrl).then(function (response) {
@@ -192,18 +186,6 @@ angular.module('mqnaasApp')
             $scope.equipmentBoards();
         };
 
-        $scope.equipmentBoards = function () {
-            var requestData = getEquipment($scope.infId);
-            var xml = equipmentBoardsStats();
-            var x2js = new X2JS();
-            var json = x2js.xml_str2json(xml);
-            console.log(json);
-            $scope.equipBoard = json.response.operation.alarmRegisterList.alarmRegister;
-            //                arnService.put(requestData).then(function (json.response.operation.alarmRegisterList) {
-            var data = json.response.operation.alarmRegisterList.alarmRegister;
-            console.log(data);
-        };
-
         $scope.viewStatistics = function (cardId, interfaceId) {
             $scope.infId = interfaceId;
 
@@ -228,6 +210,4 @@ angular.module('mqnaasApp')
                 $interval.cancel(promise);
             }
         });
-
-
     });

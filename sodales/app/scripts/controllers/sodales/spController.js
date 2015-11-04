@@ -2,7 +2,6 @@
 
 angular.module('mqnaasApp')
     .controller('spController', function ($scope, $rootScope, MqNaaSResourceService, $filter, spService, localStorageService, AuthService) {
-        console.log("sp");
         $rootScope.networkId = localStorageService.get("networkId");
         $rootScope.spName = "SP1";
         $scope.data = [];
@@ -11,23 +10,18 @@ angular.module('mqnaasApp')
         $rootScope.networkId = "Network-Internal-1.0-2";
 
         AuthService.profile().then(function (data) {
-            console.log(data);
-            //get vi nets ids
             spService.get(data.sp_id).then(function (data) {
-                console.log(data);
                 $scope.networks = data.vis;
                 data.vis.forEach(function (viNet) {
-                    console.log(viNet);
 
                     var url = "IRootResourceProvider";
                     MqNaaSResourceService.list(url).then(function (result) {
                         var physicalNetworks = checkIfIsArray(result.IRootResource.IRootResourceId);
-                        console.log(physicalNetworks);
 
                         physicalNetworks.forEach(function (phyNet) {
+                            if (phyNet === 'MQNaaS-1') return;
                             var urlVirtNets = 'IRootResourceAdministration/' + phyNet + '/IRequestBasedNetworkManagement/' + viNet.name + '/IResourceModelReader/resourceModel';
                             MqNaaSResourceService.list(urlVirtNets).then(function (viInfo) {
-                                console.log(viInfo);
                                 if (!viInfo) return;
                                 $rootScope.networkCollection.push({
                                     id: viNet.name,

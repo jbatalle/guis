@@ -5,7 +5,6 @@ angular.module('mqnaasApp')
         $scope.userCollection = [];
         $scope.currentPath = $location.path();
         $scope.getUsersList = function () {
-            console.log($rootScope.selectedTenant);
             if ($rootScope.selectedTenant && $location.path() == '/tenants/users') {
                 TenantsService.getUsers($rootScope.selectedTenant.id).then(function (data) {
                     $scope.userCollection = data;
@@ -97,7 +96,6 @@ angular.module('mqnaasApp')
         };
 
         $scope.create = function (object) {
-            console.log(object);
             //UsersService.post(object).then(function () {});
             $scope.getUsersList();
             this.$hide();
@@ -268,15 +266,10 @@ angular.module('mqnaasApp')
         });
 
         $scope.updateProfile = function (profile) {
-            console.log(profile.roles);
-            console.log($scope.roles);
             profile.roles = [];
             $scope.roles.forEach(function (role) {
-                console.log(role);
                 if (role.selected) profile.roles.push(role.name);
-
             });
-            console.log(profile);
             UsersService.updateProfile(profile).then(function () {});
         };
     });

@@ -8,7 +8,6 @@ angular.module('mqnaasApp')
         //heartbeat mqnaas
         var url = 'IRootResourceProvider';
         MqNaaSResourceService.list(url).then(function (result) {
-            console.log(result);
             if (result === undefined) {
                 $rootScope.networkId = undefined;
                 $scope.alert.title = "Opennaas is offline!";
@@ -18,8 +17,6 @@ angular.module('mqnaasApp')
             }
         }, function (error) {
             myAlert.show();
-            console.log("test")
-            console.log(error);
         });
 
         $scope.alert = {
@@ -74,6 +71,5 @@ angular.module('mqnaasApp')
         HistoryService.query({}, function (data) {
             data.reverse().splice(10, Number.MAX_VALUE);
             $scope.lastHistory = data.reverse();
-            console.log(data);
         });
     });

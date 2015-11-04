@@ -3,7 +3,6 @@
 angular.module('mqnaasApp')
     .controller('AuthCtrl', function ($rootScope, $scope, $location, AuthService, $window) {
 
-        console.log($location);
         $scope.register = function () {
             var username = $scope.username;
             var password = $scope.password;
@@ -47,7 +46,6 @@ angular.module('mqnaasApp')
 
         $scope.loginProcess = function (username, password, ip) {
             AuthService.login(username, password, ip).then(function (data) {
-                    console.log('Go to dashboard');
                     $window.localStorage.token = data.token;
                     $window.localStorage.expiration = parseInt(data.expiration);
                     $window.localStorage.userId = data.userId;
@@ -58,7 +56,6 @@ angular.module('mqnaasApp')
                         $window.localStorage.userRoles = [];
                         $window.localStorage.userImg = '';
                         for (var i in data.roles) {
-                            console.log(data.roles[i].name);
                             $window.localStorage.userRoles += data.roles[i].name + ' ';
                             if (data.roles[i].name === 'sp') $window.localStorage.userImg = 'images/' + data.roles[i].name + '.png';
                             if (data.roles[i].name === 'ip') $window.localStorage.userImg = 'images/' + data.roles[i].name + '.png';
@@ -71,7 +68,6 @@ angular.module('mqnaasApp')
                         $scope.loginError = '';
                         $location.path('/dashboard');
                     }, function (error) {
-                        console.log(error);
                         $scope.loginError = 'Login failed';
                     });
                 },

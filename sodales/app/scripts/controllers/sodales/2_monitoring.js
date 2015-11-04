@@ -15,9 +15,7 @@ angular.module('mqnaasApp')
         $scope.updateResourceList = function () {
             url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceProvider');
             MqNaaSResourceService.list(url).then(function (data) {
-                console.log(data);
                 var resourceArray = checkIfIsArray(data.IRootResource.IRootResourceId);
-                //guarrades.... due mqnaas
                 resourceArray.forEach(function (res) {
                     $scope.physicalResources.push({
                         name: res,
@@ -49,10 +47,8 @@ angular.module('mqnaasApp')
         }];
 
         $scope.updateCard = function () {
-            console.log($scope.card);
             var data = getCardInterfaces($scope.card._id);
             arnService.put(data).then(function (response) {
-                console.log(response);
                 $scope.interfaces = response.response.operation.interfaceList.interface;
             });
         };
@@ -77,23 +73,17 @@ angular.module('mqnaasApp')
             } else if (resourceType === 'ARN/OAM') {
                 $scope.getNotificationsLogging();
             }
-
         };
 
         $scope.getARNStats = function () {
-            $scope.cardId;
-            //get CardList:
             var data = getCards();
             arnService.put(data).then(function (response) {
-                console.log(response);
                 $scope.cards = response.response.operation.cardList.card;
             });
 
             var data = getLinkStatus();
             arnService.put(data).then(function (response) {
-                console.log(response);
                 var data = response.response.operation.interfaceList.interface;
-                console.log(data);
                 $scope.arnLinkStatus = data;
             });
         };
@@ -107,10 +97,8 @@ angular.module('mqnaasApp')
             var reqUrl = "meaPmCounter.xml?unit=0&pmId=" + portId;
             $interval.cancel(promise);
             promise = $interval(function () {
-
                 cpeService.get(reqUrl).then(function (response) {
                     $scope.content = response.meaPmCounter.PmCounter;
-                    console.log($scope.content);
                 });
             }, 1000);
         };
@@ -161,7 +149,6 @@ angular.module('mqnaasApp')
                 console.log(response);
                 //$scope.notiLog = response.response.operation.cardList.card.status;
                 $scope.notiLog = checkIfIsArray(response.response.operation.alarmRegisterList); //.alarmRegister;
-                console.log($scope.notiLog);
                 $scope.arnOAM = $scope.notiLog;
             });
             $scope.equipmentBoards();

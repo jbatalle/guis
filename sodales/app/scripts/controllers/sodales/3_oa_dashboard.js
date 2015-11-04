@@ -66,7 +66,6 @@ angular.module('mqnaasApp')
         };
 
         $scope.addSP = function (data) {
-            console.log("Adding SP");
             console.log(data);
             var name = data.name; //{"name":"SP4"}
             var sp = {
@@ -81,10 +80,7 @@ angular.module('mqnaasApp')
         };
 
         $scope.removeSP = function (data) {
-            console.log("Remove SP");
-            console.log(data);
             spService.remove(data).then(function (response) {
-                console.log(response);
                 $scope.updateSpList();
             });
         };
@@ -93,7 +89,6 @@ angular.module('mqnaasApp')
             $scope.current_sp = row;
             $scope.collapsed = true;
             spService.getUsers(row.id).then(function (data) {
-                console.log(data);
                 $scope.dataCollection2 = data;
             });
         };
@@ -114,18 +109,11 @@ angular.module('mqnaasApp')
         };
 
         $scope.addUser = function (row) {
-            console.log(row);
-
-            spService.addUser(row.id, $scope.current_sp.id).then(function (data) {
-                console.log(data);
-            });
+            spService.addUser(row.id, $scope.current_sp.id).then(function (data) {});
         };
 
         $scope.removeUser = function (user) {
-            console.log(user);
-            spService.delUser(user.id, user.sp_id).then(function (data) {
-                console.log(data);
-            });
+            spService.delUser(user.id, user.sp_id).then(function (data) {});
         };
 
     }).filter('exclude', function () {

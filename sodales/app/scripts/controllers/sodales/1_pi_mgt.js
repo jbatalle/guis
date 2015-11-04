@@ -15,10 +15,7 @@ angular.module('mqnaasApp')
             RootResourceService.list().then(function (data) {
                 if (!data) return;
                 data = checkIfIsArray(data.IRootResource.IRootResourceId);
-                console.log('UpdateList nts');
-                console.log(data);
 
-                console.log($scope.listNetworks.length);
                 $scope.listNetworks = data;
                 if ($scope.listNetworks.length === 1) {
                     $rootScope.networkId = '';
@@ -50,7 +47,6 @@ angular.module('mqnaasApp')
                     url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement/' + link + '/IResourceModelReader/resourceModel/';
                     MqNaaSResourceService.get(url).then(function (data) {
                         if (data === undefined) return;
-                        console.log(data);
                         if (!data.resource.resources) return;
                         $scope.physicalLinks.push({
                             id: data.resource.id,
@@ -127,11 +123,9 @@ angular.module('mqnaasApp')
         };
 
         var getMqNaaSResource = function (root, url) {
-            console.log('GET MQNAAS RESOURCE. SET RESOURCES ' + root);
             if (root === undefined) return;
             url = generateUrl('IRootResourceAdministration', root, 'IRootResourceProvider');
             MqNaaSResourceService.list(url).then(function (data) {
-                console.log(data);
                 if (data === undefined) return;
                 data = checkIfIsArray(data.IRootResource.IRootResourceId);
                 $scope.networkElements = data;
@@ -144,11 +138,9 @@ angular.module('mqnaasApp')
                 $scope.generateNodeData(checkIfIsArray(data.IRootResource.IRootResourceId));
 
                 $window.localStorage.networkElements = data;
-                console.log('Get and store ports');
 
             }, function (error) {
-                console.log('ERROR');
-                console.log('handle error');
+                console.log('ERROR get Mqnaas resource');
                 console.log(error);
             });
         };
@@ -205,13 +197,11 @@ angular.module('mqnaasApp')
         };
 
         $scope.addResource = function (data) {
-            console.log(data);
             $scope.creating = true;
             if (data.type === 'arn') var resource = getResource('ARN', data.endpoint + '/cgi-bin/xml-parser.cgi');
             else if (data.type === 'cpe') var resource = getResource('CPE', data.endpoint);
-            console.log(resource);
+
             url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceAdministration');
-            //arnService.setUrl(data.endpoint);
             MqNaaSResourceService.put(url, resource).then(function (res) {
                 console.log(res);
 
@@ -332,21 +322,21 @@ angular.module('mqnaasApp')
                         console.log('Set Range1');
                         unitType = 'vlan';
                         url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/' + sliceId + '/IUnitManagement/?arg0=' + unitType;
-//                        MqNaaSResourceService.put(url).then(function (data) {
-//                            if (data === undefined) return;
-//                            console.log('Set unit:' + data);
-//                            var unitId = data;
-                            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/' + sliceId + '/IUnitManagement/' + unitId + '/IUnitAdministration/range';
-                            var range = getRangeUnit(1, 2048);
-//                            MqNaaSResourceService.put(url, range).then(function () {
-                                console.log('Set Range2');
+                        //                        MqNaaSResourceService.put(url).then(function (data) {
+                        //                            if (data === undefined) return;
+                        //                            console.log('Set unit:' + data);
+                        //                            var unitId = data;
+                        url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/' + sliceId + '/IUnitManagement/' + unitId + '/IUnitAdministration/range';
+                        var range = getRangeUnit(1, 2048);
+                        //                            MqNaaSResourceService.put(url, range).then(function () {
+                        console.log('Set Range2');
 
 
-                                url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/' + sliceId + '/ISliceAdministration/cubes';
-                                var cubes = getCube3(1, ports.length);
-                                MqNaaSResourceService.put(url, cubes).then(function () {});
-//                            });
-//                        });
+                        url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/' + sliceId + '/ISliceAdministration/cubes';
+                        var cubes = getCube3(1, ports.length);
+                        MqNaaSResourceService.put(url, cubes).then(function () {});
+                        //                            });
+                        //                        });
                     });
                 });
             });

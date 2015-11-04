@@ -11,7 +11,6 @@ angular.module('mqnaasApp')
         $scope.updateResourceList = function () {
             url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceProvider');
             MqNaaSResourceService.list(url).then(function (data) {
-                console.log(data);
                 $scope.resources = checkIfIsArray(data.IRootResource.IRootResourceId);
             });
         };
@@ -23,7 +22,6 @@ angular.module('mqnaasApp')
             //get resource type given Id
             url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + id + '/IResourceModelReader/resourceModel/';
             MqNaaSResourceService.get(url).then(function (data) {
-                console.log(data);
                 $scope.type = data.resource.type;
                 var req, url;
                 if ($scope.type === 'ARN') {
@@ -48,7 +46,6 @@ angular.module('mqnaasApp')
         $scope.getEthernetInterfaces = function (id) {
             var req = '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="show" entity="all"><interface equipmentId="0" cardId="' + id + '"/></operation></request>';
             arnService.put(req).then(function (data) {
-                console.log(data);
                 $scope.dataCollection = data.response.operation.interfaceList.interface;
             });
         };
@@ -59,7 +56,6 @@ angular.module('mqnaasApp')
         $scope.getARNCards = function () {
             var data = getCards();
             arnService.put(data).then(function (response) {
-                console.log(response);
                 $scope.cards = response.response.operation.cardList.card;
             });
         };
@@ -77,7 +73,6 @@ angular.module('mqnaasApp')
         }
 
         $scope.showARNCoS = function (CoS) {
-            console.log(CoS);
             $scope.cos = CoS;
         };
 
@@ -89,7 +84,5 @@ angular.module('mqnaasApp')
                 show: true,
                 scope: $scope
             });
-
         }
-
     });
