@@ -27,16 +27,7 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.getNetworkModel = function () {
-            url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IResourceModelReader/resourceModel');
-            MqNaaSResourceService.list(url).then(function (data) {
-                console.log(data);
-                // $scope.generateNodeData(data.resource.resources.resource);
-            });
-        };
-
         $scope.updateResourceList();
-        $scope.getNetworkModel();
 
         $scope.dropdown = [{
             "text": "System notifications",
@@ -64,10 +55,6 @@ angular.module('mqnaasApp')
                 console.log(response);
                 $scope.interfaces = response.response.operation.interfaceList.interface;
             });
-        };
-
-        $scope.updateInterface = function () {
-
         };
 
         $scope.selectResource = function (resourceName, resourceType) {
@@ -173,7 +160,7 @@ angular.module('mqnaasApp')
             arnService.put(requestData).then(function (response) {
                 console.log(response);
                 //$scope.notiLog = response.response.operation.cardList.card.status;
-                $scope.notiLog = response.response.operation.alarmRegisterList.alarmRegister;
+                $scope.notiLog = checkIfIsArray(response.response.operation.alarmRegisterList); //.alarmRegister;
                 console.log($scope.notiLog);
                 $scope.arnOAM = $scope.notiLog;
             });

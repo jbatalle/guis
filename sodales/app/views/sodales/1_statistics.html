@@ -17,7 +17,6 @@
         <h2 class="page-header">Performance monitoring <small>Statistics</small></h2>
         <div ng-show="arnLinkStatus">
             <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateCard()"></select>
-            <select placeholder="select interface" bs-select ng-model="interface" bs-options="interface._name for interface in interfaces" ng-change="updateInterface()"></select>
             <table st-table="displayedCollection" st-safe-src="arnLinkStatus" class="table table-striped">
                 <thead>
                     <tr>
@@ -41,7 +40,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="row in displayedCollection">
-                        <td><a ng-click="showDescriptor(row)" data-trigger="hover" data-type="success" data-title="Description" bs-tooltip>{{row._interfaceId}}</a></td>
+                        <td>{{row._interfaceId}}</td>
                         <td>{{row._name}}</td>
                         <td>{{row._cardId}}</td>
                         <td>{{row._admin}}</td>
@@ -215,18 +214,29 @@
             </div>
         </div>
         <div ng-show="arnOAM">
-            <h3>Notifications logging</h3>
+            <h3>Notifications logging<small> Alarms</small></h3>
             <div>
                 <table class="table ng-table-responsive" style="text-align: center">
-                    <tr ng-repeat="iface in arnOAM">
-                        <td data-title="'id'" sortable="'_id'" class="col-sm-1 col-md-1 col-lg-1">{{iface}}{{iface._id}}</td>
-                        <td data-title="'Code'" class="col-sm-1 col-md-1 col-lg-1">{{iface._code}}</td>
-                        <td data-title="'Access Type'" class="col-sm-1 col-md-1 col-lg-1">{{iface._accessType}}</td>
-                        <td data-title="'Start or End'" class="col-sm-1 col-md-1 col-lg-1">{{iface._startOrEnd}}</td>
-                        <td data-title="'TimeStamp'" class="col-sm-1 col-md-1 col-lg-1">{{iface._timeStamp}}</td>
-                        <td data-title="'LocalTimeStamp'" class="col-sm-1 col-md-1 col-lg-1">{{iface._localTimeStamp}}</td>
-                        <td data-title="'InterfaceId'" class="col-sm-1 col-md-1 col-lg-1">{{iface._interfaceId}}</td>
+                    <tr>
+                        <th>Id</th>
+                        <th>Code</th>
+                        <th>Access Type</th>
+                        <th>Start or End</th>
+                        <th>Timestamp</th>
+                        <th>Local timestamp</th>
+                        <th>Interface id</th>
                     </tr>
+                    <tbody>
+                        <tr ng-repeat="iface in arnOAM">
+                            <td data-title="'id'" sortable="'_id'" class="col-sm-1 col-md-1 col-lg-1">{{iface.alarmRegister._id}}</td>
+                            <td data-title="'Code'" class="col-sm-1 col-md-1 col-lg-1">{{iface.alarmRegister._code}}</td>
+                            <td data-title="'Access Type'" class="col-sm-1 col-md-1 col-lg-1">{{iface.alarmRegister._accessType}}</td>
+                            <td data-title="'Start or End'" class="col-sm-1 col-md-1 col-lg-1">{{iface.alarmRegister._startOrEnd}}</td>
+                            <td data-title="'TimeStamp'" class="col-sm-1 col-md-1 col-lg-1">{{iface.alarmRegister._timeStamp}}</td>
+                            <td data-title="'LocalTimeStamp'" class="col-sm-1 col-md-1 col-lg-1">{{iface.alarmRegister._localTimeStamp}}</td>
+                            <td data-title="'InterfaceId'" class="col-sm-1 col-md-1 col-lg-1">{{iface.alarmRegister._interfaceId}}</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

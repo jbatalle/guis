@@ -213,22 +213,6 @@
                 </table>
             </div>
         </div>
-        <div ng-show="arnOAM">
-            <h3>Notifications logging</h3>
-            <div>
-                <table class="table ng-table-responsive" style="text-align: center">
-                    <tr ng-repeat="iface in arnOAM">
-                        <td data-title="'id'" sortable="'_id'" class="col-sm-1 col-md-1 col-lg-1">{{iface}}{{iface._id}}</td>
-                        <td data-title="'Code'" class="col-sm-1 col-md-1 col-lg-1">{{iface._code}}</td>
-                        <td data-title="'Access Type'" class="col-sm-1 col-md-1 col-lg-1">{{iface._accessType}}</td>
-                        <td data-title="'Start or End'" class="col-sm-1 col-md-1 col-lg-1">{{iface._startOrEnd}}</td>
-                        <td data-title="'TimeStamp'" class="col-sm-1 col-md-1 col-lg-1">{{iface._timeStamp}}</td>
-                        <td data-title="'LocalTimeStamp'" class="col-sm-1 col-md-1 col-lg-1">{{iface._localTimeStamp}}</td>
-                        <td data-title="'InterfaceId'" class="col-sm-1 col-md-1 col-lg-1">{{iface._interfaceId}}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
         <div ng-show="noResource">
             No statistics because any resource is defined in the NaaS platform.
         </div>
