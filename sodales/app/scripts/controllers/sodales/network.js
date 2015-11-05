@@ -427,7 +427,6 @@ angular.module('mqnaasApp')
                         group: 'physical'
                     });
                 } else if (node.type === undefined && node.type !== 'link' && node.type !== 'Network') { //VIR
-                    console.log("We are takling about virtual resources");
                     console.log(node);
                     if (node.id !== $scope.viId) return;
                     var vir = checkIfIsArray(node.resources.resource);

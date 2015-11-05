@@ -1,4 +1,14 @@
-<div class="row">
+<div class="row" ng-show="!virtNetId">
+    <div class="col-md-12">
+        <h3 class="page-header">No virtual network selected</h3>
+        <div class="list-group" ng-show="!virtualResource">
+            <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network.id for network in networkCollection" bs-select ng-change="setVirtualNetwork(selectedNetwork)">
+                Select <span class="caret"></span>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row" ng-show="virtNetId">
     <div class="col-md-3">
         <h3 class="page-header">Physical resources</h3>
         <div class="list-group">

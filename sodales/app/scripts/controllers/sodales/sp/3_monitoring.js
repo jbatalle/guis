@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spStatsController', function ($rootScope, $scope, $filter, localStorageService, $modal, arnService, cpeService, $interval, $window, MqNaaSResourceService, $stateParams) {
+    .controller('spStatsController', function ($rootScope, $scope, $filter, localStorageService, $modal, arnService, cpeService, $interval, $window, MqNaaSResourceService, $stateParams, AuthService, spService) {
 
         //hardcoded
-        $rootScope.networkId = "Network-Internal-1.0-2";
-        $scope.virtNetId = "Network-virtual-7";
+        //$rootScope.networkId = "Network-Internal-1.0-2";
+        //$scope.virtNetId = "Network-virtual-7";
 
         var promise;
         var availableResources = [];
@@ -15,10 +15,14 @@ angular.module('mqnaasApp')
         $scope.virtualResources = [];
 
         $scope.selectedResource = "";
+        
+        $rootScope.networkCollection = [];
+        $scope.selectedNetwork;
 
         if ($window.localStorage.networkId) $rootScope.netId = $window.localStorage.networkId;
         else $rootScope.netId = null;
 
+                
         $scope.getNetworkResources = function () {
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider";
             MqNaaSResourceService.get(url).then(function (data) {
@@ -31,8 +35,46 @@ angular.module('mqnaasApp')
                 });
             });
         };
+        
+        if($rootScope.networkId && $rootScope.virtNetId){
+            console.log($rootScope.virtNetId);
+            $scope.getNetworkResources();
+        } else {
+            console.log("create list of vi nets");
+            AuthService.profile().then(function (data) {
+                spService.get(data.sp_id).then(function (data) {
+                    $scope.networks = data.vis;
+                    data.vis.forEach(function (viNet) {
 
-        $scope.getNetworkResources();
+                        var url = "IRootResourceProvider";
+                        MqNaaSResourceService.list(url).then(function (result) {
+                            var physicalNetworks = checkIfIsArray(result.IRootResource.IRootResourceId);
+
+                            physicalNetworks.forEach(function (phyNet) {
+                                if (phyNet === 'MQNaaS-1') return;
+                                var urlVirtNets = 'IRootResourceAdministration/' + phyNet + '/IRequestBasedNetworkManagement/' + viNet.name + '/IResourceModelReader/resourceModel';
+                                MqNaaSResourceService.list(urlVirtNets).then(function (viInfo) {
+                                    if (!viInfo) return;
+                                    $rootScope.networkCollection.push({
+                                        id: viNet.name,
+                                        physicalNetwork: phyNet,
+                                        created_at: viInfo.resource.attributes.entry.value
+                                    });
+                                });
+                            })
+                        });
+                    });
+                });
+            });
+        }
+        
+        $scope.setVirtualNetwork = function(){
+            $rootScope.virtNetId = $scope.selectedNetwork.id;
+            $rootScope.networkId = $scope.selectedNetwork.physicalNetwork;
+            $scope.getNetworkResources();
+        };
+                
+        
 
         $scope.dropdown = [{
             "text": "System notifications",
