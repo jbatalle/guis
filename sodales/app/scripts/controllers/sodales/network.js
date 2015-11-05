@@ -617,7 +617,8 @@ function generateLinkData(data, nodes) {
                 edges.push({
                     id: edges.lentgh,
                     from: srcNode.id,
-                    to: dstNode.id
+                    to: dstNode.id,
+                    label: node.id
                 });
             }
     });

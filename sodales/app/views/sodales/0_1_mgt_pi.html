@@ -32,13 +32,13 @@
                 <ul>
                     <li ng-repeat="link in physicalLinks">
                         {{link.id}}: {{link.from}} to {{link.to}}
-                        <a ng-click="deleteResource(link.id)"> Remove </a>
+                        <a ng-click="deleteDialog(link.id)"> Remove </a>
                     </li>
                 </ul>
                 <ul>
                     <li ng-repeat="link in createdLinkInfo">
-                        {{createdLink}}: {{link.s}} to {{link.t}}
-                        <a ng-click="deleteResource(link)"> Remove </a>
+                        {{createdLink}}: {{link.s}} to {{link.t}} -
+                        <a ng-click="deleteDialog(link)"> Remove </a>
                     </li>
                 </ul>
             </div>

@@ -98,7 +98,7 @@ angular.module('mqnaasApp')
 
         $scope.deleteItem = function (id) {
             url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceAdministration/' + id);
-            MqNaaSResourceService.remove(url).then(function (data) {
+            MqNaaSResourceService.remove(url).then(function () {
                 $alert({
                     title: 'Resource removed',
                     content: 'The resource was removed correctly',
@@ -109,15 +109,31 @@ angular.module('mqnaasApp')
                     container: '#alerts-container',
                     duration: 5
                 });
-                $scope.updateResourceList();
+
                 var n = $rootScope.network_data.nodes.get({
                     filter: function (item) {
                         return item.label == id;
                     }
                 })[0];
-                $rootScope.network_data.nodes.remove({
-                    id: n.id
-                });
+
+                if (n !== undefined) {
+                    $rootScope.network_data.nodes.remove({
+                        id: n.id
+                    });
+                } else if (n === undefined) {
+                    url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'ILinkManagement/' + id);
+                    MqNaaSResourceService.remove(url).then(function () {});
+                    var n = $rootScope.network_data.edges.get({
+                        filter: function (item) {
+                            return item.label == id;
+                        }
+                    })[0];
+                    $rootScope.network_data.edges.remove({
+                        id: n.id
+                    });
+                }
+
+                $scope.updateResourceList();
             });
             this.$hide();
         };
