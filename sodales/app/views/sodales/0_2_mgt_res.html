@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label ng-binding">FW Version</label>
+                    <label class="col-sm-4 control-label ng-binding">Version</label>
                     <div class="col-sm-8">
                         <p class="form-control-static ng-binding ng-scope">
                             {{equipmentInfo.system._fwVersion}}
@@ -25,11 +25,11 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label ng-binding">Administrative state</label>
+                    <label class="col-sm-4 control-label ng-binding">State</label>
                     <div class="col-sm-8">
                         <p class="form-control-static ng-binding ng-scope">
-                            <span ng-if="equipmentInfo.system._admin === '1'"></span>In service
-                            <span ng-if="equipmentInfo.system._admin === '0"></span>Blocked
+                            <span ng-if="equipmentInfo.system._admin === '1'">In service</span>
+                            <span ng-if="equipmentInfo.system._admin === '0'">Blocked</span>
                         </p>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                             <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Info</th>
                         </tr>
                         <tr>
-                            <th colspan="6">
+                            <th colspan="10">
                                 <input st-search="" class="form-control" placeholder="global search ..." type="text" />
                             </th>
                         </tr>
