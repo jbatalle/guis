@@ -33,7 +33,6 @@
     "appPath": "app",
     "moduleName": "projApp",
     "resolutions": {
-        "angular": "1.4.1",
-        "d3": "3.4.13"
+        "angular": "1.4.1"
     }
 }
