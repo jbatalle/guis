@@ -17,10 +17,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label ng-binding">Description</label>
+                    <label class="col-sm-4 control-label ng-binding">FW Version</label>
                     <div class="col-sm-8">
                         <p class="form-control-static ng-binding ng-scope">
-                            {{equipmentInfo.system._name}}
+                            {{equipmentInfo.system._fwVersion}}
                         </p>
                     </div>
                 </div>
@@ -28,7 +28,8 @@
                     <label class="col-sm-4 control-label ng-binding">Administrative state</label>
                     <div class="col-sm-8">
                         <p class="form-control-static ng-binding ng-scope">
-                            {{equipmentInfo.system._name}}
+                            <span ng-if="equipmentInfo.system._admin === '1'"></span>In service
+                            <span ng-if="equipmentInfo.system._admin === '0"></span>Blocked
                         </p>
                     </div>
                 </div>
