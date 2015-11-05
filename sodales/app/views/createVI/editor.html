@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-3">
-        <p class="lead">Available resources</p>
+        <h3 class="page-header">Available resources</h3>
         <div class="list-group">
             <a href="" class="list-group-item">
                 <div class="ui-widget-content netEl-drag" id="arn">
@@ -37,7 +37,7 @@
         </div>
     </div>
     <div class="col-md-6">
-        <h2 class="page-header">OpenAccess slice creation: {{viId}}</h2>
+        <h3 class="page-header">OpenAccess slice creation: {{viId}}</h3>
         <div id="viMgt" ng-controller="editVIController">
             <div ng-controller="editVINetwork" id="myDraggableZone" vidroppable ng-show="networkId">
                 <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
@@ -47,7 +47,7 @@
         <!-- /.row -->
     </div>
     <div class="col-md-3">
-        <p class="lead">Mapped resources</p>
+        <h3 class="page-header">Mapped resources</h3>
         <ul>
             <li ng-repeat="viRes in virtualResources" ng-if="viRes.mapped">
                 {{viRes.id}} -> {{viRes.mapped}}
@@ -59,7 +59,7 @@
             </li>
         </ul>
         <div>
-            <p class="lead">Resource information</p>
+            <h3 class="page-header">Resource information</h3>
             <div class="list-group" ng-show="!resourceInfo">
                 No resource selected.
             </div>
