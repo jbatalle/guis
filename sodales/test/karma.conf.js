@@ -43,6 +43,7 @@ module.exports = function(config) {
       'bower_components/angular-x2js/dist/x2js.min.js',
       'bower_components/angular-local-storage/dist/angular-local-storage.js',
       'bower_components/jquery-ui/jquery-ui.js',
+      'bower_components/underscore/underscore.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-translate/angular-translate.js',
       'bower_components/angular-translate-loader-partial/angular-translate-loader-partial.js',
