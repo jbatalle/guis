@@ -13,24 +13,24 @@
                             <b>Link id</b>: {{createdLink}}
                             <br/>
                             <div ng-show="!!physicalPorts1.length">
-                                Select source port ({{source}}):
+                                Source port ({{source}}):
 
                                 <button type="button" class="btn btn-default" ng-model="piPort1" data-html="1" bs-options="port for port in physicalPorts1" bs-select>
                                     Action <span class="caret"></span>
                                 </button>
 
-                                <a ng-show="piPort1" class="btn btn-sm btn-primary" ng-click="attachPortsToLink(createdLink, 'source', piPort1)">Attach source port</a> {{dstPortAttahed}}
+                                <a ng-show="piPort1" class="btn btn-sm btn-primary" ng-click="attachPortsToLink(createdLink, 'source', piPort1)">Attach source port</a> {{srcPortAttahed}}
                             </div>
                             <div ng-show=" !!!physicalPorts1.length">
                                 The resource {{source}} has no ports!
                             </div>
                             <br/>
-                            <div ng-show="!!physicalPorts2.length">Select target port ({{dest}}):
+                            <div ng-show="!!physicalPorts2.length">Target port ({{dest}}):
                                 <button type="button" class="btn btn-default" ng-model="piPort2" data-html="1" bs-options="port for port in physicalPorts2" bs-select>
                                     Action <span class="caret"></span>
                                 </button>
 
-                                <a ng-show="piPort2" class="btn btn-sm btn-primary" ng-click="attachPortsToLink(createdLink, 'dest', piPort2)">Attach destination port</a> {{dstPortAttahed}}
+                                <a ng-show="piPort2" class="btn btn-sm btn-primary" ng-click="attachPortsToLink(createdLink, 'dest', piPort2)">Attach target port</a> {{dstPortAttahed}}
                             </div>
                             <div ng-show=" !!!physicalPorts2.length">
                                 The resource {{dest}} has no ports!
@@ -42,7 +42,14 @@
                 </form>
                 <!-- /.box-body -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="">Add</button>
+                    <div class="row">
+                        <div class="col-md-10" ng-show="creating" style="text-align: center">
+                            <span ng-if="srcPortAttahed && dstPortAttahed" style="vertical-align: -webkit-baseline-middle;">Link created</span>
+                        </div>
+                        <div class="col-md-8">
+                            <button ng-if="srcPortAttahed && dstPortAttahed" type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="$hide()">Close</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
