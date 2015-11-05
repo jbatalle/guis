@@ -142,30 +142,6 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                             controller: 'SodalesMonitoringController'
                         }
                     }
-                }).state('root.history', {
-                    url: '/openaccess/history',
-                    views: {
-                        'master@root': {
-                            templateUrl: 'views/sodales/2_1_openAccess_history.html',
-                            controller: 'SodalesHistoryController'
-                        }
-                    }
-                }).state('root.vimgt', {
-                    url: '/openaccess/vimgt',
-                    views: {
-                        'master@root': {
-                            templateUrl: 'views/sodales/2_0_openAccess.html',
-                            controller: 'SodalesOpenaccessDashCtrl'
-                        }
-                    }
-                }).state('root.vicreation', {
-                    url: '/openaccess/vicreation',
-                    views: {
-                        'master@root': {
-                            templateUrl: 'views/createVI/index.html',
-                            controller: 'listVIController'
-                        }
-                    }
                 }).state('root.mgt', {
                     url: '/mgt',
                     views: {
@@ -182,11 +158,27 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                             controller: 'sodalesPiResourcesCtrl'
                         }
                     }
-                }).state('root.viList', {
-                    url: '/viList',
+                }).state('root.history', {
+                    url: '/openaccess/history',
                     views: {
                         'master@root': {
-                            templateUrl: 'views/createVI/index.html',
+                            templateUrl: 'views/sodales/2_1_openAccess_history.html',
+                            controller: 'SodalesHistoryController'
+                        }
+                    }
+                }).state('root.vimgt', {
+                    url: '/openaccess/vimgt',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/2_0_openAccess.html',
+                            controller: 'SodalesOpenaccessDashCtrl'
+                        }
+                    }
+                }).state('root.viList', {
+                    url: '/openaccess/vicreation',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/2_2_openAccess_index.html',
                             controller: 'listVIController'
                         }
                     }
@@ -194,7 +186,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                     url: '/editVIRequest/:id',
                     views: {
                         'master@root': {
-                            templateUrl: 'views/createVI/editor.html',
+                            templateUrl: 'views/sodales/2_2_openAccess_vicreation.html',
                             controller: 'editVIController'
                         }
                     }
@@ -263,6 +255,9 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                         var config = rejection.config;
                         var method = config.method;
                         var url = config.url;
+console.log("APP INTERCEPTOR ERROR");
+
+console.log(status);
 
                         if (Math.floor(Date.now() / 1000) > $window.localStorage.expiration)
                             $rootScope.logout();
@@ -272,6 +267,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                             $location.path('/login');
                         } else {
                             $rootScope.error = method + ' on ' + url + ' failed with status ' + status;
+                            //$location.path('/login');
                         }
 
                         return $q.reject(rejection);
