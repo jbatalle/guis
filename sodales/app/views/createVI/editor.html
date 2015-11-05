@@ -48,10 +48,9 @@
     </div>
     <div class="col-md-3">
         <p class="lead">Mapped resources</p>
-        {{virtualResources}}
         <ul>
             <li ng-repeat="viRes in virtualResources">
-                {{viRes.id}} -> {{viRes.mapped}} {{viRes.ports}}
+                {{viRes.id}} -> {{viRes.mapped}}
                 <ul>
                     <li ng-repeat="viPorts in viRes.ports">
                         {{viPorts.id}} -> {{viPorts.mapped}}
@@ -60,10 +59,37 @@
             </li>
         </ul>
         <div>
-            <div class="form-group">
-                <label class="control-label"><i class="fa fa-calendar"></i> <i class="fa fa-arrows-h"></i>
-                    <i class="fa fa-calendar"></i> Add port </label>
-                <br> button
+            <p class="lead">Resource information</p>
+            <div class="list-group" ng-show="!resourceInfo">
+                No resource selected.
+            </div>
+            <div class="list-group" ng-show="resourceInfo">
+                <div class="fx-form-block-controls fx-first collapse am-collapse in" data-uxfwk-collapse-target="">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label ng-binding">Name</label>
+                        <div class="col-sm-8">
+                            <p class="form-control-static ng-binding ng-scope">
+                                {{resourceInfo.id}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label ng-binding">Type</label>
+                        <div class="col-sm-8">
+                            <p class="form-control-static ng-binding ng-scope">
+                                {{resourceInfo.type}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label class="col-sm-4 control-label ng-binding">Ports</label>
+                        <div style="overflow-y: scroll; height:250px; width: 66%;">
+                            <li ng-repeat="res in resourceInfo.ports">
+                                {{res.id}} - {{res.attributes.entry[0].value}}
+                            </li>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- /.row -->

@@ -41,17 +41,12 @@ angular.module('mqnaasApp')
                 });
 
                 network.on("click", function (params) {
-                    console.log("Click");
                     console.log(params);
-                    //$rootSscope.resourceInfo = "test"
-                    //$scope.
                 });
-
             }
-
         }
     })
-    .directive('phydroppable', ['$window', '$rootScope', 'localStorageService', '$modal', function ($window, $rootScope, localStorageService, $modal) {
+    .directive('phydroppable', ['$window', '$rootScope', '$modal', function ($window, $rootScope, $modal) {
         return {
             // A = attribute, E = Element, C = Class and M = HTML Comment
             restrict: 'AE',
@@ -79,7 +74,7 @@ angular.module('mqnaasApp')
             }
         };
 }])
-    .directive('vidroppable', ['$window', '$rootScope', 'localStorageService', '$modal', function ($window, $rootScope, localStorageService, $modal) {
+    .directive('vidroppable', ['$window', '$rootScope', '$modal', function ($window, $rootScope, $modal) {
         return {
             // A = attribute, E = Element, C = Class and M = HTML Comment
             restrict: 'AE',
