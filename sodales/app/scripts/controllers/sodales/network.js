@@ -156,7 +156,7 @@ angular.module('mqnaasApp')
 
             $modal({
                 title: 'Adding a new link',
-                template: 'views/sodales/createLinkDialog.html',
+                template: 'views/modals/createLinkDialog.html',
                 show: true,
                 scope: $scope
             });

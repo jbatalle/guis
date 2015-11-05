@@ -47,7 +47,7 @@ angular.module('mqnaasApp')
         $scope.openSPCreationDialog = function () {
             $modal({
                 title: 'Create new SP.',
-                template: 'views/sodales/spCreationDialog.html',
+                template: 'views/modals/spCreationDialog.html',
                 show: true,
                 scope: $scope
             });

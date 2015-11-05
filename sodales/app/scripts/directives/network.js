@@ -79,7 +79,7 @@ angular.module('mqnaasApp')
             // A = attribute, E = Element, C = Class and M = HTML Comment
             restrict: 'AE',
             controller: function ($scope, $modal) {
-                $scope.openAddResourceDialog = function (nodeType, divPos) {
+/*                $scope.openAddResourceDialog = function (nodeType, divPos) {
                     $scope.resource = {};
                     if (nodeType == 'arn') $scope.resource.endpoint = "http://fibratv.dtdns.net:41080";
                     else if (nodeType == 'arn') $scope.resource.endpoint = "http://fibra2222tv.dtdns.net:41081";
@@ -95,6 +95,7 @@ angular.module('mqnaasApp')
                         }
                     });
                 };
+                */
             },
             link: function (scope, element, attrs) {
                 element.droppable({

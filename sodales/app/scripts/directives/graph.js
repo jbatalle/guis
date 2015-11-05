@@ -146,32 +146,9 @@ angular.module('mqnaasApp')
                     $scope.resource.type = nodeType;
                     $modal({
                         title: 'Adding a new ' + nodeType,
-                        template: 'views/sodales/resourceDialog.html',
+                        template: 'views/modals/resourceDialog.html',
                         show: true,
                         scope: $scope,
-                        data: {
-                            "nodeType": nodeType,
-                            "divPos": divPos
-                        }
-                    });
-                };
-                $scope.openARNDialog = function (nodeType, divPos) {
-                    //                            $scope.arn = {endpoint: "asdasdsa"};
-
-                    $modal({
-                        title: 'Adding ARN.',
-                        template: 'views/sodales/arnDialog.html',
-                        show: true,
-                        data: {
-                            "nodeType": nodeType,
-                            "divPos": divPos
-                        }
-                    });
-                };
-                $scope.openCPEDialog = function (nodeType, divPos) {
-                    console.log("OpeN ARN DIALOG");
-                    $modal.open({
-                        template: 'views/sodales/cpeDialog.html',
                         data: {
                             "nodeType": nodeType,
                             "divPos": divPos

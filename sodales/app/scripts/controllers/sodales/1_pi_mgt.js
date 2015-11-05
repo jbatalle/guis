@@ -200,7 +200,7 @@ angular.module('mqnaasApp')
             else if (nodeType == 'cpe') $scope.resource.endpoint = 'http://fibratv.dtdns.net:41081';
             $scope.createDialog = $modal({
                 title: 'Adding a new ' + nodeType,
-                template: 'views/sodales/resourceDialog.html',
+                template: 'views/modals/resourceDialog.html',
                 show: true,
                 scope: $scope,
                 data: {
