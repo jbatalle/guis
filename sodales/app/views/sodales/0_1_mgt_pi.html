@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col-md-3">
         <div class="row">
-            <p class="lead">Networks</p>
+            <h3 class="page-header">Networks</h3>
             <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network for network in listNetworks" bs-select ng-change="setNetworkId(selectedNetwork)">
                 Select <span class="caret"></span>
             </button>
-            <p class="lead">List of physical resources</p>
+            <h3 class="lead">Physical resources</h3>
             <div class="list-group">
                 <a href="" class="list-group-item">
                     <div class="ui-widget-content netEl-drag" id="arn">
@@ -21,14 +21,14 @@
         </div>
         <div class="row">
             <div ng-show="networkId">
-                <h3>Resources</h3>
+                <h3 class="page-header">Resources</h3>
                 <ul>
                     <li ng-repeat="res in physicalResources">
                         <a ng-click="getResourceInfo(res)"> {{res}}</a> -
                         <a ng-click="deleteDialog(res)"> Remove </a>
                     </li>
                 </ul>
-                <h3>Links</h3>
+                <h3 class="page-header">Links</h3>
                 <ul>
                     <li ng-repeat="link in physicalLinks">
                         {{link.id}}: {{link.from}} to {{link.to}}
@@ -45,7 +45,7 @@
         </div>
     </div>
     <div id="piMgt" class="col-md-9">
-        <h2 class="page-header">PHY Management <small>Physical resources management</small></h2>
+        <h3 class="page-header">PHY Management <small>Physical resources management</small></h3>
         <div class="row">
             <div class="col-lg-9">
                 <div class="panel panel-default">
@@ -64,7 +64,7 @@
             </div>
             <div class="col-lg-3">
                 <div ng-show="networkId && resourceInfo.ports">
-                    <h3>Ports</h3>
+                    <h3 class="page-header">Ports</h3>
                     <div style="overflow-y: scroll; height:250px;">
                         <ul>
                             <li ng-repeat="res in resourceInfo.ports">
@@ -72,7 +72,7 @@
                             </li>
                         </ul>
                     </div>
-                    <h3>Slice information</h3>
+                    <h3 class="page-header">Slice information</h3>
                     <div style="">
                         Units
                         <ul>

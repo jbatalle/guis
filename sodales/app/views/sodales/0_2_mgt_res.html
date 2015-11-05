@@ -5,11 +5,8 @@
             <select placeholder="select resource" bs-select ng-model="resource" bs-options="resource for resource in resources" ng-change="updateResource()"></select>
         </div>
 
-        <p class="lead">Resource Information</p>
-        <div class="list-group" ng-show="!equipmentInfo">
-            No information
-        </div>
         <div class="list-group" ng-show="equipmentInfo">
+            <h3 class="lead">Resource Information</h3>
             <div class="fx-form-block-controls fx-first collapse am-collapse in" data-uxfwk-collapse-target="">
                 <div class="form-group">
                     <label class="col-sm-4 control-label ng-binding">Name</label>
@@ -53,7 +50,7 @@
         </div>
     </div>
     <div id="piMgt" class="col-md-9">
-        <h2 class="page-header">PHY Management <small>Physical resources management</small></h2>
+        <h3 class="page-header">PHY Management <small>Physical resources management</small></h3>
         <div class="row" ng-show="type === 'ARN'">
             <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateARNCard()"></select>
             <div class="col-lg-12">
@@ -101,7 +98,7 @@
             </div>
         </div>
 
-        <div class="row" ng-show="type === 'ARN'"> CoS
+        <div class="row" ng-show="type === 'ARN' && cos.length > 0"> CoS
             <div class="col-lg-12">
                 <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
                     <thead>

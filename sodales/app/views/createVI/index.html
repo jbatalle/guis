@@ -8,7 +8,7 @@
     </li>
 </ol>
 
-Requested:
+<h4 class="page-header">Virtual Networks:</h4>
 <table st-table="displayedNetworkCollection" st-safe-src="networkCollection" class="table table-striped">
     <thead>
         <tr>
@@ -27,8 +27,8 @@ Requested:
             <td><a ng-click="viewService(row.id, row.name)">{{row.id}}</a></td>
             <td>{{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}</td>
             <td>
-                <a ui-sref="root.editVIRequest({ id:row.id })" class="btn btn-default" title="edit">View</a>
-                <a ng-click="deleteVIRequest(row.id)" class="btn btn-default" title="process">Remove</a>
+                <a ui-sref="root.editVIRequest({ id:row.id })" class="btn btn-primary" title="edit">View</a>
+                <a ng-click="deleteVIRequest(row.id)" class="btn btn-danger" title="process">Remove</a>
             </td>
         </tr>
     </tbody>
@@ -40,9 +40,9 @@ Requested:
     </tfoot>
 </table>
 
-Requests:
+<h4 class="page-header">Virtual Slice requests:</h4>
 <div class="pull-right">
-    <a ng-click="createVIRequest()" class="btn btn-default" title="Create"><span class="glyphicon glyphicon-plus"></span></a>
+    <a ng-click="createVIRequest()" class="btn btn-primary" title="Create"><span class="glyphicon glyphicon-plus"></span></a>
 </div>
 
 <table st-table="displayedCollection" st-safe-src="dataCollection" class="table table-striped">
@@ -62,10 +62,9 @@ Requests:
         <tr ng-repeat="row in displayedCollection">
             <td><a ng-click="viewService(row.id, row.name)">{{row}}</a></td>
             <td>{{row.date| date:'yyyy-MM-dd HH:mm:ss'}}</td>
-            <td><a ng-show="vi.status !== 'Created'" ng-click="sendVIR(row)" class="btn btn-default" title="process">Send to Process</a>
-                <a ng-show="vi.status !== 'Created'" ui-sref="root.editVIRequest({ id:row })" class="btn btn-default" title="edit">Edit</a>
-                <a ng-show="vi.status === 'Created'" ui-sref="root.editVIRequest({ id:row })" class="btn btn-default" title="edit">View</a>
-                <a ng-click="deleteVIRequest(row)" class="btn btn-default" title="process">Remove</a>
+            <td><a ng-show="vi.status !== 'Created'" ng-click="sendVIR(row)" class="btn btn-success" title="process">Send to Process</a>
+                <a ng-show="vi.status !== 'Created'" ui-sref="root.editVIRequest({ id:row })" class="btn btn-primary" title="edit">Edit</a>
+                <a ng-click="deleteVIRequest(row)" class="btn btn-danger" title="process">Remove</a>
             </td>
         </tr>
     </tbody>

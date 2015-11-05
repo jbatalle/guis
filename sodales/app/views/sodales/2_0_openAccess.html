@@ -1,4 +1,4 @@
-<h2 class="page-header">OpenAccess <small>Dashboard</small></h2>
+<h2 class="page-header">OpenAccess <small> Service Providers</small></h2>
 <ol class="breadcrumb">
     <li>
         <i class="fa fa-dashboard"></i> <a ui-sref="root.vicreation">Virtual slices</a>
@@ -8,12 +8,11 @@
     </li>
 </ol>
 
-<h3>Service Providers <a class="btn btn-sm btn-primary" ng-click="openSPCreationDialog()">Add</a></h3>
-
 <br/>
 <div class="row">
     <div ng-class="{'col-md-8':collapsed}" id="sp_table">
         <div class="pull-right">
+            <button class="btn btn-primary" ng-click="openSPCreationDialog()">Add</button>
             <button ng-click="updateSpList()" class="btn btn-default">Reload</button>
         </div>
         <table st-table="displayedCollection" st-safe-src="dataCollection" class="table table-striped">
