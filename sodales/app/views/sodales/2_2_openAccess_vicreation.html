@@ -1,48 +1,97 @@
 <div class="row">
     <div class="col-md-3">
-        <p class="lead">List of SP</p>
+        <h3 class="page-header">Available resources</h3>
         <div class="list-group">
-            <a href="#" class="list-group-item active">SP 1</a>
-            <a href="#" class="list-group-item">SP 2</a>
-            <a href="#" class="list-group-item">SP 3</a>
+            <a href="" class="list-group-item">
+                <div class="ui-widget-content netEl-drag" id="arn">
+                    <img id="arn" draggable src="images/SODALES_ARN.png" width="60" style="z-index:1090"> ARN
+                </div>
+            </a>
+            <a href="" class="list-group-item">
+                <div class="ui-widget-content netEl-drag" id="cpe">
+                    <img id="cpe" draggable src="images/SODALES_CPE.png" width="60" style="z-index:1090"> CPE
+                </div>
+            </a>
+        </div>
+        <div>
+            <div class="form-group">
+                <input class="btn btn-default" type="submit" ng-click="openMappingDialog()" value="Map ports" />
+                <input class="btn btn-default" type="submit" ng-click="sendVIR(viId)" value="Send to process" />
+                <br/>
+                <input class="btn btn-default" type="submit" ng-click="openSlicesDialog()" value="Configure VR" />
+            </div>
+        </div>
+        <div>
+            <div class="form-group">
+                <label class="control-label"><i class="fa fa-calendar"></i> <i class="fa fa-arrows-h"></i>
+                    <i class="fa fa-calendar"></i> VI Period range </label>
+                <br>
+                <div class="form-group col-xs-12">
+                    <input type="text" class="form-control" ng-model="period.startDate" data-max-date="{{period.endDate}}" data-date-format="dd-MM-yyyy" data-date-type="number" data-autoclose="1" placeholder="From" bs-datepicker>
+                </div>
+                <div class="form-group col-xs-12">
+                    <input type="text" class="form-control" ng-model="period.endDate" data-min-date="{{period.startDate}}" data-date-format="dd-MM-yyyy" data-date-type="number" data-autoclose="1" placeholder="Until" bs-datepicker>
+                </div>
+                <input class="btn btn-default" type="submit" ng-click="setPeriod(period)" value="Set period" />
+            </div>
         </div>
     </div>
-    <div class="col-md-9">
-        <h2 class="page-header">Virtual slice management </h2>
-        <ol class="breadcrumb">
-            <li>
-                <i class="fa fa-dashboard"></i>  <a href="#!/2_0_openAccess/vimgt">Service Provider</a>
+    <div class="col-md-6">
+        <h3 class="page-header">OpenAccess slice creation: {{viId}}</h3>
+        <div id="viMgt" ng-controller="editVIController">
+            <div ng-controller="editVINetwork" id="myDraggableZone" vidroppable ng-show="networkId">
+                <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
+                </vis-network>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <div class="col-md-3">
+        <h3 class="page-header">Mapped resources</h3>
+        <ul>
+            <li ng-repeat="viRes in virtualResources" ng-if="viRes.mapped">
+                {{viRes.id}} -> {{viRes.mapped}}
+                <ul>
+                    <li ng-repeat="viPorts in viRes.ports">
+                        {{viPorts.id}} -> {{viPorts.mapped}}
+                    </li>
+                </ul>
             </li>
-            <li class="active">
-                <i class="fa fa-history"></i>  <a href="#!/2_0_openAccess/vicreation">Virtual slices</a>
-            </li>
-        </ol>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><i class="fa fa-image fa-fw"></i> Graph</h3>
+        </ul>
+        <div>
+            <h3 class="page-header">Resource information</h3>
+            <div class="list-group" ng-show="!resourceInfo">
+                No resource selected.
+            </div>
+            <div class="list-group" ng-show="resourceInfo">
+                <div class="fx-form-block-controls fx-first collapse am-collapse in" data-uxfwk-collapse-target="">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label ng-binding">Name</label>
+                        <div class="col-sm-8">
+                            <p class="form-control-static ng-binding ng-scope">
+                                {{resourceInfo.id}}
+                            </p>
+                        </div>
                     </div>
-                    <div class="panel-body">
-                        <div id="graph"></div>
-                            Visual resource graph
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label ng-binding">Type</label>
+                        <div class="col-sm-8">
+                            <p class="form-control-static ng-binding ng-scope">
+                                {{resourceInfo.type}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label class="col-sm-4 control-label ng-binding">Ports</label>
+                        <div style="overflow-y: scroll; height:250px; width: 66%;">
+                            <li ng-repeat="res in resourceInfo.ports">
+                                {{res.id}} - {{res.attributes.entry[0].value}}
+                            </li>
                         </div>
                     </div>
                 </div>
             </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><i class="fa fa-info-circle fa-fw"></i> Resource info</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div id="graph"></div>
-                        Form to update information of the physical resource. insert button
-                    </div>
-                </div>
-            </div>
         </div>
+        <!-- /.row -->
     </div>
 </div>
-
