@@ -14,7 +14,7 @@
         <div class="list-group">
             <ul>
                 <li ng-repeat="resource in virtualResources">
-                    <a ng-click="selectResource(resource.name, resource.type)" bs-dropdown="resource.type == 'ARN' ? dropdown:dropdown2" aria-haspopup="true" aria-expanded="false">{{resource.name}}</a>
+                    <a ng-click="selectResource(resource.name, resource.type)" aria-haspopup="true" aria-expanded="false">{{resource.name}}</a>
                 </li>
             </ul>
 

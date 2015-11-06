@@ -42,40 +42,162 @@
                         </li>
                     </p>
                 </div>
-                <button class="btn btn-sm btn-primary" ng-click="openOperationARNDialog(virtualResource.id, virtualResource.type)">Operation</button>
+                <button class="btn btn-sm btn-primary" ng-click="openOperationARNDialog(virtualResource.id, virtualResource.type)">Operate</button>
             </div>
         </div>
         <!-- /.row -->
     </div>
-    <div class="col-md-8" ng-show="operation">
-        <h3 class="page-header">Operation</h3>
-        <b>LAGs</b>
-        <table>
-            <thead>
-                <tr>
-                    <th class="col-sm-2 col-md-2 col-lg-2">Name</th>
-                    <th class="col-sm-3 col-md-3 col-lg-3">Administrative state</th>
-                    <th class="col-sm-3 col-md-3 col-lg-3">Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="interface in LAGs" ng-if="interface.lag">
-                    <td>{{interface._name}}</td>
-                    <td>
-                        <span ng-if="interface._admin === '1'">In service</span>
-                        <span ng-if="interface._admin === '2'">Blocked</span>
-                    </td>
-                    <td>{{interface._description}}</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <button class="btn btn-sm btn-primary" ng-click="openModal('createLAG')">Create LAG</button>
-        <button class="btn btn-sm btn-primary" ng-click="openModal('createNS')">Create Network Service</button>
-        <button class="btn btn-sm btn-primary" ng-click="openModal('createCS')">Create Client Service</button>
-
-    </div>
     <div class="col-md-8">
+        <div ng-show="operation">
+            <h3 class="page-header">Operation</h3>
+            <div bs-active-pane="operation_tabs.activeTab" bs-tabs>
+                <div ng-repeat="tab in operation_tabs" title="{{ tab.title }}" name="{{ tab.url }}" disabled="{{ tab.disabled }}" bs-pane ng-click="onClickTab(tab)">
+                </div>
+                <div id="mainView">
+                    <div class="tab-content">
+                        <div ng-include="operation_tabs.activeTab"></div>
+                    </div>
+                </div>
+                <script type="text/ng-template" id="tab_lag">
+                    <div class="table-responsive">
+                        <div class="pull-right">
+                            <button class="btn btn-sm btn-primary" ng-click="openModal('createLAG')">Create LAG</button>
+                        </div>
+                        <table st-table="lagCollection" st-safe-src="LAGs" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-2 col-md-2 col-lg-2">Name</th>
+                                    <th class="col-sm-3 col-md-3 col-lg-3">Administrative state</th>
+                                    <th class="col-sm-3 col-md-3 col-lg-3">Description</th>
+                                    <th class="col-sm-4 col-md-3 col-lg-3">Actions</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="3">
+                                        <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in lagCollection" ng-if="row.lag">
+                                    <td>{{row._name}}</td>
+                                    <td>
+                                        <span ng-if="row._admin === '1'">In service</span>
+                                        <span ng-if="row._admin === '2'">Blocked</span>
+                                    </td>
+                                    <td>{{row._description}}</td>
+                                    <td><span>Edit</span>
+                                        <span>Remove</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="text-center" st-pagination="" st-items-by-page="10" colspan="4">
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </script>
+
+                <script type="text/ng-template" id="tab_ns">
+                    <div class="table-responsive">
+                        <div class="pull-right">
+                            <button class="btn btn-sm btn-primary" ng-click="openModal('createNS')">Create Network Service</button>
+                        </div>
+                        <table st-table="nsCollection" st-safe-src="networkServices" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-1 col-md-2 col-lg-2">Name</th>
+                                    <th class="col-sm-1 col-md-3 col-lg-3">Administrative state</th>
+                                    <th class="col-sm-1 col-md-3 col-lg-3">Type</th>
+                                    <th class="col-sm-1 col-md-3 col-lg-3">IGMP</th>
+                                    <th class="col-sm-1 col-md-3 col-lg-3">Multicast flood</th>
+                                    <th class="col-sm-1 col-md-3 col-lg-3"># of interfaces</th>
+                                    <th class="col-sm-2 col-md-3 col-lg-3">Actions</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="3">
+                                        <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in nsCollection">
+                                    <td>{{row._name}}</td>
+                                    <td>
+                                        <span ng-if="row._admin === '1'">In service</span>
+                                        <span ng-if="row._admin === '2'">Blocked</span>
+                                    </td>
+                                    <td>{{row._type}}</td>
+                                    <td>
+                                        <input type="checkbox" name="igmp" data-ng-checked="row._igmpEnable=== '1'" disabled="" checked="checked">
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="igmp" data-ng-checked="row._multicastFlood=== '1'" disabled="" checked="checked">
+                                    </td>
+                                    <td>{{row.interfaceList_ref.interface_ref.length}}</td>
+                                    <td><span>Edit</span>
+                                        <span>Remove</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="text-center" st-pagination="" st-items-by-page="10" colspan="4">
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </script>
+                <script type="text/ng-template" id="tab_cs">
+                    <div class="table-responsive">
+                        <div class="pull-right">
+                            <button class="btn btn-sm btn-primary" ng-click="openModal('createCS')">Create Client Service</button>
+                        </div>
+                        <table st-table="csCollection" st-safe-src="clientServices" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-2 col-md-2 col-lg-2">Name</th>
+                                    <th class="col-sm-3 col-md-3 col-lg-3">Administrative state</th>
+                                    <th class="col-sm-3 col-md-3 col-lg-3">Network Service</th>
+                                    <th class="col-sm-3 col-md-3 col-lg-3">UNI-CTAG</th>
+                                    <th class="col-sm-4 col-md-3 col-lg-3">Actions</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="3">
+                                        <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in csCollection">
+                                    <td>{{row._name}}</td>
+                                    <td>
+                                        <span ng-if="row._admin === '1'">In service</span>
+                                        <span ng-if="row._admin === '2'">Blocked</span>
+                                    </td>
+                                    <td>{{networkServices[row._networkServiceId -1 ]._name}}
+                                    </td>
+                                    <td>{{row._cVlan}}</td>
+                                    <td><span>Edit</span>
+                                        <span>Remove</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="text-center" st-pagination="" st-items-by-page="10" colspan="4">
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </script>
+            </div>
+        </div>
+
         <h3 class="page-header">Virtual topology -  {{virtNetId}}</h3>
         <div ng-controller="spViewNetwork" id="myDraggableZone" ng-show="virtNetId">
             <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
