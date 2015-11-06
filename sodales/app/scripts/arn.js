@@ -52,3 +52,11 @@ activateClientService = function (id, admin) {
 removeNetworkService = function (interfaceId) {
     return '';
 };
+
+getNetworkServices = function () {
+    return '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="show" entity="networkService"><networkService equipmentId="0"/></operation></request>';
+};
+
+getClientServices = function () {
+    return '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="show" entity="clientService"><clientService equipmentId="0"/></operation></request>';
+};
