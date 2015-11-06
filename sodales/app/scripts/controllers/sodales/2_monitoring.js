@@ -61,10 +61,15 @@ angular.module('mqnaasApp')
             //get resourceInfo from OpenNaaS.
             //load default statistic info
             //open Dropdown list, depending on the resourceType
+            $scope.cpePorts = undefined;
+            $scope.arnLinkStatus = undefined;
+            $scope.arnOAM = undefined;
+            
             $scope.selected = resourceName;
             if (resourceType === 'CPE') {
                 $scope.getCPEPortList();
             } else if (resourceType === 'CFM/OAM') {
+                $scope.CFM_OAM = true;
                 $scope.getCCM();
                 $scope.getLBM();
                 $scope.getDMM();
@@ -87,22 +92,28 @@ angular.module('mqnaasApp')
                 $scope.arnLinkStatus = data;
             });
         };
+
         $scope.getCPEPortList = function () {
             var reqListPortsUrl = "meaPortMapping.xml?unit=0";
+            $scope.cpePorts = [];
             cpeService.get(reqListPortsUrl).then(function (response) {
                 $scope.cpePortList = response.meaPortMapping.portMapping;
+                angular.forEach($scope.cpePortList, function(port){
+                   //$scope.getCPEStats(port.port); 
+                });
             });
         };
         $scope.getCPEStats = function (portId) {
-            var reqUrl = "meaPmCounter.xml?unit=0&pmId=" + portId;
+            var reqUrl = "meaPmCounter.xml?unit=0&pmId=" + $scope.cpePort;
             $interval.cancel(promise);
-            promise = $interval(function () {
+//            promise = $interval(function () {
                 cpeService.get(reqUrl).then(function (response) {
+                    console.log(response);
                     $scope.content = response.meaPmCounter.PmCounter;
+                    $scope.cpePorts.push({portId: portId, counter: response.meaPmCounter.PmCounter});
                 });
-            }, 1000);
+//            }, 1000);
         };
-
 
         $scope.getCCM = function (portId) {
             var reqUrl = "meaGetCcmDefectState.xml?unit=0&streamId=1";
@@ -113,6 +124,7 @@ angular.module('mqnaasApp')
             var data = json.meaCcmCounter.CcmDefectCount;
             console.log(data);
             cpeService.get(reqUrl).then(function (response) {
+                if(response === undefined) return;
                 console.log(response);
                 $scope.ccmCounter = response.meaCcmCounter.CcmDefectCount;
             });
@@ -125,6 +137,7 @@ angular.module('mqnaasApp')
             //                $scope.lbmCounter = json.meaStatistics.lbmDmmStatistics;
             console.log(json);
             cpeService.get(reqUrl).then(function (response) {
+                if(response === undefined) return;
                 console.log(response);
                 $scope.lbmCounter = response.meaStatistics.lbmDmmStatistics;
             });
@@ -137,6 +150,7 @@ angular.module('mqnaasApp')
             //                $scope.dmmCounter = json.meaStatistics.lbmDmmStatistics;
             console.log(json.meaStatistics.lbmDmmStatistics);
             cpeService.get(reqUrl).then(function (response) {
+                if(response === undefined) return;
                 console.log(response);
                 var data = response.meaStatistics.lbmDmmStatistics;
                 $scope.dmmCounter = response.meaStatistics.lbmDmmStatistics;
@@ -163,12 +177,6 @@ angular.module('mqnaasApp')
             console.log(json);
             $scope.equipBoard = json.response.operation.alarmRegisterList.alarmRegister;
             //                arnService.put(requestData).then(function (json.response.operation.alarmRegisterList) {
-            var data = json.response.operation.alarmRegisterList.alarmRegister;
-            console.log(data);
-            //                $scope.data = data.response.operation.interfaceList.interface;
-            //                localStorageService.set("mqNaaSElements", data);
-            //                console.log($scope.data);
-
         };
 
         $scope.viewStatistics = function (cardId, interfaceId) {
