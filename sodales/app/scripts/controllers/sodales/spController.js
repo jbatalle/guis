@@ -33,7 +33,6 @@ angular.module('mqnaasApp')
                     });
                 });
             });
-
         });
 
         $scope.updateSpList = function () {

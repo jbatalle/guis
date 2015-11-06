@@ -16,9 +16,7 @@ angular.module('mqnaasApp')
         };
         $scope.updateResourceList();
 
-
         $scope.getResourceInfo = function (id) {
-
             //get resource type given Id
             url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + id + '/IResourceModelReader/resourceModel/';
             MqNaaSResourceService.get(url).then(function (data) {
@@ -60,17 +58,14 @@ angular.module('mqnaasApp')
             });
         };
 
-        //$scope.getResourceInfo();
-
-
         $scope.updateARNCard = function () {
             $scope.getEthernetInterfaces($scope.card._id);
             $scope.cos = [];
-        }
+        };
 
         $scope.updateResource = function () {
             $scope.getResourceInfo($scope.resource);
-        }
+        };
 
         $scope.showARNCoS = function (CoS) {
             $scope.cos = CoS;
@@ -84,5 +79,5 @@ angular.module('mqnaasApp')
                 show: true,
                 scope: $scope
             });
-        }
+        };
     });

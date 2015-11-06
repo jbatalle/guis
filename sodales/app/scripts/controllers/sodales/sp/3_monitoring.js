@@ -37,7 +37,6 @@ angular.module('mqnaasApp')
         };
         
         if($rootScope.networkId && $rootScope.virtNetId){
-            console.log($rootScope.virtNetId);
             $scope.getNetworkResources();
         } else {
             console.log("create list of vi nets");
@@ -74,8 +73,6 @@ angular.module('mqnaasApp')
             $scope.getNetworkResources();
         };
                 
-        
-
         $scope.dropdown = [{
             "text": "System notifications",
             "click": "selectResource('', 'ARN/OAM')"
