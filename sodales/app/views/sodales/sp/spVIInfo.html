@@ -85,8 +85,11 @@
                                         <span ng-if="row._admin === '2'">Blocked</span>
                                     </td>
                                     <td>{{row._description}}</td>
-                                    <td><span>Edit</span>
-                                        <span>Remove</span>
+                                    <td>
+                                        <button ng-if="row._admin === '1'" type="button" ng-click="activateLag(row) " class="btn btn-sm btn-warning ">Disable</button>
+                                        <button ng-if="row._admin === '2'" type="button" ng-click="activateLag(row) " class="btn btn-sm btn-success ">Enable</button>
+                                        <a ng-click="editLAG(row.id)" class="btn btn-sm btn-info" title="process"><i class="fa fa-pencil"></i></a>
+                                        <button type="button" ng-click="deleteLAG(row)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -108,12 +111,12 @@
                         <table st-table="nsCollection" st-safe-src="networkServices" class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th class="col-sm-1 col-md-2 col-lg-2">Name</th>
-                                    <th class="col-sm-1 col-md-3 col-lg-3">Administrative state</th>
-                                    <th class="col-sm-1 col-md-3 col-lg-3">Type</th>
-                                    <th class="col-sm-1 col-md-3 col-lg-3">IGMP</th>
-                                    <th class="col-sm-1 col-md-3 col-lg-3">Multicast flood</th>
-                                    <th class="col-sm-1 col-md-3 col-lg-3"># of interfaces</th>
+                                    <th class="col-sm-2 col-md-2 col-lg-2">Name</th>
+                                    <th class="col-sm-1 col-md-1 col-lg-1">Administrative state</th>
+                                    <th class="col-sm-1 col-md-1 col-lg-1">Type</th>
+                                    <th class="col-sm-1 col-md-1 col-lg-1">IGMP</th>
+                                    <th class="col-sm-2 col-md-2 col-lg-2">Multicast flood</th>
+                                    <th class="col-sm-1 col-md-1 col-lg-1"># of interfaces</th>
                                     <th class="col-sm-2 col-md-3 col-lg-3">Actions</th>
                                 </tr>
                                 <tr>
@@ -129,7 +132,9 @@
                                         <span ng-if="row._admin === '1'">In service</span>
                                         <span ng-if="row._admin === '2'">Blocked</span>
                                     </td>
-                                    <td>{{row._type}}</td>
+                                    <td>
+                                        {{service_types[row._type].name}}
+                                    </td>
                                     <td>
                                         <input type="checkbox" name="igmp" data-ng-checked="row._igmpEnable=== '1'" disabled="" checked="checked">
                                     </td>
@@ -137,8 +142,9 @@
                                         <input type="checkbox" name="igmp" data-ng-checked="row._multicastFlood=== '1'" disabled="" checked="checked">
                                     </td>
                                     <td>{{row.interfaceList_ref.interface_ref.length}}</td>
-                                    <td><span>Edit</span>
-                                        <span>Remove</span>
+                                    <td>
+                                        <a ng-click="editNS(row.id)" class="btn btn-sm btn-info" title="process"><i class="fa fa-pencil"></i></a>
+                                        <button type="button" ng-click="deleteNS(row._id)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -160,10 +166,10 @@
                             <thead>
                                 <tr>
                                     <th class="col-sm-2 col-md-2 col-lg-2">Name</th>
-                                    <th class="col-sm-3 col-md-3 col-lg-3">Administrative state</th>
-                                    <th class="col-sm-3 col-md-3 col-lg-3">Network Service</th>
-                                    <th class="col-sm-3 col-md-3 col-lg-3">UNI-CTAG</th>
-                                    <th class="col-sm-4 col-md-3 col-lg-3">Actions</th>
+                                    <th class="col-sm-2 col-md-2 col-lg-2">Administrative state</th>
+                                    <th class="col-sm-2 col-md-2 col-lg-2">Network Service</th>
+                                    <th class="col-sm-2 col-md-2 col-lg-2">UNI-CTAG</th>
+                                    <th class="col-sm-2 col-md-2 col-lg-2">Actions</th>
                                 </tr>
                                 <tr>
                                     <th colspan="3">
@@ -181,8 +187,9 @@
                                     <td>{{networkServices[row._networkServiceId -1 ]._name}}
                                     </td>
                                     <td>{{row._cVlan}}</td>
-                                    <td><span>Edit</span>
-                                        <span>Remove</span>
+                                    <td>
+                                        <a ng-click="editLAG(row.id)" class="btn btn-sm btn-info" title="process"><i class="fa fa-pencil"></i></a>
+                                        <button type="button" ng-click="deleteCS(row.id)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
                                     </td>
                                 </tr>
                             </tbody>

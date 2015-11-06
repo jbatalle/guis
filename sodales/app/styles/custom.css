@@ -80,3 +80,6 @@ body,
 .modal-align {
     /* text-align: right;*/
 }
+tags-input .autocomplete {
+    position: inherit;
+}
