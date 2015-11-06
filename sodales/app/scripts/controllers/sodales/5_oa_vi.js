@@ -87,7 +87,7 @@ angular.module('mqnaasApp')
         });
 
     })
-    .controller('editVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, $modal, $interval, $q) {
+    .controller('editVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, $modal, $interval, $q, $alert) {
         console.log("Edit VI : " + $stateParams.id);
         var promise;
 
@@ -110,6 +110,17 @@ angular.module('mqnaasApp')
             var urlPeriod = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestAdministration/period";
             var onPeriod = getPeriod(new Date(period.startDate).getTime() / 1000, new Date(period.endDate).getTime() / 1000); //xml
             MqNaaSResourceService.put(urlPeriod, onPeriod).then(function () { //the response is empty
+                $alert({
+                        title: "Period set.",
+                        content: "",
+                        placement: 'top',
+                        type: 'success',
+                        keyboard: true,
+                        show: true,
+                        container: '#alerts-container',
+                        duration: 5
+                    });
+                    return;
             });
         };
 

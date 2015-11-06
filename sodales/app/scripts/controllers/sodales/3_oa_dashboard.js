@@ -5,7 +5,7 @@ angular.module('mqnaasApp')
 
         var url;
         $scope.listVi = [];
-        $scope.data = [];
+        //$scope.data = [];
         $scope.dataCollection = [];
         $scope.collapsed = false;
         $scope.current_sp = null;
