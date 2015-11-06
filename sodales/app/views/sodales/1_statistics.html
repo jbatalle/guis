@@ -16,7 +16,9 @@
     <div class="col-md-9">
         <h3 class="page-header">Performance monitoring <small>Statistics</small></h3>
         <div ng-show="arnLinkStatus">
-            <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateCard()"></select>
+            <ol class="breadcrumb">
+                <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateCard()"></select>
+            </ol>
             <table st-table="displayedCollection" st-safe-src="arnLinkStatus" class="table table-striped">
                 <thead>
                     <tr>
@@ -63,53 +65,55 @@
                 </tfoot>
             </table>
         </div>
-        <div ng-show="CPEStats">
+        <div ng-show="cpePorts">
             <ol class="breadcrumb">
-                <li class="active"><i class="fa fa-dashboard"></i> Port:</li>
-                <li ng-if="portMap.port > 99" ng-repeat="portMap in cpePortList" style="content:'/'; padding:'0';">
-                    <a href="" ng-click="getCPEStats(portMap.port)">{{portMap.port}}</a></li>
+                <select placeholder="select port" bs-select ng-model="cpePort" bs-options="portMap.port for portMap in cpePortList" ng-change="getCPEStats()"></select>
             </ol>
             <table class="table ng-table-responsive" style="text-align: center">
-                <tr>
-                    <th>Key</th>
-                    <th>Value</th>
-                </tr>
-                <tr>
-                    <td>Port id</td>
-                    <td>{{content.pmId}}</td>
-                </tr>
-                <tr>
-                    <td>FwdGreen Pkts</td>
-                    <td>{{content['FwdGreen-pkts']}}</td>
-                </tr>
-                <tr>
-                    <td>FwdGreen Bytes</td>
-                    <td>{{content['FwdGreen-bytes']}}</td>
-                </tr>
-                <tr>
-                    <td>FwdYellow Pkts</td>
-                    <td>{{content['FwdYellow-pkts']}}</td>
-                </tr>
-                <tr>
-                    <td>FwdYellow Bytes</td>
-                    <td>{{content['FwdYellow-bytes']}}</td>
-                </tr>
-                <tr>
-                    <td>DisGreen Pkts</td>
-                    <td>{{content['DisGreen-pkts']}}</td>
-                </tr>
-                <tr>
-                    <td>DisGreen Bytes</td>
-                    <td>{{content['DisGreen-bytes']}}</td>
-                </tr>
-                <tr>
-                    <td>DisYellow Pkts</td>
-                    <td>{{content['DisYellow-pkts']}}</td>
-                </tr>
-                <tr>
-                    <td>DisYellow Bytes</td>
-                    <td>{{content['DisYellowRed-bytes']}}</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th class="col-sm-2 col-md-2 col-lg-2" style="text-align: center;">Key</th>
+                        <th class="col-sm-2 col-md-2 col-lg-2" style="text-align: center;">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Pm id</td>
+                        <td>{{content.pmId}}</td>
+                    </tr>
+                    <tr>
+                        <td>FwdGreen Pkts</td>
+                        <td>{{content['FwdGreen-pkts']}}</td>
+                    </tr>
+                    <tr>
+                        <td>FwdGreen Bytes</td>
+                        <td>{{content['FwdGreen-bytes']}}</td>
+                    </tr>
+                    <tr>
+                        <td>FwdYellow Pkts</td>
+                        <td>{{content['FwdYellow-pkts']}}</td>
+                    </tr>
+                    <tr>
+                        <td>FwdYellow Bytes</td>
+                        <td>{{content['FwdYellow-bytes']}}</td>
+                    </tr>
+                    <tr>
+                        <td>DisGreen Pkts</td>
+                        <td>{{content['DisGreen-pkts']}}</td>
+                    </tr>
+                    <tr>
+                        <td>DisGreen Bytes</td>
+                        <td>{{content['DisGreen-bytes']}}</td>
+                    </tr>
+                    <tr>
+                        <td>DisYellow Pkts</td>
+                        <td>{{content['DisYellow-pkts']}}</td>
+                    </tr>
+                    <tr>
+                        <td>DisYellow Bytes</td>
+                        <td>{{content['DisYellowRed-bytes']}}</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
         <div ng-show="CFM_OAM">
