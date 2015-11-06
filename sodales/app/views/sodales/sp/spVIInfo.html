@@ -86,8 +86,10 @@
                                     </td>
                                     <td>{{row._description}}</td>
                                     <td>
-                                        <button ng-if="row._admin === '1'" type="button" ng-click="activateLag(row) " class="btn btn-sm btn-warning ">Disable</button>
-                                        <button ng-if="row._admin === '2'" type="button" ng-click="activateLag(row) " class="btn btn-sm btn-success ">Enable</button>
+                                        <button type="button" ng-click="activateLag(row) " class="btn btn-sm" ng-class="row._admin === '1' ? 'btn-warning' : 'btn-success'">
+                                            <span ng-if="row._admin === '1'">Disable</span>
+                                            <span ng-if="row._admin === '2'">Enable</span>
+                                        </button>
                                         <a ng-click="editLAG(row.id)" class="btn btn-sm btn-info" title="process"><i class="fa fa-pencil"></i></a>
                                         <button type="button" ng-click="deleteLAG(row)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
                                     </td>
@@ -143,6 +145,10 @@
                                     </td>
                                     <td>{{row.interfaceList_ref.interface_ref.length}}</td>
                                     <td>
+                                        <button type="button" ng-click="activateNetworkService(row) " class="btn btn-sm" ng-class="row._admin === '1' ? 'btn-warning' : 'btn-success'">
+                                            <span ng-if="row._admin === '1'">Disable</span>
+                                            <span ng-if="row._admin === '2'">Enable</span>
+                                        </button>
                                         <a ng-click="editNS(row.id)" class="btn btn-sm btn-info" title="process"><i class="fa fa-pencil"></i></a>
                                         <button type="button" ng-click="deleteNS(row._id)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
                                     </td>
@@ -188,6 +194,10 @@
                                     </td>
                                     <td>{{row._cVlan}}</td>
                                     <td>
+                                        <button type="button" ng-click="activateClientService(row) " class="btn btn-sm" ng-class="row._admin === '1' ? 'btn-warning' : 'btn-success'">
+                                            <span ng-if="row._admin === '1'">Disable</span>
+                                            <span ng-if="row._admin === '2'">Enable</span>
+                                        </button>
                                         <a ng-click="editLAG(row.id)" class="btn btn-sm btn-info" title="process"><i class="fa fa-pencil"></i></a>
                                         <button type="button" ng-click="deleteCS(row.id)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
                                     </td>

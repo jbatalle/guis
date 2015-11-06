@@ -106,12 +106,12 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.activateLag = function (lag) {
+        $scope.activateLag = function (data) {
             //depends on the system status, enable or disable
-            var interfaceId = lag._interfaceId;
+            var interfaceId = data._interfaceId;
             var admin = 0;
-            if (lag._admin === '1') admin = 2;
-            else if (lag._admin === '2') admin = 1;
+            if (data._admin === '1') admin = 2;
+            else if (data._admin === '2') admin = 1;
             arnService.put(changeStatusLAG(interfaceId, admin)).then(function (response) {
                 console.log(response);
                 //$scope.LAGs = response.response.operation.interfaceList.interface;
@@ -128,10 +128,32 @@ angular.module('mqnaasApp')
             });
         };
 
+        $scope.activateNetworkService = function (data) {
+            var interfaceId = data._id;
+            var admin = 0;
+            if (data._admin === '1') admin = 2;
+            else if (data._admin === '2') admin = 1;
+            arnService.put(changeStatusNetworkService(id, admin)).then(function (response) {
+                console.log(response);
+                //$scope.LAGs = response.response.operation.interfaceList.interface;
+            });
+        };
+
         $scope.createClientService = function (cs) {
             console.log(cs);
             return;
             arnService.put(createClientService(networkServiceId, admin, name, uniVlan)).then(function (response) {
+                console.log(response);
+                //$scope.LAGs = response.response.operation.interfaceList.interface;
+            });
+        };
+
+        $scope.activateClientService = function (data) {
+            var interfaceId = data._id;
+            var admin = 0;
+            if (data._admin === '1') admin = 2;
+            else if (data._admin === '2') admin = 1;
+            arnService.put(changeStatusClientService(id, admin)).then(function (response) {
                 console.log(response);
                 //$scope.LAGs = response.response.operation.interfaceList.interface;
             });

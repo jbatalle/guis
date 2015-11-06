@@ -35,7 +35,7 @@ addPortsToNetworkService = function (id, cardId, interfaceId, role) {
     return '<?xml version="1.0" encoding="utf-8"?><request><operation token="1" type="attach" entity="networkService"><networkService equipmentId="0" id="' + id + '"><attach><interface cardId="' + cardId + '" interfaceId="' + interfaceId + '" role="' + role + '" /></attach></networkService></operation> < /request>';
 };
 
-activateNetworkService = function (interfaceId) {
+changeStatusNetworkService = function (id, admin) {
     return '<?xml version="1.0" encoding="utf-8"?><request><operation type="config" entity="networkService"><networkService equipmentId="0" id="' + id + '" admin="' + admin + '"></networkService></operation></request>';
 };
 
@@ -44,7 +44,7 @@ createClientService = function (networkServiceId, admin, name, uniVlan) {
         <operation type="create" entity="clientService"><clientService equipmentId="0"><create><clientService networkServiceId="' + networkServiceId + '" admin="' + admin + '" name="' + name + '" uniVlan="' + uniVlan + '" ></clientService></create</clientService></operation></request>';
 };
 
-activateClientService = function (id, admin) {
+changeStatusClientService = function (id, admin) {
     return '<?xml version="1.0" encoding="utf-8"?><request><operation type="config" entity="clientService"><clientService equipmentId="0" id="' + id + '" admin="' + admin + '"></clientService></operation></request>';
 };
 
