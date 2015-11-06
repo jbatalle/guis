@@ -23,8 +23,8 @@ createLAG = function (cardId, interfaceId, lagIfIndex, ethIfIndex, description) 
 		<operation token="1" type="attach" entity="interface/lag"><lag equipmentId="0"><attach><lagMemberPort lagIfIndex="' + lagIfIndex + '" ethIfIndex="' + ethIfIndex + '" lacpTimeout="1"/></attach></lag></operation></request>';
 };
 
-activateLAG = function (interfaceId) {
-    return '<?xml version="1.0" encoding="utf-8"?><request><operation token="200222" type="config" entity="interface"><interface equipmentId="0" interfaceId="8781826" admin="1"></interface></operation></request>';
+changeStatusLAG = function (interfaceId, admin) {
+    return '<?xml version="1.0" encoding="utf-8"?><request><operation token="200222" type="config" entity="interface"><interface equipmentId="0" interfaceId="' + interfaceId + '" admin="' + admin + '"></interface></operation></request>';
 };
 
 createNetworkService = function (id, admin, name, uplinkVlanId, uniVlanId) {

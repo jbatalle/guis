@@ -16,7 +16,6 @@ angular.module('mqnaasApp')
         $rootScope.virtualResource = null;
         $scope.selectedNetwork;
 
-
         $scope.getNetworkResources = function () {
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider";
             MqNaaSResourceService.get(url).then(function (result) {
@@ -107,8 +106,13 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.activeLAG = function (interfaceId) {
-            arnService.put(activeLAG(interfaceId)).then(function (response) {
+        $scope.activateLag = function (lag) {
+            //depends on the system status, enable or disable
+            var interfaceId = lag._interfaceId;
+            var admin = 0;
+            if (lag._admin === '1') admin = 2;
+            else if (lag._admin === '2') admin = 1;
+            arnService.put(changeStatusLAG(interfaceId, admin)).then(function (response) {
                 console.log(response);
                 //$scope.LAGs = response.response.operation.interfaceList.interface;
             });
@@ -192,7 +196,7 @@ angular.module('mqnaasApp')
             return $http.get('', {
                 cache: true
             }).then(function () {
-                var ports = $scope.virtualResource.ports
+                var ports = $rootScope.virtualResource.ports
                 return ports.filter(function (port) {
                     return port.id.toLowerCase().indexOf(query.toLowerCase()) != -1;
                 });
@@ -249,4 +253,16 @@ angular.module('mqnaasApp')
             $scope.currentTab = tab.url;
         };
 
+
+        $scope.deleteLAG = function (id) {
+            console.log(id);
+        };
+
+        $scope.deleteNS = function (id) {
+            console.log(id);
+        };
+
+        $scope.deleteCS = function (id) {
+            console.log(id);
+        };
     });
