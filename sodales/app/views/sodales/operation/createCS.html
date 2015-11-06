@@ -27,7 +27,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">Network service</label>
                         <div class="col-sm-8">
-                            <button type="button" class="btn btn-default" ng-model="selectedNs" data-html="1" bs-options="ns._name for ns in networkServices" bs-select style="margin: 0 0 10px;">
+                            <button type="button" class="btn btn-default" ng-model="cs.selectedNs" data-html="1" bs-options="ns._name for ns in networkServices" bs-select style="margin: 0 0 10px;">
                                 Select <span class="caret"></span>
                             </button>
                             <br/>
@@ -36,7 +36,6 @@
                     <div class="form-group" ng-show="selectedNs">
                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">UNI C-TAG</label>
                         <div class="col-sm-8">
-                            {{selectedNs}}
                             <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" data-ng-maxlength="64" ng-model="cs.uniVlanId" placeholder="{{selectedNs._uniVlanId}}">
                         </div>
                     </div>
@@ -46,7 +45,7 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="modal-footer">
-                    <button class="btn btn-sm btn-primary"ng-click="createClientService(cs)">Create Client Service</button>
+                    <button class="btn btn-sm btn-primary" ng-click="createClientService(cs)">Create Client Service</button>
                 </div>
             </div>
         </div>

@@ -96,6 +96,7 @@ angular.module('mqnaasApp')
         $scope.lag = {};
         $scope.ns = {};
         $scope.cs = {};
+
         $scope.createLAG = function (lag) {
             console.log(lag);
             console.log($scope.listPorts);
@@ -122,9 +123,14 @@ angular.module('mqnaasApp')
             console.log(ns);
             console.log(ns);
             return;
-            arnService.put(createNetworkService(id, admin, name, uplinkVlanId, uniVlanId)).then(function (response) {
+            arnService.put(createNetworkService(id, 2, ns.name, ns.type.id, ns.uplinkVlanId, ns.uniVlanId)).then(function (response) {
                 console.log(response);
                 //$scope.LAGs = response.response.operation.interfaceList.interface;
+
+
+                arnService.put(addPortsToNetworkService(id, cardId, interfaceId, 1)).then(function (response) {
+
+                });
             });
         };
 
@@ -142,7 +148,7 @@ angular.module('mqnaasApp')
         $scope.createClientService = function (cs) {
             console.log(cs);
             return;
-            arnService.put(createClientService(networkServiceId, admin, name, uniVlan)).then(function (response) {
+            arnService.put(createClientService(networkServiceId, 2, cs.name, cs.uniVlanId)).then(function (response) {
                 console.log(response);
                 //$scope.LAGs = response.response.operation.interfaceList.interface;
             });

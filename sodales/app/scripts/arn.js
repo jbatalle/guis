@@ -27,8 +27,8 @@ changeStatusLAG = function (interfaceId, admin) {
     return '<?xml version="1.0" encoding="utf-8"?><request><operation token="200222" type="config" entity="interface"><interface equipmentId="0" interfaceId="' + interfaceId + '" admin="' + admin + '"></interface></operation></request>';
 };
 
-createNetworkService = function (id, admin, name, uplinkVlanId, uniVlanId) {
-    return '<?xml version="1.0" encoding="utf-8"?><request><operation type="create" entity="networkService"><networkService equipmentId="0" id="' + id + '" admin="' + admin + '" name="' + name + '" type="0" uplinkVlanId="' + uplinkVlanId + '" uniVlanId="' + uniVlanId + '"></networkService></operation></request>';
+createNetworkService = function (admin, name, type, uplinkVlanId, uniVlanId) {
+    return '<?xml version="1.0" encoding="utf-8"?><request><operation type="create" entity="networkService"><networkService equipmentId="0" admin="' + admin + '" name="' + name + '" type="' + type + '" uplinkVlanId="' + uplinkVlanId + '" uniVlanId="' + uniVlanId + '"></networkService></operation></request>';
 };
 
 addPortsToNetworkService = function (id, cardId, interfaceId, role) {
