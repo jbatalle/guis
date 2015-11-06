@@ -77,3 +77,6 @@ body,
     margin-bottom: 0;
     overflow: auto;
 }
+.modal-align {
+    /* text-align: right;*/
+}
