@@ -12,11 +12,11 @@
                         <input type="text" class="form-control" ng-model="ns.id" name="endpoint">
                     </div>
                     <div>Administrative state
-                        <input type="text" class="form-control" ng-model="ns.admin" name="endpoint">
+                        <input type="text" class="form-control" ng-model="ns.admin" name="endpoint" placeholder="Blocked" readonly value="2">
                     </div>
                     <div>Service type
-                        <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network for network in listNetworks" bs-select>
-                            Select <span class="caret"></span>
+                        <button type="button" class="btn btn-default" ng-model="ns.serviceType" data-html="1" bs-options="service for service in service_types" bs-select>
+                            Select type <span class="caret"></span>
                         </button>
                     </div>
                     <div>NNI S-TAG
@@ -29,7 +29,7 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="modal-footer">
-                    <button ng-click="createNS(ns)">Create LAG</button>
+                    <button ng-click="createNetworkService(ns)">Create Network Service</button>
                 </div>
             </div>
         </div>
