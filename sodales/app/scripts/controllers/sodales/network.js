@@ -35,10 +35,12 @@ angular.module('mqnaasApp')
         };
 
         $scope.network_options = {
-            layout: {
-                randomSeed: 3
-            }, // just to make sure th layout is the same when the locale is changed
-            locale: 'en'
+            physics: { 
+                stabilization: false,
+                barnesHut: {
+                    "springConstant": 0
+                }
+            }
         };
     })
     .controller('editPhyNetwork', function ($scope, $rootScope, MqNaaSResourceService, $modal, RootResourceService, $interval) {
@@ -111,6 +113,12 @@ angular.module('mqnaasApp')
                 randomSeed: 3
             }, // just to make sure th layout is the same when the locale is changed
             locale: 'en',
+            physics: { 
+                stabilization: false,
+                barnesHut: {
+                    "springConstant": 0
+                }
+            },
             manipulation: {
                 addNode: false,
                 editNode: function (data, callback) {
@@ -327,7 +335,14 @@ angular.module('mqnaasApp')
         $scope.network_options = {
             layout: {
                 randomSeed: 3
-            }, // just to make sure th layout is the same when the locale is changed
+
+            },
+            physics: { 
+                stabilization: false,
+                barnesHut: {
+                    "springConstant": 0
+                }
+            },// just to make sure th layout is the same when the locale is changed
             locale: 'en',
             manipulation: {
                 addNode: false,
@@ -519,7 +534,13 @@ angular.module('mqnaasApp')
             layout: {
                 randomSeed: 3
             }, // just to make sure th layout is the same when the locale is changed
-            locale: 'en'
+            locale: 'en',
+            physics: { 
+                stabilization: false,
+                barnesHut: {
+                    "springConstant": 0                    
+                }
+            }
         };
 
         $scope.onNodeSelect = function (properties) {
