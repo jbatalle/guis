@@ -2,7 +2,11 @@
 
 angular.module('mqnaasApp')
     .controller('spVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, localStorageService, $modal, arnService, $http, AuthService, spService) {
-        console.log("Edit VI : " + $stateParams.id);
+
+        //hardcoded
+        //$rootScope.networkId = "Network-Internal-1.0-2";
+        //$rootScope.virtNetId = "Network-virtual-7";
+
         $rootScope.virtNetId = $stateParams.id;
         $scope.virtualPort = [];
         $scope.virtualResources = [];
@@ -12,18 +16,15 @@ angular.module('mqnaasApp')
         $rootScope.virtualResource = null;
         $scope.selectedNetwork;
 
-        //hardcoded
-        //$rootScope.networkId = "Network-Internal-1.0-2";
-        //$rootScope.virtNetId = "Network-virtual-7";
 
         $scope.getNetworkResources = function () {
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider";
-                MqNaaSResourceService.get(url).then(function (result) {
-                    $scope.networkRes = result.IRootResource.IRootResourceId;
-                });
-            };
-        
-        if($rootScope.networkId && $rootScope.virtNetId){
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider";
+            MqNaaSResourceService.get(url).then(function (result) {
+                $scope.networkRes = result.IRootResource.IRootResourceId;
+            });
+        };
+
+        if ($rootScope.networkId && $rootScope.virtNetId) {
             $scope.getNetworkResources();
         } else {
             console.log("create list of vi nets");
@@ -53,14 +54,14 @@ angular.module('mqnaasApp')
                 });
             });
         }
-        
-        $scope.setVirtualNetwork = function(){
+
+        $scope.setVirtualNetwork = function () {
             $rootScope.virtNetId = $scope.selectedNetwork.id;
             $rootScope.networkId = $scope.selectedNetwork.physicalNetwork;
             $scope.getNetworkResources();
         };
-        
-        
+
+
         $scope.createOperation = function () {
             $modal({
                 template: 'partials/sodales/sp/arnOpDialog.html',
@@ -76,14 +77,23 @@ angular.module('mqnaasApp')
 
             //getLAGList
             arnService.put(getCardInterfaces(0)).then(function (response) {
-                console.log(response);
                 $scope.LAGs = response.response.operation.interfaceList.interface;
+            });
+
+            arnService.put(getNetworkServices()).then(function (response) {
+                console.log(response);
+                $scope.networkServices = response.response.operation.networkServiceList.networkService;
+            });
+
+            arnService.put(getClientServices()).then(function (response) {
+                console.log(response);
+                $scope.clientServices = response.response.operation.clientServiceList.clientService;
             });
 
             //getNetworkService
 
         };
-        
+
         $scope.lag = {};
         $scope.ns = {};
         $scope.cs = {};
@@ -113,8 +123,8 @@ angular.module('mqnaasApp')
                 //$scope.LAGs = response.response.operation.interfaceList.interface;
             });
         };
-        
-        $scope.createClientService = function(cs){
+
+        $scope.createClientService = function (cs) {
             console.log(cs);
             return;
             arnService.put(createClientService(networkServiceId, admin, name, uniVlan)).then(function (response) {
@@ -125,7 +135,7 @@ angular.module('mqnaasApp')
 
         $scope.openModal = function (mode) {
             var template, label;
-            if (mode === 'createLAG'){ 
+            if (mode === 'createLAG') {
                 template = 'views/sodales/operation/createLAG.html';
                 label = "Create LAG";
             } else if (mode === 'createNS') {
@@ -159,7 +169,7 @@ angular.module('mqnaasApp')
             id: 2,
             name: "Dynamic (LACP)"
         }];
-        
+
         $scope.service_types = [{
             id: 1,
             name: "Unicast"
@@ -216,6 +226,27 @@ angular.module('mqnaasApp')
             }
             $rootScope.info = "200 - Operation done";
             this.$hide();
+        };
+
+
+        $scope.operation_tabs = [{
+                title: 'LAG',
+                url: 'tab_lag'
+        },
+            {
+                title: 'Network Service',
+                url: 'tab_ns'
+        },
+            {
+                title: 'Client Service',
+                url: 'tab_cs'
+        }
+       ];
+
+        $scope.operation_tabs.activeTab = 'tab_lag';
+
+        $scope.onClickTab = function (tab) {
+            $scope.currentTab = tab.url;
         };
 
     });

@@ -5,24 +5,16 @@ angular.module('mqnaasApp')
 
         //hardcoded
         //$rootScope.networkId = "Network-Internal-1.0-2";
-        //$scope.virtNetId = "Network-virtual-7";
+        //$rootScope.virtNetId = "Network-virtual-7";
 
-        var promise;
-        var availableResources = [];
-        $scope.selected = "";
-        $scope.vi = $stateParams.id;
-        var url;
+        $rootScope.virtNetId = $stateParams.id;
         $scope.virtualResources = [];
-
-        $scope.selectedResource = "";
-        
         $rootScope.networkCollection = [];
+        $scope.selected = ""; //unused???
+        $scope.selectedResource = "";
         $scope.selectedNetwork;
+        var promise, url;
 
-        if ($window.localStorage.networkId) $rootScope.netId = $window.localStorage.networkId;
-        else $rootScope.netId = null;
-
-                
         $scope.getNetworkResources = function () {
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider";
             MqNaaSResourceService.get(url).then(function (data) {
@@ -35,8 +27,8 @@ angular.module('mqnaasApp')
                 });
             });
         };
-        
-        if($rootScope.networkId && $rootScope.virtNetId){
+
+        if ($rootScope.networkId && $rootScope.virtNetId) {
             $scope.getNetworkResources();
         } else {
             console.log("create list of vi nets");
@@ -66,13 +58,13 @@ angular.module('mqnaasApp')
                 });
             });
         }
-        
-        $scope.setVirtualNetwork = function(){
+
+        $scope.setVirtualNetwork = function () {
             $rootScope.virtNetId = $scope.selectedNetwork.id;
             $rootScope.networkId = $scope.selectedNetwork.physicalNetwork;
             $scope.getNetworkResources();
         };
-                
+
         $scope.dropdown = [{
             "text": "System notifications",
             "click": "selectResource('', 'ARN/OAM')"
@@ -95,7 +87,7 @@ angular.module('mqnaasApp')
         $scope.selectResource = function (resourceName, resourceType) {
             $scope.selectedResource = resourceName;
             console.log("Click resource " + resourceName);
-            $scope.dropdown[0].click = "selectResource('" + $scope.selectedResource + "', 'ARN/OAM')";
+            // $scope.dropdown[0].click = "selectResource('" + $scope.selectedResource + "', 'ARN/OAM')";
             $scope.dropdown2[0].click = "selectResource('" + $scope.selectedResource + "', 'CFM/OAM')";
             //get resourceInfo from OpenNaaS.
             //load default statistic info
