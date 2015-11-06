@@ -1,7 +1,7 @@
 'use strict';
 
-services.factory('HistoryService', function ($resource) {
-    return $resource('http://localhost:5000/history/:id', {
+services.factory('HistoryService', function ($resource, AUTHENTICATION) {
+    return $resource(AUTHENTICATION + 'history/:id', {
         id: '@id'
     });
 });
