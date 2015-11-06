@@ -12,7 +12,10 @@
                         <input type="text" class="form-control" ng-model="ns.id" name="endpoint">
                     </div>
                     <div>Administrative state
-                        <input type="text" class="form-control" ng-model="ns.admin" name="endpoint" placeholder="Blocked" readonly value="2">
+                        <select class="btn btn-default" disabled>
+                            <option ng-model="ns.admin" value="2">Blocked</option>
+                            <option ng-model="ns.admin" value="1">In service</option>
+                        </select>
                     </div>
                     <div>Service type
                         <button type="button" class="btn btn-default" ng-model="ns.serviceType" data-html="1" bs-options="service for service in service_types" bs-select>
@@ -29,7 +32,7 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="modal-footer">
-                    <button ng-click="createNetworkService(ns)">Create Network Service</button>
+                    <button class="btn btn-sm btn-primary" ng-click="createNetworkService(ns)">Create Network Service</button>
                 </div>
             </div>
         </div>

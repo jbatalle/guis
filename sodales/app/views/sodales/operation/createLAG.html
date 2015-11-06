@@ -6,13 +6,15 @@
                 <h4 class="modal-title" ng-bind="title"></h4>
             </div>
             <div class="modal-body">
-                <b>LAGs</b>
                 <div>
                     <div>Description
                         <input placeholder="" type="text" class="form-control" ng-model="lag.description" name="endpoint">
                     </div>
                     <div>Administrative state
-                        <input placeholder="blocked" value="2" type="text" class="form-control" ng-model="lag.admin" name="endpoint">
+                        <select class="btn btn-default" disabled>
+                            <option ng-model="lag.admin" value="2">Blocked</option>
+                            <option ng-model="lag.admin" value="1">In service</option>
+                        </select>
                     </div>
                     <div>Load balance
                         <button type="button" class="btn btn-default" ng-model="lag.loadBalance" data-html="1" bs-options="balance.name for balance in lag_load_balances" bs-select>
