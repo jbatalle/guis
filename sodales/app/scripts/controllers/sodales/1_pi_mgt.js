@@ -7,6 +7,7 @@ angular.module('mqnaasApp')
         $scope.nodes = new vis.DataSet();
         $scope.edges = new vis.DataSet();
         $scope.listNetworks = [];
+        $rootScope.resourceInfo = {};
 
         if ($window.localStorage.networkId) $rootScope.netId = $window.localStorage.networkId;
         else $rootScope.netId = null;
