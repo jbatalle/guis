@@ -87,7 +87,7 @@ angular.module('mqnaasApp')
         });
 
     })
-    .controller('editVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, $modal, $interval, $q, $alert, VirtualService) {
+    .controller('editVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, $interval, $q, $alert, VirtualService) {
         console.log("Edit VI : " + $stateParams.id);
         var promise;
 

@@ -136,6 +136,7 @@ angular.module('mqnaasApp')
             this.$hide();
         };
 
+        //it is used????
         var getMqNaaSResource = function (root, url) {
             if (root === undefined) return;
             url = generateUrl('IRootResourceAdministration', root, 'IRootResourceProvider');
@@ -230,11 +231,6 @@ angular.module('mqnaasApp')
                 });
                 return data;
             });
-        };
-
-        $scope.createPort = function (resourceName) {
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IPortManagement';
-            MqNaaSResourceService.put(url).then(function (data) {});
         };
 
         $scope.getResourceInfo = function (resourceName) {

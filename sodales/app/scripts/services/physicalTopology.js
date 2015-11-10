@@ -44,7 +44,17 @@ angular.module('mqnaasApp')
             var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel';
             MqNaaSResourceService.list(url).then(function (data) {
                 $rootScope.resourceInfo = {};
-                $rootScope.resourceInfo.ports = checkIfIsArray(data.resource.resources.resource);
+                if (data.type === 'CPE') {
+                    $rootScope.resourceInfo.ports = [];
+                    var cpePorts = checkIfIsArray(data.resource.resources.resource);
+                    angular.forEach(cpePorts, function (port) {
+                        if (port > 99 && porrt < 112) port.type = "external";
+                        else port.type = "internal";
+                        $rootScope.resourceInfo.ports.push(port);
+                    });
+                } else {
+                    $rootScope.resourceInfo.ports = checkIfIsArray(data.resource.resources.resource);
+                }
                 $rootScope.resourceInfo.slicing = {};
                 getSlice(resourceName);
             });

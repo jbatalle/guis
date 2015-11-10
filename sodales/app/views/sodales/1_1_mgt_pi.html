@@ -68,7 +68,7 @@
                     <h3 class="page-header">Ports</h3>
                     <div style="overflow-y: scroll; height:250px;">
                         <ul>
-                            <li ng-repeat="res in resourceInfo.ports">
+                            <li ng-repeat="res in resourceInfo.ports" ng-if="res.type !=== 'internal'">
                                 {{res.id}} - {{res.attributes.entry[0].value}}
                             </li>
                         </ul>
