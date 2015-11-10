@@ -131,7 +131,6 @@ angular.module('mqnaasApp')
                         id: n.id
                     });
                 }
-
                 $scope.updateResourceList();
             });
             this.$hide();
@@ -239,13 +238,7 @@ angular.module('mqnaasApp')
         };
 
         $scope.getResourceInfo = function (resourceName) {
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel';
-            MqNaaSResourceService.list(url).then(function (data) {
-                $rootScope.resourceInfo = {};
-                $rootScope.resourceInfo.ports = checkIfIsArray(data.resource.resources.resource);
-                $rootScope.resourceInfo.slicing = {};
-                PhysicalService.getSlice(resourceName);
-            });
+            PhysicalService.getResource(resourceName);
         };
 
         $scope.configurePhysicalResource = function (resourceName, ports) {
