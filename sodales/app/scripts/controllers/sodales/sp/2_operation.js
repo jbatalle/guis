@@ -99,10 +99,25 @@ angular.module('mqnaasApp')
         $scope.createLAG = function (lag) {
             console.log(lag);
             console.log($scope.listPorts);
-            return;
-            arnService.put(createLAG(cardId, interfaceId, lagIfIndex, ethIfIndex, lag.description)).then(function (response) {
-                console.log(response);
-                //$scope.LAGs = response.response.operation.interfaceList.interface;
+            arnService.put(getCardInterfaces(0)).then(function (response) {
+                var interfaces = response.response.operation.interfaceList.interface;
+                interfaces.every(function (iface) {
+                    console.log(iface);
+                    if (iface.lag !== undefined) return true;
+                    else {
+                        lag.interfaceId = iface._interfaceId;
+                        lag.attachedPorts = "";
+                        angular.forEach($scope.listPorts, function (port) {
+                            attachedPorts += attachPortsToLag(lag.interfaceId, port.attributes.entry[0].value)
+                        });
+
+                        arnService.put(createLAG(0, lag.interfaceId, lag.loadBalance.id, attachedPorts, lag.description)).then(function (response) {
+
+                        });
+
+                        return false;
+                    }
+                });
             });
         };
 
@@ -254,15 +269,42 @@ angular.module('mqnaasApp')
         };
 
 
-        $scope.deleteLAG = function (id) {
-            console.log(id);
+        $scope.deleteDialog = function (obj, type) {
+            $scope.itemToDelete = obj;
+            $scope.itemType = type;
+            $modal({
+                title: 'Are you sure you want to delete this item?',
+                template: 'views/modals/modalOperationRemove.html',
+                show: true,
+                scope: $scope
+            });
         };
 
-        $scope.deleteNS = function (id) {
-            console.log(id);
-        };
 
-        $scope.deleteCS = function (id) {
-            console.log(id);
+        $scope.deleteItem = function (obj, type) {
+            console.log(obj);
+            if (type === 'LAG') {
+                var deattachPorts = "";
+                if (obj.lag.lagMemberList) {
+                    angular.forEach(checkIfIsArray(obj.lag.lagMemberList), function (d) {
+                        console.log(d);
+                        deattachPorts += detachLagPort(d.lagMember._interfaceId, d.lagMember._interfaceId);
+                    });
+                }
+
+                arnService.put(removeLag(obj._interfaceId, obj._cardId, deattachPorts)).then(function (response) {
+                    console.log(response);
+                    //$scope.LAGs = response.response.operation.interfaceList.interface;
+                });
+            } else if (type === 'NS') {
+                arnService.put(removeNetworkService(obj._id)).then(function (response) {
+                    console.log(response);
+                });
+            } else if (type === 'CS') {
+                arnService.put(removeClientService(obj._id, obj.interfaceList_ref.interface_ref._cardId)).then(function (response) {
+                    console.log(response);
+                });
+            }
+            this.$hide();
         };
     });

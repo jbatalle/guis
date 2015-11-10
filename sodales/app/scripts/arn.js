@@ -15,12 +15,15 @@ getInterface = function (interfaceId) {
 };
 
 //operations
-createLAG = function (cardId, interfaceId, lagIfIndex, ethIfIndex, description) {
+createLAG = function (cardId, interfaceId, loadBalanceMode, attachedPorts, description) {
     return '<?xml version="1.0" encoding="UTF-8"?>\
 	<request>\
-		<operation token="1" type="create" entity="interface/lag"><lag equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '" loadBalanceMode="1"/></operation>\
-		<operation token="2" type="config" entity="interface"><interface equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '" description="' + description + '"></interface></operation>\
-		<operation token="1" type="attach" entity="interface/lag"><lag equipmentId="0"><attach><lagMemberPort lagIfIndex="' + lagIfIndex + '" ethIfIndex="' + ethIfIndex + '" lacpTimeout="1"/></attach></lag></operation></request>';
+		<operation token="1" type="create" entity="interface/lag"><lag equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '" loadBalanceMode="' + loadBalanceMode + '"/></operation>\
+		<operation token="2" type="config" entity="interface"><interface equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '" description="' + description + '"></interface></operation>' + attachedPorts + '</request>';
+};
+
+attachPortsToLag = function (lagIfIndex, ethIfIndex) {
+    return '<operation token="1" type="attach" entity="interface/lag"><lag equipmentId="0"><attach><lagMemberPort lagIfIndex="' + lagIfIndex + '" ethIfIndex="' + ethIfIndex + '" lacpTimeout="1"/></attach></lag></operation>';
 };
 
 changeStatusLAG = function (interfaceId, admin) {
@@ -49,8 +52,21 @@ activateClientService = function (id, admin) {
 };
 
 //remove
-removeNetworkService = function (interfaceId) {
-    return '';
+removeLag = function (interfaceId, cardId, deattachPorts) {
+    return '<?xml version="1.0" encoding="UTF-8"?><request>' + deattachPorts + '\
+        <operation token="2" type="remove" entity="interface/lag"><lag equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '"/></operation></request>';
+};
+
+detachLagPort = function (interfaceId, ethIfIndex) {
+    return '<operation token="1" type="detach" entity="interface/lag"><lag equipmentId="0"><attach><lagMemberPort lagIfIndex="' + interfaceId + '" ethIfIndex="' + ethIfIndex + '"/></attach></lag></operation>';
+};
+
+removeNetworkService = function (nsId) {
+    return '<?xml version="1.0" encoding="UTF-8"?><request><operation token="10" type="config" entity="networkService"><networkService equipmentId="0" id="' + nsId + '" admin="2"></networkService></operation><operation token="1" type="config" entity="networkService/port"><networkService equipmentId="0" id="' + nsId + '"><replace/></networkService></operation><operation token="1" type="remove" entity="networkService"><networkService equipmentId="0" id="' + nsId + '"/></operation></request>';
+};
+
+removeClientService = function (csId, cardId) {
+    return '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="config" entity="clientService/port"><clientService equipmentId="0" cardId="' + cardId + '" id="' + csId + '"><replace/></clientService></operation><operation token="1" type="remove" entity="clientService"><clientService equipmentId="0" cardId = "' + cardId + '" id="' + csId + '"/></operation></request>';
 };
 
 getNetworkServices = function () {

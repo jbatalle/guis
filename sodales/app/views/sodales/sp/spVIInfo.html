@@ -89,7 +89,7 @@
                                         <button ng-if="row._admin === '1'" type="button" ng-click="activateLag(row) " class="btn btn-sm btn-warning ">Disable</button>
                                         <button ng-if="row._admin === '2'" type="button" ng-click="activateLag(row) " class="btn btn-sm btn-success ">Enable</button>
                                         <a ng-click="editLAG(row.id)" class="btn btn-sm btn-info" title="process"><i class="fa fa-pencil"></i></a>
-                                        <button type="button" ng-click="deleteLAG(row)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
+                                        <button type="button" ng-click="deleteDialog(row, 'LAG')" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -144,7 +144,7 @@
                                     <td>{{row.interfaceList_ref.interface_ref.length}}</td>
                                     <td>
                                         <a ng-click="editNS(row.id)" class="btn btn-sm btn-info" title="process"><i class="fa fa-pencil"></i></a>
-                                        <button type="button" ng-click="deleteNS(row._id)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
+                                        <button type="button" ng-click="deleteDialog(row, 'NS')" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -189,7 +189,7 @@
                                     <td>{{row._cVlan}}</td>
                                     <td>
                                         <a ng-click="editLAG(row.id)" class="btn btn-sm btn-info" title="process"><i class="fa fa-pencil"></i></a>
-                                        <button type="button" ng-click="deleteCS(row.id)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
+                                        <button type="button" ng-click="deleteDialog(row, 'CS')" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
