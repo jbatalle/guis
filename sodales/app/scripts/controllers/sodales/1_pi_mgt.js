@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('sodalesPiMgtCtrl', function ($scope, $rootScope, MqNaaSResourceService, $window, $modal, RootResourceService, arnService, cpeService, $alert, $interval) {
+    .controller('sodalesPiMgtCtrl', function ($scope, $rootScope, MqNaaSResourceService, $window, $modal, RootResourceService, arnService, cpeService, $alert, $interval, PhysicalService) {
         var url = '';
 
         $scope.nodes = new vis.DataSet();
@@ -160,39 +160,8 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.getRealPorts = function (resourceName) {
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IPortManagement';
-            MqNaaSResourceService.get(url).then(function (result) {
-                console.log(result);
-                console.log((result.IResource.IResourceId));
-                if (result.IResource.IResourceId === undefined) return;
-                var ports = [];
-                result.IResource.IResourceId.forEach(function (entry) {
-                    url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IPortManagement/' + entry + '/IAttributeStore/attribute/?arg0=portInternalId';
-                    MqNaaSResourceService.getText(url).then(function (realPort) {
-                        console.log('GET physical port');
-                        console.log(realPort);
-                        console.log(entry);
-                        var p = entry + '(' + realPort + ')';
-                        if (realPort > 99) ports.push({
-                            '_id': p
-                        });
-                        console.log(ports);
-                        /* localStorageService.set(resourceName, {
-                             name: resourceName,
-                             ports: {
-                                 port: ports
-                             }
-                         });*/
-                    });
-                });
-
-                console.log('Set ports');
-                console.log(localStorageService.get(resourceName));
-            });
-        };
-
         $scope.openAddResourceDialog = function (nodeType, divPos) {
+            console.log("ADD resource");
             $scope.resource = {};
             $scope.resource.type = nodeType;
             if (nodeType == 'arn') $scope.resource.endpoint = 'http://fibratv.dtdns.net:41080';
@@ -250,7 +219,7 @@ angular.module('mqnaasApp')
                 $scope.createdLinkInfo = [{
                     s: $scope.source,
                     t: $scope.dest
-                }];
+                            }];
                 url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + $scope.source + '/IPortManagement';
                 MqNaaSResourceService.get(url).then(function (result) {
                     console.log(result);
@@ -269,43 +238,13 @@ angular.module('mqnaasApp')
             MqNaaSResourceService.put(url).then(function (data) {});
         };
 
-        $scope.mappingPortsToLink = function (res1, port1, portInternalId, portEth) {
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + res1 + '/IPortManagement/' + port1 + '/IAttributeStore/attribute/?arg0=' + portInternalId + '&arg1=' + portEth;
-            MqNaaSResourceService.put(url).then(function (result) {
-                $scope.resRoot = result; //empty
-                $scope.mappedPort = 'Mapped';
-                $scope.mappedPorts.push({
-                    virt: virtualPort,
-                    real: realPort
-                });
-            });
-        };
-
-        //unused here
-        $scope.attachPortsToLink = function (linkId, type, portId) {
-            url;
-            if (type === 'source') {
-                url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement/' + linkId + '/ILinkAdministration/srcPort?arg0=' + portId;
-                $scope.srcPortAttahed = 'Source port Attached';
-            } else if (type === 'dest') {
-                url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement/' + linkId + '/ILinkAdministration/destPort?arg0=' + portId;
-                $scope.dstPortAttahed = 'Target port Attached';
-            }
-            MqNaaSResourceService.put(url).then(function (response) {}); //empty
-
-        };
-
         $scope.getResourceInfo = function (resourceName) {
-            console.log(resourceName);
-
             url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel';
             MqNaaSResourceService.list(url).then(function (data) {
-                console.log(data.resource.resources.resource);
                 $rootScope.resourceInfo = {};
                 $rootScope.resourceInfo.ports = checkIfIsArray(data.resource.resources.resource);
                 $rootScope.resourceInfo.slicing = {};
-
-                $scope.getSlice(resourceName);
+                PhysicalService.getSlice(resourceName);
             });
         };
 
@@ -345,48 +284,6 @@ angular.module('mqnaasApp')
                         //                        });
                     });
                 });
-            });
-        };
-
-        $scope.getSlice = function (resourceName) { //get
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/slice';
-            MqNaaSResourceService.getText(url).then(function (data) {
-                $rootScope.resourceInfo.slicing.slices = {};
-                $rootScope.resourceInfo.slicing.slices = {
-                    id: data,
-                    units: [],
-                    cubes: {}
-                };
-                $scope.getUnits(resourceName, data);
-                $scope.getCubes(resourceName, data);
-            });
-        };
-
-        $scope.getUnits = function (resourceName, sliceId) {
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/' + sliceId + '/IUnitManagement';
-            MqNaaSResourceService.get(url).then(function (data) {
-                var units = checkIfIsArray(data.IResource.IResourceId);
-                units.forEach(function (unit) {
-                    $scope.getRangeUnit(resourceName, sliceId, unit)
-                });
-            });
-        };
-
-        $scope.getRangeUnit = function (resourceName, sliceId, unitId) {
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/' + sliceId + '/IUnitManagement/' + unitId;
-            MqNaaSResourceService.get(url).then(function (data) {
-                $rootScope.resourceInfo.slicing.slices.units.push({
-                    id: unitId,
-                    range: data
-                });
-            });
-        };
-
-        $scope.getCubes = function (resourceName, sliceId) {
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/' + sliceId + '/ISliceAdministration/cubes';
-            MqNaaSResourceService.get(url).then(function (data) {
-                $rootScope.resourceInfo.slicing.slices.cubes = checkIfIsArray(data.cubesList.cubes);
-                return data;
             });
         };
 
