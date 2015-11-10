@@ -86,10 +86,19 @@
                                     </td>
                                     <td>{{row._description}}</td>
                                     <td>
+<<<<<<< HEAD:sodales/app/views/sodales/sp/1_spVIInfo.html
                                         <button ng-if="row._admin === '1'" type="button" ng-click="activateLag(row) " class="btn btn-sm btn-warning ">Disable</button>
                                         <button ng-if="row._admin === '2'" type="button" ng-click="activateLag(row) " class="btn btn-sm btn-success ">Enable</button>
                                         <a ng-click="editLAG(row.id)" class="btn btn-sm btn-info" title="process"><i class="fa fa-pencil"></i></a>
                                         <button type="button" ng-click="deleteDialog(row, 'LAG')" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
+=======
+                                        <button type="button" ng-click="activateLag(row) " class="btn btn-sm" ng-class="row._admin === '1' ? 'btn-warning' : 'btn-success'">
+                                            <span ng-if="row._admin === '1'">Disable</span>
+                                            <span ng-if="row._admin === '2'">Enable</span>
+                                        </button>
+                                        <a ng-click="editLAG(row.id)" class="btn btn-sm btn-info" title="edit"><i class="fa fa-pencil"></i></a>
+                                        <button type="button" ng-click="deleteLAG(row)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
+>>>>>>> 3fe8f38a31cc6b3a7e7f7caf66f67c2153d2df16:sodales/app/views/sodales/sp/spVIInfo.html
                                     </td>
                                 </tr>
                             </tbody>
@@ -143,8 +152,17 @@
                                     </td>
                                     <td>{{row.interfaceList_ref.interface_ref.length}}</td>
                                     <td>
+<<<<<<< HEAD:sodales/app/views/sodales/sp/1_spVIInfo.html
                                         <a ng-click="editNS(row.id)" class="btn btn-sm btn-info" title="process"><i class="fa fa-pencil"></i></a>
                                         <button type="button" ng-click="deleteDialog(row, 'NS')" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
+=======
+                                        <button type="button" ng-click="activateNetworkService(row) " class="btn btn-sm" ng-class="row._admin === '1' ? 'btn-warning' : 'btn-success'">
+                                            <span ng-if="row._admin === '1'">Disable</span>
+                                            <span ng-if="row._admin === '2'">Enable</span>
+                                        </button>
+                                        <a ng-click="editNS(row.id)" class="btn btn-sm btn-info" title="edit"><i class="fa fa-pencil"></i></a>
+                                        <button type="button" ng-click="deleteNS(row._id)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
+>>>>>>> 3fe8f38a31cc6b3a7e7f7caf66f67c2153d2df16:sodales/app/views/sodales/sp/spVIInfo.html
                                     </td>
                                 </tr>
                             </tbody>
@@ -188,8 +206,17 @@
                                     </td>
                                     <td>{{row._cVlan}}</td>
                                     <td>
+<<<<<<< HEAD:sodales/app/views/sodales/sp/1_spVIInfo.html
                                         <a ng-click="editLAG(row.id)" class="btn btn-sm btn-info" title="process"><i class="fa fa-pencil"></i></a>
                                         <button type="button" ng-click="deleteDialog(row, 'CS')" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
+=======
+                                        <button type="button" ng-click="activateClientService(row) " class="btn btn-sm" ng-class="row._admin === '1' ? 'btn-warning' : 'btn-success'">
+                                            <span ng-if="row._admin === '1'">Disable</span>
+                                            <span ng-if="row._admin === '2'">Enable</span>
+                                        </button>
+                                        <a ng-click="editLAG(row.id)" class="btn btn-sm btn-info" title="edit"><i class="fa fa-pencil"></i></a>
+                                        <button type="button" ng-click="deleteCS(row.id)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
+>>>>>>> 3fe8f38a31cc6b3a7e7f7caf66f67c2153d2df16:sodales/app/views/sodales/sp/spVIInfo.html
                                     </td>
                                 </tr>
                             </tbody>
