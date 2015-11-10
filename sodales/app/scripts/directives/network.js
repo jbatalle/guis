@@ -80,13 +80,12 @@ angular.module('mqnaasApp')
             restrict: 'AE',
             controller: function ($scope, $modal) {
                 $scope.openAddResourceDialog = function (nodeType, divPos) {
+                    $rootScope.resourceRequest = "";
                     $scope.resource = {};
-                    if (nodeType == 'arn') $scope.resource.endpoint = "http://fibratv.dtdns.net:41080";
-                    else if (nodeType == 'arn') $scope.resource.endpoint = "http://fibra2222tv.dtdns.net:41081";
                     $scope.resource.type = nodeType;
                     $modal({
                         title: 'Adding a virtual ' + nodeType,
-                        template: 'views/addResInVIDialog.html',
+                        template: 'views/modals/addResInVIDialog.html',
                         show: true,
                         scope: $scope,
                         data: {
@@ -95,7 +94,7 @@ angular.module('mqnaasApp')
                         }
                     });
                 };
-                
+
             },
             link: function (scope, element, attrs) {
                 element.droppable({

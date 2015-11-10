@@ -79,7 +79,7 @@ angular.module('mqnaasApp')
         $scope.createDialog = function () {
             $modal({
                 title: 'Create new User.',
-                template: 'views/modals/modalUserCreation.html',
+                template: 'views/modals/ip_oa/modalUserCreation.html',
                 show: true,
                 scope: $scope
             });

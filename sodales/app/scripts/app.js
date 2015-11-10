@@ -124,14 +124,60 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                             controller: 'SodalesHomeCtrl'
                         }
                     }
-                })
-                //monitoring
-                .state('root.monitoring', {
+                }).state('root.mgt', {
+                    url: '/mgt',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/1_1_mgt_pi.html',
+                            controller: 'sodalesPiMgtCtrl'
+                        }
+                    }
+                }).state('root.resources', {
+                    url: '/mgt/resources',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/1_2_mgt_res.html',
+                            controller: 'sodalesPiResourcesCtrl'
+                        }
+                    }
+                }).state('root.monitoring', {
                     url: '/monitoring',
                     views: {
                         'master@root': {
-                            templateUrl: 'views/sodales/1_statistics.html',
+                            templateUrl: 'views/sodales/2_statistics.html',
                             controller: 'SodalesMonitoringController'
+                        }
+                    }
+                }).state('root.vimgt', {
+                    url: '/openaccess/vimgt',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/3_0_openAccess.html',
+                            controller: 'SodalesOpenaccessDashCtrl'
+                        }
+                    }
+                }).state('root.history', {
+                    url: '/openaccess/history',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/3_1_openAccess_history.html',
+                            controller: 'SodalesHistoryController'
+                        }
+                    }
+                }).state('root.viList', {
+                    url: '/openaccess/vicreation',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/3_2_openAccess_index.html',
+                            controller: 'listVIController'
+                        }
+                    }
+                }).state('root.editVIRequest', {
+                    url: '/editVIRequest/:id',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/3_2_openAccess_vicreation.html',
+                            controller: 'editVIController'
                         }
                     }
                 }).state('root.cfm', {
@@ -142,61 +188,13 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                             controller: 'SodalesMonitoringController'
                         }
                     }
-                }).state('root.mgt', {
-                    url: '/mgt',
-                    views: {
-                        'master@root': {
-                            templateUrl: 'views/sodales/0_1_mgt_pi.html',
-                            controller: 'sodalesPiMgtCtrl'
-                        }
-                    }
-                }).state('root.resources', {
-                    url: '/mgt/resources',
-                    views: {
-                        'master@root': {
-                            templateUrl: 'views/sodales/0_2_mgt_res.html',
-                            controller: 'sodalesPiResourcesCtrl'
-                        }
-                    }
-                }).state('root.history', {
-                    url: '/openaccess/history',
-                    views: {
-                        'master@root': {
-                            templateUrl: 'views/sodales/2_1_openAccess_history.html',
-                            controller: 'SodalesHistoryController'
-                        }
-                    }
-                }).state('root.vimgt', {
-                    url: '/openaccess/vimgt',
-                    views: {
-                        'master@root': {
-                            templateUrl: 'views/sodales/2_0_openAccess.html',
-                            controller: 'SodalesOpenaccessDashCtrl'
-                        }
-                    }
-                }).state('root.viList', {
-                    url: '/openaccess/vicreation',
-                    views: {
-                        'master@root': {
-                            templateUrl: 'views/sodales/2_2_openAccess_index.html',
-                            controller: 'listVIController'
-                        }
-                    }
-                }).state('root.editVIRequest', {
-                    url: '/editVIRequest/:id',
-                    views: {
-                        'master@root': {
-                            templateUrl: 'views/sodales/2_2_openAccess_vicreation.html',
-                            controller: 'editVIController'
-                        }
-                    }
                 })
                 //SP
                 .state('root.spInfo', {
                     url: '/spInfo',
                     views: {
                         'master@root': {
-                            templateUrl: 'views/sodales/sp/spInfo.html',
+                            templateUrl: 'views/sodales/sp/0_spInfo.html',
                             controller: 'spController'
                         }
                     }
@@ -204,7 +202,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                     url: '/spVIInfo/:id',
                     views: {
                         'master@root': {
-                            templateUrl: 'views/sodales/sp/spVIInfo.html',
+                            templateUrl: 'views/sodales/sp/1_spVIInfo.html',
                             controller: 'spVIController'
                         }
                     }
@@ -212,7 +210,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                     url: '/spStats/:id',
                     views: {
                         'master@root': {
-                            templateUrl: 'views/sodales/sp/spStats.html',
+                            templateUrl: 'views/sodales/sp/2_spStats.html',
                             controller: 'spStatsController'
                         }
                     }
@@ -255,9 +253,9 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                         var config = rejection.config;
                         var method = config.method;
                         var url = config.url;
-console.log("APP INTERCEPTOR ERROR");
+                        console.log("APP INTERCEPTOR ERROR");
 
-console.log(status);
+                        console.log(status);
 
                         if (Math.floor(Date.now() / 1000) > $window.localStorage.expiration)
                             $rootScope.logout();

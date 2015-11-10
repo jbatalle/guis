@@ -208,17 +208,8 @@ angular.module('mqnaasApp')
                 element.draggable({
                     revert: true,
                     helper: 'clone',
-                    start: function (event, ui) {
-                        console.log("Start dragging");
-                        console.log(event);
-                        console.log(ui);
-                        console.log(event.target.id);
-                    },
-                    stop: function (event, ui) {
-                        console.log("Stop dragging");
-                        console.log(event);
-                        console.log(ui);
-                    }
+                    start: function (event, ui) {},
+                    stop: function (event, ui) {}
                 });
             }
         };
@@ -232,7 +223,7 @@ angular.module('mqnaasApp')
 
                 $scope.openaddVIResDialog = function (nodeType, divPos) {
                     $modal.open({
-                        template: 'views/addResInVIDialog.html',
+                        template: 'views/modals/addResInVIDialog.html',
                         data: {
                             "nodeType": nodeType,
                             "divPos": divPos

@@ -1,0 +1,32 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" ng-controller="sodalesPiMgtCtrl">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div>
+                        <label for="serviceFVDs">Selected users</label>
+                        <ul>
+                            <li ng-repeat="user in users">{{user.name}}
+                                <button type="button" ng-click="delete(user)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i>
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="col-xs-8">
+                            <select class="form-control" placeholder="select users" ng-model="myUser" ng-options="user.name for user in users | exclude: spUsers"></select>
+                        </div>
+                        <a href="" class="btn btn-sm btn-primary" ng-click="addUser(myUser)">Add</a>
+                    </div>
+                    <br/>
+                </div>
+                <!-- /.box-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="addResource(arn)">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

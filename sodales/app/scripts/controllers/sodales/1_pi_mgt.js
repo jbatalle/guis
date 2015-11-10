@@ -394,7 +394,7 @@ angular.module('mqnaasApp')
             $scope.unit = unit;
             $modal({
                 title: 'Unit information about ' + unit.id,
-                template: 'views/modals/rangeInfo.html',
+                template: 'views/modals/info/rangeInfo.html',
                 show: true,
                 scope: $scope,
             });
@@ -403,7 +403,7 @@ angular.module('mqnaasApp')
             $scope.cubes = cube;
             $modal({
                 title: 'Cubes information',
-                template: 'views/modals/cubesInfo.html',
+                template: 'views/modals/info/cubesInfo.html',
                 show: true,
                 scope: $scope,
             });

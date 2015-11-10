@@ -204,7 +204,7 @@ angular.module('mqnaasApp')
                 $scope.content = data;
                 $modal({
                     title: 'Counter statistics of interface ' + interfaceId,
-                    template: 'views/sodales/counterStats.html',
+                    template: 'views/modals/counterStats.html',
                     show: true,
                     scope: $scope
                         //,controller: 'statisticsCtrl',

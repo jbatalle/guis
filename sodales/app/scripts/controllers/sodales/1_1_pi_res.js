@@ -75,7 +75,7 @@ angular.module('mqnaasApp')
             $scope.ethernet = ethernet;
             $modal({
                 title: 'Ethernet information',
-                template: 'views/modals/ethernetInfo.html',
+                template: 'views/modals/info/ethernetInfo.html',
                 show: true,
                 scope: $scope
             });

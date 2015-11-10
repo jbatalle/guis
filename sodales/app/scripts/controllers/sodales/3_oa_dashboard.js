@@ -47,7 +47,7 @@ angular.module('mqnaasApp')
         $scope.openSPCreationDialog = function () {
             $modal({
                 title: 'Create new SP.',
-                template: 'views/modals/spCreationDialog.html',
+                template: 'views/modals/ip_oa/spCreationDialog.html',
                 show: true,
                 scope: $scope
             });
@@ -102,7 +102,7 @@ angular.module('mqnaasApp')
             });
             $modal({
                 title: 'Adding user to SP ' + row.name + '.',
-                template: 'views/sodales/sp/addUser.html',
+                template: 'views/modals/ip_oa/addUser.html',
                 show: true,
                 scope: $scope,
             });

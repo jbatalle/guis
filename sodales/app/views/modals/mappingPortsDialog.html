@@ -6,20 +6,17 @@
                 <h4 class="modal-title" ng-bind="title"></h4>
             </div>
             <div class="modal-body">
-                <b>Mapping virtual resource to physical resource</b>
-                <br/>
                 <button type="button" class="btn btn-default" ng-model="source" data-html="1" data-animation="am-flip-x" bs-options="viRes.id as (viRes.id + '(' + viRes.type + ')' ) for viRes in virtualResources" bs-select/>
 
                 <button type="button" class="btn btn-default" ng-model="dest" data-html="1" data-animation="am-flip-x" bs-options="piRes.id as (piRes.id + '(' + piRes.type + ')' ) for piRes in physicalResources" bs-select/>
 
                 <a class="btn btn-sm btn-primary" ng-click="mapVirtualResourceToRealResource(source, dest)">Map</a>
 
-
                 <!--select placeholder="select virtual resource" bs-select ng-model="viRes" ng-options="viRes.name as (viRes.name + '(' + viRes.type + ')' ) for viRes in virtualResources"></select>
                 <select placeholder="select physical resource" bs-select ng-model="piRes" ng-options="piRes for piRes in physicalResources"></select>
                 <a href="" class="btn btn-sm btn-primary" ng-click="mapVirtualResourceToRealResource(viRes, piRes)">Map</a>
-
                 -->
+                
                 <div ng-show="mapPorts">
                     <button type="button" class="btn btn-default" ng-model="viPort" data-html="1" data-animation="am-flip-x" bs-options="port for port in virtualPorts" bs-select/>
                     <button type="button" class="btn btn-default" ng-model="piPort" data-html="1" data-animation="am-flip-x" bs-options="port.onP  as (port.onP + '(' + port.real + ')' ) for port in physicalPorts" bs-select/>

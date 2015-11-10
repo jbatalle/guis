@@ -155,13 +155,13 @@ angular.module('mqnaasApp')
         $scope.openModal = function (mode) {
             var template, label;
             if (mode === 'createLAG') {
-                template = 'views/sodales/operation/createLAG.html';
+                template = 'views/modals/operation/createLAG.html';
                 label = "Create LAG";
             } else if (mode === 'createNS') {
-                template = 'views/sodales/operation/createNS.html';
+                template = 'views/modals/operation/createNS.html';
                 label = "Create Network Service";
             } else if (mode === 'createCS') {
-                template = 'views/sodales/operation/createCS.html';
+                template = 'views/modals/operation/createCS.html';
                 label = "Create Client Service";
             }
             $modal({
@@ -274,7 +274,7 @@ angular.module('mqnaasApp')
             $scope.itemType = type;
             $modal({
                 title: 'Are you sure you want to delete this item?',
-                template: 'views/modals/modalOperationRemove.html',
+                template: 'views/modals/operation/modalOperationRemove.html',
                 show: true,
                 scope: $scope
             });
