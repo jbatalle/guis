@@ -6,19 +6,21 @@
                 <h4 class="modal-title" ng-bind="title"></h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" class="non-margined">
+                <form class="form-horizontal" class="non-margined" name="lagForm">
                     <div class="fx-form-block-controls fx-first collapse am-collapse in" data-uxfwk-collapse-target="">
                         <div class="form-group">
-                            <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">Description</label>
+                            <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Description</label>
                             <div class="col-sm-8">
-                                <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" data-ng-maxlength="64" ng-model="lag.description">
+                                <input type="text" class="form-control input-sm ng-pristine" name="description" data-ng-maxlength="64" ng-model="lag.description" required>
+                                <span style="color:red" ng-show="lagForm.description.$dirty && lagForm.description.$invalid">
+<span ng-show="lagForm.description.$error.required">Description is required.</span>
                                 <br/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">Administrative state</label>
                             <div class="col-sm-8">
-                                <select class="btn btn-default form-control input-sm ng-pristine ng-untouched ng-valid ng-valid-maxlength" disabled style="margin: 0 0 10px;">
+                                <select class="btn btn-default form-control input-sm" disabled style="margin: 0 0 10px;">
                                     <option ng-model="lag.admin" value="2">Blocked</option>
                                     <option ng-model="lag.admin" value="1">In service</option>
                                 </select>
@@ -28,22 +30,22 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">Load balance</label>
                             <div class="col-sm-8">
-                                <button type="button" class="btn btn-default form-control input-sm ng-pristine ng-untouched ng-valid ng-valid-maxlength" ng-model="lag.loadBalance" data-html="1" bs-options="balance.name for balance in lag_load_balances" bs-select style="margin: 0 0 10px;">
-                                    Select <span class="caret"></span>
-                                </button>
+                                <select class="btn btn-default form-control input-sm" style="margin: 0 0 10px;" ng-model="lag.loadBalance" options="balance.name for balance in lag_load_balances" bs-select required>
+                                </select>
                                 <br/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">Mode</label>
                             <div class="col-sm-8">
-                                <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" data-ng-maxlength="64" ng-model="lag.downLinkIfaces2" placeholder="67174400">
+                                <select class="btn btn-default form-control input-sm" ng-model="lag.lag_modes" data-html="1" bs-options="mode.name for mode in lag_modes" bs-select style="margin: 0 0 10px;" required>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">Interfaces</label>
                             <div class="col-sm-8">
-                                <tags-input ng-model="listPorts" display-property="id" placeholder="Add interfaces" replace-spaces-with-dashes="false" add-from-autocomplete-only="true" template="tag-template">
+                                <tags-input ng-model="listPorts" display-property="id" placeholder="Add interfaces" replace-spaces-with-dashes="false" add-from-autocomplete-only="true" template="tag-template" required>
                                     <auto-complete source="loadNodes($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>
                                 </tags-input>
                                 <script type="text/ng-template" id="tag-template">
@@ -69,7 +71,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-sm btn-primary" ng-click="createLAG(lag)">Create LAG</button>
+                <button class="btn btn-sm btn-primary" ng-click="createLAG(lag)" ng-disabled="!lagForm.$valid">Create LAG</button>
             </div>
         </div>
         <!-- /.box-body -->
