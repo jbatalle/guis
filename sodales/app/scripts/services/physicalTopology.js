@@ -48,9 +48,9 @@ angular.module('mqnaasApp')
                     $rootScope.resourceInfo.ports = [];
                     var cpePorts = checkIfIsArray(data.resource.resources.resource);
                     angular.forEach(cpePorts, function (port) {
-                        if (port > 99 && porrt < 112) port.type = "external";
-                        else port.type = "internal";
-                        $rootScope.resourceInfo.ports.push(port);
+                        //if (port > 99 && porrt < 112) port.type = "external";
+                        //else port.type = "internal";
+                        if (port > 99 && porrt < 112) $rootScope.resourceInfo.ports.push(port);
                     });
                 } else {
                     $rootScope.resourceInfo.ports = checkIfIsArray(data.resource.resources.resource);
