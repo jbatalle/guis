@@ -204,25 +204,27 @@
         <div ng-show="arnOAM">
             <h3>Notifications logging<small> Alarms</small></h3>
             <div>
-                <table class="table ng-table-responsive" style="text-align: center">
-                    <tr>
-                        <th>Id</th>
-                        <th>Code</th>
-                        <th>Access Type</th>
-                        <th>Start or End</th>
-                        <th>Timestamp</th>
-                        <th>Local timestamp</th>
-                        <th>Interface id</th>
-                    </tr>
+                <table class="table ng-table-responsive">
+                    <thead>
+                        <tr>
+                            <th class="col-sm-1 col-md-1 col-lg-1">Id</th>
+                            <th class="col-sm-3 col-md-3 col-lg-3">Code</th>
+                            <th class="col-sm-1 col-md-1 col-lg-1">Access Type</th>
+                            <th class="col-sm-1 col-md-1 col-lg-1">Start or End</th>
+                            <th class="col-sm-1 col-md-1 col-lg-1">Timestamp</th>
+                            <th class="col-sm-1 col-md-1 col-lg-1">Local timestamp</th>
+                            <th class="col-sm-1 col-md-1 col-lg-1">Interface id</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         <tr ng-repeat="iface in arnOAM">
-                            <td data-title="'id'" sortable="'_id'" class="col-sm-1 col-md-1 col-lg-1">{{iface.alarmRegister._id}}</td>
-                            <td data-title="'Code'" class="col-sm-1 col-md-1 col-lg-1">{{iface.alarmRegister._code}}</td>
-                            <td data-title="'Access Type'" class="col-sm-1 col-md-1 col-lg-1">{{iface.alarmRegister._accessType}}</td>
-                            <td data-title="'Start or End'" class="col-sm-1 col-md-1 col-lg-1">{{iface.alarmRegister._startOrEnd}}</td>
-                            <td data-title="'TimeStamp'" class="col-sm-1 col-md-1 col-lg-1">{{iface.alarmRegister._timeStamp}}</td>
-                            <td data-title="'LocalTimeStamp'" class="col-sm-1 col-md-1 col-lg-1">{{iface.alarmRegister._localTimeStamp}}</td>
-                            <td data-title="'InterfaceId'" class="col-sm-1 col-md-1 col-lg-1">{{iface.alarmRegister._interfaceId}}</td>
+                            <td data-title="'id'" sortable="'_id'">{{iface._id}}</td>
+                            <td data-title="'Code'">{{iface._code}}</td>
+                            <td data-title="'Access Type'">{{iface._accessType}}</td>
+                            <td data-title="'Start or End'">{{iface._startOrEnd}}</td>
+                            <td data-title="'TimeStamp'">{{iface._timeStamp}}</td>
+                            <td data-title="'LocalTimeStamp'">{{iface._localTimeStamp*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                            <td data-title="'InterfaceId'">{{iface._interfaceId}}</td>
                         </tr>
                     </tbody>
                 </table>

@@ -64,7 +64,7 @@ angular.module('mqnaasApp')
             $scope.cpePorts = undefined;
             $scope.arnLinkStatus = undefined;
             $scope.arnOAM = undefined;
-            
+
             $scope.selected = resourceName;
             if (resourceType === 'CPE') {
                 $scope.getCPEPortList();
@@ -98,21 +98,24 @@ angular.module('mqnaasApp')
             $scope.cpePorts = [];
             cpeService.get(reqListPortsUrl).then(function (response) {
                 $scope.cpePortList = response.meaPortMapping.portMapping;
-                angular.forEach($scope.cpePortList, function(port){
-                   //$scope.getCPEStats(port.port); 
+                angular.forEach($scope.cpePortList, function (port) {
+                    //$scope.getCPEStats(port.port); 
                 });
             });
         };
         $scope.getCPEStats = function (portId) {
             var reqUrl = "meaPmCounter.xml?unit=0&pmId=" + $scope.cpePort;
             $interval.cancel(promise);
-//            promise = $interval(function () {
-                cpeService.get(reqUrl).then(function (response) {
-                    console.log(response);
-                    $scope.content = response.meaPmCounter.PmCounter;
-                    $scope.cpePorts.push({portId: portId, counter: response.meaPmCounter.PmCounter});
+            //            promise = $interval(function () {
+            cpeService.get(reqUrl).then(function (response) {
+                console.log(response);
+                $scope.content = response.meaPmCounter.PmCounter;
+                $scope.cpePorts.push({
+                    portId: portId,
+                    counter: response.meaPmCounter.PmCounter
                 });
-//            }, 1000);
+            });
+            //            }, 1000);
         };
 
         $scope.getCCM = function (portId) {
@@ -124,7 +127,7 @@ angular.module('mqnaasApp')
             var data = json.meaCcmCounter.CcmDefectCount;
             console.log(data);
             cpeService.get(reqUrl).then(function (response) {
-                if(response === undefined) return;
+                if (response === undefined) return;
                 console.log(response);
                 $scope.ccmCounter = response.meaCcmCounter.CcmDefectCount;
             });
@@ -137,7 +140,7 @@ angular.module('mqnaasApp')
             //                $scope.lbmCounter = json.meaStatistics.lbmDmmStatistics;
             console.log(json);
             cpeService.get(reqUrl).then(function (response) {
-                if(response === undefined) return;
+                if (response === undefined) return;
                 console.log(response);
                 $scope.lbmCounter = response.meaStatistics.lbmDmmStatistics;
             });
@@ -150,7 +153,7 @@ angular.module('mqnaasApp')
             //                $scope.dmmCounter = json.meaStatistics.lbmDmmStatistics;
             console.log(json.meaStatistics.lbmDmmStatistics);
             cpeService.get(reqUrl).then(function (response) {
-                if(response === undefined) return;
+                if (response === undefined) return;
                 console.log(response);
                 var data = response.meaStatistics.lbmDmmStatistics;
                 $scope.dmmCounter = response.meaStatistics.lbmDmmStatistics;
@@ -158,11 +161,22 @@ angular.module('mqnaasApp')
         };
 
         $scope.getNotificationsLogging = function () {
-            var requestData = getAlarmShow($scope.infId);
+            var requestData = getAlarmShow();
+            console.log(arnAlarmList);
             arnService.put(requestData).then(function (response) {
                 console.log(response);
                 //$scope.notiLog = response.response.operation.cardList.card.status;
-                $scope.notiLog = checkIfIsArray(response.response.operation.alarmRegisterList); //.alarmRegister;
+                //$scope.notiLog = checkIfIsArray(response.response.operation.alarmRegisterList); //.alarmRegister;
+                $scope.notiLog = checkIfIsArray(response.response.operation.alarmRegisterList.alarmRegister); //.alarmRegister;
+                angular.forEach($scope.notiLog, function (alarm) {
+                    var al = arnAlarmList.filter(function (a) {
+                        if (a.id === parseInt(alarm._code)) {
+                            alarm._code = a.name;
+                            return a.name;
+                        }
+                    });
+
+                });
                 $scope.arnOAM = $scope.notiLog;
             });
             $scope.equipmentBoards();
