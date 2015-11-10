@@ -42,7 +42,7 @@ getSFP = function () {
 };
 
 getAlarmShow = function () {
-    return '<?xml version="1.0" encoding="utf-8"?><request><operation type="show" entity="alarmRegister"><alarmRegister cardId="2" /></operation></request>';
+    return '<?xml version="1.0" encoding="utf-8"?><request><operation type="show" entity="alarmRegister"><alarmRegister cardId="0" /></operation></request>';
 };
 
 getFanModule = function () {
