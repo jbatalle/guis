@@ -50,7 +50,7 @@
         <h3 class="page-header">Mapped resources</h3>
         <ul>
             <li ng-repeat="viRes in virtualResources" ng-if="viRes.mapped">
-                {{viRes.id}} -> {{viRes.mapped}}
+                <a ng-click="mappingDialog(viRes.id, viRes.mapped)">{{viRes.id}} -> {{viRes.mapped}}</a>
                 <ul>
                     <li ng-repeat="viPorts in viRes.ports">
                         {{viPorts.id}} -> {{viPorts.mapped}}
