@@ -5,17 +5,12 @@ module.exports = function (app) {
 
     var http = require('http');
 
-    /* your app config here */
     app.use('/rest/arn', function (req, res) {
-        console.log(req.method + ": " + req.url);
-        //var url = 'http://localhost:9000/mqnaas' + req.url;
         var url = app.arn;
-        console.log(url);
+        console.log(req.method + ": " + url);
         var r = null;
 
         if (req.method === 'POST') {
-            console.log("POST");
-            console.log(req.body);
             if (!req.rawBody) {
                 req.rawBody = "";
             }
@@ -24,7 +19,6 @@ module.exports = function (app) {
                 body: req.rawBody
             }).pipe(res);
         } else if (req.method === 'PUT') {
-            console.log(req.rawBody);
             if (!req.rawBody) {
                 req.rawBody = "";
             }
@@ -35,8 +29,6 @@ module.exports = function (app) {
                     'Content-Type': 'application/xml'
                 }
             }).pipe(res);
-
-
         } else if (req.method === 'DELETE') {
             r = request.del({
                 uri: url,

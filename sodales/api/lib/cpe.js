@@ -8,8 +8,6 @@ module.exports = function (app) {
     /* your app config here */
     app.use('/rest/cpe', function (req, res) {
         console.log(req.method + ": " + req.url);
-        //var url = 'http://localhost:9000/mqnaas' + req.url;
-        //var url = 'http://fibratv.dtdns.net:41081/' + req.url;
         var url = app.cpe + req.url;
         console.log(url);
         var r = null;
@@ -45,7 +43,7 @@ module.exports = function (app) {
             }).pipe(res);
         } else {
             r = request(url);
-            r.pipe(request(url)).pipe(res).setTimeout(2000);
+            r.pipe(request(url)).pipe(res) /*.setTimeout(2000)*/ ;
             return;
         }
 
