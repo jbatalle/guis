@@ -35,13 +35,22 @@ angular.module('mqnaasApp')
                     cpeService.get(url).then(function (data) {
                         $scope.equipmentInfo = null;
                         console.log(data);
-                        $scope.dataCollection = data.meaPortMapping.portMapping;
+                        var foo = data.meaPortMapping.portMapping;
+                        _.each(foo, function (element, index) {
+                            var type = "internal";
+                            if (parseInt(element.port) > 99 && parseInt(element.port) < 112) type = "external";
+                            _.extend(element, {
+                                type: type
+                            });
+                        })
+                        $scope.dataCollection = foo;
                     });
                 }
             });
         };
 
         $scope.getEthernetInterfaces = function (id) {
+            $scope.dataCollection = [];
             var req = '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="show" entity="all"><interface equipmentId="0" cardId="' + id + '"/></operation></request>';
             arnService.put(req).then(function (data) {
                 $scope.dataCollection = data.response.operation.interfaceList.interface;
@@ -52,6 +61,8 @@ angular.module('mqnaasApp')
         $scope.interfaces = [];
 
         $scope.getARNCards = function () {
+            $scope.cards = [];
+            $scope.dataCollection = [];
             var data = getCards();
             arnService.put(data).then(function (response) {
                 $scope.cards = response.response.operation.cardList.card;

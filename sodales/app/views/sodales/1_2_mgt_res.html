@@ -61,17 +61,24 @@
                             <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Interface id</th>
                             <th data-title="'description'" class="col-sm-2 col-md-2 col-lg-2">Name</th>
                             <th data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">Type</th>
-                            <th data-title="'Add VI'" class="col-sm-2 col-md-2 col-lg-2">Card id</th>
                             <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Admin</th>
-                            <th data-title="'Remove VI'" class="col-sm-2 col-md-2 col-lg-2">Eqpmt id</th>
                             <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Sync</th>
                             <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">inBand</th>
                             <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">CoS</th>
                             <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Info</th>
                         </tr>
                         <tr>
-                            <th colspan="6">
-                                <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                            <th colspan="1">
+                                <input st-search="_interfaceId" class="form-control" placeholder="" type="text" />
+                            </th>
+                            <th colspan="1">
+                                <input st-search="_name" class="form-control" placeholder="" type="text" />
+                            </th>
+                            <th colspan="1">
+                                <input st-search="_type" class="form-control" placeholder="" type="text" />
+                            </th>
+                            <th colspan="1">
+                                <input st-search="_admin" class="form-control" placeholder="" type="text" />
                             </th>
                         </tr>
                     </thead>
@@ -80,18 +87,24 @@
                             <td>{{row._interfaceId}}</td>
                             <td>{{row._name}}</td>
                             <td>{{row._type}}</td>
-                            <td>{{row._cardId}}</td>
                             <td>{{row._admin}}</td>
-                            <td>{{row._equipmentId}}</td>
                             <td>{{row._sync}}</td>
                             <td>{{row._inBand}}</td>
-                            <td><a ng-click="showARNCoS(row.cosList.cos)">CoS</a></td>
-                            <td><a ng-click="getEthernet(row.ethernet)">Ethernet</a></td>
+                            <td>
+                                <span ng-if="row.cosList.cos.length > 0">
+                                <a ng-click="showARNCoS(row.cosList.cos)">CoS</a>
+                                    </span>
+                            </td>
+                            <td>
+                                <span ng-if="row._type === 6">
+                                    <a ng-click="getEthernet(row.ethernet)">Ethernet</a>
+                                </span>
+                            </td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td class="text-center" st-pagination="" st-items-by-page="10" colspan="10">
+                            <td class="text-center" st-pagination="" st-items-by-page="10" colspan="8">
                             </td>
                         </tr>
                     </tfoot>
@@ -130,19 +143,33 @@
             </div>
         </div>
 
-        <div class="row" ng-show="type === 'CPE'"> Ports
+        <div class="row" ng-show="type === 'CPE'">
             <div class="col-lg-12">
                 <table st-table="displayedCollection3" st-safe-src="dataCollection" class="table table-striped">
                     <thead>
                         <tr>
                             <th class="col-sm-1 col-md-1 col-lg-1">Port id</th>
                             <th data-title="'unit'" class="col-sm-2 col-md-2 col-lg-2">Unit</th>
+                            <th data-title="'unit'" class="col-sm-2 col-md-2 col-lg-2">Type</th>
+                        </tr>
+                        <tr>
+                            <th colspan="1">
+                                <input st-search="port" class="form-control" placeholder="" type="text" />
+                            </th>
+                            <th colspan="1">
+                                <input st-search="" class="form-control" placeholder="" type="text" />
+                            </th>
+                            <th colspan="1">
+                                <input st-search="type" class="form-control" placeholder="" type="text" />
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="row in displayedCollection3">
                             <td>{{row.port}}</td>
                             <td>{{row.unit}}</td>
+                            <td>{{row.type}}
+                            </td>
                         </tr>
                     </tbody>
                     <tfoot>
