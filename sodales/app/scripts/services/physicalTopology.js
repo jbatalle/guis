@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .factory('PhysicalService', function ($q, $rootScope, MqNaaSResourceService) {
+    .factory('PhysicalService', function ($q, $rootScope, MqNaaSResourceService, arnService) {
         var getSlice = function (resourceName) { //get
             var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/slice';
             MqNaaSResourceService.getText(url).then(function (data) {
@@ -44,16 +44,23 @@ angular.module('mqnaasApp')
             var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel';
             MqNaaSResourceService.list(url).then(function (data) {
                 $rootScope.resourceInfo = {};
-                if (data.type === 'CPE') {
+                $rootScope.resourceInfo.id = data.resource.id;
+                $rootScope.resourceInfo.type = data.resource.type;
+                if (data.resource.type === 'Network' && data.resource.type === 'link' && data.resource.type === undefined) {
+                    ///nothing
+                } else if (data.resource.type === 'CPE') {
                     $rootScope.resourceInfo.ports = [];
                     var cpePorts = checkIfIsArray(data.resource.resources.resource);
                     angular.forEach(cpePorts, function (port) {
                         //if (port > 99 && porrt < 112) port.type = "external";
                         //else port.type = "internal";
-                        if (port > 99 && porrt < 112) $rootScope.resourceInfo.ports.push(port);
+                        if (parseInt(port.attributes.entry[0].value) > 99 && parseInt(port.attributes.entry[0].value) < 112) $rootScope.resourceInfo.ports.push(port);
                     });
                 } else {
-                    $rootScope.resourceInfo.ports = checkIfIsArray(data.resource.resources.resource);
+                    //if is ARN, get Card, and type of port
+                    arnService.put(getAllInterfaces()).then(function (data) {
+                        $rootScope.resourceInfo.ports = checkIfIsArray(data.response.operation.interfaceList.interface);
+                    })
                 }
                 $rootScope.resourceInfo.slicing = {};
                 getSlice(resourceName);

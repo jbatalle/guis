@@ -67,9 +67,12 @@
                 <div ng-show="networkId && resourceInfo.ports">
                     <h3 class="page-header">Ports</h3>
                     <div style="overflow-y: scroll; height:250px;">
-                        <ul>
-                            <li ng-repeat="res in resourceInfo.ports" ng-if="res.type !=== 'internal'">
-                                {{res.id}} - {{res.attributes.entry[0].value}}
+                        <ul style="margin-left: 20px; padding: 0;">
+                            <li ng-repeat="res in resourceInfo.ports" ng-if="resourceInfo.type === 'ARN' && res._admin !== '2'">
+                                {{res._name}} ({{res._interfaceId}} - {{res._cardId}})
+                            </li>
+                            <li ng-repeat="res in resourceInfo.ports" ng-if="resourceInfo.type === 'CPE' && res.type !== 'internal'">
+                                port {{res.attributes.entry[0].value}}
                             </li>
                         </ul>
                     </div>
