@@ -30,7 +30,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">Load balance</label>
                             <div class="col-sm-8">
-                                <select class="btn btn-default form-control input-sm" style="margin: 0 0 10px;" ng-model="lag.loadBalance" options="balance.name for balance in lag_load_balances" bs-select required>
+                                <select class="btn btn-default form-control input-sm" style="margin: 0 0 10px;" ng-model="lag.loadBalance" bs-options="balance.name for balance in lag_load_balances" bs-select required>
                                 </select>
                                 <br/>
                             </div>
