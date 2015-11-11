@@ -413,6 +413,10 @@ angular.module('mqnaasApp')
             });
         };
 
+        $scope.mappingDialog = function (source, dest) {
+            $rootScope.createMappingDialogCall(source, dest, '');
+        };
+
         $scope.getMappedResources();
 
     });

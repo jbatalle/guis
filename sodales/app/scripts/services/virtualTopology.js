@@ -46,6 +46,53 @@ angular.module('mqnaasApp')
             });
         };
 
+        var getResource = function (resourceName) {
+            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestManagement/' + $rootScope.viId + "/IRequestResourceManagement/" + resourceName + '/IResourceModelReader/resourceModel';
+            MqNaaSResourceService.get(url).then(function (data) {
+                $rootScope.resourceInfo = {};
+                $rootScope.resourceInfo.id = data.resource.id;
+                $rootScope.resourceInfo.type = data.resource.type;
+                $rootScope.resourceInfo.ports = [];
+                $rootScope.resourceInfo.ports = checkIfIsArray(data.resource.resources.resource);
+                return checkIfIsArray(data.resource.resources.resource);
+                //                return $scope.virtualResources;
+            });
+        };
+
+        var virtualPorts = function (virtualResource) {
+            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + $rootScope.virtNetId + '/IRootResourceProvider/' + virtualResource + '/IResourceModelReader/resourceModel';
+            MqNaaSResourceService.list(url).then(function (data) {
+                $rootScope.virtualResource = data.resource;
+                $rootScope.physicalPorts = checkIfIsArray(data.resource.resources.resource);
+
+                $rootScope.virtualResource.ports = [];
+
+                var ports = $rootScope.physicalPorts;
+                url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider/" + virtualResource + "/ISliceProvider/slice";
+                MqNaaSResourceService.getText(url).then(function (result) {
+                    var slice = result;
+                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider/" + virtualResource + "/ISliceProvider/" + slice + "/ISliceAdministration/cubes";
+                    MqNaaSResourceService.get(url).then(function (result) {
+                        var cubes = checkIfIsArray(result.cubesList.cubes);
+                        cubes.forEach(function (cube) {
+                            var ranges = checkIfIsArray(cube.cube);
+                            ranges.forEach(function (range) {
+                                if (range.ranges.range.lowerBound === range.ranges.range.upperBound) {
+                                    $rootScope.virtualResource.ports.push(ports[parseInt(range.ranges.range.lowerBound)]);
+                                } else {
+                                    var k = parseInt(range.ranges.range.lowerBound);
+                                    while (k <= parseInt(range.ranges.range.upperBound)) {
+                                        $rootScope.virtualResource.ports.push(ports[k]);
+                                        k++;
+                                    }
+                                }
+                            })
+                        });
+                    });
+                });
+            });
+        };
+
         return {
             getSlice: function (resourceName) {
                 return getSlice(resourceName);
@@ -58,6 +105,12 @@ angular.module('mqnaasApp')
             },
             getCubes: function (resourceName, sliceId) {
                 return getCubes(resourceName, sliceId);
-            }
+            },
+            getResource: function (resourceName) {
+                return getResource(resourceName);
+            },
+            virtualPorts: function (resourceName) {
+                return virtualPorts(resourceName);
+            },
         };
     });
