@@ -21,8 +21,8 @@ getLACP = function () {
     return '<?xml version="1.0" encoding="utf-8"?><request><operation type="showCounters" entity="interface/lagPort"><lagPort equipmentId="0" interfaceId="8781824" ethIfIndex="285278211"/></operation></request>';
 };
 
-getLinkStatus = function () {
-    return '<?xml version="1.0" encoding="utf-8"?><request><operation token="1" type="showStatus" entity="interface/ethernet"><ethernet equipmentId="0" cardId="2"/></operation></request>';
+getLinkStatus = function (cardId) {
+    return '<?xml version="1.0" encoding="utf-8"?><request><operation token="1" type="showStatus" entity="interface/ethernet"><ethernet equipmentId="0" cardId="' + cardId + '"/></operation></request>';
 };
 
 getCounter = function (interfaceId) {

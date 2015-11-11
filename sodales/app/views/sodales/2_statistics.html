@@ -15,11 +15,13 @@
     </div>
     <div class="col-md-9">
         <h3 class="page-header">Performance monitoring <small>Statistics</small></h3>
-        <div ng-show="arnLinkStatus">
+        <div ng-show="cards.length > 0">
             <ol class="breadcrumb">
                 <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateCard()"></select>
             </ol>
-            <table st-table="displayedCollection" st-safe-src="arnLinkStatus" class="table table-striped">
+        </div>
+        <div ng-show="arnInterfaces">
+            <table st-table="displayedCollection" st-safe-src="arnInterfaces" class="table table-striped">
                 <thead>
                     <tr>
                         <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Interface id</th>
@@ -67,7 +69,9 @@
         </div>
         <div ng-show="cpePorts">
             <ol class="breadcrumb">
-                <select placeholder="select port" bs-select ng-model="cpePort" bs-options="portMap.port for portMap in cpePortList" ng-change="getCPEStats()"></select>
+                <button placeholder="select port" type="button" class="btn btn-default" ng-model="cpePort" data-html="1" bs-options="portMap.port for portMap in cpePortList" ng-change="getCPEStats()" bs-select class="select.dropdown-menu" scrolly>
+                    Action <span class="caret"></span>
+                </button>
             </ol>
             <table class="table ng-table-responsive" style="text-align: center">
                 <thead>

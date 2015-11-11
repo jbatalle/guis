@@ -83,3 +83,7 @@ body,
 tags-input .autocomplete {
     position: inherit;
 }
+.select.dropdown-menu {
+    max-height: 200px;
+    overflow: auto;
+}

@@ -47,9 +47,9 @@ angular.module('mqnaasApp')
         }];
 
         $scope.updateCard = function () {
-            var data = getCardInterfaces($scope.card._id);
+            var data = getLinkStatus($scope.card._id);
             arnService.put(data).then(function (response) {
-                $scope.interfaces = response.response.operation.interfaceList.interface;
+                $scope.arnInterfaces = response.response.operation.interfaceList.interface;
             });
         };
 
@@ -62,10 +62,11 @@ angular.module('mqnaasApp')
             //load default statistic info
             //open Dropdown list, depending on the resourceType
             $scope.cpePorts = undefined;
-            $scope.arnLinkStatus = undefined;
+            $scope.arnInterfaces = undefined;
             $scope.arnOAM = undefined;
 
             $scope.selected = resourceName;
+            $scope.cards = [];
             if (resourceType === 'CPE') {
                 $scope.getCPEPortList();
             } else if (resourceType === 'CFM/OAM') {
@@ -88,8 +89,7 @@ angular.module('mqnaasApp')
 
             var data = getLinkStatus();
             arnService.put(data).then(function (response) {
-                var data = response.response.operation.interfaceList.interface;
-                $scope.arnLinkStatus = data;
+                $scope.arnInterfaces = response.response.operation.interfaceList.interface;
             });
         };
 
@@ -104,7 +104,7 @@ angular.module('mqnaasApp')
             });
         };
         $scope.getCPEStats = function (portId) {
-            var reqUrl = "meaPmCounter.xml?unit=0&pmId=" + $scope.cpePort;
+            var reqUrl = "meaPmCounter.xml?unit=0&pmId=" + $scope.cpePort.port;
             $interval.cancel(promise);
             //            promise = $interval(function () {
             cpeService.get(reqUrl).then(function (response) {
