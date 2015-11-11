@@ -26,9 +26,7 @@
                     <tr>
                         <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Interface id</th>
                         <th class="col-sm-2 col-md-2 col-lg-2">Name</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2">Card ID</th>
                         <th class="col-sm-2 col-md-2 col-lg-2">Admin</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2">Eqpmt ID</th>
                         <th class="col-sm-2 col-md-2 col-lg-2">MediaType</th>
                         <th class="col-sm-2 col-md-2 col-lg-2">Collisions</th>
                         <th class="col-sm-2 col-md-2 col-lg-2">Link</th>
@@ -46,9 +44,7 @@
                     <tr ng-repeat="row in displayedCollection">
                         <td>{{row._interfaceId}}</td>
                         <td>{{row._name}}</td>
-                        <td>{{row._cardId}}</td>
                         <td>{{row._admin}}</td>
-                        <td>{{row._equipmentId}}</td>
                         <td>{{row.ethStatus._mediaType}}</td>
                         <td>{{row.ethStatus._collision}}</td>
                         <td>{{row.ethStatus._link}}</td>
@@ -61,7 +57,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td class="text-center" st-pagination="" st-items-by-page="5" colspan="10">
+                        <td class="text-center" st-pagination="" st-items-by-page="10" colspan="8">
                         </td>
                     </tr>
                 </tfoot>
