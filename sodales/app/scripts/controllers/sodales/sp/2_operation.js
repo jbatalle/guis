@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, localStorageService, $modal, arnService, $http, AuthService, spService) {
+    .controller('spVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, localStorageService, $modal, arnService, cpeService, $http, AuthService, spService) {
 
         //hardcoded
         //$rootScope.networkId = "Network-Internal-1.0-2";
         //$rootScope.virtNetId = "Network-virtual-7";
-
+        var url = '';
         $rootScope.virtNetId = $stateParams.id;
         $scope.virtualPort = [];
         $scope.virtualResources = [];
@@ -17,7 +17,7 @@ angular.module('mqnaasApp')
         $scope.selectedNetwork;
 
         $scope.getNetworkResources = function () {
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider";
+            url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider";
             MqNaaSResourceService.get(url).then(function (result) {
                 $scope.networkRes = result.IRootResource.IRootResourceId;
             });
@@ -32,7 +32,7 @@ angular.module('mqnaasApp')
                     $scope.networks = data.vis;
                     data.vis.forEach(function (viNet) {
 
-                        var url = "IRootResourceProvider";
+                        url = "IRootResourceProvider";
                         MqNaaSResourceService.list(url).then(function (result) {
                             var physicalNetworks = checkIfIsArray(result.IRootResource.IRootResourceId);
 
@@ -68,13 +68,22 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.openOperationARNDialog = function (resourceName, type) {
+        $scope.operationButton = function (resourceName, type) {
             $scope.operation = true;
-            console.log("Dialog call");
+            if (type === 'ARN') {
+                $scope.arnOperation = true;
+                $scope.cpeOperation = false;
+                $scope.openOperationARNDialog(resourceName, type);
+            } else if (type === 'CPE') {
+                $scope.arnOperation = false;
+                $scope.cpeOperation = true;
+                $scope.openOperationCPEDialog(resourceName, type);
+            }
+        };
+
+        $scope.openOperationARNDialog = function (resourceName, type) {
             $scope.virtualResourceOp = resourceName;
             $scope.arn = new Object;
-
-            //getLAGList
             arnService.put(getCardInterfaces(0)).then(function (response) {
                 $scope.LAGs = response.response.operation.interfaceList.interface;
             });
@@ -88,9 +97,52 @@ angular.module('mqnaasApp')
                 console.log(response);
                 $scope.clientServices = response.response.operation.clientServiceList.clientService;
             });
+        };
 
-            //getNetworkService
+        $scope.openOperationCPEDialog = function (resourceName, type) {
+            $scope.virtualResourceOp = resourceName;
+            $scope.cpe = new Object;
 
+            $scope.cpeServices = [];
+            url = "serviceMapping.xml?unit=0";
+            cpeService.get(url).then(function (response) {
+                var serviceList = checkIfIsArray(response.meaServiceMap.ServiceMapping);
+                angular.forEach(serviceList, function (service) {
+                    url = "serviceVlanDetail.xml?unit=0&serviceId=" + service.serviceId;
+                    cpeService.get(url).then(function (response) {
+                        //response.meaGetServiceVlanId.serviceDataBase.id = police.profileId;
+                        $scope.cpeServices.push(response.meaGetServiceVlanId.serviceDataBase);
+                    });
+                })
+
+                //inside beacuse the response time of the CPE
+                $scope.cpePolices = [];
+                url = "policerAllProfiles.xml?unit=0";
+                cpeService.get(url).then(function (response) {
+                    var policeList = checkIfIsArray(response.meaPolicerAllProfiles.policerProfId);
+                    angular.forEach(policeList, function (police) {
+                        url = "policerProfile.xml?unit=0&profileId=" + police.profileId;
+                        cpeService.get(url).then(function (response) {
+                            response.meaPolicerProfile.PolicerData.id = police.profileId;
+                            $scope.cpePolices.push(response.meaPolicerProfile.PolicerData);
+                        });
+                    })
+                });
+            });
+        };
+
+        $scope.getCpeService = function (serviceId) {
+            url = "serviceVlanDetail.xml?unit=0&serviceId=" + serviceId;
+            cpeService.get(url).then(function (response) {
+                $scope.cpeService = response.meaServiceMap;
+            });
+        };
+        $scope.getCpePolice = function (profileId) {
+            url = "policerAllProfiles.xml?unit=0&serviceId=" + profileId;
+            cpeService.get(url).then(function (response) {
+                console.log(response);
+                $scope.cpePolice = response.meaPolicerAllProfiles.policerProfId;
+            });
         };
 
         $scope.lag = {};
@@ -112,9 +164,7 @@ angular.module('mqnaasApp')
                             attachedPorts += attachPortsToLag(lag.interfaceId, port.attributes.entry[0].value)
                         });
 
-                        arnService.put(createLAG(0, lag.interfaceId, lag.loadBalance.id, attachedPorts, lag.description)).then(function (response) {
-
-                        });
+                        arnService.put(createLAG(0, lag.interfaceId, lag.loadBalance.id, attachedPorts, lag.description)).then(function (response) {});
 
                         return false;
                     }
@@ -123,14 +173,12 @@ angular.module('mqnaasApp')
         };
 
         $scope.activateLag = function (data) {
-            //depends on the system status, enable or disable
             var interfaceId = data._interfaceId;
             var admin = 0;
             if (data._admin === '1') admin = 2;
             else if (data._admin === '2') admin = 1;
             arnService.put(changeStatusLAG(interfaceId, admin)).then(function (response) {
                 console.log(response);
-                //$scope.LAGs = response.response.operation.interfaceList.interface;
             });
         };
 
@@ -140,12 +188,7 @@ angular.module('mqnaasApp')
             return;
             arnService.put(createNetworkService(id, 2, ns.name, ns.type.id, ns.uplinkVlanId, ns.uniVlanId)).then(function (response) {
                 console.log(response);
-                //$scope.LAGs = response.response.operation.interfaceList.interface;
-
-
-                arnService.put(addPortsToNetworkService(id, cardId, interfaceId, 1)).then(function (response) {
-
-                });
+                arnService.put(addPortsToNetworkService(id, cardId, interfaceId, 1)).then(function (response) {});
             });
         };
 
@@ -156,7 +199,6 @@ angular.module('mqnaasApp')
             else if (data._admin === '2') admin = 1;
             arnService.put(changeStatusNetworkService(id, admin)).then(function (response) {
                 console.log(response);
-                //$scope.LAGs = response.response.operation.interfaceList.interface;
             });
         };
 
@@ -176,7 +218,6 @@ angular.module('mqnaasApp')
             else if (data._admin === '2') admin = 1;
             arnService.put(changeStatusClientService(id, admin)).then(function (response) {
                 console.log(response);
-                //$scope.LAGs = response.response.operation.interfaceList.interface;
             });
         };
 
@@ -191,6 +232,12 @@ angular.module('mqnaasApp')
             } else if (mode === 'createCS') {
                 template = 'views/modals/operation/createCS.html';
                 label = "Create Client Service";
+            } else if (mode === 'createService') {
+                template = 'views/modals/operation/createCpeService.html';
+                label = "Create service";
+            } else if (mode === 'createPolice') {
+                template = 'views/modals/operation/createCpePolice.html';
+                label = "Create Police";
             }
             $modal({
                 template: template,
@@ -246,37 +293,7 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.openOperationCPEDialog = function (resourceName, type) {
-            $scope.virtualResourceOp = resourceName;
-            $scope.cpe = new Object;
-            $modal({
-                template: 'partials/sodales/sp/cpeOpDialog.html',
-                scope: $scope
-            });
-        };
-
-        $scope.Configure = function (type, form) {
-            console.log(type);
-            if (type === "arn") {
-                console.log(form);
-                var arn = form;
-                var data = getARNVlanConnectivity(arn.upLinkIfaces1, arn.upLinkIfaces2, arn.downLinkIfaces1, arn.downLinkIfaces2, arn.upLinkVlan, arn.downLinkVlan);
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider/" + $scope.virtualResourceOp + "/IVlanConnectivity/vlanConnectivity";
-                MqNaaSResourceService.put(url, data).then(function (result) {});
-
-            } else if (type === "cpe") {
-                console.log(form);
-                var cpe = form;
-                var data = getCPEVlanConnectivity(cpe.egressPortId, cpe.egressVlan, cpe.ingressPortId, cpe.ingressVlan, cpe.unitId);
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider/" + $scope.virtualResourceOp + "/IVlanConnectivity/vlanConnectivity";
-                MqNaaSResourceService.put(url, data).then(function (result) {});
-            }
-            $rootScope.info = "200 - Operation done";
-            this.$hide();
-        };
-
-
-        $scope.operation_tabs = [{
+        $scope.arnOperation_tabs = [{
                 title: 'LAG',
                 url: 'tab_lag'
         },
@@ -290,12 +307,22 @@ angular.module('mqnaasApp')
         }
        ];
 
-        $scope.operation_tabs.activeTab = 'tab_lag';
+        $scope.cpeOperation_tabs = [{
+                title: 'Services',
+                url: 'tab_service'
+        },
+            {
+                title: 'Polices',
+                url: 'tab_police'
+        }
+       ];
+
+        $scope.arnOperation_tabs.activeTab = 'tab_lag';
+        $scope.cpeOperation_tabs.activeTab = 'tab_service';
 
         $scope.onClickTab = function (tab) {
             $scope.currentTab = tab.url;
         };
-
 
         $scope.deleteDialog = function (obj, type) {
             $scope.itemToDelete = obj;
@@ -307,7 +334,6 @@ angular.module('mqnaasApp')
                 scope: $scope
             });
         };
-
 
         $scope.deleteItem = function (obj, type) {
             console.log(obj);
@@ -322,7 +348,6 @@ angular.module('mqnaasApp')
 
                 arnService.put(removeLag(obj._interfaceId, obj._cardId, deattachPorts)).then(function (response) {
                     console.log(response);
-                    //$scope.LAGs = response.response.operation.interfaceList.interface;
                 });
             } else if (type === 'NS') {
                 arnService.put(removeNetworkService(obj._id)).then(function (response) {
@@ -333,6 +358,66 @@ angular.module('mqnaasApp')
                     console.log(response);
                 });
             }
+            this.$hide();
+        };
+
+
+        $scope.createCpePolice = function (CIR, EIR, CBS, EBS) {
+            url = "policerProfile.html?unit=0&profileId=3&CIR=100000000&EIR=0&CBS=64000&EBS=0&gn_type=2";
+            cpeService.post(url).then(function (response) {
+                console.log(response);
+                $scope.cpeServices = checkIfIsArray(response.meaServiceMap);
+            });
+        };
+
+        $scope.createCpeService = function (serviceId, srcPort, policerId) {
+            url = "createServiceVlan.html?unit=0&serviceId=6&srcPort=" + srcPort + "&policerId=" + policerId + "&pmId=3&eIngressType=1&outer_vlanId=10&clusterId=104&vlanEdit_flowtype=2&vlanEdit_outer_command=3&vlanEdit_outer_vlan=10";
+            cpeService.post(url).then(function (response) {
+                console.log(response);
+                $scope.cpeServices = checkIfIsArray(response.meaServiceMap);
+            });
+
+            url = "ingress_port_setting.html?unit=0&port_id=104&rx_enable=1&crc_check=1&my_mac=00:01:03:05:06:05";
+            cpeService.post(url).then(function (response) {});
+
+            url = "egress_port_setting.html?unit=0&port_id=104&tx_enable=1&crc_check=1";
+            cpeService.post(url).then(function (response) {});
+
+            url = "egress_port_setting.html?unit=0&port_id=105&tx_enable=1&crc_check=1";
+            cpeService.post(url).then(function (response) {});
+
+            url = "ccmSetting.html?unit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId=10&srcPort=104&megLevel=4&cfmVersion=0&ccmPeriod=1&rdiEnable=1&megId=ccmTest&lmEnable=1&remoteMepId=10&localMepId=9&policerId=3&outServiceId=6&inServiceId=7&Priority=7";
+            cpeService.post(url).then(function (response) {});
+
+        };
+
+        $scope.deleteCpeService = function (serviceId) {
+            url = "deleteServiceVlan.html?unit=0&serviceId=" + serviceId;
+            cpeService.post(url).then(function (response) {});
+        };
+
+        $scope.deleteCpePolice = function (serviceId) {
+            //url = "deleteServiceVlan.html?unit=0&serviceId=" + serviceId;
+            //cpeService.post(url).then(function (response) {});
+        };
+
+
+        $scope.Configure = function (type, form) {
+            console.log(type);
+            if (type === "arn") {
+                console.log(form);
+                var arn = form;
+                var data = getARNVlanConnectivity(arn.upLinkIfaces1, arn.upLinkIfaces2, arn.downLinkIfaces1, arn.downLinkIfaces2, arn.upLinkVlan, arn.downLinkVlan);
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider/" + $scope.virtualResourceOp + "/IVlanConnectivity/vlanConnectivity";
+                MqNaaSResourceService.put(url, data).then(function (result) {});
+            } else if (type === "cpe") {
+                console.log(form);
+                var cpe = form;
+                var data = getCPEVlanConnectivity(cpe.egressPortId, cpe.egressVlan, cpe.ingressPortId, cpe.ingressVlan, cpe.unitId);
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider/" + $scope.virtualResourceOp + "/IVlanConnectivity/vlanConnectivity";
+                MqNaaSResourceService.put(url, data).then(function (result) {});
+            }
+            $rootScope.info = "200 - Operation done";
             this.$hide();
         };
     });

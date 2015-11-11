@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spStatsController', function ($rootScope, $scope, $filter, localStorageService, $modal, arnService, cpeService, $interval, $window, MqNaaSResourceService, $stateParams, AuthService, spService) {
+    .controller('spStatsController', function ($rootScope, $scope, $filter, localStorageService, $modal, arnService, cpeService, $interval, $window, MqNaaSResourceService, $stateParams, AuthService, spService, VirtualService) {
 
         //hardcoded
         //$rootScope.networkId = "Network-Internal-1.0-2";
@@ -94,76 +94,65 @@ angular.module('mqnaasApp')
             //open Dropdown list, depending on the resourceType
             $scope.selected = resourceName;
             if (resourceType === 'CPE') {
-                $scope.getCPEPortList();
+                //$scope.getCPEPortList();
+                $scope.getAvailableInterfaces();
             } else if (resourceType === 'CFM/OAM') {
                 $scope.getCCM();
                 $scope.getLBM();
                 $scope.getDMM();
             } else if (resourceType === 'ARN') {
-                $scope.getARNStats();
+                $scope.getAvailableInterfaces();
             } else if (resourceType === 'ARN/OAM') {
                 $scope.getNotificationsLogging();
             }
         };
 
         $scope.updateInterface = function () {
-            var data = getInterface($scope.interface.attributes.entry[0].value);
-            arnService.put(data).then(function (response) {
-                console.log(response);
-                //var data = response.response.operation.interfaceList.interface;
-                $scope.arnLinkStatus = response.response.operation.interfaceList.interface;
-            });
+            console.log($rootScope.virtualResource);
+            console.log($scope.interface);
+            var port = $scope.interface.attributes.entry[0].value;
+            if ($scope.virtualResource.type === 'ARN') {
+                $scope.arnStats = true;
+                $scope.cpeStats = false;
+                arnService.put(getInterface(port)).then(function (response) {
+                    console.log(response);
+                    $scope.arnLinkStatus = response.response.operation.interfaceList.interface;
+                });
+            } else if ($scope.virtualResource.type === 'CPE') {
+                $scope.arnStats = false;
+                $scope.cpeStats = true;
+                var reqListPortsUrl = "meaEgressPortInfo.xml?unit=0&port_id=" + port;
+                cpeService.get(reqListPortsUrl).then(function (response) {
+                    $scope.cpePortStatus = response.meaEgressPort.egress_Data;
+                });
+            }
         };
 
-        $scope.getARNStats = function () {
+        $scope.getAvailableInterfaces = function () {
             //get OpenNaaS Ports
             var virtualResource = $scope.selectedResource;
-            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + $scope.virtNetId + '/IRootResourceProvider/' + virtualResource + '/IResourceModelReader/resourceModel';
-            MqNaaSResourceService.list(url).then(function (data) {
-                $rootScope.virtualResource = data.resource;
-                $rootScope.physicalPorts = checkIfIsArray(data.resource.resources.resource);
-
-                $rootScope.virtualResource.ports = [];
-
-                var ports = $rootScope.physicalPorts;
-                url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider/" + virtualResource + "/ISliceProvider/slice";
-                MqNaaSResourceService.getText(url).then(function (result) {
-                    var slice = result;
-                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider/" + virtualResource + "/ISliceProvider/" + slice + "/ISliceAdministration/cubes";
-                    MqNaaSResourceService.get(url).then(function (result) {
-                        var cubes = checkIfIsArray(result.cubesList.cubes);
-                        cubes.forEach(function (cube) {
-                            if (cube.cube.ranges.range.lowerBound === cube.cube.ranges.range.upperBound) {
-                                $rootScope.virtualResource.ports.push(ports[parseInt(cube.cube.ranges.range.lowerBound)]);
-                            } else {
-                                var k = parseInt(cube.cube.ranges.range.lowerBound);
-                                while (k <= parseInt(cube.cube.ranges.range.upperBound)) {
-                                    $rootScope.virtualResource.ports.push(ports[k]);
-                                    k++;
-                                }
-                            }
-                        });
-                    });
-                });
-            });
+            VirtualService.virtualPorts(virtualResource);
         };
 
         $scope.getCPEPortList = function () {
-            var reqListPortsUrl = "meaPortMapping.xml?unit=0";
-            cpeService.get(reqListPortsUrl).then(function (response) {
+            url = "meaPortMapping.xml?unit=0";
+            cpeService.get(url).then(function (response) {
                 $scope.cpePortList = response.meaPortMapping.portMapping;
             });
         };
-        $scope.getCPEStats = function (portId) {
-            var reqUrl = "meaPmCounter.xml?unit=0&pmId=" + portId;
-            $interval.cancel(promise);
-            promise = $interval(function () {
 
-                cpeService.get(reqUrl).then(function (response) {
-                    $scope.content = response.meaPmCounter.PmCounter;
-                    console.log($scope.content);
-                });
-            }, 1000);
+        $scope.getCPECounters = function () {
+            url = "meaAllPmCounters.xml?unit=0";
+            cpeService.get(url).then(function (response) {
+                $scope.pmCounters = checkIfIsArray(response.meaPmCounter.PmCounterId);
+            });
+        };
+
+        $scope.getCPECounter = function (portId) {
+            url = "meaPmCounter.xml?unit=0&pmId=" + portId;
+            cpeService.get(url).then(function (response) {
+                $scope.pmCounter = response.meaPmCounter.PmCounter;
+            });
         };
 
         $scope.getCCM = function (portId) {
