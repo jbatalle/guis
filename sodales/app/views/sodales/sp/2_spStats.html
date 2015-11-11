@@ -10,7 +10,7 @@
 </div>
 <div class="row" ng-show="virtNetId">
     <div class="col-md-3">
-        <h3 class="page-header">Physical resources</h3>
+        <h3 class="page-header">Virtual resources</h3>
         <div class="list-group">
             <ul>
                 <li ng-repeat="resource in virtualResources">
@@ -24,120 +24,146 @@
 
     </div>
     <div class="col-md-9">
-        <h2 class="page-header">Performance monitoring <small>Statistics</small></h2>
+        <h3 class="page-header">Performance monitoring <small>Statistics</small></h3>
         <div ng-show="virtualResource.ports">
             <select placeholder="select interface" bs-select ng-model="interface" bs-options="interface.id for interface in virtualResource.ports" ng-change="updateInterface()"></select>
-            <table st-table="displayedCollection" st-safe-src="arnLinkStatus" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Id</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2">Name</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2">Card ID</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2">Admin</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2">Eqpmt ID</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2">MediaType</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2">Collisions</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2">Link</th>
-                        <th class="col-sm-1 col-md-1 col-lg-1">Tx</th>
-                        <th class="col-sm-1 col-md-1 col-lg-1">Rx</th>
-                        <th class="col-sm-1 col-md-1 col-lg-1">Statistics</th>
-                    </tr>
-                    <tr>
-                        <th colspan="6">
-                            <input st-search="" class="form-control" placeholder="global search ..." type="text" />
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="row in displayedCollection">
-                        <td><a ng-click="showDescriptor(row)" data-trigger="hover" data-type="success" data-title="Description" bs-tooltip>{{row._interfaceId}}</a></td>
-                        <td>{{row._name}}</td>
-                        <td>{{row._cardId}}</td>
-                        <td>{{row._admin}}</td>
-                        <td>{{row._equipmentId}}</td>
-                        <td>{{row.ethStatus._mediaType}}</td>
-                        <td>{{row.ethStatus._collision}}</td>
-                        <td>{{row.ethStatus._link}}</td>
-                        <td>{{row.ethStatus._txStatus}}</td>
-                        <td>{{row.ethStatus._rxStatus}}</td>
+            <div ng-show="arnStats">
+                <table st-table="displayedCollection" st-safe-src="arnLinkStatus" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Id</th>
+                            <th class="col-sm-2 col-md-2 col-lg-2">Name</th>
+                            <th class="col-sm-2 col-md-2 col-lg-2">Card ID</th>
+                            <th class="col-sm-2 col-md-2 col-lg-2">Admin</th>
+                            <th class="col-sm-2 col-md-2 col-lg-2">Eqpmt ID</th>
+                            <th class="col-sm-2 col-md-2 col-lg-2">MediaType</th>
+                            <th class="col-sm-2 col-md-2 col-lg-2">Collisions</th>
+                            <th class="col-sm-2 col-md-2 col-lg-2">Link</th>
+                            <th class="col-sm-1 col-md-1 col-lg-1">Tx</th>
+                            <th class="col-sm-1 col-md-1 col-lg-1">Rx</th>
+                            <th class="col-sm-1 col-md-1 col-lg-1">Statistics</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in displayedCollection">
+                            <td><a ng-click="showDescriptor(row)" data-trigger="hover" data-type="success" data-title="Description" bs-tooltip>{{row._interfaceId}}</a></td>
+                            <td>{{row._name}}</td>
+                            <td>{{row._cardId}}</td>
+                            <td>{{row._admin}}</td>
+                            <td>{{row._equipmentId}}</td>
+                            <td>{{row.ethStatus._mediaType}}</td>
+                            <td>{{row.ethStatus._collision}}</td>
+                            <td>{{row.ethStatus._link}}</td>
+                            <td>{{row.ethStatus._txStatus}}</td>
+                            <td>{{row.ethStatus._rxStatus}}</td>
+                            <td data-title="'Statistics'" class="col-sm-1 col-md-1 col-lg-1">
+                                <a href="" ng-click="viewStatistics(row._cardId, row._interfaceId)" title="View">View</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="text-center" st-pagination="" st-items-by-page="5" colspan="10">
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <table ng-table="tableParams" class="table ng-table-responsive" style="text-align: center">
+                    <tr ng-repeat="iface in $data">
+                        <td data-title="'Eth-ID'" sortable="'_name'" class="col-sm-1 col-md-1 col-lg-1">{{iface._name}}</td>
+                        <td data-title="'Card ID'" sortable="'_cardId'" class="col-sm-1 col-md-1 col-lg-1">{{iface._cardId}}</td>
+                        <td data-title="'Admin'" sortable="'_admin'" class="col-sm-1 col-md-1 col-lg-1">{{iface._admin}}</td>
+                        <td data-title="'Eqpmt ID'" sortable="'_equipmentId'" class="col-sm-1 col-md-1 col-lg-1">{{iface._equipmentId}}</td>
+                        <td data-title="'MediaType'" class="col-sm-1 col-md-1 col-lg-1">{{iface.ethStatus._mediaType}}</td>
+                        <td data-title="'Collisions'" sortable="'ethStatus._collision'" class="col-sm-1 col-md-1 col-lg-1">{{iface.ethStatus._collision}}</td>
+                        <td data-title="'Link'" class="col-sm-1 col-md-1 col-lg-1">{{iface.ethStatus._link}}</td>
+                        <td data-title="'Tx'" class="col-sm-1 col-md-1 col-lg-1">{{iface.ethStatus._txStatus}}</td>
+                        <td data-title="'Rx'" class="col-sm-1 col-md-1 col-lg-1">{{iface.ethStatus._rxStatus}}</td>
                         <td data-title="'Statistics'" class="col-sm-1 col-md-1 col-lg-1">
-                            <a href="" ng-click="viewStatistics(row._cardId, row._interfaceId)" title="View">View</a>
+                            <a href="" ng-click="viewStatistics(iface._interfaceId)" title="View">View</a>
                         </td>
                     </tr>
-                </tbody>
-                <tfoot>
+                </table>
+            </div>
+            <div ng-show="cpeStats">
+                <table st-table="cpePortStatsCollection" st-safe-src="cpePortStatus" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Id</th>
+                            <th class="col-sm-2 col-md-2 col-lg-2">TX enable</th>
+                            <th class="col-sm-2 col-md-2 col-lg-2">Calc CRC</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in cpePortStatsCollection">
+                            <td>{{row.port_id}}</td>
+                            <td>{{row.tx_enable}}</td>
+                            <td>{{row.calc_crc}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="text-center" st-pagination="" st-items-by-page="5" colspan="10">
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <table class="table ng-table-responsive" style="text-align: center">
                     <tr>
-                        <td class="text-center" st-pagination="" st-items-by-page="5" colspan="10">
-                        </td>
+                        <th>Key</th>
+                        <th>Value</th>
                     </tr>
-                </tfoot>
-            </table>
-            <table ng-table="tableParams" class="table ng-table-responsive" style="text-align: center">
-                <tr ng-repeat="iface in $data">
-                    <td data-title="'Eth-ID'" sortable="'_name'" class="col-sm-1 col-md-1 col-lg-1">{{iface._name}}</td>
-                    <td data-title="'Card ID'" sortable="'_cardId'" class="col-sm-1 col-md-1 col-lg-1">{{iface._cardId}}</td>
-                    <td data-title="'Admin'" sortable="'_admin'" class="col-sm-1 col-md-1 col-lg-1">{{iface._admin}}</td>
-                    <td data-title="'Eqpmt ID'" sortable="'_equipmentId'" class="col-sm-1 col-md-1 col-lg-1">{{iface._equipmentId}}</td>
-                    <td data-title="'MediaType'" class="col-sm-1 col-md-1 col-lg-1">{{iface.ethStatus._mediaType}}</td>
-                    <td data-title="'Collisions'" sortable="'ethStatus._collision'" class="col-sm-1 col-md-1 col-lg-1">{{iface.ethStatus._collision}}</td>
-                    <td data-title="'Link'" class="col-sm-1 col-md-1 col-lg-1">{{iface.ethStatus._link}}</td>
-                    <td data-title="'Tx'" class="col-sm-1 col-md-1 col-lg-1">{{iface.ethStatus._txStatus}}</td>
-                    <td data-title="'Rx'" class="col-sm-1 col-md-1 col-lg-1">{{iface.ethStatus._rxStatus}}</td>
-                    <td data-title="'Statistics'" class="col-sm-1 col-md-1 col-lg-1">
-                        <a href="" ng-click="viewStatistics(iface._interfaceId)" title="View">View</a>
-                    </td>
-                </tr>
-            </table>
+                    <tr>
+                        <td>Port id</td>
+                        <td>{{content.pmId}}</td>
+                    </tr>
+                    <tr>
+                        <td>FwdGreen Pkts</td>
+                        <td>{{content['FwdGreen-pkts']}}</td>
+                    </tr>
+                    <tr>
+                        <td>FwdGreen Bytes</td>
+                        <td>{{content['FwdGreen-bytes']}}</td>
+                    </tr>
+                    <tr>
+                        <td>FwdYellow Pkts</td>
+                        <td>{{content['FwdYellow-pkts']}}</td>
+                    </tr>
+                    <tr>
+                        <td>FwdYellow Bytes</td>
+                        <td>{{content['FwdYellow-bytes']}}</td>
+                    </tr>
+                    <tr>
+                        <td>DisGreen Pkts</td>
+                        <td>{{content['DisGreen-pkts']}}</td>
+                    </tr>
+                    <tr>
+                        <td>DisGreen Bytes</td>
+                        <td>{{content['DisGreen-bytes']}}</td>
+                    </tr>
+                    <tr>
+                        <td>DisYellow Pkts</td>
+                        <td>{{content['DisYellow-pkts']}}</td>
+                    </tr>
+                    <tr>
+                        <td>DisYellow Bytes</td>
+                        <td>{{content['DisYellowRed-bytes']}}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
-        <div ng-show="CPEStats">
-            <ol class="breadcrumb">
-                <li class="active"><i class="fa fa-dashboard"></i> Port:</li>
-                <li ng-if="portMap.port > 99" ng-repeat="portMap in cpePortList" style="content:'/'; padding:'0';">
-                    <a href="" ng-click="getCPEStats(portMap.port)">{{portMap.port}}</a></li>
-            </ol>
-            <table class="table ng-table-responsive" style="text-align: center">
-                <tr>
-                    <th>Key</th>
-                    <th>Value</th>
-                </tr>
-                <tr>
-                    <td>Port id</td>
-                    <td>{{content.pmId}}</td>
-                </tr>
-                <tr>
-                    <td>FwdGreen Pkts</td>
-                    <td>{{content['FwdGreen-pkts']}}</td>
-                </tr>
-                <tr>
-                    <td>FwdGreen Bytes</td>
-                    <td>{{content['FwdGreen-bytes']}}</td>
-                </tr>
-                <tr>
-                    <td>FwdYellow Pkts</td>
-                    <td>{{content['FwdYellow-pkts']}}</td>
-                </tr>
-                <tr>
-                    <td>FwdYellow Bytes</td>
-                    <td>{{content['FwdYellow-bytes']}}</td>
-                </tr>
-                <tr>
-                    <td>DisGreen Pkts</td>
-                    <td>{{content['DisGreen-pkts']}}</td>
-                </tr>
-                <tr>
-                    <td>DisGreen Bytes</td>
-                    <td>{{content['DisGreen-bytes']}}</td>
-                </tr>
-                <tr>
-                    <td>DisYellow Pkts</td>
-                    <td>{{content['DisYellow-pkts']}}</td>
-                </tr>
-                <tr>
-                    <td>DisYellow Bytes</td>
-                    <td>{{content['DisYellowRed-bytes']}}</td>
-                </tr>
-            </table>
-        </div>
+
         <div ng-show="CFM_OAM">
             <h3>CCM</h3>
             <div>
