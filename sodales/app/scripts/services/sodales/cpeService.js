@@ -15,8 +15,8 @@ services.factory('cpeService', ['$http', 'x2js', 'HistoryService', function ($ht
             });
             return promise;
         },
-        post: function (data) {
-            var promise = $http.post("rest/cpe", data).then(function (response) {
+        post: function (req, data) {
+            var promise = $http.post("rest/cpe/" + req, data).then(function (response) {
                 var x2js = new X2JS();
                 var json = x2js.xml_str2json(response.data);
                 return json;

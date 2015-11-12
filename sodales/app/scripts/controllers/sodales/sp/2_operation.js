@@ -165,7 +165,6 @@ angular.module('mqnaasApp')
                         });
 
                         arnService.put(createLAG(0, lag.interfaceId, lag.loadBalance.id, attachedPorts, lag.description)).then(function (response) {});
-
                         return false;
                     }
                 });
@@ -362,16 +361,17 @@ angular.module('mqnaasApp')
         };
 
 
-        $scope.createCpePolice = function (CIR, EIR, CBS, EBS) {
-            url = "policerProfile.html?unit=0&profileId=3&CIR=100000000&EIR=0&CBS=64000&EBS=0&gn_type=2";
+        $scope.createCpePolice = function (profile) {
+            url = "policerProfile.html?unit=0&profileId=3&CIR=" + profile.CIR + "&EIR=" + profile.EIR + "&CBS=" + profile.CBS + "&EBS=" + profile.EBS + "&gn_type=2";
             cpeService.post(url).then(function (response) {
                 console.log(response);
                 $scope.cpeServices = checkIfIsArray(response.meaServiceMap);
             });
         };
 
-        $scope.createCpeService = function (serviceId, srcPort, policerId) {
-            url = "createServiceVlan.html?unit=0&serviceId=6&srcPort=" + srcPort + "&policerId=" + policerId + "&pmId=3&eIngressType=1&outer_vlanId=10&clusterId=104&vlanEdit_flowtype=2&vlanEdit_outer_command=3&vlanEdit_outer_vlan=10";
+        $scope.createCpeService = function (cpeSvc) {
+            //serviceId, srcPort, policerId
+            url = "createServiceVlan.html?unit=0&serviceId=6&srcPort=" + cpeSvc.srcPort + "&policerId=" + cpeSvc.police.id + "&pmId=3&eIngressType=1&outer_vlanId=10&clusterId=104&vlanEdit_flowtype=2&vlanEdit_outer_command=3&vlanEdit_outer_vlan=10";
             cpeService.post(url).then(function (response) {
                 console.log(response);
                 $scope.cpeServices = checkIfIsArray(response.meaServiceMap);
