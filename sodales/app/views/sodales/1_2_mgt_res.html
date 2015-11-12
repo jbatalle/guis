@@ -1,45 +1,52 @@
 <div class="row">
+    <h3 class="page-header">PHY Management <small>Physical resources management</small></h3>
     <div class="col-md-3">
-        <h3 class="page-header">Physical resources</h3>
-        <div class="list-group">
-            <select placeholder="select resource" bs-select ng-model="resource" bs-options="resource for resource in resources" ng-change="updateResource()"></select>
-        </div>
-
-        <div class="list-group" ng-show="equipmentInfo">
-            <h3 class="lead">Resource Information</h3>
-            <div class="fx-form-block-controls fx-first collapse am-collapse in" data-uxfwk-collapse-target="">
-                <div class="form-group">
-                    <label class="col-sm-4 control-label ng-binding">Name</label>
-                    <div class="col-sm-8">
-                        <p class="form-control-static ng-binding ng-scope">
-                            {{equipmentInfo.system._name}}
-                        </p>
-                    </div>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Physical resources</h3>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-4 control-label ng-binding">Version</label>
-                    <div class="col-sm-8">
-                        <p class="form-control-static ng-binding ng-scope">
-                            {{equipmentInfo.system._fwVersion}}
-                        </p>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <select placeholder="select resource" bs-select ng-model="resource" bs-options="resource for resource in resources" ng-change="updateResource()"></select>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-4 control-label ng-binding">State</label>
-                    <div class="col-sm-8">
-                        <p class="form-control-static ng-binding ng-scope">
-                            <span ng-if="equipmentInfo.system._admin === '1'">In service</span>
-                            <span ng-if="equipmentInfo.system._admin === '0'">Blocked</span>
-                        </p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-4 control-label ng-binding">Type</label>
-                    <div class="col-sm-8">
-                        <!-- ngIf: coreEquipmentForm.dataReady -->
-                        <p class="form-control-static ng-scope">
-                            <span data-translate="" class="ng-scope ng-binding">OLT1T1</span>
-                        </p>
+                    <div class="list-group" ng-show="equipmentInfo">
+                        <div class="fx-form-block-controls fx-first collapse am-collapse in" data-uxfwk-collapse-target="">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label ng-binding">Name</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static ng-binding ng-scope">
+                                        {{equipmentInfo.system._name}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label ng-binding">Version</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static ng-binding ng-scope">
+                                        {{equipmentInfo.system._fwVersion}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label ng-binding">State</label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static ng-binding ng-scope">
+                                        <span ng-if="equipmentInfo.system._admin === '1'">In service</span>
+                                        <span ng-if="equipmentInfo.system._admin === '0'">Blocked</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label ng-binding">Type</label>
+                                <div class="col-sm-8">
+                                    <!-- ngIf: coreEquipmentForm.dataReady -->
+                                    <p class="form-control-static ng-scope">
+                                        <span data-translate="" class="ng-scope ng-binding">OLT1T1</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,134 +57,117 @@
             </div>
         </div>
     </div>
-    <div id="piMgt" class="col-md-9">
-        <h3 class="page-header">PHY Management <small>Physical resources management</small></h3>
-        <div class="row" ng-show="type === 'ARN'">
-            <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateARNCard()"></select>
-            <div class="col-lg-12">
-                <table st-table="displayedCollection" st-safe-src="dataCollection" class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Interface id</th>
-                            <th data-title="'description'" class="col-sm-2 col-md-2 col-lg-2">Name</th>
-                            <th data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">Type</th>
-                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Admin</th>
-                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Sync</th>
-                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">inBand</th>
-                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">CoS</th>
-                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Info</th>
-                        </tr>
-                        <tr>
-                            <th colspan="1">
-                                <input st-search="_interfaceId" class="form-control" placeholder="" type="text" />
-                            </th>
-                            <th colspan="1">
-                                <input st-search="_name" class="form-control" placeholder="" type="text" />
-                            </th>
-                            <th colspan="1">
-                                <input st-search="_type" class="form-control" placeholder="" type="text" />
-                            </th>
-                            <th colspan="1">
-                                <input st-search="_admin" class="form-control" placeholder="" type="text" />
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="row in displayedCollection">
-                            <td>{{row._interfaceId}}</td>
-                            <td>{{row._name}}</td>
-                            <td>{{row._type}}</td>
-                            <td>{{row._admin}}</td>
-                            <td>{{row._sync}}</td>
-                            <td>{{row._inBand}}</td>
-                            <td>
-                                <span ng-if="row.cosList.cos.length > 0">
+    <div id="piMgt" class="col-md-9" ng-show="type === 'ARN' || type === 'CPE'">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Interfaces information</h3>
+            </div>
+            <div class="panel-body">
+                <div ng-show="type === 'ARN' ">
+                    <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateARNCard()"></select>
+                    <div class="col-lg-12">
+                        <table st-table="displayedCollection" st-safe-src="dataCollection" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Interface id</th>
+                                    <th data-title="'description'" class="col-sm-2 col-md-2 col-lg-2">Name</th>
+                                    <th data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">Type</th>
+                                    <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Admin</th>
+                                    <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Sync</th>
+                                    <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">inBand</th>
+                                    <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">CoS</th>
+                                    <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Info</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="1">
+                                        <input st-search="_interfaceId" class="form-control" placeholder="" type="text" />
+                                    </th>
+                                    <th colspan="1">
+                                        <input st-search="_name" class="form-control" placeholder="" type="text" />
+                                    </th>
+                                    <th colspan="1">
+                                        <input st-search="_type" class="form-control" placeholder="" type="text" />
+                                    </th>
+                                    <th colspan="1">
+                                        <input st-search="_admin" class="form-control" placeholder="" type="text" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in displayedCollection">
+                                    <td>{{row._interfaceId}}</td>
+                                    <td>{{row._name}}</td>
+                                    <td>{{row._type}}</td>
+                                    <td>{{row._admin}}</td>
+                                    <td>{{row._sync}}</td>
+                                    <td>{{row._inBand}}</td>
+                                    <td>
+                                        <span ng-if="row.cosList.cos.length > 0">
                                 <a ng-click="showARNCoS(row.cosList.cos)">CoS</a>
                                     </span>
-                            </td>
-                            <td>
-                                <span ng-if="row._type === 6">
+                                    </td>
+                                    <td>
+                                        <span ng-if="row._type === '6'">
                                     <a ng-click="getEthernet(row.ethernet)">Ethernet</a>
                                 </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td class="text-center" st-pagination="" st-items-by-page="10" colspan="8">
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="text-center" st-pagination="" st-items-by-page="10" colspan="8">
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" ng-show="type === 'ARN' && cos.length > 0">
+                    <div style="">
+                        CoS
+                    </div>
+                    <div class="col-lg-12">
 
-        <div class="row" ng-show="type === 'ARN' && cos.length > 0"> CoS
-            <div class="col-lg-12">
-                <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th class="col-sm-1 col-md-1 col-lg-1">Id</th>
-                            <th data-title="'description'" class="col-sm-2 col-md-2 col-lg-2">MaxBwPercentage</th>
-                            <th data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">MinBwPercentage</th>
-                            <th data-title="'Add VI'" class="col-sm-2 col-md-2 col-lg-2">QueueManagementType</th>
-                            <th data-title="'Remove VI'" class="col-sm-2 col-md-2 col-lg-2">Scheduler</th>
-                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">TrafficProfileId</th>
-                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Weight</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="row in displayedCollection2">
-                            <td>{{row._id}}</td>
-                            <td>{{row._maxBwPercentage}}</td>
-                            <td>{{row._minBwPercentage}}</td>
-                            <td>{{row._queueManagementType}}</td>
-                            <td>{{row._scheduler}}</td>
-                            <td>{{row._trafficProfileId}}</td>
-                            <td>{{row._weight}}</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
+                    </div>
+                </div>
 
-        <div class="row" ng-show="type === 'CPE'">
-            <div class="col-lg-12">
-                <table st-table="displayedCollection3" st-safe-src="dataCollection" class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th class="col-sm-1 col-md-1 col-lg-1">Port id</th>
-                            <th data-title="'unit'" class="col-sm-2 col-md-2 col-lg-2">Unit</th>
-                            <th data-title="'unit'" class="col-sm-2 col-md-2 col-lg-2">Type</th>
-                        </tr>
-                        <tr>
-                            <th colspan="1">
-                                <input st-search="port" class="form-control" placeholder="" type="text" />
-                            </th>
-                            <th colspan="1">
-                                <input st-search="" class="form-control" placeholder="" type="text" />
-                            </th>
-                            <th colspan="1">
-                                <input st-search="type" class="form-control" placeholder="" type="text" />
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="row in displayedCollection3">
-                            <td>{{row.port}}</td>
-                            <td>{{row.unit}}</td>
-                            <td>{{row.type}}
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td class="text-center" st-pagination="" st-items-by-page="10" colspan="2"></td>
-                        </tr>
-                    </tfoot>
-                </table>
+                <div class="row" ng-show="type === 'CPE'">
+                    <div class="col-lg-12">
+                        <table st-table="displayedCollection3" st-safe-src="dataCollection" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-1 col-md-1 col-lg-1">Port id</th>
+                                    <th data-title="'unit'" class="col-sm-2 col-md-2 col-lg-2">Unit</th>
+                                    <th data-title="'unit'" class="col-sm-2 col-md-2 col-lg-2">Type</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="1">
+                                        <input st-search="port" class="form-control" placeholder="" type="text" />
+                                    </th>
+                                    <th colspan="1">
+                                        <input st-search="unit" class="form-control" placeholder="" type="text" />
+                                    </th>
+                                    <th colspan="1">
+                                        <input st-search="type" class="form-control" placeholder="" type="text" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in displayedCollection3">
+                                    <td>{{row.port}}</td>
+                                    <td>{{row.unit}}</td>
+                                    <td>{{row.type}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="text-center" st-pagination="" st-items-by-page="10" colspan="3"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         <!--close row-->

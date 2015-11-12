@@ -1,71 +1,89 @@
 <div class="row">
+    <h3 class="page-header">PHY Management <small>Physical resources management</small></h3>
     <div class="col-md-3">
-        <h3 class="page-header">Networks</h3>
         <div class="row">
-
-            <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network for network in listNetworks" bs-select ng-change="setNetworkId(selectedNetwork)">
-                Select <span class="caret"></span>
-            </button>
-            <h3 class="lead">Physical resources</h3>
-            <div class="list-group">
-                <a href="" class="list-group-item">
-                    <div class="ui-widget-content netEl-drag" id="arn">
-                        <img id="arn" draggable src="images/SODALES_ARN.png" width="60" style="z-index:1090"> ARN
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-globe fa-fw"></i> Networks</h3>
+                </div>
+                <div class="panel-body" style="text-align: center;">
+                    <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network for network in listNetworks" bs-select ng-change="setNetworkId(selectedNetwork)">
+                        Select <span class="caret"></span>
+                    </button>
+                    <h3 class="lead">Physical resources</h3>
+                    <div class="list-group">
+                        <a href="" class="list-group-item">
+                            <div class="ui-widget-content netEl-drag" id="arn">
+                                <img id="arn" draggable src="images/SODALES_ARN.png" width="60" style="z-index:1090"> ARN
+                            </div>
+                        </a>
+                        <a href="" class="list-group-item">
+                            <div class="ui-widget-content netEl-drag" id="cpe">
+                                <img id="cpe" draggable src="images/SODALES_CPE.png" width="60" style="z-index:1090"> CPE
+                            </div>
+                        </a>
                     </div>
-                </a>
-                <a href="" class="list-group-item">
-                    <div class="ui-widget-content netEl-drag" id="cpe">
-                        <img id="cpe" draggable src="images/SODALES_CPE.png" width="60" style="z-index:1090"> CPE
-                    </div>
-                </a>
+                </div>
             </div>
         </div>
         <div class="row">
             <div ng-show="networkId">
-                <h3 class="page-header">Resources</h3>
-                <ul>
-                    <li ng-repeat="res in physicalResources">
-                        <a ng-click="getResourceInfo(res)"> {{res}}</a> -
-                        <a ng-click="deleteDialog(res)"> Remove </a>
-                    </li>
-                </ul>
-                <h3 class="page-header">Links</h3>
-                <ul>
-                    <li ng-repeat="link in physicalLinks">
-                        {{link.id}}: {{link.from}} to {{link.to}}
-                        <a ng-click="deleteDialog(link.id)"> Remove </a>
-                    </li>
-                </ul>
-                <ul>
-                    <li ng-repeat="link in createdLinkInfo">
-                        {{createdLink}}: {{link.s}} to {{link.t}} -
-                        <a ng-click="deleteDialog(link)"> Remove </a>
-                    </li>
-                </ul>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Resources</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li ng-repeat="res in physicalResources">
+                                <a ng-click="getResourceInfo(res)"> {{res}}</a> -
+                                <a ng-click="deleteDialog(res)"> Remove </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-arrows-h fa-fw"></i> Links</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li ng-repeat="link in physicalLinks">
+                                {{link.id}}: {{link.from}} to {{link.to}}
+                                <a ng-click="deleteDialog(link.id)"> Remove </a>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li ng-repeat="link in createdLinkInfo">
+                                {{createdLink}}: {{link.s}} to {{link.t}} -
+                                <a ng-click="deleteDialog(link)"> Remove </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div id="piMgt" class="col-md-9">
-        <h3 class="page-header">PHY Management <small>Physical resources management</small></h3>
-        <div class="row">
-            <div class="col-lg-9">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><i class="fa fa-image fa-fw"></i> Topology graph</h3>
-                    </div>
-                    <div class="panel-body" style="text-align: center;">
-                        <a href="" ng-hide="networkId" ng-click="createNetwork()" class="btn btn-xs btn-default" title="Create Network">Create Network</a>
-                        <div ng-controller="editPhyNetwork" id="myDraggableZone" phydroppable ng-show="networkId">
-                            <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
-                            </vis-network>
-                        </div>
-                    </div>
-
+    <div id="piMgt" class="" ng-class="resourceInfo !== undefined ? 'col-md-6' : 'col-md-9'">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-image fa-fw"></i> Topology graph</h3>
+            </div>
+            <div class="panel-body" style="text-align: center;">
+                <a href="" ng-hide="networkId" ng-click="createNetwork()" class="btn btn-xs btn-default" title="Create Network">Create Network</a>
+                <div ng-controller="editPhyNetwork" id="myDraggableZone" phydroppable ng-show="networkId">
+                    <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
+                    </vis-network>
                 </div>
             </div>
-            <div class="col-lg-3">
-                <div ng-show="networkId && resourceInfo.ports">
-                    <h3 class="page-header">Ports</h3>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div ng-show="networkId && resourceInfo.ports">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-square-o fa-fw"></i> Ports</h3> actived
+                </div>
+                <div class="panel-body">
                     <div style="overflow-y: scroll; height:250px;">
                         <ul style="margin-left: 20px; padding: 0;">
                             <li ng-repeat="res in resourceInfo.ports" ng-if="resourceInfo.type === 'ARN' && res._admin !== '2'">
@@ -76,7 +94,13 @@
                             </li>
                         </ul>
                     </div>
-                    <h3 class="page-header">Slice information</h3>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-navicon fa-fw"></i> Slice information</h3>
+                </div>
+                <div class="panel-body">
                     <div style="">
                         Units
                         <ul>
@@ -90,13 +114,9 @@
                                 <a ng-click="getCubeInfo(res)"> Cube</a>
                             </li>
                         </ul>
-
                     </div>
                 </div>
             </div>
         </div>
-        <!--close row-->
     </div>
-    <!--close row-->
 </div>
-<!--close col-md-9-->
