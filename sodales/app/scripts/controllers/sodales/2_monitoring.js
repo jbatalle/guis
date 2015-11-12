@@ -55,12 +55,8 @@ angular.module('mqnaasApp')
 
         $scope.selectResource = function (resourceName, resourceType) {
             $scope.selectedResource = resourceName;
-            console.log("Click resource " + resourceName);
             $scope.dropdown[0].click = "selectResource('" + $scope.selectedResource + "', 'ARN/OAM')";
             $scope.dropdown2[0].click = "selectResource('" + $scope.selectedResource + "', 'CFM/OAM')";
-            //get resourceInfo from OpenNaaS.
-            //load default statistic info
-            //open Dropdown list, depending on the resourceType
             $scope.cpePorts = undefined;
             $scope.arnInterfaces = undefined;
             $scope.arnOAM = undefined;
@@ -110,7 +106,6 @@ angular.module('mqnaasApp')
             $interval.cancel(promise);
             //            promise = $interval(function () {
             cpeService.get(reqUrl).then(function (response) {
-                console.log(response);
                 $scope.content = response.meaPmCounter.PmCounter;
                 $scope.cpePorts.push({
                     portId: d.port,

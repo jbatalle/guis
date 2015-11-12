@@ -180,6 +180,14 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                             controller: 'editVIController'
                         }
                     }
+                }).state('root.viewVirtualNetwork', {
+                    url: '/viewVirtualNetwork/:id',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/3_3_openAccess_viewVI.html',
+                            controller: 'viewVIController'
+                        }
+                    }
                 }).state('root.cfm', {
                     url: '/cfm',
                     views: {
