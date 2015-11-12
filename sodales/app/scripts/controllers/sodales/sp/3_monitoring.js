@@ -7,7 +7,7 @@ angular.module('mqnaasApp')
         //$rootScope.networkId = "Network-Internal-1.0-2";
         //$rootScope.virtNetId = "Network-virtual-7";
 
-        $rootScope.virtNetId = $stateParams.id;
+        if ($stateParams.id) $rootScope.virtNetId = $stateParams.id;
         $scope.virtualResources = [];
         $rootScope.networkCollection = [];
         $scope.selected = ""; //unused???
