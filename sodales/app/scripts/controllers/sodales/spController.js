@@ -12,8 +12,8 @@ angular.module('mqnaasApp')
         AuthService.profile().then(function (data) {
             spService.get(data.sp_id).then(function (data) {
                 $scope.networks = data.vis;
+                $rootScope.networkCollection = [];
                 data.vis.forEach(function (viNet) {
-
                     var url = "IRootResourceProvider";
                     MqNaaSResourceService.list(url).then(function (result) {
                         var physicalNetworks = checkIfIsArray(result.IRootResource.IRootResourceId);
