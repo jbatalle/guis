@@ -1,34 +1,39 @@
-<div class="page-header">
-    <h3>Virtual Slice list</h3>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-bars fa-fw"></i> Virtual Slice list</h3>
+    </div>
+    <div class="panel-body">
+        <div class="">
+            <table st-table="displayedCollection" st-safe-src="networkCollection" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th data-title="'id'" class="col-sm-3 col-md-3 col-lg-3">Id</th>
+                        <th data-title="'date'" class="col-sm-3 col-md-3 col-lg-3">Date</th>
+                        <th data-title="'content'">Actions</th>
+                    </tr>
+                    <tr>
+                        <th colspan="3">
+                            <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in displayedCollection">
+                        <td>{{row.id}}</td>
+                        <td>{{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td>
+                            <a ui-sref="root.spVIInfo({id: row.id})" class="btn btn-default btn-info" title="edit">View virtual slice</a>
+                            <a ui-sref="root.spStats({id: row.id})" class="btn btn-default btn-warning" title="edit">Virtual slice stats</a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center" st-pagination="" st-items-by-page="20" colspan="3">
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
 </div>
-
-<table st-table="displayedCollection" st-safe-src="networkCollection" class="table table-striped">
-    <thead>
-        <tr>
-            <th data-title="'id'" class="col-sm-3 col-md-3 col-lg-3">Id</th>
-            <th data-title="'date'" class="col-sm-3 col-md-3 col-lg-3">Date</th>
-            <th data-title="'content'">Actions</th>
-        </tr>
-        <tr>
-            <th colspan="3">
-                <input st-search="" class="form-control" placeholder="global search ..." type="text" />
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="row in displayedCollection">
-            <td>{{row.id}}</td>
-            <td>{{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}</td>
-            <td>
-                <a ui-sref="root.spVIInfo({id: row.id})" class="btn btn-default" title="edit">View virtual slice</a>
-                <a ui-sref="root.spStats({id: row.id})" class="btn btn-default" title="edit">Virtual slice stats</a>
-            </td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td class="text-center" st-pagination="" st-items-by-page="20" colspan="3">
-            </td>
-        </tr>
-    </tfoot>
-</table>
