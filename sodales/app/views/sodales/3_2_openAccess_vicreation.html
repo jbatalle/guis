@@ -1,43 +1,53 @@
 <div class="row">
+    <h3 class="page-header">OpenAccess slice creation: {{viId}}</h3>
     <div class="col-md-3">
-        <h3 class="page-header">Available resources</h3>
-        <div class="list-group">
-            <a href="" class="list-group-item">
-                <div class="ui-widget-content netEl-drag" id="arn">
-                    <img id="arn" draggable src="images/SODALES_ARN.png" width="60" style="z-index:1090"> ARN
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Available resources</h3>
+            </div>
+            <div class="panel-body">
+                <div class="list-group">
+                    <a href="" class="list-group-item">
+                        <div class="ui-widget-content netEl-drag" id="arn">
+                            <img id="arn" draggable src="images/SODALES_ARN.png" width="60" style="z-index:1090"> ARN
+                        </div>
+                    </a>
+                    <a href="" class="list-group-item">
+                        <div class="ui-widget-content netEl-drag" id="cpe">
+                            <img id="cpe" draggable src="images/SODALES_CPE.png" width="60" style="z-index:1090"> CPE
+                        </div>
+                    </a>
                 </div>
-            </a>
-            <a href="" class="list-group-item">
-                <div class="ui-widget-content netEl-drag" id="cpe">
-                    <img id="cpe" draggable src="images/SODALES_CPE.png" width="60" style="z-index:1090"> CPE
-                </div>
-            </a>
+            </div>
         </div>
         <div>
             <div class="form-group">
                 <input class="btn btn-default" type="submit" ng-click="openMappingDialog()" value="Mapping" />
             </div>
         </div>
-        <div>
-            <h3 class="page-header"> Period</h3>
-            <div class="form-group">
-                <label class="control-label"><i class="fa fa-calendar"></i> <i class="fa fa-arrows-h"></i>
-                    <i class="fa fa-calendar"></i> Range </label>
-                <br>
-                <div class="form-group col-xs-12">
-                    <input type="text" class="form-control" ng-model="period.startDate" data-max-date="{{period.endDate}}" data-date-format="dd-MM-yyyy" data-date-type="number" data-autoclose="1" placeholder="From" bs-datepicker>
-                </div>
-                <div class="form-group col-xs-12">
-                    <input type="text" class="form-control" ng-model="period.endDate" data-min-date="{{period.startDate}}" data-date-format="dd-MM-yyyy" data-date-type="number" data-autoclose="1" placeholder="Until" bs-datepicker>
-                </div>
-                <div class="pull-right">
-                    <input class="btn btn-success" type="submit" ng-click="setPeriod(period)" value="Set period" />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Period</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label"><i class="fa fa-calendar"></i> <i class="fa fa-arrows-h"></i>
+                        <i class="fa fa-calendar"></i> Range </label>
+                    <br>
+                    <div class="form-group col-xs-12">
+                        <input type="text" class="form-control" ng-model="period.startDate" data-max-date="{{period.endDate}}" data-date-format="dd-MM-yyyy" data-date-type="number" data-autoclose="1" placeholder="From" bs-datepicker>
+                    </div>
+                    <div class="form-group col-xs-12">
+                        <input type="text" class="form-control" ng-model="period.endDate" data-min-date="{{period.startDate}}" data-date-format="dd-MM-yyyy" data-date-type="number" data-autoclose="1" placeholder="Until" bs-datepicker>
+                    </div>
+                    <div class="pull-right">
+                        <input class="btn btn-success" type="submit" ng-click="setPeriod(period)" value="Set period" />
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-md-6">
-        <h3 class="page-header">OpenAccess slice creation: {{viId}}</h3>
         <div id="viMgt" ng-controller="editVIController">
             <div ng-controller="editVINetwork" id="myDraggableZone" vidroppable ng-show="networkId">
                 <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
@@ -47,17 +57,23 @@
         <!-- /.row -->
     </div>
     <div class="col-md-3">
-        <h3 class="page-header">Mapped resources</h3>
-        <ul>
-            <li ng-repeat="viRes in virtualResources" ng-if="viRes.mapped">
-                <a ng-click="mappingDialog(viRes.id, viRes.mapped)">{{viRes.id}} -> {{viRes.mapped}}</a>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Mapped resources</h3>
+            </div>
+            <div class="panel-body">
                 <ul>
-                    <li ng-repeat="viPorts in viRes.ports">
-                        {{viPorts.id}} -> {{viPorts.mapped}}
+                    <li ng-repeat="viRes in virtualResources" ng-if="viRes.mapped">
+                        <a ng-click="mappingDialog(viRes.id, viRes.mapped)">{{viRes.id}} -> {{viRes.mapped}}</a>
+                        <ul>
+                            <li ng-repeat="viPorts in viRes.ports">
+                                {{viPorts.id}} -> {{viPorts.mapped}}
+                            </li>
+                        </ul>
                     </li>
                 </ul>
-            </li>
-        </ul>
+            </div>
+        </div>
         <div>
             <h3 class="page-header">Resource information</h3>
             <div class="list-group" ng-show="!resourceInfo">

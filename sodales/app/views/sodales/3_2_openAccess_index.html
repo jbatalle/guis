@@ -8,70 +8,82 @@
     </li>
 </ol>
 
-<h4 class="page-header">Virtual Networks:</h4>
-<table st-table="displayedNetworkCollection" st-safe-src="networkCollection" class="table table-striped">
-    <thead>
-        <tr>
-            <th st-sort="name" class="col-sm-3 col-md-3 col-lg-3">Id</th>
-            <th data-title="'Created date'" class="col-sm-3 col-md-3 col-lg-3">Created date</th>
-            <th class="col-sm-6 col-md-6 col-lg-6">Actions</th>
-        </tr>
-        <tr>
-            <th colspan="2">
-                <input st-search="" class="form-control" placeholder="global search ..." type="text" />
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="row in displayedNetworkCollection">
-            <td><a ng-click="viewService(row.id, row.name)">{{row.id}}</a></td>
-            <td>{{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}</td>
-            <td>
-                <a ui-sref="root.editVIRequest({ id:row.id })" class="btn btn-primary" title="edit">View</a>
-                <a ng-click="deleteVIRequest(row.id)" class="btn btn-danger" title="process">Remove</a>
-            </td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td class="text-center" st-pagination="" st-items-by-page="5" colspan="3">
-            </td>
-        </tr>
-    </tfoot>
-</table>
-
-<h4 class="page-header">Virtual Slice requests:</h4>
-<div class="pull-right">
-    <a ng-click="createVIRequest()" class="btn btn-primary" title="Create"><span class="glyphicon glyphicon-plus"></span></a>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-clone fa-fw"></i> Virtual Networks</h3>
+    </div>
+    <div class="panel-body">
+        <table st-table="displayedNetworkCollection" st-safe-src="networkCollection" class="table table-striped">
+            <thead>
+                <tr>
+                    <th st-sort="name" class="col-sm-3 col-md-3 col-lg-3">Id</th>
+                    <th data-title="'Created date'" class="col-sm-3 col-md-3 col-lg-3">Created date</th>
+                    <th class="col-sm-6 col-md-6 col-lg-6">Actions</th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in displayedNetworkCollection">
+                    <td><a ng-click="viewService(row.id, row.name)">{{row.id}}</a></td>
+                    <td>{{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td>
+                        <a ui-sref="root.editVIRequest({ id:row.id })" class="btn btn-primary" title="edit">View</a>
+                        <a ng-click="deleteVIRequest(row.id)" class="btn btn-danger" title="process">Remove</a>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="text-center" st-pagination="" st-items-by-page="5" colspan="3">
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 
-<table st-table="displayedCollection" st-safe-src="dataCollection" class="table table-striped">
-    <thead>
-        <tr>
-            <th st-sort="name" class="col-sm-3 col-md-3 col-lg-3">Id</th>
-            <th data-title="'Created date'" class="col-sm-3 col-md-3 col-lg-3">Created date</th>
-            <th class="col-sm-6 col-md-6 col-lg-6">Actions</th>
-        </tr>
-        <tr>
-            <th colspan="2">
-                <input st-search="" class="form-control" placeholder="global search ..." type="text" />
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="row in displayedCollection">
-            <td><a ng-click="viewService(row.id, row.name)">{{row}}</a></td>
-            <td>{{row.date| date:'yyyy-MM-dd HH:mm:ss'}}</td>
-            <td><a ng-show="vi.status !== 'Created'" ng-click="sendVIR(row)" class="btn btn-success" title="process">Send to Process</a>
-                <a ng-show="vi.status !== 'Created'" ui-sref="root.editVIRequest({ id:row })" class="btn btn-primary" title="edit">Edit</a>
-                <a ng-click="deleteVIRequest(row)" class="btn btn-danger" title="process">Remove</a>
-            </td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td class="text-center" st-pagination="" st-items-by-page="5" colspan="3">
-            </td>
-        </tr>
-    </tfoot>
-</table>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-cog fa-fw"></i> Virtual Slice requests</h3>
+    </div>
+    <div class="panel-body">
+        <div class="pull-right">
+            <a ng-click="createVIRequest()" class="btn btn-primary" title="Create"><span class="glyphicon glyphicon-plus"></span></a>
+        </div>
+
+        <table st-table="displayedCollection" st-safe-src="requestCollection" class="table table-striped">
+            <thead>
+                <tr>
+                    <th st-sort="name" class="col-sm-3 col-md-3 col-lg-3">Id</th>
+                    <th data-title="'Created date'" class="col-sm-3 col-md-3 col-lg-3">Created date</th>
+                    <th class="col-sm-6 col-md-6 col-lg-6">Actions</th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in displayedCollection">
+                    <td><a ng-click="viewService(row.id, row.name)">{{row.id}}</a></td>
+                    <td>{{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td><a ng-show="vi.status !== 'Created'" ng-click="sendVIR(row.id)" class="btn btn-success" title="process">Send to Process</a>
+                        <a ng-show="vi.status !== 'Created'" ui-sref="root.editVIRequest({ id:row.id })" class="btn btn-primary" title="edit">Edit</a>
+                        <a ng-click="deleteVIRequest(row.id)" class="btn btn-danger" title="process">Remove</a>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="text-center" st-pagination="" st-items-by-page="5" colspan="3">
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

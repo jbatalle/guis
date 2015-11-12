@@ -6,12 +6,22 @@ angular.module('mqnaasApp')
         //            $rootScope.networkId = "Network-Internal-1.0-2";//to remove
         var promise;
         $scope.data = [];
+        $scope.requestCollection = [];
         $scope.networkCollection = [];
         $scope.updateVIReqList = function () {
             var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
             MqNaaSResourceService.list(urlListVI).then(function (result) {
                 if (result === undefined) return;
-                $scope.dataCollection = checkIfIsArray(result.IResource.IResourceId);
+                var viReqs = checkIfIsArray(result.IResource.IResourceId);
+                viReqs.forEach(function (viReq) {
+                    var urlVirtNets = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestManagement/' + viReq + '/IResourceModelReader/resourceModel';
+                    MqNaaSResourceService.list(urlVirtNets).then(function (viReqInfo) {
+                        $scope.requestCollection.push({
+                            id: viReq,
+                            created_at: viReqInfo.resource.attributes.entry.value
+                        });
+                    });
+                });
                 //                    $scope.data = result.IResource.IResourceId;
             });
             var urlVirtNets = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement';
