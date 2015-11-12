@@ -1,238 +1,257 @@
 <div class="row">
+    <h3 class="page-header">Performance monitoring <small>Statistics</small></h3>
     <div class="col-md-3">
-        <h3 class="page-header">Physical resources</h3>
-        <div class="list-group">
-            <ul>
-                <li ng-repeat="resource in physicalResources">
-                    <a ng-click="selectResource(resource.name, resource.type)" bs-dropdown="resource.type == 'ARN' ? dropdown:dropdown2" aria-haspopup="true" aria-expanded="false">{{resource.name}}</a>
-                </li>
-            </ul>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Physical resources</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <ul>
+                            <li ng-repeat="resource in physicalResources">
+                                <a ng-click="selectResource(resource.name, resource.type)" bs-dropdown="resource.type == 'ARN' ? dropdown:dropdown2" aria-haspopup="true" aria-expanded="false">{{resource.name}}</a>
+                            </li>
+                        </ul>
 
-            <a ng-if="resource.type == 'ARN'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.name, resource.type)" class="list-group-item" ng-class="navClass('{{resource.name}}')" data-animation="am-flip-x" bs-dropdown="dropdown">{{resource.name}}</a>
-            <a ng-if="resource.type == 'CPE'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.name, resource.type)" class="list-group-item" ng-class="navClass('{{resource.name}}')" data-animation="am-flip-x" bs-dropdown="dropdown2">{{resource.name}}</a>
+                        <a ng-if="resource.type == 'ARN'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.name, resource.type)" class="list-group-item" ng-class="navClass('{{resource.name}}')" data-animation="am-flip-x" bs-dropdown="dropdown">{{resource.name}}</a>
+                        <a ng-if="resource.type == 'CPE'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.name, resource.type)" class="list-group-item" ng-class="navClass('{{resource.name}}')" data-animation="am-flip-x" bs-dropdown="dropdown2">{{resource.name}}</a>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
-    <div class="col-md-9">
-        <h3 class="page-header">Performance monitoring <small>Statistics</small></h3>
-        <div ng-show="cards.length > 0">
-            <ol class="breadcrumb">
-                <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateCard()"></select>
-            </ol>
-        </div>
-        <div ng-show="arnInterfaces">
-            <table st-table="displayedCollection" st-safe-src="arnInterfaces" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Interface id</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2">Name</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2">Admin</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2">MediaType</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2">Collisions</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2">Link</th>
-                        <th class="col-sm-1 col-md-1 col-lg-1">Tx</th>
-                        <th class="col-sm-1 col-md-1 col-lg-1">Rx</th>
-                        <th class="col-sm-1 col-md-1 col-lg-1">Statistics</th>
-                    </tr>
-                    <tr>
-                        <th colspan="6">
-                            <input st-search="" class="form-control" placeholder="global search ..." type="text" />
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="row in displayedCollection">
-                        <td>{{row._interfaceId}}</td>
-                        <td>{{row._name}}</td>
-                        <td>{{row._admin}}</td>
-                        <td>{{row.ethStatus._mediaType}}</td>
-                        <td>{{row.ethStatus._collision}}</td>
-                        <td>{{row.ethStatus._link}}</td>
-                        <td>{{row.ethStatus._txStatus}}</td>
-                        <td>{{row.ethStatus._rxStatus}}</td>
-                        <td data-title="'Statistics'" class="col-sm-1 col-md-1 col-lg-1">
-                            <a href="" ng-click="viewStatistics(row._cardId, row._interfaceId)" title="View">View</a>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td class="text-center" st-pagination="" st-items-by-page="10" colspan="8">
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-        <div ng-show="cpePorts">
-            <ol class="breadcrumb">
-                <button placeholder="select port" type="button" class="btn btn-default" ng-model="cpePort" data-html="1" bs-options="portMap.port for portMap in cpePortList" ng-change="getCPEStats()" bs-select class="select.dropdown-menu" scrolly>
-                    Action <span class="caret"></span>
-                </button>
-            </ol>
-            <table class="table ng-table-responsive" style="text-align: center">
-                <thead>
-                    <tr>
-                        <th class="col-sm-2 col-md-2 col-lg-2" style="text-align: center;">Key</th>
-                        <th class="col-sm-2 col-md-2 col-lg-2" style="text-align: center;">Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Pm id</td>
-                        <td>{{content.pmId}}</td>
-                    </tr>
-                    <tr>
-                        <td>FwdGreen Pkts</td>
-                        <td>{{content['FwdGreen-pkts']}}</td>
-                    </tr>
-                    <tr>
-                        <td>FwdGreen Bytes</td>
-                        <td>{{content['FwdGreen-bytes']}}</td>
-                    </tr>
-                    <tr>
-                        <td>FwdYellow Pkts</td>
-                        <td>{{content['FwdYellow-pkts']}}</td>
-                    </tr>
-                    <tr>
-                        <td>FwdYellow Bytes</td>
-                        <td>{{content['FwdYellow-bytes']}}</td>
-                    </tr>
-                    <tr>
-                        <td>DisGreen Pkts</td>
-                        <td>{{content['DisGreen-pkts']}}</td>
-                    </tr>
-                    <tr>
-                        <td>DisGreen Bytes</td>
-                        <td>{{content['DisGreen-bytes']}}</td>
-                    </tr>
-                    <tr>
-                        <td>DisYellow Pkts</td>
-                        <td>{{content['DisYellow-pkts']}}</td>
-                    </tr>
-                    <tr>
-                        <td>DisYellow Bytes</td>
-                        <td>{{content['DisYellowRed-bytes']}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div ng-show="CFM_OAM">
-            <h3>CCM</h3>
-            <div>
-                <table class="table ng-table-responsive" style="text-align: center">
-                    <tr>
-                        <th>Unit</th>
-                        <th>Last Sequence</th>
-                        <th>Unexpected MEG ID</th>
-                        <th>Unexpected MEP ID</th>
-                        <th>Reorder</th>
-                        <th>Event Loss</th>
-                    </tr>
-                    <tr>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.unit}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.LastSequenc}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.Unexpected_MEG_ID}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.Unexpected_MEP_ID}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.reorder}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.eventLoss}}</td>
-                    </tr>
-                </table>
+    <div class="col-md-9" ng-if="selectedResource">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> {{monitored_data}}</h3>
             </div>
-            <h3>LBM</h3>
-            <div>
-                <table class="table ng-table-responsive" style="text-align: center">
-                    <tr>
-                        <th>Unit</th>
-                        <th>AVG latency</th>
-                        <th>Bytes</th>
-                        <th>MAX jitter</th>
-                        <th>MIN jitter</th>
-                        <th>Packets</th>
-                        <th>Drop</th>
-                        <th>Last seq ID</th>
-                        <th>Num Of Bits Error</th>
-                        <th>Seq ID Error</th>
-                        <th>Seq ID Reorder</th>
-                    </tr>
-                    <tr>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.unit}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.AVG_latency}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.Bytes}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.MAX_jitter}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.MIN_jitter}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.Pkts}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.drop}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.lastseqID}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.num_Of_Bits_Error}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.seq_ID_err}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.seq_ID_reorder}}</td>
-                    </tr>
-                </table>
-            </div>
-            <h3>DMM</h3>
-            <div>
-                <table class="table ng-table-responsive" style="text-align: center">
-                    <tr>
-                        <th>Unit</th>
-                        <th>AVG latency</th>
-                        <th>Bytes</th>
-                        <th>MAX jitter</th>
-                        <th>MIN jitter</th>
-                        <th>Packets</th>
-                        <th>Drop</th>
-                        <th>Last seq ID</th>
-                        <th>Num Of Bits Error</th>
-                        <th>Seq ID Error</th>
-                        <th>Seq ID Reorder</th>
-                    </tr>
-                    <tr>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.unit}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.AVG_latency}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.Bytes}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.MAX_jitter}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.MIN_jitter}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.Pkts}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.drop}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.lastseqID}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.num_Of_Bits_Error}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.seq_ID_err}}</td>
-                        <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.seq_ID_reorder}}</td>
-                    </tr>
-                </table>
+            <div class="panel-body">
+                <div ng-show="cards.length > 0">
+                    <ol class="breadcrumb">
+                        <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateCard()"></select>
+                    </ol>
+                </div>
+                <div ng-show="arnInterfaces">
+                    <table st-table="displayedCollection" st-safe-src="arnInterfaces" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Interface id</th>
+                                <th class="col-sm-2 col-md-2 col-lg-2">Name</th>
+                                <th class="col-sm-2 col-md-2 col-lg-2">Admin</th>
+                                <th class="col-sm-2 col-md-2 col-lg-2">MediaType</th>
+                                <th class="col-sm-2 col-md-2 col-lg-2">Collisions</th>
+                                <th class="col-sm-2 col-md-2 col-lg-2">Link</th>
+                                <th class="col-sm-1 col-md-1 col-lg-1">Tx</th>
+                                <th class="col-sm-1 col-md-1 col-lg-1">Rx</th>
+                                <th class="col-sm-1 col-md-1 col-lg-1">Statistics</th>
+                            </tr>
+                            <tr>
+                                <th colspan="6">
+                                    <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in displayedCollection">
+                                <td>{{row._interfaceId}}</td>
+                                <td>{{row._name}}</td>
+                                <td>{{row._admin}}</td>
+                                <td>{{row.ethStatus._mediaType}}</td>
+                                <td>{{row.ethStatus._collision}}</td>
+                                <td>{{row.ethStatus._link}}</td>
+                                <td>{{row.ethStatus._txStatus}}</td>
+                                <td>{{row.ethStatus._rxStatus}}</td>
+                                <td data-title="'Statistics'" class="col-sm-1 col-md-1 col-lg-1">
+                                    <a href="" ng-click="viewStatistics(row._cardId, row._interfaceId)" title="View">View</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center" st-pagination="" st-items-by-page="10" colspan="8">
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div ng-show="cpePorts">
+                    <ol class="breadcrumb">
+                        <button placeholder="select port" type="button" class="btn btn-default" ng-model="cpePort" data-html="1" bs-options="portMap.port for portMap in cpePortList" ng-change="getCPEStats()" bs-select class="select.dropdown-menu" scrolly>
+                            Action <span class="caret"></span>
+                        </button>
+                    </ol>
+                    <table class="table ng-table-responsive" style="text-align: center">
+                        <thead>
+                            <tr>
+                                <th class="col-sm-2 col-md-2 col-lg-2" style="text-align: center;">Key</th>
+                                <th class="col-sm-2 col-md-2 col-lg-2" style="text-align: center;">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Pm id</td>
+                                <td>{{content.pmId}}</td>
+                            </tr>
+                            <tr>
+                                <td>FwdGreen Pkts</td>
+                                <td>{{content['FwdGreen-pkts']}}</td>
+                            </tr>
+                            <tr>
+                                <td>FwdGreen Bytes</td>
+                                <td>{{content['FwdGreen-bytes']}}</td>
+                            </tr>
+                            <tr>
+                                <td>FwdYellow Pkts</td>
+                                <td>{{content['FwdYellow-pkts']}}</td>
+                            </tr>
+                            <tr>
+                                <td>FwdYellow Bytes</td>
+                                <td>{{content['FwdYellow-bytes']}}</td>
+                            </tr>
+                            <tr>
+                                <td>DisGreen Pkts</td>
+                                <td>{{content['DisGreen-pkts']}}</td>
+                            </tr>
+                            <tr>
+                                <td>DisGreen Bytes</td>
+                                <td>{{content['DisGreen-bytes']}}</td>
+                            </tr>
+                            <tr>
+                                <td>DisYellow Pkts</td>
+                                <td>{{content['DisYellow-pkts']}}</td>
+                            </tr>
+                            <tr>
+                                <td>DisYellow Bytes</td>
+                                <td>{{content['DisYellowRed-bytes']}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div ng-show="CFM_OAM">
+                    <h3>CCM</h3>
+                    <div>
+                        <table class="table ng-table-responsive" style="text-align: center">
+                            <tr>
+                                <th>Unit</th>
+                                <th>Last Sequence</th>
+                                <th>Unexpected MEG ID</th>
+                                <th>Unexpected MEP ID</th>
+                                <th>Reorder</th>
+                                <th>Event Loss</th>
+                            </tr>
+                            <tr>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.unit}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.LastSequenc}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.Unexpected_MEG_ID}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.Unexpected_MEP_ID}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.reorder}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{ccmCounter.eventLoss}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <h3>LBM</h3>
+                    <div>
+                        <table class="table ng-table-responsive" style="text-align: center">
+                            <tr>
+                                <th>Unit</th>
+                                <th>AVG latency</th>
+                                <th>Bytes</th>
+                                <th>MAX jitter</th>
+                                <th>MIN jitter</th>
+                                <th>Packets</th>
+                                <th>Drop</th>
+                                <th>Last seq ID</th>
+                                <th>Num Of Bits Error</th>
+                                <th>Seq ID Error</th>
+                                <th>Seq ID Reorder</th>
+                            </tr>
+                            <tr>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.unit}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.AVG_latency}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.Bytes}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.MAX_jitter}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.MIN_jitter}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.Pkts}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.drop}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.lastseqID}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.num_Of_Bits_Error}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.seq_ID_err}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{lbmCounter.seq_ID_reorder}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <h3>DMM</h3>
+                    <div>
+                        <table class="table ng-table-responsive" style="text-align: center">
+                            <tr>
+                                <th>Unit</th>
+                                <th>AVG latency</th>
+                                <th>Bytes</th>
+                                <th>MAX jitter</th>
+                                <th>MIN jitter</th>
+                                <th>Packets</th>
+                                <th>Drop</th>
+                                <th>Last seq ID</th>
+                                <th>Num Of Bits Error</th>
+                                <th>Seq ID Error</th>
+                                <th>Seq ID Reorder</th>
+                            </tr>
+                            <tr>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.unit}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.AVG_latency}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.Bytes}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.MAX_jitter}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.MIN_jitter}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.Pkts}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.drop}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.lastseqID}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.num_Of_Bits_Error}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.seq_ID_err}}</td>
+                                <td class="col-sm-1 col-md-1 col-lg-1">{{dmmCounter.seq_ID_reorder}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div ng-show="arnOAM">
+                    <div>
+                        <table st-table="alarmCollection" st-safe-src="arnOAM" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-1 col-md-1 col-lg-1">Id</th>
+                                    <th class="col-sm-3 col-md-3 col-lg-3">Code</th>
+                                    <th class="col-sm-1 col-md-1 col-lg-1">Access Type</th>
+                                    <th class="col-sm-1 col-md-1 col-lg-1">Start or End</th>
+                                    <th class="col-sm-1 col-md-1 col-lg-1">Timestamp</th>
+                                    <th class="col-sm-1 col-md-1 col-lg-1">Local timestamp</th>
+                                    <th class="col-sm-1 col-md-1 col-lg-1">Interface id</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="iface in alarmCollection">
+                                    <td data-title="'id'" sortable="'_id'">{{iface._id}}</td>
+                                    <td data-title="'Code'">{{iface._code}}</td>
+                                    <td data-title="'Access Type'">{{iface._accessType}}</td>
+                                    <td data-title="'Start or End'">{{iface._startOrEnd}}</td>
+                                    <td data-title="'TimeStamp'">{{iface._timeStamp}}</td>
+                                    <td data-title="'LocalTimeStamp'">{{iface._localTimeStamp*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                    <td data-title="'InterfaceId'">{{iface._interfaceId}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="text-center" st-pagination="" st-items-by-page="10" colspan="7">
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div ng-show="noResource">
+                    No statistics because any resource is defined in the NaaS platform.
+                </div>
+                <!-- /.row -->
             </div>
         </div>
-        <div ng-show="arnOAM">
-            <h3>Notifications logging<small> Alarms</small></h3>
-            <div>
-                <table class="table ng-table-responsive">
-                    <thead>
-                        <tr>
-                            <th class="col-sm-1 col-md-1 col-lg-1">Id</th>
-                            <th class="col-sm-3 col-md-3 col-lg-3">Code</th>
-                            <th class="col-sm-1 col-md-1 col-lg-1">Access Type</th>
-                            <th class="col-sm-1 col-md-1 col-lg-1">Start or End</th>
-                            <th class="col-sm-1 col-md-1 col-lg-1">Timestamp</th>
-                            <th class="col-sm-1 col-md-1 col-lg-1">Local timestamp</th>
-                            <th class="col-sm-1 col-md-1 col-lg-1">Interface id</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="iface in arnOAM">
-                            <td data-title="'id'" sortable="'_id'">{{iface._id}}</td>
-                            <td data-title="'Code'">{{iface._code}}</td>
-                            <td data-title="'Access Type'">{{iface._accessType}}</td>
-                            <td data-title="'Start or End'">{{iface._startOrEnd}}</td>
-                            <td data-title="'TimeStamp'">{{iface._timeStamp}}</td>
-                            <td data-title="'LocalTimeStamp'">{{iface._localTimeStamp*1000 | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                            <td data-title="'InterfaceId'">{{iface._interfaceId}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div ng-show="noResource">
-            No statistics because any resource is defined in the NaaS platform.
-        </div>
-        <!-- /.row -->
     </div>
 </div>

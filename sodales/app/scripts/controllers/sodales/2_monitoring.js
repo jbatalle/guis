@@ -6,6 +6,7 @@ angular.module('mqnaasApp')
         $scope.selectedResource = "";
         $scope.physicalResources = [];
         $scope.cards = [];
+        $scope.monitored_data = "";
 
         //getMqnaas model. For each ARN and CPE, add to available Resources array
 
@@ -82,6 +83,7 @@ angular.module('mqnaasApp')
         };
 
         $scope.getARNStats = function () {
+            $scope.monitored_data = "ARN interfaces";
             var data = getCards();
             arnService.put(data).then(function (response) {
                 $scope.cards = response.response.operation.cardList.card;
@@ -94,6 +96,7 @@ angular.module('mqnaasApp')
         };
 
         $scope.getCPEPortList = function () {
+            $scope.monitored_data = "CPE interfaces";
             var reqListPortsUrl = "meaPortMapping.xml?unit=0";
             $scope.cpePorts = [];
             cpeService.get(reqListPortsUrl).then(function (response) {
@@ -161,6 +164,7 @@ angular.module('mqnaasApp')
         };
 
         $scope.getNotificationsLogging = function () {
+            $scope.monitored_data = "Alarms"
             var requestData = getAlarmShow();
             console.log(arnAlarmList);
             arnService.put(requestData).then(function (response) {
