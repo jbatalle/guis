@@ -80,6 +80,12 @@ angular.module('mqnaasApp')
 
         $scope.showARNCoS = function (CoS) {
             $scope.cos = CoS;
+            $modal({
+                title: 'CoS information',
+                template: 'views/modals/info/cos.html',
+                show: true,
+                scope: $scope
+            });
         };
 
         $scope.getEthernet = function (ethernet) {
