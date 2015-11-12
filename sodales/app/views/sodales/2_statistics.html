@@ -24,12 +24,12 @@
     <div class="col-md-9" ng-if="selectedResource">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> {{monitored_data}}</h3>
+                <h3 class="panel-title"><i class="fa fa-bar-chart fa-fw"></i> {{monitored_data}}</h3>
             </div>
             <div class="panel-body">
                 <div ng-show="cards.length > 0">
                     <ol class="breadcrumb">
-                        <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateCard()"></select>
+                        <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateCard(card)"></select>
                     </ol>
                 </div>
                 <div ng-show="arnInterfaces">
@@ -77,11 +77,11 @@
                 </div>
                 <div ng-show="cpePorts">
                     <ol class="breadcrumb">
-                        <button placeholder="select port" type="button" class="btn btn-default" ng-model="cpePort" data-html="1" bs-options="portMap.port for portMap in cpePortList" ng-change="getCPEStats()" bs-select class="select.dropdown-menu" scrolly>
+                        <button placeholder="select port" type="button" class="btn btn-default" ng-model="cpePort" data-html="1" bs-options="portMap.port for portMap in cpePortList" ng-change="getCPEStats(cpePort)" bs-select class="select.dropdown-menu" scrolly>
                             Action <span class="caret"></span>
                         </button>
                     </ol>
-                    <table class="table ng-table-responsive" style="text-align: center">
+                    <table class="table ng-table-responsive" style="text-align: center" ng-if="cpePorts.length > 0">
                         <thead>
                             <tr>
                                 <th class="col-sm-2 col-md-2 col-lg-2" style="text-align: center;">Key</th>
@@ -214,6 +214,8 @@
                     </div>
                 </div>
                 <div ng-show="arnOAM">
+                    <time-line ng-model="arnOAM" options="network_options" on-select="onNodeSelect" id="previewNetwork">
+                    </time-line>
                     <div>
                         <table st-table="alarmCollection" st-safe-src="arnOAM" class="table table-striped">
                             <thead>
@@ -225,6 +227,11 @@
                                     <th class="col-sm-1 col-md-1 col-lg-1">Timestamp</th>
                                     <th class="col-sm-1 col-md-1 col-lg-1">Local timestamp</th>
                                     <th class="col-sm-1 col-md-1 col-lg-1">Interface id</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="6">
+                                        <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>

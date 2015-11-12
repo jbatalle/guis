@@ -2,7 +2,6 @@ angular.module('mqnaasApp')
     .controller('SodalesMonitoringController', function ($rootScope, $scope, $filter, localStorageService, $modal, arnService, cpeService, $interval, $window, MqNaaSResourceService) {
         var promise;
         var availableResources = [];
-        $scope.selected = "";
         $scope.selectedResource = "";
         $scope.physicalResources = [];
         $scope.cards = [];
@@ -47,8 +46,8 @@ angular.module('mqnaasApp')
             "click": "selectResource('" + $scope.selectedResource + "', 'CFM/OAM')"
         }];
 
-        $scope.updateCard = function () {
-            var data = getLinkStatus($scope.card._id);
+        $scope.updateCard = function (d) {
+            var data = getLinkStatus(d._id);
             arnService.put(data).then(function (response) {
                 $scope.arnInterfaces = response.response.operation.interfaceList.interface;
             });
@@ -66,8 +65,8 @@ angular.module('mqnaasApp')
             $scope.arnInterfaces = undefined;
             $scope.arnOAM = undefined;
 
-            $scope.selected = resourceName;
             $scope.cards = [];
+            $scope.card = {};
             if (resourceType === 'CPE') {
                 $scope.getCPEPortList();
             } else if (resourceType === 'CFM/OAM') {
@@ -106,15 +105,15 @@ angular.module('mqnaasApp')
                 });
             });
         };
-        $scope.getCPEStats = function (portId) {
-            var reqUrl = "meaPmCounter.xml?unit=0&pmId=" + $scope.cpePort.port;
+        $scope.getCPEStats = function (d) {
+            var reqUrl = "meaPmCounter.xml?unit=0&pmId=" + d.port;
             $interval.cancel(promise);
             //            promise = $interval(function () {
             cpeService.get(reqUrl).then(function (response) {
                 console.log(response);
                 $scope.content = response.meaPmCounter.PmCounter;
                 $scope.cpePorts.push({
-                    portId: portId,
+                    portId: d.port,
                     counter: response.meaPmCounter.PmCounter
                 });
             });
@@ -166,9 +165,7 @@ angular.module('mqnaasApp')
         $scope.getNotificationsLogging = function () {
             $scope.monitored_data = "Alarms"
             var requestData = getAlarmShow();
-            console.log(arnAlarmList);
             arnService.put(requestData).then(function (response) {
-                console.log(response);
                 //$scope.notiLog = response.response.operation.cardList.card.status;
                 //$scope.notiLog = checkIfIsArray(response.response.operation.alarmRegisterList); //.alarmRegister;
                 $scope.notiLog = checkIfIsArray(response.response.operation.alarmRegisterList.alarmRegister); //.alarmRegister;
@@ -183,18 +180,6 @@ angular.module('mqnaasApp')
                 });
                 $scope.arnOAM = $scope.notiLog;
             });
-            $scope.equipmentBoards();
-
-        };
-
-        $scope.equipmentBoards = function () {
-            var requestData = getEquipment($scope.infId);
-            var xml = equipmentBoardsStats();
-            var x2js = new X2JS();
-            var json = x2js.xml_str2json(xml);
-            console.log(json);
-            $scope.equipBoard = json.response.operation.alarmRegisterList.alarmRegister;
-            //                arnService.put(requestData).then(function (json.response.operation.alarmRegisterList) {
         };
 
         $scope.viewStatistics = function (cardId, interfaceId) {
