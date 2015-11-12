@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, localStorageService, $interval, $alert) {
-
-        //            $rootScope.networkId = "Network-Internal-1.0-2";//to remove
+    .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, localStorageService, $interval, $alert, $modal) {
         var promise;
         $scope.data = [];
         $scope.requestCollection = [];
@@ -11,6 +9,7 @@ angular.module('mqnaasApp')
         $scope.updateVIReqList = function () {
             var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
             MqNaaSResourceService.list(urlListVI).then(function (result) {
+                $scope.requestCollection = [];
                 if (result === undefined) return;
                 var viReqs = checkIfIsArray(result.IResource.IResourceId);
                 viReqs.forEach(function (viReq) {
@@ -22,10 +21,11 @@ angular.module('mqnaasApp')
                         });
                     });
                 });
-                //                    $scope.data = result.IResource.IResourceId;
             });
+
             var urlVirtNets = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement';
             MqNaaSResourceService.list(urlVirtNets).then(function (result) {
+                $scope.networkCollection = [];
                 if (result === undefined) return;
                 var viNets = checkIfIsArray(result.IRootResource.IRootResourceId);
                 viNets.forEach(function (viNet) {
@@ -37,9 +37,23 @@ angular.module('mqnaasApp')
                         });
                     });
                 });
-
-                //                    $scope.data = result.IResource.IResourceId;
             });
+        };
+
+        $scope.deleteDialog = function (id, type) {
+            $scope.itemToDeleteId = id;
+            $scope.type = type;
+            $modal({
+                title: 'Are you sure you want to delete this item?',
+                template: 'views/modals/modalRemove.html',
+                show: true,
+                scope: $scope
+            });
+        };
+
+        $scope.deleteItem = function (id) {
+            if ($scope.type === 'request') $scope.deleteVIRequest(id);
+            else if ($scope.type === 'network') $scope.deleteVINetwork(id);
         };
 
         $scope.updateVIReqList();
@@ -47,13 +61,22 @@ angular.module('mqnaasApp')
             $scope.updateVIReqList();
         }, 20000000);
 
-        $scope.createVIRequest = function () {
+        $scope.createVIRequest = function (id) {
             var urlCreateVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
             MqNaaSResourceService.put(urlCreateVI).then(function (result) {
                 if (result == null) return;
                 $scope.updateVIReqList();
+                this.$hide();
             });
         };
+        $scope.deleteVINetwork = function (viReq) {
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + viReq;
+            MqNaaSResourceService.remove(url).then(function (result) {
+                $scope.updateVIReqList();
+                this.$hide();
+            });
+        };
+
         $scope.deleteVIRequest = function (viReq) {
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + viReq;
             MqNaaSResourceService.remove(url).then(function (result) {
@@ -429,4 +452,7 @@ angular.module('mqnaasApp')
 
         $scope.getMappedResources();
 
+    })
+    .controller('viewVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, $interval, $q, $alert, VirtualService) {
+        $rootScope.virtNetId = $stateParams.id;
     });

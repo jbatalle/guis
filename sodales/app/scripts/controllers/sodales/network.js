@@ -8,7 +8,6 @@ angular.module('mqnaasApp')
         $scope.edges = new vis.DataSet();
 
         $scope.getNetworkModel = function () {
-
             $scope.$watch(function (rootScope) {
                     return rootScope.networkId
                 },
@@ -20,7 +19,6 @@ angular.module('mqnaasApp')
                             $rootScope.networkId = undefined;
                             return;
                         }
-                        console.log(data);
                         $scope.nodes.add(generateNodeData(data.resource.resources.resource));
                         $scope.edges.add(generateLinkData(data.resource.resources.resource, $scope.nodes));
                     });
@@ -52,7 +50,6 @@ angular.module('mqnaasApp')
             RootResourceService.list().then(function (data) {
                 if (!data) return;
                 data = checkIfIsArray(data.IRootResource.IRootResourceId);
-                console.log('UpdateList nts');
                 $scope.listNetworks = data;
                 if (!$rootScope.networkId) {
                     $rootScope.networkId = data[1];

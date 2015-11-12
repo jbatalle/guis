@@ -11,10 +11,7 @@ angular.module('mqnaasApp')
                 options: '='
             },
             link: function ($scope, $element, $attrs, ngModel) {
-                console.log($element[0]);
-
                 var network = new vis.Network($element[0], $scope.ngModel, $scope.options || {});
-
                 var onSelect = $scope.onSelect() || function (prop) {};
                 network.on('select', function (properties) {
                     onSelect(properties);
@@ -36,12 +33,6 @@ angular.module('mqnaasApp')
                             ctx.stroke();
                         }
                     };
-                    //
-
-                });
-
-                network.on("click", function (params) {
-                    console.log(params);
                 });
             }
         }
