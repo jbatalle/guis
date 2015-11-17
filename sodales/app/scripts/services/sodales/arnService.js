@@ -2,8 +2,8 @@
 
 services.factory('arnService', ['$http', 'x2js', 'HistoryService', function ($http, x2js, HistoryService) {
     return {
-        put: function (data) {
-            var promise = $http.post("rest/arn", data).then(function (response) {
+        put: function (data, host) {
+            var promise = $http.post("rest/arn", data, {headers: {'X-Host': host}}).then(function (response) {
                 // convert the data to JSON and provide
                 // it to the success function below
                 var x2js = new X2JS();

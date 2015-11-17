@@ -8,6 +8,9 @@ module.exports = function (app) {
     app.use('/rest/arn', function (req, res) {
         var url = app.arn;
         console.log(req.method + ": " + url);
+	console.log(req.headers);
+	console.log(req.headers['x-host']);
+	if(req.headers['x-host'] !== undefined) url = req.headers['x-host'];
         var r = null;
 
         if (req.method === 'POST') {
