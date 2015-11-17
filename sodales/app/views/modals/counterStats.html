@@ -6,7 +6,7 @@
                 <h4 class="modal-title" ng-bind="title"></h4>
             </div>
             <div class="modal-body">
-                <table border="1" class="statsTable">
+                <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
                     <tr>
                         <th>Counter key</th>
                         <th ng-repeat="header in content.headers track by $index">{{header}}</th>
