@@ -36,7 +36,14 @@ angular.module('mqnaasApp')
         var getCubes = function (resourceName, sliceId) {
             var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/' + sliceId + '/ISliceAdministration/cubes';
             MqNaaSResourceService.get(url).then(function (data) {
-                $rootScope.resourceInfo.slicing.slices.cubes = checkIfIsArray(data.cubesList.cubes);
+                console.log(data.cubesList.cubes.cu);
+                var arrayCubes = checkIfIsArray(data.cubesList.cubes);
+                $rootScope.resourceInfo.slicing.slices.cubes = [];
+                angular.forEach(arrayCubes, function (d) {
+                        var arrayRanges = checkIfIsArray(d.cube.ranges.range);
+                        $rootScope.resourceInfo.slicing.slices.cubes.push(arrayRanges);
+                    })
+                    //$rootScope.resourceInfo.slicing.slices.cubes = checkIfIsArray(data.cubesList.cubes);
                 return data;
             });
         };
