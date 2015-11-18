@@ -46,6 +46,7 @@ angular.module('mqnaasApp')
                 $rootScope.resourceInfo = {};
                 $rootScope.resourceInfo.id = data.resource.id;
                 $rootScope.resourceInfo.type = data.resource.type;
+                $scope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
                 if (data.resource.type === 'Network' && data.resource.type === 'link' && data.resource.type === undefined) {
                     ///nothing
                 } else if (data.resource.type === 'CPE') {
@@ -58,7 +59,7 @@ angular.module('mqnaasApp')
                     });
                 } else {
                     //if is ARN, get Card, and type of port
-                    arnService.put(getAllInterfaces()).then(function (data) {
+                    arnService.put(getAllInterfaces(), $scope.resourceUri).then(function (data) {
                         $rootScope.resourceInfo.ports = checkIfIsArray(data.response.operation.interfaceList.interface);
                     })
                 }

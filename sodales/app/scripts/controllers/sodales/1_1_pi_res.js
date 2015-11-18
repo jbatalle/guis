@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('sodalesPiResourcesCtrl', function ($scope, $rootScope, MqNaaSResourceService, $window, $modal, RootResourceService, arnService, cpeService, $alert, $interval) {
+    .controller('sodalesPiResourcesCtrl', function ($scope, $rootScope, $window, $modal, MqNaaSResourceService, RootResourceService, arnService, cpeService, $alert, $interval) {
         var url = '';
 
         var resourceId = "";
@@ -21,8 +21,8 @@ angular.module('mqnaasApp')
             url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + id + '/IResourceModelReader/resourceModel/';
             MqNaaSResourceService.get(url).then(function (data) {
                 $scope.type = data.resource.type;
-		console.log(data.resource.descriptor.endpoints.endpoint.uri);
-		$scope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
+                console.log(data.resource.descriptor.endpoints.endpoint.uri);
+                $scope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
                 var req, url;
                 if ($scope.type === 'ARN') {
                     req = '<?xml version="1.0" encoding="UTF-8"?><request ><operation token="58" type="show" entity="equipment"><equipment id="0"></equipment></operation></request>';
