@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('SodalesOpenaccessDashCtrl', function ($rootScope, $scope, $filter, spService, viService, $modal, UsersService, MqNaaSResourceService) {
+    .controller('SodalesOpenaccessDashCtrl', function ($rootScope, $scope, $filter, spService, $modal, UsersService, MqNaaSResourceService) {
 
         var url;
         $scope.listVi = [];
