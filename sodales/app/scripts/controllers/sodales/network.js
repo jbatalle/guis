@@ -351,7 +351,7 @@ angular.module('mqnaasApp')
             });
         };
     })
-    .controller('spViewNetwork', function ($scope, $rootScope, MqNaaSResourceService, $modal, RootResourceService, VirtualService) {
+    .controller('spViewNetwork', function ($scope, $rootScope, MqNaaSResourceService, RootResourceService, VirtualService) {
         var url = '';
 
         $scope.nodes = new vis.DataSet();
