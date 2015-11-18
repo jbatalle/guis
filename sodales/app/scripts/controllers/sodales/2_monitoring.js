@@ -58,7 +58,7 @@ angular.module('mqnaasApp')
 
             url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel/';
             MqNaaSResourceService.get(url).then(function (data) {
-                $scope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
+                $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
 
                 $scope.cards = [];
                 $scope.card = {};
@@ -79,7 +79,7 @@ angular.module('mqnaasApp')
 
         $scope.updateCard = function (d) {
             var data = getLinkStatus(d._id);
-            arnService.put(data, $scope.resourceUri).then(function (response) {
+            arnService.put(data).then(function (response) {
                 $scope.arnInterfaces = response.response.operation.interfaceList.interface;
             });
         };
@@ -87,12 +87,12 @@ angular.module('mqnaasApp')
         $scope.getARNStats = function () {
             $scope.monitored_data = "ARN interfaces";
             var data = getCards();
-            arnService.put(data, $scope.resourceUri).then(function (response) {
+            arnService.put(data).then(function (response) {
                 $scope.cards = response.response.operation.cardList.card;
             });
 
             var data = getLinkStatus();
-            arnService.put(data, $scope.resourceUri).then(function (response) {
+            arnService.put(data).then(function (response) {
                 $scope.arnInterfaces = response.response.operation.interfaceList.interface;
             });
         };
@@ -101,7 +101,7 @@ angular.module('mqnaasApp')
             $scope.monitored_data = "CPE interfaces";
             var reqListPortsUrl = "meaPortMapping.xml?unit=0";
             $scope.cpePorts = [];
-            cpeService.get(reqListPortsUrl, $scope.resourceUri).then(function (response) {
+            cpeService.get(reqListPortsUrl).then(function (response) {
                 $scope.cpePortList = response.meaPortMapping.portMapping;
                 angular.forEach($scope.cpePortList, function (port) {
                     //$scope.getCPEStats(port.port); 
@@ -112,7 +112,7 @@ angular.module('mqnaasApp')
             var reqUrl = "meaPmCounter.xml?unit=0&pmId=" + d.port;
             $interval.cancel(promise);
             //            promise = $interval(function () {
-            cpeService.get(reqUrl, $scope.resourceUri).then(function (response) {
+            cpeService.get(reqUrl).then(function (response) {
                 $scope.content = response.meaPmCounter.PmCounter;
                 $scope.cpePorts.push({
                     portId: d.port,
@@ -130,7 +130,7 @@ angular.module('mqnaasApp')
             //                $scope.ccmCounter = json.meaCcmCounter.CcmDefectCount;
             var data = json.meaCcmCounter.CcmDefectCount;
             console.log(data);
-            cpeService.get(reqUrl, $scope.resourceUri).then(function (response) {
+            cpeService.get(reqUrl).then(function (response) {
                 if (response === undefined) return;
                 console.log(response);
                 $scope.ccmCounter = response.meaCcmCounter.CcmDefectCount;
@@ -143,7 +143,7 @@ angular.module('mqnaasApp')
             var json = x2js.xml_str2json(xml);
             //                $scope.lbmCounter = json.meaStatistics.lbmDmmStatistics;
             console.log(json);
-            cpeService.get(reqUrl, $scope.resourceUri).then(function (response) {
+            cpeService.get(reqUrl).then(function (response) {
                 if (response === undefined) return;
                 console.log(response);
                 $scope.lbmCounter = response.meaStatistics.lbmDmmStatistics;
@@ -156,7 +156,7 @@ angular.module('mqnaasApp')
             var json = x2js.xml_str2json(xml);
             //                $scope.dmmCounter = json.meaStatistics.lbmDmmStatistics;
             console.log(json.meaStatistics.lbmDmmStatistics);
-            cpeService.get(reqUrl, $scope.resourceUri).then(function (response) {
+            cpeService.get(reqUrl).then(function (response) {
                 if (response === undefined) return;
                 console.log(response);
                 var data = response.meaStatistics.lbmDmmStatistics;
@@ -167,7 +167,7 @@ angular.module('mqnaasApp')
         $scope.getNotificationsLogging = function () {
             $scope.monitored_data = "Alarms"
             var requestData = getAlarmShow();
-            arnService.put(requestData, $scope.resourceUri).then(function (response) {
+            arnService.put(requestData).then(function (response) {
                 //$scope.notiLog = response.response.operation.cardList.card.status;
                 //$scope.notiLog = checkIfIsArray(response.response.operation.alarmRegisterList); //.alarmRegister;
                 $scope.notiLog = checkIfIsArray(response.response.operation.alarmRegisterList.alarmRegister); //.alarmRegister;
@@ -188,7 +188,7 @@ angular.module('mqnaasApp')
             $scope.infId = interfaceId;
 
             var requestData = getCounters(cardId, interfaceId);
-            arnService.put(requestData, $scope.resourceUri).then(function (response) {
+            arnService.put(requestData).then(function (response) {
                 var data = response.response.operation.interfaceList.interface.ethernet.counters;
                 console.log(data)
                 data = transpose(data);

@@ -1,9 +1,13 @@
 'use strict';
 
-services.factory('cpeService', ['$http', 'x2js', 'HistoryService', function ($http, x2js, HistoryService) {
+services.factory('cpeService', ['$http', 'x2js', 'HistoryService', function ($rootScope, $http, x2js, HistoryService) {
     return {
         get: function (req, host) {
-            var promise = $http.get("rest/cpe/" + req, {headers: {"X-host": host}} ).then(function (response) {
+            var promise = $http.get("rest/cpe/" + req, {
+                headers: {
+                    "X-host": $rootScope.resourceUri
+                }
+            }).then(function (response) {
                 var x2js = new X2JS();
                 var json = x2js.xml_str2json(response.data);
                 return json;
@@ -16,7 +20,11 @@ services.factory('cpeService', ['$http', 'x2js', 'HistoryService', function ($ht
             return promise;
         },
         post: function (req, data, host) {
-            var promise = $http.post("rest/cpe/" + req, data, {headers: {"X-host": host}}).then(function (response) {
+            var promise = $http.post("rest/cpe/" + req, data, {
+                headers: {
+                    "X-host": $rootScope.resourceUri
+                }
+            }).then(function (response) {
                 var x2js = new X2JS();
                 var json = x2js.xml_str2json(response.data);
                 return json;

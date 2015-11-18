@@ -1,11 +1,11 @@
 'use strict';
 
-services.factory('arnService', ['$http', 'x2js', 'HistoryService', function ($http, x2js, HistoryService) {
+services.factory('arnService', ['$http', 'x2js', 'HistoryService', function ($rootScope, $http, x2js, HistoryService) {
     return {
         put: function (data, host) {
             var promise = $http.post("rest/arn", data, {
                 headers: {
-                    'X-Host': host
+                    'X-Host': $rootScope.resourceUri
                 }
             }).then(function (response) {
                 // convert the data to JSON and provide
