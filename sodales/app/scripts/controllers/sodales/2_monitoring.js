@@ -56,7 +56,7 @@ angular.module('mqnaasApp')
 
             //get resourceModel of the resource -> extract endpoint URI
 
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + id + '/IResourceModelReader/resourceModel/';
+            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel/';
             MqNaaSResourceService.get(url).then(function (data) {
                 $scope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
 
