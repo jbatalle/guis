@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, localStorageService, $modal, arnService, cpeService, $http, AuthService, spService) {
+    .controller('spVIController', function ($scope, $rootScope, $stateParams, $http, $modal, MqNaaSResourceService, arnService, cpeService, AuthService, spService) {
 
         //hardcoded
         //$rootScope.networkId = "Network-Internal-1.0-2";
@@ -52,14 +52,13 @@ angular.module('mqnaasApp')
                     });
                 });
             });
-        }
+        };
 
         $scope.setVirtualNetwork = function () {
             $rootScope.virtNetId = $scope.selectedNetwork.id;
             $rootScope.networkId = $scope.selectedNetwork.physicalNetwork;
             $scope.getNetworkResources();
         };
-
 
         $scope.createOperation = function () {
             $modal({
@@ -69,22 +68,28 @@ angular.module('mqnaasApp')
         };
 
         $scope.operationButton = function (resourceName, type) {
-            $scope.operation = true;
-            if (type === 'ARN') {
-                $scope.arnOperation = true;
-                $scope.cpeOperation = false;
-                $scope.openOperationARNDialog(resourceName, type);
-            } else if (type === 'CPE') {
-                $scope.arnOperation = false;
-                $scope.cpeOperation = true;
-                $scope.openOperationCPEDialog(resourceName, type);
-            }
+
+            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel/';
+            MqNaaSResourceService.get(url).then(function (data) {
+                $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
+                $scope.operation = true;
+                if (type === 'ARN') {
+                    $scope.arnOperation = true;
+                    $scope.cpeOperation = false;
+                    $scope.openOperationARNDialog(resourceName, type);
+                } else if (type === 'CPE') {
+                    $scope.arnOperation = false;
+                    $scope.cpeOperation = true;
+                    $scope.openOperationCPEDialog(resourceName, type);
+
+                }
+            })
         };
 
         $scope.openOperationARNDialog = function (resourceName, type) {
             $scope.virtualResourceOp = resourceName;
             $scope.arn = new Object;
-            arnService.put(getCardInterfaces(0)).then(function (response) {
+            ee.put(getCardInterfaces(0)).then(function (response) {
                 $scope.LAGs = response.response.operation.interfaceList.interface;
             });
 
@@ -360,7 +365,6 @@ angular.module('mqnaasApp')
             this.$hide();
         };
 
-
         $scope.createCpePolice = function (profile) {
             url = "policerProfile.html?unit=0&profileId=3&CIR=" + profile.CIR + "&EIR=" + profile.EIR + "&CBS=" + profile.CBS + "&EBS=" + profile.EBS + "&gn_type=2";
             cpeService.post(url).then(function (response) {
@@ -400,7 +404,6 @@ angular.module('mqnaasApp')
             //url = "deleteServiceVlan.html?unit=0&serviceId=" + serviceId;
             //cpeService.post(url).then(function (response) {});
         };
-
 
         $scope.Configure = function (type, form) {
             console.log(type);

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spStatsController', function ($rootScope, $scope, $filter, localStorageService, $modal, arnService, cpeService, $interval, $window, MqNaaSResourceService, $stateParams, AuthService, spService, VirtualService) {
+    .controller('spStatsController', function ($rootScope, $scope, $filter, $modal, $interval, $window, $stateParams, MqNaaSResourceService, AuthService, spService, arnService, cpeService, VirtualService) {
 
         //hardcoded
         //$rootScope.networkId = "Network-Internal-1.0-2";
@@ -90,21 +90,27 @@ angular.module('mqnaasApp')
             // $scope.dropdown[0].click = "selectResource('" + $scope.selectedResource + "', 'ARN/OAM')";
             $scope.dropdown2[0].click = "selectResource('" + $scope.selectedResource + "', 'CFM/OAM')";
             //get resourceInfo from OpenNaaS.
-            //load default statistic info
-            //open Dropdown list, depending on the resourceType
-            $scope.selected = resourceName;
-            if (resourceType === 'CPE') {
-                //$scope.getCPEPortList();
-                $scope.getAvailableInterfaces();
-            } else if (resourceType === 'CFM/OAM') {
-                $scope.getCCM();
-                $scope.getLBM();
-                $scope.getDMM();
-            } else if (resourceType === 'ARN') {
-                $scope.getAvailableInterfaces();
-            } else if (resourceType === 'ARN/OAM') {
-                $scope.getNotificationsLogging();
-            }
+
+            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel/';
+            MqNaaSResourceService.get(url).then(function (data) {
+                $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
+
+                //load default statistic info
+                //open Dropdown list, depending on the resourceType
+                $scope.selected = resourceName;
+                if (resourceType === 'CPE') {
+                    //$scope.getCPEPortList();
+                    $scope.getAvailableInterfaces();
+                } else if (resourceType === 'CFM/OAM') {
+                    $scope.getCCM();
+                    $scope.getLBM();
+                    $scope.getDMM();
+                } else if (resourceType === 'ARN') {
+                    $scope.getAvailableInterfaces();
+                } else if (resourceType === 'ARN/OAM') {
+                    $scope.getNotificationsLogging();
+                }
+            });
         };
 
         $scope.updateInterface = function () {
