@@ -21,10 +21,12 @@ angular.module('mqnaasApp')
             url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + id + '/IResourceModelReader/resourceModel/';
             MqNaaSResourceService.get(url).then(function (data) {
                 $scope.type = data.resource.type;
+		console.log(data.resource.descriptor.endpoints.endpoint.uri);
+		$scope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
                 var req, url;
                 if ($scope.type === 'ARN') {
                     req = '<?xml version="1.0" encoding="UTF-8"?><request ><operation token="58" type="show" entity="equipment"><equipment id="0"></equipment></operation></request>';
-                    arnService.put(req).then(function (data) {
+                    arnService.put(req, $scope.resourceUri).then(function (data) {
                         if (data === null) return;
                         console.log(data);
                         $scope.equipmentInfo = data.response.operation.equipmentList.equipment;
@@ -32,7 +34,7 @@ angular.module('mqnaasApp')
                     $scope.getARNCards();
                 } else if ($scope.type === 'CPE') {
                     url = 'meaPortMapping.xml';
-                    cpeService.get(url).then(function (data) {
+                    cpeService.get(url, $scope.resourceUri).then(function (data) {
                         $scope.equipmentInfo = null;
                         console.log(data);
                         var foo = data.meaPortMapping.portMapping;
@@ -52,7 +54,7 @@ angular.module('mqnaasApp')
         $scope.getEthernetInterfaces = function (id) {
             $scope.dataCollection = [];
             var req = '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="show" entity="all"><interface equipmentId="0" cardId="' + id + '"/></operation></request>';
-            arnService.put(req).then(function (data) {
+            arnService.put(req, $scope.resourceUri).then(function (data) {
                 $scope.dataCollection = data.response.operation.interfaceList.interface;
             });
         };
@@ -64,7 +66,7 @@ angular.module('mqnaasApp')
             $scope.cards = [];
             $scope.dataCollection = [];
             var data = getCards();
-            arnService.put(data).then(function (response) {
+            arnService.put(data, $scope.resourceUri).then(function (response) {
                 $scope.cards = response.response.operation.cardList.card;
             });
         };
