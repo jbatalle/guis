@@ -12,11 +12,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <div>Creating a resource ({{resource.type}}) inside the VIR
-                        <select ng-model="resource.network" disabled>
-                            <option selected>{{viId}}</option>
-                        </select>
-                    </div>
+                    <div>Creating a resource ({{resource.type}}) inside the VIR: <b>{{viId}}</b></div>
                     <form action="createARN" method="post" name="editForm">
                         <div>
                             <div ng-hide='resourceRequest'>

@@ -9,9 +9,9 @@
                 <div>
                     <div>
                         <label for="network">Creating a resource inside the network</label>
-                        <select ng-model="resource.network" disabled>
-                            <option selected>{{networkId}}</option>
-                        </select>
+                        <button type="button" class="btn btn-default" ng-model="networkId" disabled data-html="1" bs-options="network for network in listNetworks" bs-select>
+    <option selected>{{networkId}}</option>
+</button>
                     </div>
                     <div>
                         <label for="endpoint">Endpoint (URL)</label>
