@@ -1,6 +1,6 @@
 'use strict';
 
-services.factory('cpeService', ['$http', 'x2js', 'HistoryService', function ($rootScope, $http, x2js, HistoryService) {
+services.factory('cpeService', function ($rootScope, $http, x2js, HistoryService) {
     return {
         get: function (req, host) {
             var promise = $http.get("rest/cpe/" + req, {
@@ -51,4 +51,4 @@ services.factory('cpeService', ['$http', 'x2js', 'HistoryService', function ($ro
             return promise;
         }
     };
-}]);
+});

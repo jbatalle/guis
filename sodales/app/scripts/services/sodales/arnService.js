@@ -1,6 +1,6 @@
 'use strict';
 
-services.factory('arnService', ['$http', 'x2js', 'HistoryService', function ($rootScope, $http, x2js, HistoryService) {
+services.factory('arnService', function ($rootScope, $http, x2js, HistoryService) {
     return {
         put: function (data, host) {
             var promise = $http.post("rest/arn", data, {
@@ -31,4 +31,4 @@ services.factory('arnService', ['$http', 'x2js', 'HistoryService', function ($ro
             return promise;
         }
     };
-}]);
+});
