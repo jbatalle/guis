@@ -9,7 +9,7 @@ module.exports = function (app) {
     app.use('/rest/cpe', function (req, res) {
         console.log(req.method + ": " + req.url);
         var url = app.cpe + req.url;
-	if(req.headers['x-host'] !== undefined) url = req.headers['x-host'] + req.url;
+        if (req.headers['x-host'] !== undefined) url = req.headers['x-host'] + req.url;
         console.log(url);
         var r = null;
 

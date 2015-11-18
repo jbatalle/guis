@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('SodalesHomeCtrl', function ($scope, $rootScope, HistoryService, spService, viService, MqNaaSResourceService, $modal, $alert, RootResourceService) {
+    .controller('SodalesHomeCtrl', function ($scope, $rootScope, HistoryService, spService, MqNaaSResourceService, $modal, $alert, RootResourceService) {
 
         var url = '';
 

@@ -1,5 +1,5 @@
 angular.module('mqnaasApp')
-    .controller('SodalesMonitoringController', function ($rootScope, $scope, $filter, localStorageService, $modal, arnService, cpeService, $interval, $window, MqNaaSResourceService) {
+    .controller('SodalesMonitoringController', function ($rootScope, $scope, $filter, $modal, arnService, cpeService, $interval, $window, MqNaaSResourceService) {
         var promise;
         var availableResources = [];
         $scope.selectedResource = "";
