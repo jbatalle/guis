@@ -233,7 +233,6 @@ angular.module('mqnaasApp')
             locale: 'en',
             manipulation: {
                 addNode: false,
-                editNode: undefined,
                 editEdge: false,
                 deleteEdge: false,
                 deleteNode: false,
@@ -261,6 +260,7 @@ angular.module('mqnaasApp')
                 $scope.source = source;
                 $scope.dest = dest;
             }
+            $scope.getVirtualResources();
             $scope.getPhysicalResources();
 
             $rootScope.createMappingDialog = $modal({
