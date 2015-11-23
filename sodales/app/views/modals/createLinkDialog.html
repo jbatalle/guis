@@ -8,32 +8,31 @@
             <div class="modal-body">
                 <form action="createARN" method="post" name="editForm">
                     <div>
-                        From resource ({{source}} to {{dest}})
+                        From resource ({{source.label}} to {{dest.label}})
                         <div ng-show="createdLink">
                             <b>Link id</b>: {{createdLink}}
                             <br/>
                             <div ng-show="!!physicalPorts1.length">
-                                Source port ({{source}}):
-
-                                <button type="button" class="btn btn-default" ng-model="piPort1" data-html="1" bs-options="port for port in physicalPorts1" bs-select>
+                                Source port ({{source.label}}):
+                                <button type="button" class="btn btn-default" ng-model="piPort1" data-html="1" bs-options="port.id  as (port.id + '(' + port.attributes.entry[0].value + ')' )  for port in physicalPorts1" bs-select>
                                     Action <span class="caret"></span>
                                 </button>
-
                                 <a ng-show="piPort1" class="btn btn-sm btn-primary" ng-click="attachPortsToLink(createdLink, 'source', piPort1)">Attach source port</a> {{srcPortAttahed}}
                             </div>
                             <div ng-show=" !!!physicalPorts1.length">
-                                The resource {{source}} has no ports!
+                                The resource {{source.label}} has no ports!
                             </div>
                             <br/>
-                            <div ng-show="!!physicalPorts2.length">Target port ({{dest}}):
-                                <button type="button" class="btn btn-default" ng-model="piPort2" data-html="1" bs-options="port for port in physicalPorts2" bs-select>
+                            <div ng-show="!!physicalPorts2.length">Target port ({{dest.label}}):
+                                <button type="button" class="btn btn-default" ng-model="piPort2" data-html="1" bs-options="port.id  as (port.id + '(' + port.attributes.entry[0].value + ')' )  for port in physicalPorts2" bs-select>
+
                                     Action <span class="caret"></span>
                                 </button>
 
                                 <a ng-show="piPort2" class="btn btn-sm btn-primary" ng-click="attachPortsToLink(createdLink, 'dest', piPort2)">Attach target port</a> {{dstPortAttahed}}
                             </div>
                             <div ng-show=" !!!physicalPorts2.length">
-                                The resource {{dest}} has no ports!
+                                The resource {{dest.label}} has no ports!
                             </div>
                         </div>
 

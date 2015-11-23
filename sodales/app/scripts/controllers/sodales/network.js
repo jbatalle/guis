@@ -105,12 +105,8 @@ angular.module('mqnaasApp')
 
         $scope.createLinkDialog = function (source, dest) {
             console.log("Create Link dialog");
-            console.log(source);
-            console.log(dest);
-            console.log($scope.source)
-            console.log($scope.nodes.get(source));
             $scope.source = $scope.nodes.get(source);
-            $scope.dest = $scope.nodes.get(dest).label;
+            $scope.dest = $scope.nodes.get(dest);
 
             url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement';
             MqNaaSResourceService.put(url).then(function (data) {
@@ -119,8 +115,7 @@ angular.module('mqnaasApp')
                 PhysicalService.getPhysicalPorts($scope.source.label).then(function (data) {
                     $scope.physicalPorts1 = data;
                 });
-                PhysicalService.getPhysicalPorts($scope.dest).then(function (data) {
-                    console.log(data);
+                PhysicalService.getPhysicalPorts($scope.dest.label).then(function (data) {
                     $scope.physicalPorts2 = data;
                 });
             });
