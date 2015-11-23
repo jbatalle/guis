@@ -60,9 +60,8 @@ angular.module('mqnaasApp')
                     $rootScope.resourceInfo.ports = [];
                     var cpePorts = checkIfIsArray(data.resource.resources.resource);
                     angular.forEach(cpePorts, function (port) {
-                        //if (port > 99 && porrt < 112) port.type = "external";
-                        //else port.type = "internal";
-                        if (parseInt(port.attributes.entry[0].value) > 99 && parseInt(port.attributes.entry[0].value) < 112) $rootScope.resourceInfo.ports.push(port);
+                        if (parseInt(port.attributes.entry[0].value) > 99 && parseInt(port.attributes.entry[0].value) < 112)
+                            $rootScope.resourceInfo.ports.push(port);
                     });
                 } else {
                     //if is ARN, get Card, and type of port

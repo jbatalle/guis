@@ -60,13 +60,7 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
             return promise;
         },
         remove: function (url) {
-            console.log(url);
             var promise = $http.delete(genericUrl + url).then(function (response) {
-                // convert the data to JSON and provide
-                // it to the success function below
-                //var x2js = new X2JS();
-                console.log(response);
-                //                    var json = x2js.xml_str2json(response.data);
                 var his = new HistoryService();
                 his.content = response.status + " - DELETE (IRootResourceAdministration): " + response.data;
                 his.type = "INFO";

@@ -1,7 +1,6 @@
 'use strict';
 
 services.factory('RootResourceService', ['$http', 'x2js', 'HistoryService', function ($http, x2js, HistoryService) {
-    console.log("PUT RootResource MqNaaS");
     return {
         list: function () {
             //var promise = $http.get('rest/mqnaas/IRootResourceProvider/?arg0=NETWORK').then(function (response) {
@@ -18,7 +17,6 @@ services.factory('RootResourceService', ['$http', 'x2js', 'HistoryService', func
         },
         put: function (data) {
             var promise = $http.put('rest/mqnaas/IRootResourceAdministration/', data).then(function (response) {
-                console.log(response);
                 var json = response.data;
                 var his = new HistoryService();
                 his.content = response.status + " - PUT (IRootResourceAdministration): " + response.data;
@@ -41,14 +39,11 @@ services.factory('RootResourceService', ['$http', 'x2js', 'HistoryService', func
             return promise;
         },
         remove: function (data) {
-            console.log(data);
             var promise = $http.delete('rest/mqnaas/IRootResourceAdministration/' + data).then(function (response) {
-                console.log(response);
                 var his = new HistoryService();
                 his.content = response.status + " - DELETE (IRootResourceAdministration): " + response.data;
                 his.type = "INFO";
                 his.$save();
-                //                    return json;
             });
             return promise;
         }

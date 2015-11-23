@@ -43,7 +43,6 @@ angular.module('mqnaasApp')
                 're_password': re_password
             }).then(
                 function (response) {
-                    console.log(response);
                     if (response.status === 400) return $q.reject(response.data);
                 },
                 function (response) {
