@@ -67,7 +67,6 @@ angular.module('mqnaasApp')
             MqNaaSResourceService.put(urlCreateVI).then(function (result) {
                 if (result == null) return;
                 $scope.updateVIReqList();
-                this.$hide();
             });
         };
         $scope.deleteVINetwork = function (viReq) {
@@ -278,7 +277,10 @@ angular.module('mqnaasApp')
 
             var cubes = [];
             ranges.forEach(function (range) {
-                cubes.push(getCubeVirtual(range.initial, range.final));
+                var ranges = getRange(range.initial, range.final);
+                ranges = ranges + getRange(100, 200);
+                cubes.push(getCube(getRanges(ranges)));
+                //cubes.push(getCubeVirtual(range.initial, range.final));
             });
 
             console.log(getCubes(cubes));
