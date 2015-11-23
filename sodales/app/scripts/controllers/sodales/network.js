@@ -88,12 +88,8 @@ angular.module('mqnaasApp')
             },
             manipulation: {
                 addNode: false,
-                editNode: function (data, callback) {
-                    // filling in the popup DOM elements
-                },
                 addEdge: function (data, callback) {
                     console.log("Adding link");
-                    console.log("Open Dialog");
                     $scope.createLinkDialog(data.from, data.to);
                     if (data.from == data.to) {
                         var r = confirm('Do you want to connect the node to itself?');
@@ -111,23 +107,23 @@ angular.module('mqnaasApp')
             console.log("Create Link dialog");
             console.log(source);
             console.log(dest);
+            console.log($scope.source)
+            console.log($scope.nodes.get(source));
+            $scope.source = $scope.nodes.get(source);
+            $scope.dest = $scope.nodes.get(dest).label;
 
             url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement';
             MqNaaSResourceService.put(url).then(function (data) {
                 $scope.createdLink = data;
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + $scope.source + "/IPortManagement";
-                MqNaaSResourceService.get(url).then(function (result) {
-                    $scope.physicalPorts1 = checkIfIsArray(result.IResource.IResourceId);
 
-                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + $scope.dest + "/IPortManagement";
-                    MqNaaSResourceService.get(url).then(function (result) {
-                        $scope.physicalPorts2 = checkIfIsArray(result.IResource.IResourceId);;
-                    });
+                PhysicalService.getPhysicalPorts($scope.source.label).then(function (data) {
+                    $scope.physicalPorts1 = data;
+                });
+                PhysicalService.getPhysicalPorts($scope.dest).then(function (data) {
+                    console.log(data);
+                    $scope.physicalPorts2 = data;
                 });
             });
-
-            $scope.source = $scope.nodes.get(source).label;
-            $scope.dest = $scope.nodes.get(dest).label;
 
             $modal({
                 title: 'Adding a new link',
@@ -193,7 +189,6 @@ angular.module('mqnaasApp')
                 }
                 $scope.selectedNetwork = $rootScope.networkId;
                 $scope.getNetworkModel();
-
             });
         };
 
@@ -217,7 +212,8 @@ angular.module('mqnaasApp')
                     id: $scope.nodes.length,
                     label: virtualResource,
                     image: 'images/SODALES_' + resourceType.toUpperCase() + '.png',
-                    shape: 'image'
+                    shape: 'image',
+                    type: resourceType
                 });
                 $rootScope.virtualPort = [];
             });
@@ -231,7 +227,6 @@ angular.module('mqnaasApp')
         $scope.network_options = {
             layout: {
                 randomSeed: 3
-
             },
             physics: {
                 stabilization: false,
@@ -269,11 +264,7 @@ angular.module('mqnaasApp')
                 $scope.source = source;
                 $scope.dest = dest;
             }
-            //$scope.virtualResources = 
-            //$scope.getVirtualResources();
-            //$scope.physicalResources = 
             $scope.getPhysicalResources();
-            //$scope.getPhysicalResources();
 
             $rootScope.createMappingDialog = $modal({
                 title: 'Mapping virtual resource to physical resource',
@@ -307,7 +298,8 @@ angular.module('mqnaasApp')
                         label: node.id,
                         image: 'images/SODALES_' + node.type + '.png',
                         shape: 'image',
-                        group: 'physical'
+                        group: 'physical',
+                        type: node.type
                     });
                 } else if (node.type === undefined && node.type !== 'link' && node.type !== 'Network') { //VIR
                     if (node.id !== $scope.viId) return;
@@ -318,7 +310,8 @@ angular.module('mqnaasApp')
                             label: node.id,
                             image: 'images/SODALES_' + node.type + '.png',
                             shape: 'image',
-                            group: 'virtual'
+                            group: 'virtual',
+                            type: node.type
                         });
                     })
                 }
@@ -330,12 +323,10 @@ angular.module('mqnaasApp')
             MqNaaSResourceService.put(url).then(function (data) {});
         };
 
-
         $scope.getVirtualResources = function () {
             var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestManagement/' + $scope.viId + '/IResourceModelReader/resourceModel';
             MqNaaSResourceService.get(url).then(function (response) {
                 $scope.virtualResources = checkIfIsArray(response.resource.resources.resource);
-                //return $scope.virtualResources;
             });
         };
 
@@ -415,6 +406,7 @@ function generateNodeData(data) {
                 label: node.id,
                 image: 'images/SODALES_' + node.type + '.png',
                 shape: 'image',
+                type: node.type
             });
         }
     });

@@ -52,6 +52,7 @@ angular.module('mqnaasApp')
                 $rootScope.resourceInfo = {};
                 $rootScope.resourceInfo.id = data.resource.id;
                 $rootScope.resourceInfo.type = data.resource.type;
+                $rootScope.resourceInfo.layer = "virtual";
                 $rootScope.resourceInfo.ports = [];
                 $rootScope.resourceInfo.ports = checkIfIsArray(data.resource.resources.resource);
                 return checkIfIsArray(data.resource.resources.resource);

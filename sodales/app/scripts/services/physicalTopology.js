@@ -36,7 +36,6 @@ angular.module('mqnaasApp')
         var getCubes = function (resourceName, sliceId) {
             var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/' + sliceId + '/ISliceAdministration/cubes';
             MqNaaSResourceService.get(url).then(function (data) {
-                console.log(data.cubesList.cubes.cu);
                 var arrayCubes = checkIfIsArray(data.cubesList.cubes);
                 $rootScope.resourceInfo.slicing.slices.cubes = [];
                 angular.forEach(arrayCubes, function (d) {
@@ -51,6 +50,7 @@ angular.module('mqnaasApp')
             var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel';
             MqNaaSResourceService.list(url).then(function (data) {
                 $rootScope.resourceInfo = {};
+                $rootScope.resourceInfo.layer = "physical";
                 $rootScope.resourceInfo.id = data.resource.id;
                 $rootScope.resourceInfo.type = data.resource.type;
                 $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
@@ -68,12 +68,25 @@ angular.module('mqnaasApp')
                     //if is ARN, get Card, and type of port
                     arnService.put(getAllInterfaces()).then(function (data) {
                         $rootScope.resourceInfo.ports = checkIfIsArray(data.response.operation.interfaceList.interface);
-                    })
+                    });
                 }
                 $rootScope.resourceInfo.slicing = {};
                 getSlice(resourceName);
             });
         }
+        var getPhysicalPorts = function (resourceName) {
+            var deferred = $q.defer();
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/IResourceModelReader/resourceModel";
+            var promise = MqNaaSResourceService.get(url).then(
+                function (response) {
+                    return checkIfIsArray(response.resource.resources.resource);
+                },
+                function (response) {
+                    deferred.reject(response.data);
+                }
+            );
+            return promise;
+        };
 
         return {
             getSlice: function (resourceName) {
@@ -90,6 +103,12 @@ angular.module('mqnaasApp')
             },
             getResource: function (resourceName) {
                 return getResource(resourceName);
+            },
+            getPhysicalPorts: function (resourceName) {
+                return getPhysicalPorts(resourceName);
+            },
+            getPhysicalPortsInformation: function (resourceName, type) {
+                return getPhysicalPortsInformation(resourceName, type);
             }
         };
     });
