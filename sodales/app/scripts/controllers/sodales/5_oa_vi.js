@@ -6,6 +6,7 @@ angular.module('mqnaasApp')
         $scope.data = [];
         $scope.requestCollection = [];
         $scope.networkCollection = [];
+
         $scope.updateVIReqList = function () {
             var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
             MqNaaSResourceService.list(urlListVI).then(function (result) {
@@ -85,7 +86,6 @@ angular.module('mqnaasApp')
         };
 
         $scope.sendVIR = function (viReq) {
-
             //check if period is defined
             var urlPeriod = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + viReq + "/IRequestAdministration/period";
             MqNaaSResourceService.get(urlPeriod).then(function (result) {
@@ -107,7 +107,7 @@ angular.module('mqnaasApp')
                 MqNaaSResourceService.put(url).then(function (result) {
                     $scope.resRoot = result; //empty
                     $rootScope.info = viReq + " created";
-                    //$rootScope.info = "200 - Virtual slice created";
+                    $rootScope.info = "200 - Virtual slice created";
                     $scope.updateVIReqList();
                 });
             });
@@ -121,10 +121,7 @@ angular.module('mqnaasApp')
 
     })
     .controller('editVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, $interval, $q, $alert, $modal, VirtualService) {
-        console.log("Edit VI : " + $stateParams.id);
-        var promise;
 
-        // $scope.updateVirtualElements();
         $rootScope.viId = $stateParams.id;
         $rootScope.virtualPort = [];
         $scope.mapPorts = false;
@@ -165,7 +162,6 @@ angular.module('mqnaasApp')
         };
 
         $scope.mapVirtualResourceToRealResource = function (resourceRequest, realResource) {
-            console.log(resourceRequest);
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceMapping/defineMapping/?arg0=" + resourceRequest + "&arg1=" + realResource;
             MqNaaSResourceService.get(url).then(function (result) {
                 $scope.resRoot = result; //empty
@@ -177,7 +173,6 @@ angular.module('mqnaasApp')
 
         $scope.createCubes = function (virtualResource) {
             $scope.saving = true;
-            console.log(virtualResource);
             $rootScope.viId = $scope.viId;
             var url;
             var cube = [];

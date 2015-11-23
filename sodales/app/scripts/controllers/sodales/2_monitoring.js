@@ -190,7 +190,6 @@ angular.module('mqnaasApp')
             var requestData = getCounters(cardId, interfaceId);
             arnService.put(requestData).then(function (response) {
                 var data = response.response.operation.interfaceList.interface.ethernet.counters;
-                console.log(data)
                 data = transpose(data);
                 $scope.content = data;
                 $modal({
@@ -198,7 +197,6 @@ angular.module('mqnaasApp')
                     template: 'views/modals/counterStats.html',
                     show: true,
                     scope: $scope
-                        //,controller: 'statisticsCtrl',
                 });
             });
         };

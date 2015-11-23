@@ -88,6 +88,9 @@ angular.module('mqnaasApp')
             },
             manipulation: {
                 addNode: false,
+                editEdge: false,
+                deleteNode: false,
+                deleteEdge: false,
                 addEdge: function (data, callback) {
                     console.log("Adding link");
                     $scope.createLinkDialog(data.from, data.to);
@@ -138,7 +141,6 @@ angular.module('mqnaasApp')
                 $scope.dstPortAttahed = 'Target port Attached';
             }
             MqNaaSResourceService.put(url).then(function (response) {}); //empty
-
         };
 
         $scope.mappingPortsToLink = function (res1, port1, portInternalId, portEth) {
@@ -156,7 +158,6 @@ angular.module('mqnaasApp')
         $scope.onNodeSelect = function (properties) {
             var resourceName = $scope.nodes.get({
                 filter: function (item) {
-                    console.log(item);
                     return item.id == properties.nodes[0];
                 }
             })[0].label;
@@ -232,9 +233,10 @@ angular.module('mqnaasApp')
             locale: 'en',
             manipulation: {
                 addNode: false,
-                editNode: function (data, callback) {
-                    // filling in the popup DOM elements
-                },
+                editNode: undefined,
+                editEdge: false,
+                deleteEdge: false,
+                deleteNode: false,
                 addEdge: function (data, callback) {
                     console.log("Adding link");
                     $rootScope.createMappingDialogCall(data.from, data.to, 'vis');

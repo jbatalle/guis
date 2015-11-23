@@ -18,15 +18,16 @@ angular.module('mqnaasApp')
                 $scope.networkCollection = checkIfIsArray(result.IRootResource.IRootResourceId);
                 spService.getList().then(function (data) {
                     $scope.dataCollection = data;
+                    var i, j;
                     if ($scope.networkCollection.length === 0) {
-                        for (var i = 0; i < $scope.dataCollection.length; i++) {
-                            for (var j = 0; j < $scope.dataCollection[i].vis.length; j++) {
+                        for (i = 0; i < $scope.dataCollection.length; i++) {
+                            for (j = 0; j < $scope.dataCollection[i].vis.length; j++) {
                                 $scope.removeVI($scope.dataCollection[i].id, $scope.dataCollection[i].vis[j].name);
                             }
                         }
                     } else {
-                        for (var i = 0; i < $scope.dataCollection.length; i++) {
-                            for (var j = 0; j < $scope.dataCollection[i].vis.length; j++) {
+                        for (i = 0; i < $scope.dataCollection.length; i++) {
+                            for (j = 0; j < $scope.dataCollection[i].vis.length; j++) {
                                 url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + $scope.dataCollection[i].vis[j];
                                 MqNaaSResourceService.list(urlVirtNets).then(function (result) {
                                     if (result === undefined) $scope.removeVI($scope.dataCollection[i].id, $scope.dataCollection[i].vis[j].name);
