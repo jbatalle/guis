@@ -1,96 +1,109 @@
 <div class="row">
     <h3 class="page-header">OpenAccess slice creation: {{viId}}</h3>
     <div class="col-md-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Available resources</h3>
-            </div>
-            <div class="panel-body">
-                <div class="list-group">
-                    <a href="" class="list-group-item">
-                        <div class="ui-widget-content netEl-drag" id="arn">
-                            <img id="arn" draggable src="images/SODALES_ARN.png" width="60" style="z-index:1090"> ARN
-                        </div>
-                    </a>
-                    <a href="" class="list-group-item">
-                        <div class="ui-widget-content netEl-drag" id="cpe">
-                            <img id="cpe" draggable src="images/SODALES_CPE.png" width="60" style="z-index:1090"> CPE
-                        </div>
-                    </a>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Available resources</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a href="" class="list-group-item">
+                            <div class="ui-widget-content netEl-drag" id="arn">
+                                <img id="arn" draggable src="images/SODALES_ARN.png" width="60" style="z-index:1090"> ARN
+                            </div>
+                        </a>
+                        <a href="" class="list-group-item">
+                            <div class="ui-widget-content netEl-drag" id="cpe">
+                                <img id="cpe" draggable src="images/SODALES_CPE.png" width="60" style="z-index:1090"> CPE
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-calendar fa-fw"></i> Period</h3>
-            </div>
-            <div class="panel-body">
-                <form name="datepickerForm" class="form-inline" role="form">
-                    <div class="form-group">
-                        <label class="control-label"><i class="fa fa-calendar"></i> <i class="fa fa-arrows-h"></i>
-                            <i class="fa fa-calendar"></i> Range </label>
-                        <br/>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-calendar fa-fw"></i> Period</h3>
+                </div>
+                <div class="panel-body">
+                    <form name="datepickerForm" class="form-inline" role="form">
                         <div class="form-group">
-                            <input type="text" size="10" class="form-control" ng-model="period.startDate" data-max-date="{{period.endDate}}" data-autoclose="1" placeholder="Date" bs-datepicker>
+                            <label class="control-label"><i class="fa fa-calendar"></i> <i class="fa fa-arrows-h"></i>
+                                <i class="fa fa-calendar"></i> Range </label>
+                            <br/>
+                            <div class="form-group">
+                                <label>Inital time</label>
+                                <input type="text" size="10" class="form-control" ng-model="period.startDate" data-max-date="{{period.endDate}}" data-autoclose="1" placeholder="Date" bs-datepicker>
+                                <input type="text" size="8" class="form-control" ng-model="period.startDate" data-time-format="h:mm:ss a" data-autoclose="1" placeholder="Time" bs-timepicker>
+                            </div>
+                            <div class="form-group">
+                                <label>Final time</label>
+                                <input type="text" size="10" class="form-control" ng-model="period.endDate" data-min-date="{{period.startDate}}" data-autoclose="1" placeholder="Date" bs-datepicker>
+                                <input type="text" size="8" class="form-control" ng-model="period.endDate" data-time-format="h:mm:ss a" data-autoclose="1" placeholder="Time" bs-timepicker>
+                            </div>
+                            <div class="pull-right">
+                                <input class="btn btn-success" type="submit" ng-click="setPeriod(period)" value="Set period" />
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="text" size="8" class="form-control" ng-model="period.startDate" data-time-format="h:mm:ss a" data-autoclose="1" placeholder="Time" bs-timepicker>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" size="10" class="form-control" ng-model="period.endDate" data-min-date="{{period.startDate}}" data-autoclose="1" placeholder="Date" bs-datepicker>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" size="8" class="form-control" ng-model="period.endDate" data-time-format="h:mm:ss a" data-autoclose="1" placeholder="Time" bs-timepicker>
-                        </div>
-                        <div class="pull-right">
-                            <input class="btn btn-success" type="submit" ng-click="setPeriod(period)" value="Set period" />
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Virtual resources</h3>
-            </div>
-            <div class="panel-body">
-                <ul style="padding-left: 0px; margin-left: 20px;">
-                    <li ng-repeat="viRes in virtualResources">
-                        <a ng-click="getResourceInfo(viRes.id)"> {{viRes.id}}</a> -
-                        <a ng-click="deleteDialog(viRes.id)"> Remove </a>
-                    </li>
-                </ul>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Virtual resources</h3>
+                </div>
+                <div class="panel-body">
+                    <ul style="padding-left: 0px; margin-left: 20px;">
+                        <li ng-repeat="viRes in virtualResources">
+                            <a ng-click="getResourceInfo(viRes.id)"> {{viRes.id}}</a> -
+                            <a ng-click="deleteDialog(viRes.id)"> Remove </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
     <div class="col-md-6">
-        <div id="viMgt" ng-controller="editVIController">
-            <div ng-controller="editVINetwork" id="myDraggableZone" vidroppable ng-show="networkId">
-                <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
-                </vis-network>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Topology</h3>
+            </div>
+            <div class="panel-body">
+                <div id="viMgt" ng-controller="editVIController">
+                    <div ng-controller="editVINetwork" id="myDraggableZone" vidroppable ng-show="networkId">
+                        <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
+                        </vis-network>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- /.row -->
     </div>
     <div class="col-md-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-arrows-h fa-fw"></i> Mapped resources</h3>
-            </div>
-            <div class="panel-body">
-                <ul style="padding-left: 0px; margin-left: 20px;">
-                    <li ng-repeat="viRes in virtualResources" ng-if="viRes.mapped">
-                        <a ng-click="mappingDialog(viRes.id, viRes.mapped)">{{viRes.id}} -> {{viRes.mapped}}</a>
-                        <ul>
-                            <li ng-repeat="viPorts in viRes.ports">
-                                {{viPorts.id}} -> {{viPorts.mapped}}
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-arrows-h fa-fw"></i> Mapped resources</h3>
+                </div>
+                <div class="panel-body">
+                    <ul style="padding-left: 0px; margin-left: 20px;">
+                        <li ng-repeat="viRes in virtualResources" ng-if="viRes.mapped">
+                            <a ng-click="mappingDialog(viRes.id, viRes.mapped)">{{viRes.id}} -> {{viRes.mapped}}</a>
+                            <ul>
+                                <li ng-repeat="viPorts in viRes.ports">
+                                    {{viPorts.id}} -> {{viPorts.mapped}}
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-        <div>
+        <div class="row">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Resource information</h3>
