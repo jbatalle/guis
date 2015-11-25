@@ -76,13 +76,14 @@ angular.module('mqnaasApp')
                     MqNaaSResourceService.get(url).then(function (result) {
                         var cubes = checkIfIsArray(result.cubesList.cubes);
                         cubes.forEach(function (cube) {
-                            var ranges = checkIfIsArray(cube.cube);
-                            ranges.forEach(function (range) {
-                                if (range.ranges.range.lowerBound === range.ranges.range.upperBound) {
-                                    $rootScope.virtualResource.ports.push(ports[parseInt(range.ranges.range.lowerBound)]);
+                            var cube = checkIfIsArray(cube.cube);
+                            cube.forEach(function (range) {
+                                var rang = range.ranges.range[0];
+                                if (rang.lowerBound === rang.upperBound && rang.lowerBound !== undefined) {
+                                    $rootScope.virtualResource.ports.push(ports[parseInt(rang.lowerBound)]);
                                 } else {
-                                    var k = parseInt(range.ranges.range.lowerBound);
-                                    while (k <= parseInt(range.ranges.range.upperBound)) {
+                                    var k = parseInt(rang.lowerBound);
+                                    while (k <= parseInt(rang.upperBound)) {
                                         $rootScope.virtualResource.ports.push(ports[k]);
                                         k++;
                                     }
