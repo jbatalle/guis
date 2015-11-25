@@ -11,28 +11,41 @@
                 <h4 class="modal-title" ng-bind="title"></h4>
             </div>
             <div class="modal-body">
-                <div>
-                    <div>Creating a resource ({{resource.type}}) inside the VIR: <b>{{viId}}</b></div>
-                    <form action="createARN" method="post" name="editForm">
-                        <div>
-                            <div ng-hide='resourceRequest'>
-                                <a href="" class="btn btn-sm btn-primary" ng-click="addResource(resource.type)">Add {{resource.type}} resource</a>
-                            </div>
-                            <div ng-show='resourceRequest'>
-                                <h4>Resource added correctly with the name: {{resourceRequest}}.</h4>
-                                <span>
-                    Add ports to the recent created resource: <a href="" class="btn btn-sm btn-primary" ng-click="addVirtualPortToResource(resourceRequest)">Add port</a>
-                </span>
-                                <ul>
-                                    <li ng-repeat=" vPort in virtualPort">
-                                        {{vPort}}
-                                    </li>
-                                </ul>
-                            </div>
+                <form class="form-horizontal" class="non-margined" name="policerForm">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">Virtual request</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control input-sm ng-pristine" name="description" data-ng-maxlength="64" value="{{viId}}" required disabled>
                         </div>
-                    </form>
-                    <br/>
-                </div>
+                    </div>
+                    <div class="form-group" ng-hide='resourceRequest'>
+                        <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"></label>
+                        <div class="col-sm-8">
+                            <a href="" class="btn btn-sm btn-primary" ng-click="addResource(resource.type)">Add {{resource.type}} resource</a>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show='resourceRequest'>
+                        <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">Resource</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control input-sm ng-pristine" name="description" data-ng-maxlength="64" value="{{resourceRequest}}" required disabled>
+                            <br/>
+                            <a href="" class="btn btn-sm btn-primary" ng-click="addVirtualPortToResource(resourceRequest)">Add port</a>
+
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show='resourceRequest'>
+                        <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">Ports</label>
+                        <div class="col-sm-8">
+                            <ul>
+                                <li ng-repeat=" vPort in virtualPort">
+                                    {{vPort}}
+                                </li>
+                            </ul>
+                            <br/>
+                        </div>
+                    </div>
+                </form>
+
                 <!-- /.box-body -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="$hide()">Close</button>
