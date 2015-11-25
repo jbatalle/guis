@@ -48,7 +48,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label ng-binding">Ports</label>
                             <p class="form-control-static ng-binding ng-scope">
-                                <li ng-repeat="res in virtualResource.ports">
+                                {{virtualResource.ports}}
+                                <li ng-repeat="res in virtualResource.ports track_by res.id">
                                     {{res.id}} - {{res.attributes.entry[0].value}}
                                 </li>
                             </p>

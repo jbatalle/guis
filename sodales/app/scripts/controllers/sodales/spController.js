@@ -1,51 +1,65 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spController', function ($scope, $rootScope, MqNaaSResourceService, $filter, spService, localStorageService, AuthService) {
-        $rootScope.networkId = localStorageService.get("networkId");
+    .controller('spController', function ($scope, $rootScope, MqNaaSResourceService, $filter, spService, AuthService, $interval, $q) {
         $rootScope.spName = "SP1";
         $scope.data = [];
         $rootScope.networkCollection = [];
 
         $rootScope.networkId = "Network-Internal-1.0-2";
 
-        AuthService.profile().then(function (data) {
-            spService.get(data.sp_id).then(function (data) {
-                $scope.networks = data.vis;
-                $rootScope.networkCollection = [];
-                data.vis.forEach(function (viNet) {
-                    var url = "IRootResourceProvider";
+        $scope.updateViList = function () {
+            var url = "IRootResourceProvider";
+            MqNaaSResourceService.list(url).then(function (result) {
+                $scope.physicalNetworks = checkIfIsArray(result.IRootResource.IRootResourceId);
+                var currentRequest = 1;
+                var availableViNets = [];
+                var deferred = $q.defer();
+                makeNextRequest();
+
+                function makeNextRequest() {
+                    var phyNet = $scope.physicalNetworks[currentRequest];
+                    var url = "IRootResourceAdministration/" + phyNet + "/IRequestBasedNetworkManagement";
                     MqNaaSResourceService.list(url).then(function (result) {
-                        var physicalNetworks = checkIfIsArray(result.IRootResource.IRootResourceId);
-
-                        physicalNetworks.forEach(function (phyNet) {
-                            if (phyNet === 'MQNaaS-1') return;
-                            var urlVirtNets = 'IRootResourceAdministration/' + phyNet + '/IRequestBasedNetworkManagement/' + viNet.name + '/IResourceModelReader/resourceModel';
-                            MqNaaSResourceService.list(urlVirtNets).then(function (viInfo) {
-                                if (!viInfo) return;
-                                $rootScope.networkCollection.push({
-                                    id: viNet.name,
-                                    physicalNetwork: phyNet,
-                                    created_at: viInfo.resource.attributes.entry.value
-                                });
-                            });
-                        })
+                        var viNets = checkIfIsArray(result.IRootResource.IRootResourceId);
+                        AuthService.profile().then(function (data) {
+                            spService.get(data.sp_id).then(function (data) {
+                                angular.forEach(_.without(viNets, _.pluck(data, 'name')), function (viNet) {
+                                    var urlVirtNets = 'IRootResourceAdministration/' + phyNet + '/IRequestBasedNetworkManagement/' + viNet + '/IResourceModelReader/resourceModel';
+                                    MqNaaSResourceService.list(urlVirtNets).then(function (viInfo) {
+                                        if (!viInfo) return;
+                                        currentRequest++;
+                                        availableViNets.push({
+                                            id: viNet,
+                                            physicalNetwork: phyNet,
+                                            created_at: viInfo.resource.attributes.entry.value
+                                        });
+                                        if (currentRequest < $scope.physicalNetworks.length) {
+                                            makeNextRequest();
+                                        } else {
+                                            $scope.networkCollection = availableViNets;
+                                            $scope.displayedCollection = [].concat($scope.networkCollection)
+                                            deferred.resolve();
+                                        }
+                                    });
+                                })
+                            })
+                        });
                     });
-                });
+                }
             });
-        });
-
-        $scope.updateSpList = function () {
-            /*spService.list().then(function (data) {
-                console.log(data);
-            });*/
-            var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
-            MqNaaSResourceService.list(urlListVI).then(function (result) {
-                console.log(result);
-                //                    $scope.data = result.IResource.IResourceId;
-            });
-
         };
-        $scope.updateSpList();
+
+        $scope.updateViList();
+        var promise = $interval(function () {
+            $scope.update();
+        }, 5000);
+
+
+        $scope.$on("$destroy", function () {
+            if (promise) {
+                $interval.cancel(promise);
+            }
+        });
 
     });
