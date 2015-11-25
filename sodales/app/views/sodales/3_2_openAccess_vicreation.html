@@ -73,7 +73,7 @@
                 <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Topology</h3>
             </div>
             <div class="panel-body">
-                <div id="viMgt" ng-controller="editVIController">
+                <div id="viMgt">
                     <div ng-controller="editVINetwork" id="myDraggableZone" vidroppable ng-show="networkId">
                         <vis-network ng-model="network_data" options="network_options" on-select="onNodeSelect" id="previewNetwork">
                         </vis-network>
