@@ -17,6 +17,9 @@ module.exports = function (app) {
             }
             r = request.post({
                 uri: url,
+                headers: {
+                    'Content-Type': 'application/xml'
+                },
                 body: req.rawBody
             }).pipe(res);
         } else if (req.method === 'PUT') {

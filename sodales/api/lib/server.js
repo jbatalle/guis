@@ -1,4 +1,4 @@
-var express = require('express'),
+/*var express = require('express'),
     cors = require('cors'),
     fs = require('fs'),
     bodyParser = require('body-parser'),
@@ -38,3 +38,4 @@ app.configure(function () {
 
 
 module.exports = app;
+*/

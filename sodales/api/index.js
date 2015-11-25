@@ -24,6 +24,7 @@ function anyBodyParser(req, res, next) {
         next();
     });
 }
+//unused
 app.mqnaas = 'http://84.88.40.174:9000/mqnaas';
 app.arn = 'http://fibratv.dtdns.net:41080/cgi-bin/xml-parser.cgi';
 app.cpe = 'http://fibratv.dtdns.net:41081';

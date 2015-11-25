@@ -7,8 +7,12 @@ module.exports = function (app) {
 
     /* your app config here */
     app.use('/rest/mqnaas', function (req, res) {
-        console.log(req.method + ": " + req.url);
-        var url = app.mqnaas + req.url;
+
+        var url = app.mqnaas;
+        if (req.headers['x-host'] !== undefined) url = req.headers['x-host'] + ':9000/mqnaas' + req.url;
+        console.log(req.method + ": " + url);
+
+        //        var url = app.mqnaas + req.url;
         //        var url = 'http://84.88.40.174:9000/mqnaas' + req.url;
         console.log(url);
         //console.log(app.mqnaas + req.url);
