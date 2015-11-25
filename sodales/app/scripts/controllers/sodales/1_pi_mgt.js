@@ -137,30 +137,30 @@ angular.module('mqnaasApp')
         };
 
         //it is used????
-        /*
-            var getMqNaaSResource = function (root, url) {
-                if (root === undefined) return;
-                url = generateUrl('IRootResourceAdministration', root, 'IRootResourceProvider');
-                MqNaaSResourceService.list(url).then(function (data) {
-                    if (data === undefined) return;
-                    data = checkIfIsArray(data.IRootResource.IRootResourceId);
-                    $scope.networkElements = data;
-                    if (data.length > 0) {
-                        data.forEach(function (resource) {
-                            $scope.getRealPorts(resource);
-                        });
-                    }
 
-                    $scope.generateNodeData(checkIfIsArray(data.IRootResource.IRootResourceId));
+        var getMqNaaSResource = function (root, url) {
+            if (root === undefined) return;
+            url = generateUrl('IRootResourceAdministration', root, 'IRootResourceProvider');
+            MqNaaSResourceService.list(url).then(function (data) {
+                if (data === undefined) return;
+                data = checkIfIsArray(data.IRootResource.IRootResourceId);
+                $scope.networkElements = data;
+                if (data.length > 0) {
+                    data.forEach(function (resource) {
+                        $scope.getRealPorts(resource);
+                    });
+                }
 
-                    $window.localStorage.networkElements = data;
+                $scope.generateNodeData(checkIfIsArray(data.IRootResource.IRootResourceId));
 
-                }, function (error) {
-                    console.log('ERROR get Mqnaas resource');
-                    console.log(error);
-                });
-            };
-            */
+                $window.localStorage.networkElements = data;
+
+            }, function (error) {
+                console.log('ERROR get Mqnaas resource');
+                console.log(error);
+            });
+        };
+
 
         $scope.openAddResourceDialog = function (nodeType, divPos) {
             $scope.resource = {};
@@ -188,7 +188,10 @@ angular.module('mqnaasApp')
 
             url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceAdministration');
             MqNaaSResourceService.put(url, resource).then(function (res) {
-
+                if (res === undefined) {
+                    console.log("Resource not generated");
+                    return;
+                }
                 url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + res + '/IPortManagement';
                 MqNaaSResourceService.get(url).then(function (result) {
                     var ports = checkIfIsArray(result.IResource.IResourceId);
@@ -196,7 +199,7 @@ angular.module('mqnaasApp')
                     $scope.configurePhysicalResource(res, ports);
                     $scope.dataARN = res;
                     $rootScope.network_data.nodes.add({
-                        id: $scope.nodes.length,
+                        id: $rootScope.network_data.nodes.length,
                         label: res,
                         image: 'images/SODALES_' + data.type.toUpperCase() + '.png',
                         shape: 'image',
