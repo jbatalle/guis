@@ -196,6 +196,7 @@ angular.module('mqnaasApp')
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + resourceRequest + "/IPortManagement";
             MqNaaSResourceService.put(url).then(function (result) {
                 $rootScope.virtualPort.push(result);
+                $scope.getMappedResources();
             });
         };
 
@@ -338,7 +339,7 @@ angular.module('mqnaasApp')
                     virt: virtualPort,
                     real: realPort
                 });
-                $scope.getMappedResources()
+                $scope.getMappedResources();
             });
         };
 
@@ -347,20 +348,6 @@ angular.module('mqnaasApp')
             MqNaaSResourceService.put(url).then(function (result) {
                 $scope.resRoot = result; //empty
                 $rootScope.info = viReq + " created";
-
-
-                //get viReq info, send to DB
-                //each resource, get mapping, get uri
-                /* obj = {
-                    name: name,
-                    uri: uri
-                };
-                viResourceService.post(obj).then(function (data) {
-                    console.log("inserted?");
-                    console.log(data);
-                });
-*/
-
             });
 
             $rootScope.info = viReq + " created";
@@ -396,38 +383,6 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.configureVirtualResource = function (virtResource) {
-            console.log(virtResource);
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/slice";
-            MqNaaSResourceService.getText(url).then(function (data) {
-                var sliceId = data;
-                var unitType = "port";
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement/?arg0=" + unitType;
-                MqNaaSResourceService.put(url).then(function (data) {
-                    console.log("SET unit" + data);
-                    var unitId = data;
-                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId + "/IUnitAdministration/range";
-                    var range = getRangeUnit(1, 2);
-                    MqNaaSResourceService.put(url, range).then(function () {
-
-                        var unitType = "vlan";
-                        var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement/?arg0=" + unitType;
-                        MqNaaSResourceService.put(url).then(function (data) {
-                            var unitId = data;
-                            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/IUnitManagement/" + unitId + "/IUnitAdministration/range";
-                            var range = getRangeUnit(1, 2);
-                            MqNaaSResourceService.put(url, range).then(function () {
-
-                                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtResource + "/ISliceProvider/" + sliceId + "/ISliceAdministration/cubes";
-                                var cubes = getCube(1, 1, 2, 2);
-                                MqNaaSResourceService.put(url, cubes).then(function () {});
-                            });
-                        });
-                    });
-                });
-            });
-        };
-
         $scope.getMappedResources = function () {
             $rootScope.virtualResources = [];
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement";
@@ -444,9 +399,6 @@ angular.module('mqnaasApp')
                             ports: []
                         });
                         $scope.mappPortInfo($rootScope.virtualResources.length - 1, viRes)
-
-                        //http://localhost:9000/mqnaas/IRootResourceAdministration/Network-Internal-1.0-2/IRequestManagement/req-1/IRequestResourceManagement/req_root-1/IPortManagement
-
                     });
                 })
             });
@@ -486,7 +438,7 @@ angular.module('mqnaasApp')
 
         $scope.deleteItem = function (id) {
             //http://localhost:9100/rest/mqnaas/IRootResourceAdministration/Network-Internal-1.0-2/IRequestManagement/req-6/IRequestResourceManagement/req_root-10/
-            url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRequestManagement/' + $scope.viId + "/IRequestResourceManagement/" + id);
+            var url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRequestManagement/' + $scope.viId + "/IRequestResourceManagement/" + id);
             MqNaaSResourceService.remove(url).then(function () {
                 $alert({
                     title: 'Resource removed',
@@ -509,8 +461,19 @@ angular.module('mqnaasApp')
                     $rootScope.network_data.nodes.remove({
                         id: n.id
                     });
+                } else if (n === undefined) {
+                    url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'ILinkManagement/' + id);
+                    MqNaaSResourceService.remove(url).then(function () {});
+                    var n = $rootScope.network_data.edges.get({
+                        filter: function (item) {
+                            return item.label == id;
+                        }
+                    })[0];
+                    $rootScope.network_data.edges.remove({
+                        id: n.id
+                    });
                 }
-                $scope.updateResourceList();
+                $scope.getMappedResources();
             });
             this.$hide();
         };

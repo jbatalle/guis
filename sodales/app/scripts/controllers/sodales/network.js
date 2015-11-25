@@ -215,7 +215,7 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.network_data = {
+        $rootScope.network_data = {
             nodes: $scope.nodes,
             edges: $scope.edges
         };
