@@ -253,6 +253,9 @@ angular.module('mqnaasApp')
 
         $rootScope.createMappingDialogCall = function (source, dest, type) {
             console.log("Create mapping dialog");
+            $rootScope.mapPorts = false;
+            $rootScope.mappedPort = "";
+            $rootScope.mappedPorts = [];
             if (type === 'vis') {
                 $scope.source = $scope.nodes.get(source).label;
                 $scope.dest = $scope.nodes.get(dest).label;
@@ -323,7 +326,7 @@ angular.module('mqnaasApp')
         $scope.getVirtualResources = function () {
             var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestManagement/' + $scope.viId + '/IResourceModelReader/resourceModel';
             MqNaaSResourceService.get(url).then(function (response) {
-                $scope.virtualResources = checkIfIsArray(response.resource.resources.resource);
+                $rootScope.virtualResources = checkIfIsArray(response.resource.resources.resource);
             });
         };
 
