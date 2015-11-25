@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spStatsController', function ($rootScope, $scope, $filter, $modal, $interval, $window, $stateParams, MqNaaSResourceService, AuthService, spService, arnService, cpeService, VirtualService) {
+    .controller('spStatsController', function ($rootScope, $scope, $modal, $interval, $window, $stateParams, MqNaaSResourceService, AuthService, spService, arnService, cpeService, VirtualService, MQNAAS) {
 
         //hardcoded
         //$rootScope.networkId = "Network-Internal-1.0-2";
@@ -91,9 +91,9 @@ angular.module('mqnaasApp')
             $scope.dropdown2[0].click = "selectResource('" + $scope.selectedResource + "', 'CFM/OAM')";
             //get resourceInfo from OpenNaaS.
 
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel/';
+            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + $rootScope.virtNetId + '/IRootResourceProvider/' + resourceName + '/IResourceModelReader/resourceModel/';
             MqNaaSResourceService.get(url).then(function (data) {
-                $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
+                $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri.replace("http://0.0.0.0", MQNAAS);
 
                 //load default statistic info
                 //open Dropdown list, depending on the resourceType
