@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spVIController', function ($scope, $rootScope, $stateParams, $http, $modal, MqNaaSResourceService, arnService, cpeService, AuthService, spService) {
+    .controller('spVIController', function ($scope, $rootScope, $stateParams, $http, $modal, MqNaaSResourceService, arnService, cpeService, AuthService, spService, viResourceService, MQNAAS) {
 
         //hardcoded
         //$rootScope.networkId = "Network-Internal-1.0-2";
@@ -47,7 +47,7 @@ angular.module('mqnaasApp')
                                         created_at: viInfo.resource.attributes.entry.value
                                     });
                                 });
-                            })
+                            });
                         });
                     });
                 });
@@ -68,10 +68,13 @@ angular.module('mqnaasApp')
         };
 
         $scope.operationButton = function (resourceName, type) {
-
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel/';
+            //http://sodales:9000/mqnaas/IRootResourceAdministration/Network-Internal-1.0-2/IRequestBasedNetworkManagement/Network-virtual-5/IRootResourceProvider/CPE-Internal-1.0-6/IResourceModelReader/resourceModel
+            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + $rootScope.virtNetId + '/IRootResourceProvider/' + resourceName + '/IResourceModelReader/resourceModel/';
             MqNaaSResourceService.get(url).then(function (data) {
-                $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
+                $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri.replace("http://0.0.0.0", MQNAAS);
+                console.log($rootScope.resourceUri);
+                //$rootScope.resourceUri.replace("http://0.0.0.0", MQNAAS)
+                console.log($rootScope.resourceUri);
                 $scope.operation = true;
                 if (type === 'ARN') {
                     $scope.arnOperation = true;
@@ -89,7 +92,7 @@ angular.module('mqnaasApp')
         $scope.openOperationARNDialog = function (resourceName, type) {
             $scope.virtualResourceOp = resourceName;
             $scope.arn = new Object;
-            ee.put(getCardInterfaces(0)).then(function (response) {
+            arnService.put(getCardInterfaces(0)).then(function (response) {
                 $scope.LAGs = response.response.operation.interfaceList.interface;
             });
 
