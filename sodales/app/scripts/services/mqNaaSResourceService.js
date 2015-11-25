@@ -1,9 +1,13 @@
 'use strict';
 
-services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', function ($http, x2js, HistoryService) {
+services.factory('MqNaaSResourceService', function ($http, x2js, HistoryService, MQNAAS) {
     return {
         list: function (url) {
-            var promise = $http.get('rest/mqnaas/' + url + '/').then(function (response) {
+            var promise = $http.get('rest/mqnaas/' + url + '/', {
+                headers: {
+                    "X-host": MQNAAS
+                }
+            }).then(function (response) {
                 var json = x2js.xml_str2json(response.data);
                 return json;
             }, function (response) {
@@ -18,7 +22,11 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
             var finalUrl;
             if (url.match(/\?./)) finalUrl = 'rest/mqnaas/' + url;
             else finalUrl = 'rest/mqnaas/' + url + '/';
-            var promise = $http.put(finalUrl, data).then(function (response) {
+            var promise = $http.put(finalUrl, data, {
+                headers: {
+                    "X-host": MQNAAS
+                }
+            }).then(function (response) {
                 var his = new HistoryService();
                 his.content = response.status + " - PUT (" + url + "): " + response.data;
                 his.type = "INFO";
@@ -33,7 +41,11 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
             return promise;
         },
         get: function (url) {
-            var promise = $http.get(genericUrl + url).then(function (response) {
+            var promise = $http.get(genericUrl + url, {
+                headers: {
+                    "X-host": MQNAAS
+                }
+            }).then(function (response) {
                 var json = x2js.xml_str2json(response.data);
                 return json;
             }, function (response) {
@@ -45,7 +57,11 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
             return promise;
         },
         getText: function (url) {
-            var promise = $http.get(genericUrl + url).then(function (response) {
+            var promise = $http.get(genericUrl + url, {
+                headers: {
+                    "X-host": MQNAAS
+                }
+            }).then(function (response) {
                 var his = new HistoryService();
                 his.content = response.status + " - GET (" + url + "): " + response.statusText;
                 his.type = "INFO";
@@ -60,7 +76,11 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
             return promise;
         },
         remove: function (url) {
-            var promise = $http.delete(genericUrl + url).then(function (response) {
+            var promise = $http.delete(genericUrl + url, {
+                headers: {
+                    "X-host": MQNAAS
+                }
+            }).then(function (response) {
                 var his = new HistoryService();
                 his.content = response.status + " - DELETE (IRootResourceAdministration): " + response.data;
                 his.type = "INFO";
@@ -74,7 +94,7 @@ services.factory('MqNaaSResourceService', ['$http', 'x2js', 'HistoryService', fu
             return promise;
         }
     };
-}]).config(function ($httpProvider) {
+}).config(function ($httpProvider) {
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/xml';
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/xml';
     $httpProvider.defaults.timeout = 5000;
