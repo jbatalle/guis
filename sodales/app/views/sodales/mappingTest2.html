@@ -1,0 +1,6 @@
+<div ng-controller="TasksCtrl">
+    Tasks: {{tasks}}
+    <select ng-model="selectedVlans" name="vlans" multiple size=10 width="80% ">
+        <option ng-repeat="n in tasks track by $index" value="{{$index}}">{{$index}}</option>
+    </select>
+</div>

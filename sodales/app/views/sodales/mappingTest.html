@@ -1,0 +1,138 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header">
+            <h1>Panels</h1>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Virtual resource</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="box box-primary direct-chat direct-chat-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Ports</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body" style="display: block;">
+                                <select ng-model="selectedViPorts" name="ports" multiple size=5 style="width: 100%">
+                                    <option ng-repeat="p in virtualPorts" value="{{p}}">{{p}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="box box-primary direct-chat direct-chat-primary ">
+                            <div class="box-header with-border ">
+                                <h3 class="box-title ">Vlan</h3>
+                                <div class="box-tools pull-right ">
+                                    <button type="button " class="btn btn-box-tool " data-widget="collapse "><i class="fa fa-minus "></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body" style="display: block;">
+                                <select ng-model="selectedViVlans" name="vlans" multiple size=10 style="width: 100%" ng-options="n as (n.lower + '-' + n.upper) for n in virtualVlans"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.col-sm-4 -->
+            <div class="col-sm-4 ">
+                <div class="panel panel-primary ">
+                    <div class="panel-heading ">
+                        <div class="row ">
+                            <div class="col-xs-12 text-left ">
+                                <div>
+                                    Mapping info
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <br/>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Virtual port</th>
+                                <th>Physical port</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="p in mapping">
+                            <tr>
+                                <td>{{p.virt}}</td>
+                                <td>{{p.phy}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Virtual Vlan</th>
+                                <th>Physical Vlan</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="p in mappingVlan">
+                            <tr>
+                                <td>{{p.virt.lower}} - {{p.virt.upper}}</td>
+                                <td>{{p.phy.lower}} - {{p.phy.upper}} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="icon ">
+                    </div>
+                </div>
+                <div class="input-group" ng-show="mappingVlan.length>0 && mapping.length>0 && 
+                                                  selectedViVlans.length <= selectedPhyVlans.length && selectedViPorts.length <= selectedPhyPorts.length">
+                    <button ng-click="map()" class="btn btn-primary btn-flat ">Process mapping</button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-sm-4 ">
+                <div class="panel panel-default ">
+                    <div class="panel-heading ">
+                        <h3 class="panel-title ">Physical resource</h3>
+                    </div>
+                    <div class="panel-body ">
+                        <div class="box box-primary direct-chat direct-chat-primary ">
+                            <div class="box-header with-border ">
+                                <h3 class="box-title ">Ports</h3>
+                                <div class="box-tools pull-right ">
+                                    <button type="button " class="btn btn-box-tool " data-widget="collapse "><i class="fa fa-minus "></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body " style="display: block; ">
+                                <select ng-model="selectedPhyPorts" name="ports" multiple size=5 style="width: 100%">
+                                    <option ng-repeat="p in physicalPorts " value="{{p}}">{{p}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="box box-primary direct-chat direct-chat-primary ">
+                            <div class="box-header with-border ">
+                                <h3 class="box-title ">Vlan</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button " class="btn btn-box-tool " data-widget="collapse "><i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body " style="display: block; ">
+                                <select ng-model="selectedPhyVlans" name="vlans" multiple size=10 style="width: 100%" ng-options="n as (n.lower + '-' + n.upper) for n in physicalVlans">
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--close row-->
+    </div>
+    <!--close col-md-9-->
