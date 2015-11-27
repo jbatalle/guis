@@ -93,7 +93,7 @@ angular.module('mqnaasApp')
                 deleteEdge: false,
                 addEdge: function (data, callback) {
                     console.log("Adding link");
-                    $scope.createLinkDialog(data.from, data.to);
+                    $rootScope.createLinkDialog($scope.nodes.get(data.from), $scope.nodes.get(data.to));
                     if (data.from == data.to) {
                         var r = confirm('Do you want to connect the node to itself?');
                         if (r == true) {
@@ -104,43 +104,6 @@ angular.module('mqnaasApp')
                     }
                 }
             }
-        };
-
-        $scope.createLinkDialog = function (source, dest) {
-            console.log("Create Link dialog");
-            $scope.source = $scope.nodes.get(source);
-            $scope.dest = $scope.nodes.get(dest);
-
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement';
-            MqNaaSResourceService.put(url).then(function (data) {
-                $scope.createdLink = data;
-
-                PhysicalService.getPhysicalPorts($scope.source.label).then(function (data) {
-                    $scope.physicalPorts1 = data;
-                });
-                PhysicalService.getPhysicalPorts($scope.dest.label).then(function (data) {
-                    $scope.physicalPorts2 = data;
-                });
-            });
-
-            $modal({
-                title: 'Adding a new link',
-                template: 'views/modals/createLinkDialog.html',
-                show: true,
-                scope: $scope
-            });
-        };
-
-        $scope.attachPortsToLink = function (linkId, type, portId) {
-            var url;
-            if (type === 'source') {
-                url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement/' + linkId + '/ILinkAdministration/srcPort?arg0=' + portId;
-                $scope.srcPortAttahed = 'Source port Attached';
-            } else if (type === 'dest') {
-                url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement/' + linkId + '/ILinkAdministration/destPort?arg0=' + portId;
-                $scope.dstPortAttahed = 'Target port Attached';
-            }
-            MqNaaSResourceService.put(url).then(function (response) {}); //empty
         };
 
         $scope.mappingPortsToLink = function (res1, port1, portInternalId, portEth) {
@@ -156,12 +119,15 @@ angular.module('mqnaasApp')
         };
 
         $scope.onNodeSelect = function (properties) {
-            var resourceName = $scope.nodes.get({
+            var resource = $scope.nodes.get({
                 filter: function (item) {
                     return item.id == properties.nodes[0];
                 }
-            })[0].label;
-            PhysicalService.getResource(resourceName);
+            })[0];
+            if (resource) {
+                var resourceName = resource.label;
+                PhysicalService.getResource(resourceName);
+            }
         };
 
         $scope.createPort = function (resourceName) {

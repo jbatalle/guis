@@ -48,6 +48,7 @@ angular.module('mqnaasApp')
                     MqNaaSResourceService.get(url).then(function (data) {
                         if (data === undefined) return;
                         if (!data.resource.resources) return;
+                        if (!Array.isArray(data.resource.resources.resource)) return;
                         $scope.physicalLinks.push({
                             id: data.resource.id,
                             from: data.resource.resources.resource[0].id,
@@ -96,42 +97,42 @@ angular.module('mqnaasApp')
         };
 
         $scope.deleteItem = function (id) {
-            url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceAdministration/' + id);
-            MqNaaSResourceService.remove(url).then(function () {
-                $alert({
-                    title: 'Resource removed',
-                    content: 'The resource was removed correctly',
-                    placement: 'top',
-                    type: 'success',
-                    keyboard: true,
-                    show: true,
-                    container: '#alerts-container',
-                    duration: 5
-                });
+            var n = $rootScope.network_data.nodes.get({
+                filter: function (item) {
+                    return item.label == id;
+                }
+            })[0];
 
-                var n = $rootScope.network_data.nodes.get({
+            if (n !== undefined) {
+                url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceAdministration/' + id);
+                MqNaaSResourceService.remove(url).then(function () {
+
+                    $rootScope.network_data.nodes.remove({
+                        id: n.id
+                    });
+                });
+            } else if (n === undefined) {
+                url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'ILinkManagement/' + id);
+                MqNaaSResourceService.remove(url).then(function () {});
+                var n = $rootScope.network_data.edges.get({
                     filter: function (item) {
                         return item.label == id;
                     }
                 })[0];
-
-                if (n !== undefined) {
-                    $rootScope.network_data.nodes.remove({
-                        id: n.id
-                    });
-                } else if (n === undefined) {
-                    url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'ILinkManagement/' + id);
-                    MqNaaSResourceService.remove(url).then(function () {});
-                    var n = $rootScope.network_data.edges.get({
-                        filter: function (item) {
-                            return item.label == id;
-                        }
-                    })[0];
-                    $rootScope.network_data.edges.remove({
-                        id: n.id
-                    });
-                }
-                $scope.updateResourceList();
+                $rootScope.network_data.edges.remove({
+                    id: n.id
+                });
+            }
+            $scope.updateResourceList();
+            $alert({
+                title: 'Resource removed',
+                content: 'The resource was removed correctly',
+                placement: 'top',
+                type: 'success',
+                keyboard: true,
+                show: true,
+                container: '#alerts-container',
+                duration: 5
             });
             this.$hide();
         };
@@ -160,7 +161,6 @@ angular.module('mqnaasApp')
                 console.log(error);
             });
         };
-
 
         $scope.openAddResourceDialog = function (nodeType, divPos) {
             $scope.resource = {};
@@ -282,4 +282,57 @@ angular.module('mqnaasApp')
 
                         }
         };*/
+
+        $rootScope.createLinkDialog = function (source, dest) {
+            console.log("Create Link dialog");
+            $scope.source = source; //$scope.nodes.get(source);
+            $scope.dest = dest; //$scope.nodes.get(dest);
+
+            PhysicalService.getPhysicalPorts($scope.source.label).then(function (data) {
+                $scope.physicalPorts1 = data;
+            });
+            PhysicalService.getPhysicalPorts($scope.dest.label).then(function (data) {
+                $scope.physicalPorts2 = data;
+            });
+
+            $rootScope.createLinkModal = $modal({
+                title: 'Adding a new link',
+                template: 'views/modals/createLinkDialog.html',
+                show: true,
+                scope: $scope
+            });
+        };
+
+        $scope.createLink = function (srcPort, dstPort) {
+            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement';
+            MqNaaSResourceService.put(url).then(function (linkId) {
+                url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement/' + linkId + '/ILinkAdministration/srcPort?arg0=' + srcPort;
+                MqNaaSResourceService.put(url).then(function (response) {});
+                url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement/' + linkId + '/ILinkAdministration/destPort?arg0=' + dstPort;
+                MqNaaSResourceService.put(url).then(function (response) {}); //empty
+                console.log($scope.source.label);
+                console.log($scope.dest.label);
+                var srcNode = $rootScope.network_data.nodes.get({
+                    filter: function (item) {
+                        return item.label == $scope.source.label;
+                    }
+                })[0];
+                var dstNode = $rootScope.network_data.nodes.get({
+                    filter: function (item) {
+                        return item.label == $scope.dest.label;
+                    }
+                })[0];
+                console.log(srcNode);
+
+                $rootScope.network_data.edges.add({
+                    id: $rootScope.network_data.edges.lentgh,
+                    from: srcNode.id,
+                    to: dstNode.id,
+                    label: linkId
+                });
+
+                $scope.updateListNetworks();
+                $rootScope.createLinkModal.hide();
+            });
+        };
     });
