@@ -60,6 +60,13 @@ angular.module('mqnaasApp')
             });
         };
 
+        var getRequestPorts = function (resourceName) {
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $rootScope.viId + "/IRequestResourceManagement/" + resourceName + "/IPortManagement";
+            MqNaaSResourceService.get(url).then(function (result) {
+                $rootScope.virtualPorts = checkIfIsArray(result.IResource.IResourceId);
+            });
+        };
+
         var virtualPorts = function (virtualResource) {
             var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + $rootScope.virtNetId + '/IRootResourceProvider/' + virtualResource + '/IResourceModelReader/resourceModel';
             MqNaaSResourceService.list(url).then(function (data) {
@@ -114,5 +121,8 @@ angular.module('mqnaasApp')
             virtualPorts: function (resourceName) {
                 return virtualPorts(resourceName);
             },
+            getRequestPorts: function (resourceName) {
+                return getRequestPorts(resourceName);
+            }
         };
     });

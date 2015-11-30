@@ -232,9 +232,25 @@ angular.module('mqnaasApp')
             $scope.getVirtualResources();
             $scope.getPhysicalResources();
 
+            if ($scope.nodes.get(source).group === "physical") {
+                VirtualService.getRequestPorts($scope.dest);
+                PhysicalService.getPhysicalPorts($scope.source).then(function (ports) {
+                    $scope.physicalPorts = ports;
+                });
+            } else {
+                VirtualService.getRequestPorts($scope.source);
+                PhysicalService.getPhysicalPorts($scope.dest).then(function (ports) {
+                    $scope.physicalPorts = ports;
+                });
+            }
+
+
+
+
             $rootScope.createMappingDialog = $modal({
                 title: 'Mapping virtual resource to physical resource',
-                template: 'views/modals/mappingPortsDialog.html',
+                //template: 'views/modals/mappingPortsDialog.html',
+                template: 'views/modals/mappingResourcesDialog.html',
                 show: true,
                 scope: $scope
             });

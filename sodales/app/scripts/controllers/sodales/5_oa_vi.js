@@ -205,7 +205,7 @@ angular.module('mqnaasApp')
             MqNaaSResourceService.get(url).then(function (result) {
                 $scope.resRoot = result; //empty
                 $scope.physicalPorts = $scope.getPhysicalPorts(realResource);
-                $scope.virtualPorts = $scope.getVirtualPorts(resourceRequest);
+                //$scope.virtualPorts = $scope.getVirtualPorts(resourceRequest);
                 $rootScope.mapPorts = true;
             });
         };
@@ -293,39 +293,38 @@ angular.module('mqnaasApp')
         };
 
         $scope.generateCube = function (cube) {
-            cube.sort();
+            var cube = cube.map(function (e) {
+                return parseInt(e)
+            });
+            //cube.sort();
+            cube.sort(function (a, b) {
+                return a - b
+            });
             var arr = cube;
             var ranges = [];
             var obj = {};
             for (var i = 0; i < arr.length; i++) {
                 obj = {};
-                obj.initial = arr[i];
-                obj.final = arr[i];
+                obj.lowerBound = arr[i];
+                obj.upperBound = arr[i];
                 if (arr[i + 1] == arr[i] + 1) {
-                    obj.final = arr[i + 1];
-                    //results.push(i);
-
+                    obj.upperBound = arr[i + 1];
                     // loop through next numbers, to prevent repeating longer sequences
                     while (arr[i] + 1 == arr[i + 1]) {
-                        obj.final = arr[i + 1];
+                        obj.upperBound = arr[i + 1];
                         i++;
                     }
                 }
                 ranges.push(obj);
             }
-            console.log(ranges);
-
+            return ranges;
             var cubes = [];
             ranges.forEach(function (range) {
-                var ranges = getRange(range.initial, range.final);
+                var ranges = getRange(range.lowerBound, range.upperBound);
                 ranges = ranges + getRange(100, 200);
                 cubes.push(getCube(getRanges(ranges)));
-                //cubes.push(getCubeVirtual(range.initial, range.final));
+                //cubes.push(getCubeVirtual(range.lowerBound, range.upperBound));
             });
-
-            console.log(getCubes(cubes));
-
-            //return ranges;
             return getCubes(cubes);
         };
 
@@ -353,13 +352,14 @@ angular.module('mqnaasApp')
             $rootScope.info = viReq + " created";
         };
 
-        $scope.getVirtualPorts = function (virtualRes) {
+        /*$scope.getVirtualPorts = function (virtualRes) {
             console.log(virtualRes);
+            console.log("No furula")
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtualRes + "/IPortManagement";
             MqNaaSResourceService.get(url).then(function (result) {
                 $scope.virtualPorts = checkIfIsArray(result.IResource.IResourceId);
             });
-        };
+        };*/
 
         $scope.getPhysicalPorts = function (resourceName) {
             $scope.physicalPorts = [];
@@ -480,4 +480,111 @@ angular.module('mqnaasApp')
     })
     .controller('viewVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, $interval, $q, $alert, VirtualService) {
         $rootScope.virtNetId = $stateParams.id;
+    })
+    .controller('mappingCtrl', function ($rootScope, $scope, MqNaaSResourceService) {
+
+        $scope.selectedViPorts = [];
+        $scope.selectedViVlans = [];
+        $scope.selectedPhyVlans = [];
+        $scope.selectedPhyPorts = [];
+        $scope.mapping = [];
+        $scope.mappingVlan = [];
+
+
+        $scope.virtualVlans = [];
+        $scope.physicalVlans = [];
+
+
+        for (var i = 0; i < 4096; i = i + 127) {
+            $scope.virtualVlans.push({
+                "lower": i,
+                "upper": i + 127
+            });
+        };
+
+        for (var i = 0; i < 4096; i = i + 127) {
+            $scope.physicalVlans.push({
+                lower: i,
+                upper: i + 127
+            });
+        };
+
+        $scope.updateTable = function (t) {
+            //find this t in mapping and remove .phy
+            _.find($scope.mapping, function (n) {
+                console.log(n.virt !== t.virt && t.phy === n.phy);
+                return n.virt !== t.virt && t.phy === n.phy;
+            }).phy = ""
+        }
+
+        //watch
+        $scope.mapping = [];
+        $scope.$watchGroup(['selectedViPorts', 'selectedPhyPorts'], function () {
+            $scope.preMapping = [];
+            for (var i = 0; i < $scope.selectedViPorts.length; i++) {
+                $scope.preMapping.push({
+                    virt: $scope.selectedViPorts[i],
+                    phy: $scope.selectedPhyPorts[i]
+                });
+                angular.copy($scope.preMapping, $scope.mapping);
+            };
+        });
+
+        $scope.mappingVlan = [];
+        $scope.$watchGroup(['selectedViVlans', 'selectedPhyVlans'], function () {
+            $scope.preMappingVlan = [];
+            for (var i = 0; i < $scope.selectedViVlans.length; i++) {
+                $scope.preMappingVlan.push({
+                    virt: $scope.selectedViVlans[i],
+                    phy: $scope.selectedPhyVlans[i]
+                });
+                angular.copy($scope.preMappingVlan, $scope.mappingVlan);
+            };
+        });
+
+
+        $scope.map = function (virtualResource) {
+            $scope.saving = true;
+            $scope.cubes = [];
+            _.map($scope.mapping, function (o) {
+                return _.values(_.pick(o, 'phy'));
+            });
+
+            var portRanges = $scope.generateCube(_.map($scope.mapping, function (o) {
+                return _.values(_.pick(o, 'phy'));
+            }));
+
+            var preMapVlan = [];
+            _.each($scope.mappingVlan, function (d) {
+                preMapVlan = _.union(preMapVlan, _.range(d.virt.lower, d.virt.upper));
+            });
+
+            var vlanRanges = $scope.generateCube(preMapVlan);
+
+            //create cube
+            _.each(portRanges, function (r) {
+                var portRanges = getRange(r.lowerBound, r.upperBound);
+                _.each(vlanRanges, function (r) {
+                    var vlanRanges = getRange(r.lowerBound, r.upperBound);
+                    $scope.cubes.push(getCube(getRanges(portRanges + vlanRanges)));
+                });
+            });
+
+            console.log(getCubes($scope.cubes));
+            //$scope.cubes = $scope.$scope.generateCube(cube);
+            $scope.cubes = getCubes($scope.cubes)
+
+
+            $scope.slice = "";
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $rootScope.viId + "/IRequestResourceManagement/" + virtualResource + "/ISliceProvider/slice";
+            MqNaaSResourceService.getText(url).then(function (result) {
+                $scope.slice = result;
+                url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $rootScope.viId + "/IRequestResourceManagement/" + virtualResource + "/ISliceProvider/" + $scope.slice + "/ISliceAdministration/cubes";
+                MqNaaSResourceService.put(url, $scope.cubes).then(function (result) {
+                    $scope.saving = false;
+                    $rootScope.createMappingDialog.hide();
+                });
+            });
+        };
+
     });
