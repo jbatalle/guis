@@ -60,7 +60,7 @@ class Authentication < Sinatra::Application
 			if user.active == 1
 				if user.password_hash == BCrypt::Engine.hash_secret(params[:password], user.password_salt)
 					token = BCrypt::Engine.generate_salt
-					tkn = {user_id: user.id, token: token, expiration: Time.now.to_i + (60*60)}
+					tkn = {user_id: user.id, token: token, expiration: Time.now.to_i + (60*60*2)}
 
 					Token.create(tkn)
 					
