@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spVIController', function ($scope, $rootScope, $stateParams, $http, $modal, MqNaaSResourceService, arnService, cpeService, AuthService, spService, viResourceService, MQNAAS) {
+    .controller('spVIController', function ($scope, $rootScope, $stateParams, $http, $modal, MqNaaSResourceService, arnService, cpeService, AuthService, spService, MQNAAS) {
 
         //hardcoded
         //$rootScope.networkId = "Network-Internal-1.0-2";
@@ -378,19 +378,23 @@ angular.module('mqnaasApp')
 
         $scope.createCpeService = function (cpeSvc) {
             //serviceId, srcPort, policerId
-            url = "createServiceVlan.html?unit=0&serviceId=6&srcPort=" + cpeSvc.srcPort + "&policerId=" + cpeSvc.police.id + "&pmId=3&eIngressType=1&outer_vlanId=10&clusterId=104&vlanEdit_flowtype=2&vlanEdit_outer_command=3&vlanEdit_outer_vlan=10";
+            //get real port of device
+            //d.attributes.entry[0].value
+            var clusterId = "104";
+
+            url = "createServiceVlan.html?unit=0&serviceId=6&srcPort=" + cpeSvc.srcPort + "&policerId=" + cpeSvc.police.id + "&pmId=3&eIngressType=1&outer_vlanId=" + cpeSvc.innerVlan + "&clusterId=" + clusterId + "&vlanEdit_flowtype=2&vlanEdit_outer_command=3&vlanEdit_outer_vlan=" + cpeSvc.outerVlan;
             cpeService.post(url).then(function (response) {
                 console.log(response);
                 $scope.cpeServices = checkIfIsArray(response.meaServiceMap);
             });
 
-            url = "ingress_port_setting.html?unit=0&port_id=104&rx_enable=1&crc_check=1&my_mac=00:01:03:05:06:05";
+            url = "ingress_port_setting.html?unit=0&port_id=" + clusterId + "&rx_enable=1&crc_check=1&my_mac=00:01:03:05:06:05";
             cpeService.post(url).then(function (response) {});
 
-            url = "egress_port_setting.html?unit=0&port_id=104&tx_enable=1&crc_check=1";
+            url = "egress_port_setting.html?unit=0&port_id=" + clusterId + "&tx_enable=1&crc_check=1";
             cpeService.post(url).then(function (response) {});
 
-            url = "egress_port_setting.html?unit=0&port_id=105&tx_enable=1&crc_check=1";
+            url = "egress_port_setting.html?unit=0&port_id=" + cpeSvc.srcPort "&tx_enable=1&crc_check=1";
             cpeService.post(url).then(function (response) {});
 
             url = "ccmSetting.html?unit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId=10&srcPort=104&megLevel=4&cfmVersion=0&ccmPeriod=1&rdiEnable=1&megId=ccmTest&lmEnable=1&remoteMepId=10&localMepId=9&policerId=3&outServiceId=6&inServiceId=7&Priority=7";
