@@ -52,7 +52,7 @@ angular.module('mqnaasApp')
 
         $scope.updateViList();
         var promise = $interval(function () {
-            $scope.update();
+            $scope.updateViList();
         }, 5000);
 
 

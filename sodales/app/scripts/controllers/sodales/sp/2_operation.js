@@ -394,7 +394,7 @@ angular.module('mqnaasApp')
             url = "egress_port_setting.html?unit=0&port_id=" + clusterId + "&tx_enable=1&crc_check=1";
             cpeService.post(url).then(function (response) {});
 
-            url = "egress_port_setting.html?unit=0&port_id=" + cpeSvc.srcPort "&tx_enable=1&crc_check=1";
+            url = "egress_port_setting.html?unit=0&port_id=" + cpeSvc.srcPort + "&tx_enable=1&crc_check=1";
             cpeService.post(url).then(function (response) {});
 
             url = "ccmSetting.html?unit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId=10&srcPort=104&megLevel=4&cfmVersion=0&ccmPeriod=1&rdiEnable=1&megId=ccmTest&lmEnable=1&remoteMepId=10&localMepId=9&policerId=3&outServiceId=6&inServiceId=7&Priority=7";
