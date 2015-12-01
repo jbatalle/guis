@@ -377,11 +377,7 @@ angular.module('mqnaasApp')
         };
 
         $scope.createCpeService = function (cpeSvc) {
-            //serviceId, srcPort, policerId
-            //get real port of device
-            //d.attributes.entry[0].value
-            var clusterId = "104";
-
+            var clusterId = cpeSvc.dstPort;
             url = "createServiceVlan.html?unit=0&serviceId=6&srcPort=" + cpeSvc.srcPort + "&policerId=" + cpeSvc.police.id + "&pmId=3&eIngressType=1&outer_vlanId=" + cpeSvc.innerVlan + "&clusterId=" + clusterId + "&vlanEdit_flowtype=2&vlanEdit_outer_command=3&vlanEdit_outer_vlan=" + cpeSvc.outerVlan;
             cpeService.post(url).then(function (response) {
                 console.log(response);
@@ -404,7 +400,7 @@ angular.module('mqnaasApp')
 
         $scope.deleteCpeService = function (serviceId) {
             url = "deleteServiceVlan.html?unit=0&serviceId=" + serviceId;
-            cpeService.post(url).then(function (response) {});
+            cpeService.get(url).then(function (response) {});
         };
 
         $scope.deleteCpePolice = function (serviceId) {
