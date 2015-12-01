@@ -253,13 +253,11 @@
                                                 <th class="col-sm-1 col-md-1 col-lg-1">Policer</th>
                                                 <th class="col-sm-1 col-md-1 col-lg-1">PmId</th>
                                                 <th class="col-sm-1 col-md-1 col-lg-1">EIngressType</th>
-                                                <th class="col-sm-1 col-md-1 col-lg-1">outer_vlanId</th>
-                                                <th class="col-sm-1 col-md-1 col-lg-1">inner_vlanId</th>
-                                                <th class="col-sm-1 col-md-1 col-lg-1">src_port</th>
-                                                <th class="col-sm-1 col-md-1 col-lg-1">vlanEdit_flowtype</th>
-                                                <th class="col-sm-1 col-md-1 col-lg-1">vlanEdit_outer_command</th>
-                                                <th class="col-sm-1 col-md-1 col-lg-1">vlanEdit_outer_vlan</th>
-                                                <th class="col-sm-1 col-md-1 col-lg-1">filter_enable</th>
+                                                <th class="col-sm-1 col-md-1 col-lg-1">Outer VlanId</th>
+                                                <th class="col-sm-1 col-md-1 col-lg-1">Inner VlanId</th>
+                                                <th class="col-sm-1 col-md-1 col-lg-1">Source port</th>
+                                                <th class="col-sm-1 col-md-1 col-lg-1">Output port</th>
+                                                <th class="col-sm-1 col-md-1 col-lg-1">Actions</th>
                                             </tr>
                                             <tr>
                                                 <th colspan="3">
@@ -276,12 +274,7 @@
                                                 <td>{{row.outer_vlanId}}</td>
                                                 <td>{{row.inner_vlanId}}</td>
                                                 <td>{{row.src_port}}</td>
-                                                <td>{{row.vlanEdit_flowtype}}</td>
-                                                <td>{{row.vlanEdit_outer_command}}</td>
-                                                <td>{{row.vlanEdit_outer_vlan}}</td>
-                                                <td>{{row.vlanEdit_inner_command}}</td>
-                                                <td>{{row.vlanEdit_inner_vlan}}</td>
-                                                <td>{{row.filter_enable}}</td>
+                                                <td>{{row.serviceOutputPort.cluster.clusterId}}</td>
                                                 <td>
                                                     <button type="button" ng-click="deleteCpeService(row.serviceId)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
                                                 </td>
@@ -289,7 +282,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td class="text-center" st-pagination="" st-items-by-page="10" colspan="4">
+                                                <td class="text-center" st-pagination="" st-items-by-page="10" colspan="9">
                                                 </td>
                                             </tr>
                                         </tfoot>
@@ -310,11 +303,11 @@
                                                 <th class="col-sm-1 col-md-1 col-lg-1">CIR</th>
                                                 <th class="col-sm-1 col-md-1 col-lg-1">CBS</th>
                                                 <th class="col-sm-1 col-md-1 col-lg-1">EIR</th>
-                                                <th class="col-sm-2 col-md-2 col-lg-2">EBS</th>
-                                                <th class="col-sm-1 col-md-1 col-lg-1">gn_sign</th>
-                                                <th class="col-sm-1 col-md-1 col-lg-1">gn_type</th>
-                                                <th class="col-sm-1 col-md-1 col-lg-1">comp</th>
-                                                <th class="col-sm-2 col-md-3 col-lg-3">Color</th>
+                                                <th class="col-sm-1 col-md-1 col-lg-1">EBS</th>
+                                                <th class="col-sm-1 col-md-1 col-lg-1">GN Sign</th>
+                                                <th class="col-sm-1 col-md-1 col-lg-1">GN Type</th>
+                                                <th class="col-sm-1 col-md-1 col-lg-1">Comp</th>
+                                                <th class="col-sm-1 col-md-1 col-lg-1">Color</th>
                                             </tr>
                                             <tr>
                                                 <th colspan="2">
@@ -325,7 +318,7 @@
                                         <tbody>
                                             <tr ng-repeat="row in cpePolCollection">
                                                 <td>{{row.id}}</td>
-                                                <td>{{row.type}}</td>
+                                                <td>{{row.Type}}</td>
                                                 <td>{{row.CIR}}</td>
                                                 <td>{{row.CBS}}</td>
                                                 <td>{{row.EIR}}</td>
@@ -334,14 +327,11 @@
                                                 <td>{{row.gn_type}}</td>
                                                 <td>{{row.comp}}</td>
                                                 <td>{{row.Color}}</td>
-                                                <td>
-                                                    <button type="button" ng-click="deletePolice(row._id)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
-                                                </td>
                                             </tr>
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td class="text-center" st-pagination="" st-items-by-page="10" colspan="4">
+                                                <td class="text-center" st-pagination="" st-items-by-page="10" colspan="10">
                                                 </td>
                                             </tr>
                                         </tfoot>
