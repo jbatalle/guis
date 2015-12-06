@@ -117,6 +117,24 @@ angular.module('mqnaasApp')
             spService.delUser(user.id, user.sp_id).then(function (data) {});
         };
 
+        $scope.createUserDialog = function(){
+            $modal({
+                title: 'Creating user',
+                template: 'views/modals/ip_oa/modalUserCreation.html',
+                show: true,
+                scope: $scope,
+            });
+        };
+
+        $scope.createUser = function(user){
+            console.log(user);
+            if(user.password !== user.re_password) return;
+            UsersService.register(user.username, user.password, user.email, user.fullname, user.tenant).then(function(result){
+console.log(result)
+                this.$hide();
+            });
+        };
+
     }).filter('exclude', function () {
         return function (items, exclude) {
             if (exclude === []) return;
