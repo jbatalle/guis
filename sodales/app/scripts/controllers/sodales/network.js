@@ -33,6 +33,11 @@ angular.module('mqnaasApp')
         };
 
         $scope.network_options = {
+            edges: {
+                smooth: {
+                    type: 'continuous'
+                }
+            },
             physics: {
                 stabilization: false,
                 barnesHut: {
@@ -40,6 +45,7 @@ angular.module('mqnaasApp')
                 }
             }
         };
+
     })
     .controller('editPhyNetwork', function ($scope, $rootScope, MqNaaSResourceService, $modal, RootResourceService, $interval, PhysicalService) {
         var url = '';
@@ -100,7 +106,7 @@ angular.module('mqnaasApp')
                             callback(data);
                         }
                     } else {
-                        callback(data);
+                        callback(null);
                     }
                 }
             }
@@ -233,19 +239,20 @@ angular.module('mqnaasApp')
             $scope.getPhysicalResources();
 
             if ($scope.nodes.get(source).group === "physical") {
+                $rootScope.virtualMappedResource = $scope.dest;
+                $rootScope.physicalMappedResource = $scope.source;
                 VirtualService.getRequestPorts($scope.dest);
                 PhysicalService.getPhysicalPorts($scope.source).then(function (ports) {
                     $scope.physicalPorts = ports;
                 });
             } else {
+                $rootScope.virtualMappedResource = $scope.source;
+                $rootScope.physicalMappedResource = $scope.dest;
                 VirtualService.getRequestPorts($scope.source);
                 PhysicalService.getPhysicalPorts($scope.dest).then(function (ports) {
                     $scope.physicalPorts = ports;
                 });
             }
-
-
-
 
             $rootScope.createMappingDialog = $modal({
                 title: 'Mapping virtual resource to physical resource',

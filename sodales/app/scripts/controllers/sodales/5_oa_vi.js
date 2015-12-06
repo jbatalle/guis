@@ -543,12 +543,19 @@ angular.module('mqnaasApp')
         });
 
 
-        $scope.map = function (virtualResource) {
+        $scope.map = function (virtualResource, physicalResource) {
             $scope.saving = true;
             $scope.cubes = [];
             _.map($scope.mapping, function (o) {
                 return _.values(_.pick(o, 'phy'));
             });
+
+
+            //mapping between resources
+            var ports = $scope.mapping;
+
+
+
 
             var portRanges = $scope.generateCube(_.map($scope.mapping, function (o) {
                 return _.values(_.pick(o, 'phy'));
@@ -575,14 +582,25 @@ angular.module('mqnaasApp')
             $scope.cubes = getCubes($scope.cubes)
 
 
-            $scope.slice = "";
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $rootScope.viId + "/IRequestResourceManagement/" + virtualResource + "/ISliceProvider/slice";
+
+            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $rootScope.viId + "/IRequestResourceMapping/defineMapping/?arg0=" + virtualResource + "&arg1=" + physicalResource;
             MqNaaSResourceService.getText(url).then(function (result) {
-                $scope.slice = result;
-                url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $rootScope.viId + "/IRequestResourceManagement/" + virtualResource + "/ISliceProvider/" + $scope.slice + "/ISliceAdministration/cubes";
-                MqNaaSResourceService.put(url, $scope.cubes).then(function (result) {
-                    $scope.saving = false;
-                    $rootScope.createMappingDialog.hide();
+
+                _.each(ports, function (port) {
+                    console.log(port);
+                    console.log($scope.physicalPorts[port.phy]);
+                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceMapping/defineMapping/?arg0=" + port.virt + "&arg1=" + $scope.physicalPorts[port.phy].id;
+                    MqNaaSResourceService.get(url).then(function (result) {});
+                })
+                $scope.slice = "";
+                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $rootScope.viId + "/IRequestResourceManagement/" + virtualResource + "/ISliceProvider/slice";
+                MqNaaSResourceService.getText(url).then(function (result) {
+                    $scope.slice = result;
+                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $rootScope.viId + "/IRequestResourceManagement/" + virtualResource + "/ISliceProvider/" + $scope.slice + "/ISliceAdministration/cubes";
+                    MqNaaSResourceService.put(url, $scope.cubes).then(function (result) {
+                        $scope.saving = false;
+                        $rootScope.createMappingDialog.hide();
+                    });
                 });
             });
         };

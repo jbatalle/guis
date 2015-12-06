@@ -34,6 +34,31 @@ angular.module('mqnaasApp')
                         }
                     };
                 });
+                network.on("dragStart", function (properties) {
+                    if (!properties.nodes.length) return;
+                    $scope.setNodesMoveable(properties.nodes, true);
+                });
+
+                network.on("dragEnd", function (properties) {
+                    if (!properties.nodes.length) return;
+                    $scope.setNodesMoveable(properties.nodes, false);
+                });
+
+                $scope.setNodesMoveable = function (nodeIds, isMoveable) {
+                    var updates = [];
+                    var isFixed = !isMoveable;
+                    for (var i = nodeIds.length; i--;) {
+                        updates.push({
+                            id: nodeIds[i],
+                            fixed: {
+                                x: isFixed,
+                                y: isFixed
+                            }
+                        });
+                    }
+                    console.log(network);
+                    $scope.ngModel.nodes.update(updates);
+                };
             }
         }
     })
