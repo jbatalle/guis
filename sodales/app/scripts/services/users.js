@@ -81,11 +81,11 @@ angular.module('mqnaasApp')
         // jlferrer:
         // When we create a User from the UI as an admin, we emulate a new registration
         // i.e., the user is created as inactive
-        var post = function (username, password, email, fullname, tenant, endpoint) {
+        var post = function (username, password, email, fullname, endpoint) {
             var url = AUTHENTICATION + endpoint;
             var deferred = $q.defer();
 
-            $http.post(url, 'username=' + username + '&password=' + password + '&email=' + email + '&fullname=' + fullname + '&tenant=' + tenant, {
+            $http.post(url, 'username=' + username + '&password=' + password + '&email=' + email + '&fullname=' + fullname, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
@@ -137,8 +137,8 @@ angular.module('mqnaasApp')
             remove: function (user_id) {
                 return remove(user_id);
             },
-            register: function (username, password, email, fullname, tenant) {
-                return post(username, password, email, fullname, tenant, 'register');
+            register: function (username, password, email, fullname) {
+                return post(username, password, email, fullname, 'register');
             }
         };
 

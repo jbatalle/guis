@@ -41,6 +41,9 @@ angular.module('mqnaasApp')
                     $scope.listVi.push(vi);
                 });
             });
+            UsersService.getUsers().then(function(users){
+                $scope.usersDataCollection = users;
+            });
         };
 
         $scope.updateSpList();
@@ -114,7 +117,7 @@ angular.module('mqnaasApp')
         };
 
         $scope.removeUser = function (user) {
-            spService.delUser(user.id, user.sp_id).then(function (data) {});
+            spService.removeUser(user.id, user.sp_id).then(function (data) {});
         };
 
         $scope.createUserDialog = function(){
@@ -129,10 +132,17 @@ angular.module('mqnaasApp')
         $scope.createUser = function(user){
             console.log(user);
             if(user.password !== user.re_password) return;
-            UsersService.register(user.username, user.password, user.email, user.fullname, user.tenant).then(function(result){
+            UsersService.register(user.username, user.password, user.email, user.fullname).then(function(result){
 console.log(result)
-                this.$hide();
+               // this.$hide();
             });
+            this.$hide();
+        };
+
+        $scope.activeUser = function(user){
+            UsersService.activeUser(user.id).then(function(){
+                $scope.updateSpList();
+            })
         };
 
     }).filter('exclude', function () {

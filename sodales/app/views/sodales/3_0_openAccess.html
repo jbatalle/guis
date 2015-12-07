@@ -17,7 +17,7 @@
             <div class="panel-body">
                 <div id="sp_table">
                     <div class="pull-right">
-                        <button class="btn btn-primary" ng-click="openSPCreationDialog()">Add</button>
+                        <button class="btn btn-primary" ng-click="openSPCreationDialog()">Create SP</button>
                         <button ng-click="updateSpList()" class="btn btn-default">Reload</button>
                     </div>
                     <table st-table="displayedCollection" st-safe-src="dataCollection" class="table table-striped">
@@ -49,13 +49,13 @@
                                     <select ng-model="selectedAddVi">
                                         <option ng-repeat="item in listVi | viDuplicates:row.vis track by $index">{{item}}</option>
                                     </select>
-                                    <a href="" ng-click="addVI(row.id, selectedAddVi)" title="View">Add</a></td>
+                                    <a ng-click="addVI(row.id, selectedAddVi)" title="View">Add</a></td>
                                 <td>
                                     <select ng-model="selectedRemoveVi">
                                         <option ng-repeat="item in row.vis track by $index">{{item.name}}</option>
                                     </select>
-                                    <a href="" ng-click="removeVI(row.id, selectedRemoveVi)" title="View">Del</a></td>
-                                <td><a href="" ng-click="removeSP(row.id)" title="View">Remove</a></td>
+                                    <a ng-click="removeVI(row.id, selectedRemoveVi)" title="View">Del</a></td>
+                                <td><a ng-click="removeSP(row.id)" title="View">Remove</a></td>
                             </tr>
                         </tbody>
                         <tfoot>
@@ -77,13 +77,11 @@
             <div class="panel-body">
                 <div class="pull-right">
                     <button ng-click="addUserDialog(current_sp)" class="btn btn-primary"><span class="fa fa-user-plus"></span></button>
-                    <button ng-click="createUserDialog(current_sp)" class="btn btn-primary">Create user</button>
                 </div>
                 <table st-table="displayedCollection2" st-safe-src="dataCollection2" class="table table-striped">
                     <thead>
                         <tr>
                             <th st-sort="name">Name</th>
-                            <th data-title="'description'" class="col-sm-2 col-md-2 col-lg-2">Email</th>
                             <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Actions</th>
                         </tr>
                         <tr>
@@ -94,14 +92,67 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="row in displayedCollection2">
-                            <td><a ng-click="selectedSP(row)">{{row.name}}</a></td>
-                            <td>{{row.email}}</td>
-                            <td><a href="" ng-click="removeUser(row)" title="View">Remove</a></td>
+                            <td>{{row.name}}</td>
+                            <td><a ng-click="removeUser(row)" title="Remove">Remove</a></td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
                             <td class="text-center" st-pagination="" st-items-by-page="5" colspan="3">
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+<div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-users fa-fw"></i> Users</h3>
+            </div>
+            <div class="panel-body">
+            <div class="pull-right">
+                    <button ng-click="createUserDialog(current_sp)" class="btn btn-primary">Create user</button>
+                </div>
+                <table st-table="usersCollection" st-safe-src="usersDataCollection" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th st-sort="name">Name</th>
+                            <th st-sort="name">Email</th>
+                            <th st-sort="name">Active</th>
+                            <th st-sort="name">SP</th>
+                            <th st-sort="name">Roles</th>
+                            <th st-sort="name">Last login</th>
+                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Actions</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">
+                                <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in usersCollection">
+                            <td>{{row.name}}</td>
+                            <td>{{row.email}}</td>
+                            <td>{{row.active}}</td>
+                            <td>{{row.sp_id}}</td>
+                            <td>
+                                <li ng-if="role.name !== 'guest'" ng-repeat="role in row.roles" style="content:','; padding:'0';">{{role.name}}</li>
+                            </td>
+                            <td>{{row.last_login_timestamp}}</td>
+                            <td>
+                                <a ng-if="row.active !== 1" ng-click="activeUser(row)" title="View">Active</a>
+                                <a ng-if="row.name !== 'admin'" ng-click="removeUser(row)" title="View">Remove</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="text-center" st-pagination="" st-items-by-page="5" colspan="7">
                             </td>
                         </tr>
                     </tfoot>

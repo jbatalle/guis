@@ -6,16 +6,18 @@
                 <h4 class="modal-title" ng-bind="title"></h4>
             </div>
             <div class="modal-body">
-                <form action="createARN" method="post" name="editForm">
+                <form action="createLink" method="post" name="editForm">
                     <div>
                         From resource ({{source.label}} to {{dest.label}})
                         <div>
                             <div ng-show="!!physicalPorts1.length">
                                 Source port ({{source.label}}):
-                                <button type="button" class="btn btn-default" ng-model="piPort1" data-html="1" bs-options="port.id  as (port.id + '(' + port.attributes.entry[0].value + ')' )  for port in physicalPorts1" bs-select>
+                                <button ng-show="source.type === 'ARN'" type="button" class="btn btn-default" ng-model="piPort1" data-html="1" bs-options="port._interfaceId  as (port._name + '(id:' + port._interfaceId +', card: '+port._cardId+')' )  for port in physicalPorts1" bs-select>
                                     Action <span class="caret"></span>
                                 </button>
-
+                                <button ng-show="source.type === 'CPE'" type="button" class="btn btn-default" ng-model="piPort12" data-html="1" bs-options="port.id  as (port.id + '(' + port.attributes.entry[0].value + ')' )   for port in physicalPorts1" bs-select>
+                                    Action <span class="caret"></span>
+                                </button>
                             </div>
                             <div ng-show=" !!!physicalPorts1.length">
                                 The resource {{source.label}} has no ports!
@@ -38,7 +40,7 @@
                 <div class="modal-footer">
                     <div class="row">
                         <div class="col-md-12">
-                            <button ng-if="piPort1 && piPort2" type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="createLink(piPort1, piPort2)">Create link</button>
+                            <button ng-if="piPort1 && piPort2" type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="createLink(piPort1, piPort2)">Create link</button>         
                         </div>
                     </div>
                 </div>
