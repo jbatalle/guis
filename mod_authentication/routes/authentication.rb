@@ -38,11 +38,11 @@ class Authentication < Sinatra::Application
 		user.email = params[:email]
 		user.fullname = params[:fullname]
 		user.active = 0
-		user.roles << Role.where(name: "tenantuser").first
+		user.roles << Role.where(name: "guest").first
 		begin
 			user.save!
-			sendRegistermMail(user.email)
-			sendInformMail(user.name)
+			#sendRegistermMail(user.email)
+			#sendInformMail(user.name)
 			status 201
 		rescue => ex
 			puts "Error #{$!}"

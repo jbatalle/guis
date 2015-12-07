@@ -34,14 +34,14 @@ class Authentication < Sinatra::Application
 	end
 	
 	#activate users
-	post "/users/:id/activate", :auth => [:sysadmin, :tenantadmin] do
+	post "/users/:id/activate", :auth => [:sysadmin, :tenantadmin, :ip] do
 		user = User.find(params[:id])
 		user.update_attribute(:active, 1)
 		status 200
 	end
 	
 	#activate users
-	post "/users/:id/disable", :auth => [:sysadmin, :tenantadmin] do
+	post "/users/:id/disable", :auth => [:sysadmin, :tenantadmin, :ip] do
 		user = User.find(params[:id])
 		user.update_attribute(:active, 0)
 		status 200
