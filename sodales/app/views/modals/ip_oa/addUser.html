@@ -10,7 +10,7 @@
                     <div>
                         <label for="serviceFVDs">Selected users</label>
                         <ul>
-                            <li ng-repeat="user in users">{{user.name}}
+                            <li ng-repeat="user in spUsers">{{user.name}}
                                 <button type="button" ng-click="delete(user)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i>
                                 </button>
                             </li>
@@ -24,7 +24,7 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="addResource(arn)">Add</button>
+                    <button type="button" class="btn btn-sm btn-primary" ng-click="$hide()">Close</button>
                 </div>
             </div>
         </div>

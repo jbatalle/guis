@@ -113,11 +113,19 @@ angular.module('mqnaasApp')
         };
 
         $scope.addUser = function (row) {
-            spService.addUser(row.id, $scope.current_sp.id).then(function (data) {});
+            spService.addUser(row.id, $scope.current_sp.id).then(function (data) {
+                spService.getUsers(row.id).then(function (data) {
+                    $scope.spUsers = data;
+                });
+            });
         };
 
         $scope.removeUser = function (user) {
             spService.removeUser(user.id, user.sp_id).then(function (data) {});
+        };
+
+        $scope.deleteUser = function(){
+            UsersService.remove(user.id).then(function (data) {});
         };
 
         $scope.createUserDialog = function(){

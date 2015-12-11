@@ -146,7 +146,7 @@
                             <td>{{row.last_login_timestamp}}</td>
                             <td>
                                 <a ng-if="row.active !== 1" ng-click="activeUser(row)" title="View">Active</a>
-                                <a ng-if="row.name !== 'admin'" ng-click="removeUser(row)" title="View">Remove</a>
+                                <a ng-if="row.name !== 'admin'" ng-click="deleteUser(row)" title="View">Remove</a>
                             </td>
                         </tr>
                     </tbody>
