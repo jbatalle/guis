@@ -82,16 +82,18 @@ angular.module('mqnaasApp')
         };
 
         $scope.network_options = {
-            layout: {
-                randomSeed: 3
-            }, // just to make sure th layout is the same when the locale is changed
-            locale: 'en',
+            edges: {
+                smooth: {
+                    type: 'continuous'
+                }
+            },
             physics: {
                 stabilization: false,
                 barnesHut: {
                     "springConstant": 0
                 }
             },
+            locale: 'en',
             manipulation: {
                 addNode: false,
                 editEdge: false,
@@ -193,15 +195,17 @@ angular.module('mqnaasApp')
         };
 
         $scope.network_options = {
-            layout: {
-                randomSeed: 3
+            edges: {
+                smooth: {
+                    type: 'continuous'
+                }
             },
             physics: {
                 stabilization: false,
                 barnesHut: {
                     "springConstant": 0
                 }
-            }, // just to make sure th layout is the same when the locale is changed
+            },
             locale: 'en',
             manipulation: {
                 addNode: false,
@@ -278,10 +282,14 @@ angular.module('mqnaasApp')
         };
 
         $scope.generateNodeData = function (data) {
+            console.log($scope.network_options);
             data = checkIfIsArray(data);
             //$scope.nodes = new vis.DataSet();
             data.forEach(function (node) {
                 if (node.type !== undefined && node.type !== 'link' && node.type !== 'Network') {
+                    //put in the other half
+                    var x = 10,
+                        y = 50;
                     $scope.nodes.add({
                         id: $scope.nodes.lentgh,
                         label: node.id,
@@ -363,16 +371,18 @@ angular.module('mqnaasApp')
         };
 
         $scope.network_options = {
-            layout: {
-                randomSeed: 3
-            }, // just to make sure th layout is the same when the locale is changed
-            locale: 'en',
+            edges: {
+                smooth: {
+                    type: 'continuous'
+                }
+            },
             physics: {
                 stabilization: false,
                 barnesHut: {
                     "springConstant": 0
                 }
-            }
+            },
+            locale: 'en'
         };
 
         $scope.onNodeSelect = function (properties) {
