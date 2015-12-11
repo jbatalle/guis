@@ -69,7 +69,7 @@
                                 <tbody ng-repeat="p in mapping">
                                     <tr>
                                         <td>{{p.virt}}</td>
-                                        <td>{{physicalPorts[p.phy].id}}</td>
+                                        <td>{{p}}{{physicalPorts[p.phy]._interfaceId}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -115,7 +115,14 @@
                                     </div>
                                     <div class="box-body " style="display: block; ">
                                         <select ng-model="selectedPhyPorts" name="ports" multiple size=5 style="width: 100%">
-                                            <option ng-repeat="p in physicalPorts" value="{{$index}}">{{p.id}} ({{p.attributes.entry[0].value}})</option>
+                                            <option ng-repeat="p in physicalPorts" value="{{$index}}">
+                                                <span ng-if="dest.type === 'CPE'">
+                                                    {{p.id}} ({{p.attributes.entry[0].value}})
+                                                </span>
+                                                <span ng-if="dest.type === 'ARN'">
+                                                    {{p._interfaceId}} ({{p._cardId}}) ({{p._name}})
+                                                </span>
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
