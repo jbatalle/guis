@@ -380,12 +380,16 @@ angular.module('mqnaasApp')
 
             var possibleId = Math.floor((Math.random() * 200) + 1);
             var serviceId = null;
+            var inServiceId = null;
+            var outServiceId = null;
             while (serviceId === null) {
+                //find should replace filter?
                 var l = $scope.cpeServices.filter(function (d) {
                     return d.serviceId === "6"
                 });
                 if (l.length > 0) serviceId = possibleId;
                 else possibleId = Math.floor((Math.random() * 200) + 1);
+                outServiceId = inServiceId +1
             }
             console.log(serviceId);
             var clusterId = cpeSvc.dstPort;
@@ -398,6 +402,9 @@ angular.module('mqnaasApp')
             url = "ingress_port_setting.html?unit=0&port_id=" + clusterId + "&rx_enable=1&crc_check=1&my_mac=00:01:03:05:06:05";
             cpeService.post(url).then(function (response) {});
 
+            url = "ingress_port_setting.html?unit=0&port_id=" + cpeSvc.srcPort + "&rx_enable=1&crc_check=1";
+            cpeService.post(url).then(function (response) {});
+
             url = "egress_port_setting.html?unit=0&port_id=" + clusterId + "&tx_enable=1&crc_check=1";
             cpeService.post(url).then(function (response) {});
 
@@ -408,14 +415,15 @@ angular.module('mqnaasApp')
             cpeService.post(url).then(function (response) {});
         };
 
+        $scope.createCFMService = function(){
+            //ccmSetting.htmlunit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId=710&srcPort=105&megLevel=4&cfmVersion=0&ccmPeriod=1&rdiEnable=1&megId=ccmTest&lmEnable=1&remoteMepId=10&localMepId=9&policerId=3&outServiceId=9&inServiceId=8&Priority=7
+            url = "ccmSetting.html?unit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId="+vlanId+"0&srcPort="+srcPort+"&megLevel=4&cfmVersion=0&ccmPeriod=1&rdiEnable=1&megId=ccmTest&lmEnable=1&remoteMepId=10&localMepId=9&policerId="+policerId+"&outServiceId="+outService+"&inServiceId="+inService+"&Priority=7";
+            cpeService.post(url).then(function (response) {});
+        };
+
         $scope.deleteCpeService = function (serviceId) {
             url = "deleteServiceVlan.html?unit=0&serviceId=" + serviceId;
             cpeService.get(url).then(function (response) {});
-        };
-
-        $scope.deleteCpePolice = function (serviceId) {
-            //url = "deleteServiceVlan.html?unit=0&serviceId=" + serviceId;
-            //cpeService.post(url).then(function (response) {});
         };
 
         $scope.Configure = function (type, form) {
@@ -435,5 +443,12 @@ angular.module('mqnaasApp')
             }
             $rootScope.info = "200 - Operation done";
             this.$hide();
+        };
+
+        $scope.endToEndConnectivity = function(){
+            //source_resource
+            //target_resource
+            //read the list of links
+            //vlans
         };
     });
