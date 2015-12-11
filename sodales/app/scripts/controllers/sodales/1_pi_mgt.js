@@ -289,6 +289,7 @@ angular.module('mqnaasApp')
             $scope.dest = dest; //$scope.nodes.get(dest);
 
             PhysicalService.getPhysicalPorts($scope.source.label).then(function (data) {
+                console.log(data);
                 $scope.physicalPorts1 = data;
             });
             PhysicalService.getPhysicalPorts($scope.dest.label).then(function (data) {
@@ -304,35 +305,70 @@ angular.module('mqnaasApp')
         };
 
         $scope.createLink = function (srcPort, dstPort) {
-            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement';
-            MqNaaSResourceService.put(url).then(function (linkId) {
-                url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement/' + linkId + '/ILinkAdministration/srcPort?arg0=' + srcPort;
-                MqNaaSResourceService.put(url).then(function (response) {});
-                url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement/' + linkId + '/ILinkAdministration/destPort?arg0=' + dstPort;
-                MqNaaSResourceService.put(url).then(function (response) {}); //empty
-                console.log($scope.source.label);
-                console.log($scope.dest.label);
-                var srcNode = $rootScope.network_data.nodes.get({
-                    filter: function (item) {
-                        return item.label == $scope.source.label;
-                    }
-                })[0];
-                var dstNode = $rootScope.network_data.nodes.get({
-                    filter: function (item) {
-                        return item.label == $scope.dest.label;
-                    }
-                })[0];
-                console.log(srcNode);
-
-                $rootScope.network_data.edges.add({
-                    id: $rootScope.network_data.edges.lentgh,
-                    from: srcNode.id,
-                    to: dstNode.id,
-                    label: linkId
+            console.log(srcPort);
+            console.log($scope.source);
+            if($scope.source.type === "ARN"){
+                var msrcPort = srcPort;
+                srcPort = undefined;
+                url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + $scope.source.label + '/IResourceModelReader/resourceModel/';
+                MqNaaSResourceService.get(url).then(function (result) {
+                    var ports = checkIfIsArray(result.resource.resources.resource);
+                    srcPort = ports.find(function(p){return p.attributes.entry[0].value === msrcPort});
+                    $scope.srcPort = srcPort;
+                    console.log("Src port set")
                 });
+            }
+            if($scope.dest.type === "ARN"){
+                var mdstPort = dstPort;
+                dstPort = undefined;
+                url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + $scope.dest.label + '/IResourceModelReader/resourceModel/';
+                MqNaaSResourceService.get(url).then(function (result) {
+                    var ports = checkIfIsArray(result.resource.resources.resource);
+                    console.log(ports);
+                    dstPort = ports.find(function(p){return p.attributes.entry[0].value === mdstPort});
+                });
+            }
 
-                $scope.updateListNetworks();
-                $rootScope.createLinkModal.hide();
-            });
+$scope.$watchCollection(['srcPort'], function(newValues, oldValues, scope) {
+    console.log(newValues);
+    console.log(oldValues);
+console.log($scope.srcPort);
+srcPort  = $scope.scrPort;
+                console.log(srcPort);
+                console.log(dstPort);
+                if(srcPort !== undefined && dstPort !== undefined){
+                    console.log("Creating link now!");
+                    var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement';
+                    MqNaaSResourceService.put(url).then(function (linkId) {
+                        url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement/' + linkId + '/ILinkAdministration/srcPort?arg0=' + srcPort;
+                        MqNaaSResourceService.put(url).then(function (response) {});
+                        url = 'IRootResourceAdministration/' + $rootScope.networkId + '/ILinkManagement/' + linkId + '/ILinkAdministration/destPort?arg0=' + dstPort;
+                        MqNaaSResourceService.put(url).then(function (response) {}); //empty
+                        var srcNode = $rootScope.network_data.nodes.get({
+                            filter: function (item) {
+                                return item.label == $scope.source.label;
+                            }
+                        })[0];
+                        var dstNode = $rootScope.network_data.nodes.get({
+                            filter: function (item) {
+                                return item.label == $scope.dest.label;
+                            }
+                        })[0];
+                        console.log(srcNode);
+
+                        $rootScope.network_data.edges.add({
+                            id: $rootScope.network_data.edges.lentgh,
+                            from: srcNode.id,
+                            to: dstNode.id,
+                            label: linkId
+                        });
+
+                        $scope.updateListNetworks();
+                        $rootScope.createLinkModal.hide();
+                    });
+                    loop = 20;
+                
+            }
+        })
         };
     });

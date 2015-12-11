@@ -77,8 +77,32 @@ angular.module('mqnaasApp')
             var deferred = $q.defer();
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/IResourceModelReader/resourceModel";
             var promise = MqNaaSResourceService.get(url).then(
-                function (response) {
-                    return checkIfIsArray(response.resource.resources.resource);
+                function (data) {
+                    var ports = [];
+                    if (data.resource.type === 'CPE') {
+                        //$rootScope.resourceInfo.ports = [];
+                        var cpePorts = checkIfIsArray(data.resource.resources.resource);
+                        angular.forEach(cpePorts, function (port) {
+                        if (parseInt(port.attributes.entry[0].value) > 99 && parseInt(port.attributes.entry[0].value) < 112)
+                            ports.push(port);
+                        });
+
+                    } else if (data.resource.type === 'ARN') {
+                        var deferred2 = $q.defer(); 
+                            //if is ARN, get Card, and type of port
+                        ports = arnService.put(getAllInterfaces()).then(function (data) {
+                            ports = checkIfIsArray(data.response.operation.interfaceList.interface);
+                           // deferred2.resolve(ports);
+                            return $q.when(ports);
+                        },
+                        function (response) {
+                            deferred2.reject(response.data);
+                        });
+                        console.log(ports);
+                    }
+                    //deferred.promise;
+                    return ports;
+                    //return checkIfIsArray(response.resource.resources.resource);
                 },
                 function (response) {
                     deferred.reject(response.data);
