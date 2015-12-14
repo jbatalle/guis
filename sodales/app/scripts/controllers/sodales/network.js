@@ -236,12 +236,23 @@ angular.module('mqnaasApp')
                 $scope.source = $scope.nodes.get(source).label;
                 $scope.dest = $scope.nodes.get(dest).label;
             } else {
-                $scope.source = source;
-                $scope.dest = dest;
+                source = $scope.nodes.get({
+                    filter: function (item) {
+                        return item.label == source;
+                    }
+                })[0];
+                dest = $scope.nodes.get({
+                    filter: function (item) {
+                        return item.label == dest;
+                    }
+                })[0];
+                $scope.source = source.label;
+                $scope.dest = dest.label;
             }
             $scope.getVirtualResources();
             $scope.getPhysicalResources();
-
+console.log($scope.nodes);
+console.log($scope.nodes);
             if ($scope.nodes.get(source).group === "physical") {
                 $rootScope.virtualMappedResource = $scope.dest;
                 $rootScope.physicalMappedResource = $scope.source;
@@ -289,7 +300,7 @@ angular.module('mqnaasApp')
                 if (node.type !== undefined && node.type !== 'link' && node.type !== 'Network') {
                     //put in the other half
                     var x = 10,
-                        y = 50;
+                        y = 400;
                     $scope.nodes.add({
                         id: $scope.nodes.lentgh,
                         label: node.id,
