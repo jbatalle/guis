@@ -213,7 +213,6 @@ angular.module('mqnaasApp')
                 deleteEdge: false,
                 deleteNode: false,
                 addEdge: function (data, callback) {
-                    console.log("Adding link");
                     $rootScope.createMappingDialogCall(data.from, data.to, 'vis');
                     if (data.from == data.to) {
                         var r = confirm('Do you want to connect the node to itself?');
@@ -236,38 +235,43 @@ angular.module('mqnaasApp')
                 $scope.source = $scope.nodes.get(source).label;
                 $scope.dest = $scope.nodes.get(dest).label;
             } else {
-                source = $scope.nodes.get({
+                var src = $scope.nodes.get({
                     filter: function (item) {
                         return item.label == source;
                     }
                 })[0];
-                dest = $scope.nodes.get({
+                var dst = $scope.nodes.get({
                     filter: function (item) {
                         return item.label == dest;
                     }
                 })[0];
-                $scope.source = source.label;
-                $scope.dest = dest.label;
+                source = src.id;
+                dest = dst.id;
+                $scope.source = src.label;
+                $scope.dest = dst.label;
             }
             $scope.getVirtualResources();
             $scope.getPhysicalResources();
-console.log($scope.nodes);
-console.log($scope.nodes);
             if ($scope.nodes.get(source).group === "physical") {
+                var t = $scope.source;
+                $scope.source = $scope.dest;
+                $scope.dest = t;
                 $rootScope.virtualMappedResource = $scope.dest;
                 $rootScope.physicalMappedResource = $scope.source;
-                VirtualService.getRequestPorts($scope.dest);
-                PhysicalService.getPhysicalPorts($scope.source).then(function (ports) {
-                    $scope.physicalPorts = ports;
-                });
             } else {
                 $rootScope.virtualMappedResource = $scope.source;
                 $rootScope.physicalMappedResource = $scope.dest;
-                VirtualService.getRequestPorts($scope.source);
+            }
+            VirtualService.getResource($scope.source);
+            VirtualService.getRequestPorts($scope.source);
+            console.log($scope.source);
+            console.log($scope.dest);
+            PhysicalService.getResource($scope.dest, function () { 
+                });
                 PhysicalService.getPhysicalPorts($scope.dest).then(function (ports) {
                     $scope.physicalPorts = ports;
                 });
-            }
+            
 
             $rootScope.createMappingDialog = $modal({
                 title: 'Mapping virtual resource to physical resource',

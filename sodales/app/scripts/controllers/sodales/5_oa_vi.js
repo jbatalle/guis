@@ -398,23 +398,27 @@ angular.module('mqnaasApp')
                             mapped: response,
                             ports: []
                         });
-                        $scope.mappPortInfo($rootScope.virtualResources.length - 1, viRes)
+                        $scope.mappPortInfo($rootScope.virtualResources.length - 1, viRes, response)
                     });
                 })
             });
         };
 
-        $scope.mappPortInfo = function (i, viRes) {
+        $scope.mappPortInfo = function (i, viRes, phyRes) {
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + viRes + "/IPortManagement";
             MqNaaSResourceService.get(url).then(function (response) {
                 var virtualPorts = checkIfIsArray(response.IResource.IResourceId);
                 angular.forEach(virtualPorts, function (viPort) {
                     url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceMapping/mapping/?arg0=" + viPort;
                     MqNaaSResourceService.getText(url).then(function (response) {
-                        $rootScope.virtualResources[i].ports.push({
-                            id: viPort,
-                            mapped: response
-                        })
+                        console.log(response);
+                        url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + phyRes + "/IPortManagement/" + response + "/IAttributeStore/attribute/?arg0=resource.external.id";
+                        MqNaaSResourceService.getText(url).then(function (response) {
+                            $rootScope.virtualResources[i].ports.push({
+                                id: viPort,
+                                mapped: response
+                            })
+                        });
                     });
                 });
             });
