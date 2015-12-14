@@ -69,7 +69,7 @@
                                 <tbody ng-repeat="p in mapping">
                                     <tr>
                                         <td>{{p.virt}}</td>
-                                        <td>{{p}}{{physicalPorts[p.phy]._interfaceId}}</td>
+                                        <td>{{physicalPorts[p.phy]._interfaceId}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -114,14 +114,19 @@
                                         </div>
                                     </div>
                                     <div class="box-body " style="display: block; ">
+                                    {{resourceInfo.type}}             
+                                    <span ng-if="resourceInfo.type === 'CPE'">
+                                                    CPE
+                                                </span>
+                                                <span ng-if="resourceInfo.type === 'ARN'">
+                                                   ARN
+                                                </span>              
                                         <select ng-model="selectedPhyPorts" name="ports" multiple size=5 style="width: 100%">
-                                            <option ng-repeat="p in physicalPorts" value="{{$index}}">
-                                                <span ng-if="dest.type === 'CPE'">
+                                            <option ng-repeat="p in physicalPorts" value="{{$index}}" ng-if="resourceInfo.type === 'CPE'">
                                                     {{p.id}} ({{p.attributes.entry[0].value}})
-                                                </span>
-                                                <span ng-if="dest.type === 'ARN'">
+                                            </option>
+                                                <option ng-repeat="p in physicalPorts" value="{{$index}}" ng-if="resourceInfo.type === 'ARN'">
                                                     {{p._interfaceId}} ({{p._cardId}}) ({{p._name}})
-                                                </span>
                                             </option>
                                         </select>
                                     </div>
