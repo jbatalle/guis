@@ -199,7 +199,8 @@ angular.module('mqnaasApp')
                     $scope.configurePhysicalResource(res, ports);
                     $scope.dataARN = res;
                     $rootScope.network_data.nodes.add({
-                        id: $rootScope.network_data.nodes.length,
+                        //id: $rootScope.network_data.nodes.length,
+                        id: Math.floor(Math.random() * (10000000000 - 1)) + 1,
                         label: res,
                         image: 'images/SODALES_' + data.type.toUpperCase() + '.png',
                         shape: 'image',
@@ -272,16 +273,6 @@ angular.module('mqnaasApp')
                 scope: $scope,
             });
         };
-        /*
-                    $scope.changeView = function () {
-                        console.log(buttonToogle);
-                        var type = $rootScope.resourceInfo.type;
-                        if (buttonToogle) {
-            if(type === 'ARN') 
-                        } else {
-
-                        }
-        };*/
 
         $rootScope.createLinkDialog = function (source, dest) {
             console.log("Create Link dialog");
@@ -289,9 +280,9 @@ angular.module('mqnaasApp')
             $scope.dest = dest; //$scope.nodes.get(dest);
 
             PhysicalService.getPhysicalPorts($scope.source.label).then(function (data) {
-                console.log(data);
                 $scope.physicalPorts1 = data;
             });
+
             PhysicalService.getPhysicalPorts($scope.dest.label).then(function (data) {
                 $scope.physicalPorts2 = data;
             });
@@ -329,7 +320,6 @@ angular.module('mqnaasApp')
                 url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + $scope.dest.label + '/IResourceModelReader/resourceModel/';
                 MqNaaSResourceService.get(url).then(function (result) {
                     var ports = checkIfIsArray(result.resource.resources.resource);
-                    console.log(ports);
                     dstPort = ports.find(function (p) {
                         return p.attributes.entry[0].value === mdstPort
                     }).id;
