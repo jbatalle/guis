@@ -46,8 +46,14 @@ class IMLSodales < Sinatra::Application
 				#@viNetwork.viResources << ViResource.new({:type => viReqResource, :endpoint => ""})
 			end
 		end
-		@viNetwork.save!
-		return @viNetwork
+		
+		logger.error "Save VI NETWORK ........................................"
+		if @viNetwork.save!
+			return "#{@viNetwork.id}"
+		else
+			halt 400, "Not posible to save"
+		end
+
 		#@viNetwork.viResources << ViResource.new({})
 		#logger.error @viReqNetwork.viReqResources
 		#add ports according to mapping
@@ -55,7 +61,17 @@ class IMLSodales < Sinatra::Application
 	end
 
 	delete '/viNetworks/:id' do
-		ViNetwork.find(params['id']).delete
+		n = ViNetwork.find(params['id'])
+		n.viResources.each do |viResource|
+			r = n.viResources.find(viResource['id'])
+				r.viPorts.each do |viPort|
+				logger.error viPort
+				logger.error viPort.id
+				r.viPorts.find(viPort['id']).delete
+			end
+			r.delete
+		end
+		n.delete
 	end
 
 	delete '/viNetworks' do

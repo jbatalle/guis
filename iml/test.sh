@@ -22,18 +22,21 @@ id3=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/add
 echo "Mapping in " $id3
 curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapPort/$id3\?arg0=port
 curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapVlan -d '{"upperBound": 1, "lowerBound": 10}'
-curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapResource -d '{"test": "aa"}'
-
+curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapResource -d '{"id": "aa"}'
 #curl -XPUT http://localhost:4050/viReqNetworks/$id/viReqResource -d '{"name": "name-21", "resource_type":"ARN", "ports": "", "mapped_resource": 1}'
 
 echo "List of viReqNetworks"
-exit
 curl -XGET http://localhost:4050/viReqNetworks
 
 echo "Specific VIReq"
 curl -XGET http://localhost:4050/viReqNetworks/$id
 
-#remove resource
+echo "Create network"
+netId=$(curl -XPOST http://localhost:4050/viNetworks -d '{"id": "'$id'"}')
+
+echo $netId
+
+echo "Remove resource"
 curl -XDELETE http://localhost:4050/viReqNetworks/$id/viReqResource/$id2
 
 echo "Resource removed ok"
@@ -45,7 +48,8 @@ curl -XDELETE http://localhost:4050/viReqNetworks/$id
 echo "Network removed ok"
 curl -XGET http://localhost:4050/viReqNetworks
 
-#create network
+curl -XDELETE http://localhost:4050/viNetworks/$netId
 
-#curl -XPOST http://localhost:4050/viNetworks -d '{"id": "567200ad6e95522902000000"}'
+
+
 
