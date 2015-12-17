@@ -26,7 +26,7 @@ class IMLSodales < Sinatra::Application
 	put '/viReqNetworks/:id' do
 		begin
 			@viRequest = ViReqNetwork.find(params['id'])
-		rescue ActiveRecord::RecordNotFound
+		rescue Mongoid::Errors::DocumentNotFound => e
 			halt 404, "ViReq not found"
 		end
 
@@ -40,8 +40,8 @@ class IMLSodales < Sinatra::Application
 
 	get '/viReqNetworks/:id/viReqResource' do
 		begin
-			return ViReqNetwork.find(params['id']).viReqResources.to_json
-		rescue ActiveRecord::RecordNotFound
+			return ViReqNetwork.find(params['id']).vi_req_resources.to_json
+		rescue Mongoid::Errors::DocumentNotFound => e
 			halt 404, "ViReq network not found"
 		end
 	end
@@ -55,56 +55,77 @@ class IMLSodales < Sinatra::Application
 	end
 
 	post '/viReqNetworks/:id/viReqResource/addResource' do
-		begin
-			@viReqNetwork = ViReqNetwork.find(params['id'])
-		rescue Mongoid::Errors::DocumentNotFound => e
-			halt 404, "Not found"
-		end
-
 		viReqRes, errors = parse_json(request.body.read)
 		return 400, errors.to_json if errors
 
-		@viReqNetwork.viReqResources << ViReqResource.new(viReqRes)
-		logger.error @viReqNetwork.viReqResources.last['id'].to_s
-		return @viReqNetwork.viReqResources.last['id'].to_s
+		n = ViReqNetwork.find(params['id'])
+		@resource = n.vi_req_resources.create!(viReqRes)
+		return @resource['id'].to_s
+
+		@viReqNetwork.vi_req_resources << ViReqResource.new(viReqRes)
+		logger.error @viReqNetwork.vi_req_resources.last['id'].to_s
+		return @viReqNetwork.vi_req_resources.last['id'].to_s
 	end
 
 	post '/viReqNetworks/:id/viReqResource/:resourceId/addPort' do
-		begin
-			@viReqNetwork = ViReqNetwork.find(params['id'])
-		rescue Mongoid::Errors::DocumentNotFound => e
-			halt 404, "VI Req Not found"
-		end
-
 		n = ViReqNetwork.find(params['id'])
-		r = n.viReqResources.find(params['resourceId'])
-		r.viReqPorts << ViReqPort.new()
-		return r.viReqPorts.last['id'].to_s
+		r = n.vi_req_resources.find(params['resourceId'])
+		@port = r.vi_req_ports.create!()
+		return @port['id'].to_s
 	end
 
 	post '/viReqNetworks/:id/viReqResource/:resourceId/mapResource' do
+		data, errors = parse_json(request.body.read)
+		return 400, errors.to_json if errors
+		logger.error data
+
 		n = ViReqNetwork.find(params['id'])
-		r = n.viReqResources.find(params['resourceId'])
-		r.update_attribute('mapping', params[:arg0])
-		return @viReqNetwork
+		r = n.vi_req_resources.find(params['resourceId'])
+		r.update_attribute('mapping', data['id'])
+		r.update_attribute('mapping_uri', data['endpoint'])
+		return n.to_json
 	end
 
 	#?arg0=port
-	post '/viReqNetworks/:id/viReqResource/:resourceId/mapPort/:portId' do
+	post '/viReqNetworks/:id/viReqResource/:resourceId/mapPort/:portId/:phyPort' do
+		#data, errors = parse_json(request.body.read)
+		#return 400, errors.to_json if errors
+
+#		ViReqPort.find(params['portId']).update_attributes(:mapped => data['phyPort'])
 		n = ViReqNetwork.find(params['id'])
-		r = n.viReqResources.find(params['resourceId'])
-		p = r.viReqPorts.find(params['portId'])
-		p.update_attribute('mapping', params[:arg0])
-		return @viReqNetwork
+		r = n.vi_req_resources.find(params['resourceId'])
+		logger.error r.id
+		p = r.vi_req_ports.find(params['portId'])
+		logger.error p.id
+
+		#remove
+		r.vi_req_ports.find(params['portId']).delete
+		p = r.vi_req_ports.create!({:name => "adasda", :mapped => params['phyPort']})
+		#a = r.vi_req_ports.find(params['portId']).update({:mapped => data['phyPort']})
+
+		return r.vi_req_ports.last['id'].to_s
+		r.vi_req_ports.last.update_attribute('mapped', "aaaaa")
+		logger.error r.vi_req_ports.find(params['portId'])
+		r.reload.vi_req_ports
+		n.reload.vi_req_resources
+
+		#p = r.vi_req_ports.find(params['portId']).save!
+		#p.update_attributes!(:mapped => data['phyPort'])
+		#logger.error p.id
+		return p.to_json
 	end
 
 	post '/viReqNetworks/:id/viReqResource/:resourceId/mapVlan' do
+		logger.error "MAP VLAN"
 		data, errors = parse_json(request.body.read)
 		return 400, errors.to_json if errors
+		logger.error data.to_json
 		n = ViReqNetwork.find(params['id'])
-		r = n.viReqResources.find(params['resourceId'])
+		r = n.vi_req_resources.find(params['resourceId'])
+		logger.error r
 		r.update_attribute('mappingVlans', data)
-		return @viReqNetwork
+		logger.error r
+		return @viReqNetwork.to_json
 	end
 
 	post '/viReqNetworks/:id/viReqResource' do
@@ -187,5 +208,11 @@ class IMLSodales < Sinatra::Application
 	delete '/viReqNetworks' do
 		ViReqNetwork.delete_all
 	end
+
+	options "*" do
+                response.headers["Access-Control-Allow-Methods"] = "HEAD,GET,PUT,POST,DELETE,OPTIONS"
+                response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Cache-Control, Accept, Authorization, X-Auth-Token, X-FOG-TENANT"
+                200
+    end
 	
 end

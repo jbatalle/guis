@@ -47,6 +47,6 @@ class IMLSodales < Sinatra::Application
 	options '*' do
 		headers 'Access-Control-Allow-Origin' => '*',
 			'Access-Control-Allow-Methods' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-			'Access-Control-Allow-Headers' => ['Content-Type', 'Authorization', 'X-Auth-Token', 'X-FOG-TENANT']
+			'Access-Control-Allow-Headers' => ['Content-Type', 'Authorization', 'X-Auth-Token', 'X-AUTH-TOKEN']
 	end
 end

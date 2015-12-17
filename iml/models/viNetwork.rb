@@ -24,7 +24,7 @@ class ViNetwork
   include Mongoid::Timestamps
   include Mongoid::Attributes::Dynamic
 
-  embeds_many :viResources
+  embeds_many :vi_resources
 
   #field :vi_resource_req, type: Array
   #field :viReqResource, type: Array

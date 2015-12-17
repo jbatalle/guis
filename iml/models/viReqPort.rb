@@ -25,14 +25,9 @@ class ViReqPort
   include Mongoid::Timestamps
   include Mongoid::Attributes::Dynamic
 
-	#belongs_to :viReqNetworḱ
-	embedded_in :viReqResource
-	#validates_uniqueness_of :name
-=begin
-	def as_json(options={})
-		super(
-			:except => [ :vi_req_network_id ],
-		)
-	end
-=end
+	#embedded_in :viReqResource, inverse_of: :viReqPort
+  embedded_in :vi_req_resource
+
+  
+
 end

@@ -24,7 +24,10 @@ class ViReqNetwork
   include Mongoid::Timestamps
   include Mongoid::Attributes::Dynamic
 
-  embeds_many :viReqResources
+  #embeds_many :viReqResources, cascade_callbacks: true
+  embeds_many :vi_req_resources, cascade_callbacks: true
+
+  accepts_nested_attributes_for :vi_req_resources, reject_if: :all_blank, allow_destroy: true
 
   #field :vi_resource_req, type: Array
   #field :viReqResource, type: Array

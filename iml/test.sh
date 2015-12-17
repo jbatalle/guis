@@ -22,7 +22,7 @@ id3=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/add
 echo "Mapping in " $id3
 curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapPort/$id3\?arg0=port
 curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapVlan -d '{"upperBound": 1, "lowerBound": 10}'
-curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapResource -d '{"id": "aa"}'
+curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapResource -d '{"id": "aa", "endpoint": "http://test"}'
 #curl -XPUT http://localhost:4050/viReqNetworks/$id/viReqResource -d '{"name": "name-21", "resource_type":"ARN", "ports": "", "mapped_resource": 1}'
 
 echo "List of viReqNetworks"

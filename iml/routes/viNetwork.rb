@@ -13,6 +13,15 @@ class IMLSodales < Sinatra::Application
 		end
 	end
 
+	get '/viNetworks/:id/resource/:resourceId' do
+		logger.error ViNetwork.find(params['id']).vi_resources
+		begin
+			return ViNetwork.find(params['id']).vi_resources.find(params['resourceId']).to_json
+		rescue Mongoid::Errors::DocumentNotFound => e
+			halt 404, "Not found"
+		end
+	end
+
 	post '/viNetworks' do
 		viNet, errors = parse_json(request.body.read)
 		return 400, errors.to_json if errors
@@ -29,20 +38,20 @@ class IMLSodales < Sinatra::Application
 		@viNetwork = ViNetwork.new({:name => "", :period_start => @viReqNetwork['period_start'], :period_end => @viReqNetwork['period_end']})
 		#add virtual resource
 		logger.error "For each resources"
-		logger.error @viReqNetwork['viReqResources']
-		logger.error @viReqNetwork.viReqResources
-		@viReqNetwork['viReqResources'].each do |viReqResource|
+		logger.error @viReqNetwork['vi_req_resources']
+		logger.error @viReqNetwork.vi_req_resources
+		@viReqNetwork['vi_req_resources'].each do |viReqResource|
 			logger.error viReqResource
 			#r = 
-			@viNetwork.viResources << ViResource.new({:type => viReqResource['resource_type'], :endpoint => ""})
+			@viNetwork.vi_resources << ViResource.new({:type => viReqResource['resource_type'], :mapped_resource =>  viReqResource['mapping'], :endpoint => viReqResource['mapping_uri']})
 			logger.error "For each ports"
 			#logger.error viReqResource['viReqPorts']
-			viReqResource['viReqPorts'].each do |viReqPort|
+			viReqResource['vi_req_ports'].each do |viReqPort|
 				logger.error viReqPort
 				#logger.error @viNetwork.viResources.last
 				#p = ViReqPort.new({:physical => viReqPort['mapped'] })
 				#logger.error p
-				@viNetwork.viResources.last.viPorts << ViPort.new({:physical => viReqPort['mapped'] })
+				@viNetwork.vi_resources.last.vi_ports << ViPort.new({:physical => viReqPort['mapped'] })
 				#@viNetwork.viResources << ViResource.new({:type => viReqResource, :endpoint => ""})
 			end
 		end
@@ -62,12 +71,12 @@ class IMLSodales < Sinatra::Application
 
 	delete '/viNetworks/:id' do
 		n = ViNetwork.find(params['id'])
-		n.viResources.each do |viResource|
-			r = n.viResources.find(viResource['id'])
-				r.viPorts.each do |viPort|
+		n.vi_resources.each do |viResource|
+			r = n.vi_resources.find(viResource['id'])
+				r.vi_ports.each do |viPort|
 				logger.error viPort
 				logger.error viPort.id
-				r.viPorts.find(viPort['id']).delete
+				r.vi_ports.find(viPort['id']).delete
 			end
 			r.delete
 		end
@@ -77,5 +86,12 @@ class IMLSodales < Sinatra::Application
 	delete '/viNetworks' do
 		ViNetwork.delete_all
 	end
+
+	options "*" do
+		response.headers["Access-Control-Allow-Methods"] = "HEAD,GET,PUT,POST,DELETE,OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Cache-Control, Accept, Authorization, X-Auth-Token, X-FOG-TENANT"
+        200
+    end
+
 	
 end

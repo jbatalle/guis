@@ -26,14 +26,13 @@ class ViReqResource
   include Mongoid::Attributes::Dynamic
 
 	#belongs_to :viReqNetworḱ
-	embedded_in :viReqNetworḱ
-	embeds_many :viReqPorts
-	#validates_uniqueness_of :name
-=begin
-	def as_json(options={})
-		super(
-			:except => [ :vi_req_network_id ],
-		)
-	end
-=end
+	#embedded_in :viReqNetworḱ, inverse_of: :comments
+	#embeds_many :viReqPorts
+  embedded_in :vi_req_networḱ
+  embeds_many :vi_req_ports, cascade_callbacks: true
+
+  accepts_nested_attributes_for :vi_req_ports, reject_if: :all_blank, allow_destroy: true
+
+  #accepts_nested_attributes_for :viReqPorts, reject_if: :all_blank, allow_destroy: true 
+
 end

@@ -25,5 +25,5 @@ class ViPort
   include Mongoid::Timestamps
   include Mongoid::Attributes::Dynamic
 
-	embedded_in :viResource
+	embedded_in :vi_resource
 end
