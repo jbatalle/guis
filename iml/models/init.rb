@@ -1,0 +1,7 @@
+require_relative 'viNetwork'
+require_relative 'viReqNetwork'
+require_relative 'viResource'
+require_relative 'viReqResource'
+require_relative 'viPort'
+require_relative 'viReqPort'
+require_relative 'mapping'

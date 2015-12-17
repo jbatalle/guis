@@ -1,0 +1,24 @@
+source 'https://rubygems.org'
+
+gem 'sinatra', '~>1.4'
+gem 'thin', '~>1.6'
+gem 'json', '~>1.8'
+gem 'sinatra-contrib', '~>1.4'
+gem 'nokogiri', '~>1.6'
+gem 'json-schema', '~>2.5'
+gem 'rest-client', '~>1.8'
+gem 'sqlite3'
+gem 'sinatra-activerecord'
+gem 'sinatra-cross_origin'
+
+
+group :development do
+	gem 'rerun'
+end
+
+group :doc do
+	gem 'yard', '~>0.8'
+end
+
+gem 'mongoid', '~>4.0' # MongoDB driver
+gem 'mongoid-pagination', '~>0.2' # Pagination library
