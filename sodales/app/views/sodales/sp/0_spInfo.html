@@ -8,7 +8,9 @@
                 <thead>
                     <tr>
                         <th data-title="'id'" class="col-sm-3 col-md-3 col-lg-3">Id</th>
-                        <th data-title="'date'" class="col-sm-3 col-md-3 col-lg-3">Date</th>
+                        <th data-title="'date'" class="col-sm-2 col-md-2 col-lg-2">Date</th>
+                        <th data-title="'date'" class="col-sm-2 col-md-2 col-lg-2">Period start</th>
+                        <th data-title="'date'" class="col-sm-2 col-md-2 col-lg-2">Period end</th>
                         <th data-title="'content'">Actions</th>
                     </tr>
                     <tr>
@@ -21,6 +23,8 @@
                     <tr ng-repeat="row in displayedCollection">
                         <td>{{row.id}}</td>
                         <td>{{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td>{{row.period_start| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td>{{row.period_end| date:'yyyy-MM-dd HH:mm:ss'}}</td>
                         <td>
                             <a ui-sref="root.spVIInfo({id: row.id})" class="btn btn-default btn-info" title="edit">View virtual slice</a>
                             <a ui-sref="root.spStats({id: row.id})" class="btn btn-default btn-warning" title="edit">Virtual slice stats</a>

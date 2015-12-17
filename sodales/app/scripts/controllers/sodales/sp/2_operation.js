@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spVIController', function ($scope, $rootScope, $stateParams, $http, $modal, MqNaaSResourceService, arnService, cpeService, AuthService, spService, MQNAAS) {
+    .controller('spVIController', function ($scope, $rootScope, $stateParams, $http, $modal, MqNaaSResourceService, arnService, cpeService, AuthService, spService, MQNAAS, IMLService) {
 
         //hardcoded
         //$rootScope.networkId = "Network-Internal-1.0-2";
@@ -17,9 +17,9 @@ angular.module('mqnaasApp')
         $scope.selectedNetwork;
 
         $scope.getNetworkResources = function () {
-            url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider";
-            MqNaaSResourceService.get(url).then(function (result) {
-                $scope.networkRes = result.IRootResource.IRootResourceId;
+            url = 'viNetworks/' + $rootScope.virtNetId;
+            IMLService.get(url).then(function (result) {
+                $scope.networkRes = result;
             });
         };
 
@@ -31,23 +31,10 @@ angular.module('mqnaasApp')
                 spService.get(data.sp_id).then(function (data) {
                     $scope.networks = data.vis;
                     data.vis.forEach(function (viNet) {
-
-                        url = "IRootResourceProvider";
-                        MqNaaSResourceService.list(url).then(function (result) {
-                            var physicalNetworks = checkIfIsArray(result.IRootResource.IRootResourceId);
-
-                            physicalNetworks.forEach(function (phyNet) {
-                                if (phyNet === 'MQNaaS-1') return;
-                                var urlVirtNets = 'IRootResourceAdministration/' + phyNet + '/IRequestBasedNetworkManagement/' + viNet.name + '/IResourceModelReader/resourceModel';
-                                MqNaaSResourceService.list(urlVirtNets).then(function (viInfo) {
-                                    if (!viInfo) return;
-                                    $rootScope.networkCollection.push({
-                                        id: viNet.name,
-                                        physicalNetwork: phyNet,
-                                        created_at: viInfo.resource.attributes.entry.value
-                                    });
-                                });
-                            });
+                        var url = 'viNetworks';
+                        IMLService.get(url).then(function (result) {
+                            if (!result) return;
+                            $rootScope.networkCollection.push(result);
                         });
                     });
                 });
@@ -68,10 +55,10 @@ angular.module('mqnaasApp')
         };
 
         $scope.operationButton = function (resourceName, type) {
-            //http://sodales:9000/mqnaas/IRootResourceAdministration/Network-Internal-1.0-2/IRequestBasedNetworkManagement/Network-virtual-5/IRootResourceProvider/CPE-Internal-1.0-6/IResourceModelReader/resourceModel
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + $rootScope.virtNetId + '/IRootResourceProvider/' + resourceName + '/IResourceModelReader/resourceModel/';
-            MqNaaSResourceService.get(url).then(function (data) {
-                $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri.replace("http://0.0.0.0", MQNAAS);
+            url = 'viNetworks/' + $rootScope.virtNetId + '/resource/' + resourceName;
+            IMLService.get(url).then(function (data) {
+                $rootScope.resourceUri = data.endpoint;
+                //data.resource.descriptor.endpoints.endpoint.uri.replace("http://0.0.0.0", MQNAAS);
                 console.log($rootScope.resourceUri);
                 //$rootScope.resourceUri.replace("http://0.0.0.0", MQNAAS)
                 console.log($rootScope.resourceUri);
@@ -389,7 +376,7 @@ angular.module('mqnaasApp')
                 });
                 if (l.length > 0) serviceId = possibleId;
                 else possibleId = Math.floor((Math.random() * 200) + 1);
-                outServiceId = inServiceId +1
+                outServiceId = inServiceId + 1
             }
             console.log(serviceId);
             var clusterId = cpeSvc.dstPort;
@@ -415,9 +402,9 @@ angular.module('mqnaasApp')
             cpeService.post(url).then(function (response) {});
         };
 
-        $scope.createCFMService = function(){
+        $scope.createCFMService = function () {
             //ccmSetting.htmlunit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId=710&srcPort=105&megLevel=4&cfmVersion=0&ccmPeriod=1&rdiEnable=1&megId=ccmTest&lmEnable=1&remoteMepId=10&localMepId=9&policerId=3&outServiceId=9&inServiceId=8&Priority=7
-            url = "ccmSetting.html?unit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId="+vlanId+"0&srcPort="+srcPort+"&megLevel=4&cfmVersion=0&ccmPeriod=1&rdiEnable=1&megId=ccmTest&lmEnable=1&remoteMepId=10&localMepId=9&policerId="+policerId+"&outServiceId="+outService+"&inServiceId="+inService+"&Priority=7";
+            url = "ccmSetting.html?unit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId=" + vlanId + "0&srcPort=" + srcPort + "&megLevel=4&cfmVersion=0&ccmPeriod=1&rdiEnable=1&megId=ccmTest&lmEnable=1&remoteMepId=10&localMepId=9&policerId=" + policerId + "&outServiceId=" + outService + "&inServiceId=" + inService + "&Priority=7";
             cpeService.post(url).then(function (response) {});
         };
 
@@ -445,7 +432,7 @@ angular.module('mqnaasApp')
             this.$hide();
         };
 
-        $scope.endToEndConnectivity = function(){
+        $scope.endToEndConnectivity = function () {
             //source_resource
             //target_resource
             //read the list of links

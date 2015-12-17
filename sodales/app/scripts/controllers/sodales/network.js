@@ -266,12 +266,11 @@ angular.module('mqnaasApp')
             VirtualService.getRequestPorts($scope.source);
             console.log($scope.source);
             console.log($scope.dest);
-            PhysicalService.getResource($scope.dest, function () { 
-                });
-                PhysicalService.getPhysicalPorts($scope.dest).then(function (ports) {
-                    $scope.physicalPorts = ports;
-                });
-            
+            PhysicalService.getResource($scope.dest, function () {});
+            PhysicalService.getPhysicalPorts($scope.dest).then(function (ports) {
+                $scope.physicalPorts = ports;
+            });
+
 
             $rootScope.createMappingDialog = $modal({
                 title: 'Mapping virtual resource to physical resource',
@@ -354,7 +353,7 @@ angular.module('mqnaasApp')
             });
         };
     })
-    .controller('spViewNetwork', function ($scope, $rootScope, MqNaaSResourceService, RootResourceService, VirtualService) {
+    .controller('spViewNetwork', function ($scope, $rootScope, MqNaaSResourceService, RootResourceService, VirtualService, IMLService) {
         var url = '';
 
         $scope.nodes = new vis.DataSet();
@@ -366,14 +365,15 @@ angular.module('mqnaasApp')
                 },
                 function () {
                     if ($rootScope.networkId === undefined) return;
-                    url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRequestBasedNetworkManagement/' + $rootScope.virtNetId + '/IResourceModelReader/resourceModel');
-                    MqNaaSResourceService.list(url).then(function (data) {
+
+                    url = "viNetworks/" + $rootScope.virtNetId;
+                    IMLService.get(url).then(function (data) {
                         if (data === undefined) {
                             $rootScope.networkId = undefined;
                             return;
                         }
-                        $scope.nodes.add(generateNodeData(data.resource.resources.resource));
-                        $scope.edges.add(generateLinkData(data.resource.resources.resource, $scope.nodes));
+                        $scope.nodes.add(generateNodeData(data.vi_resources));
+                        $scope.edges.add(generateLinkData(data.vi_resources, $scope.nodes));
                     });
                 });
         };
@@ -406,11 +406,13 @@ angular.module('mqnaasApp')
                     return item.id == properties.nodes[0];
                 }
             })[0].label;
-            VirtualService.virtualPorts(virtualResource);
+            //VirtualService.virtualPorts(virtualResource);
+            VirtualService.getResource(virtualResource);
         };
     });
 
 function generateNodeData(data) {
+    console.log(data);
     var nodes = [];
     data = checkIfIsArray(data);
     data.forEach(function (node) {

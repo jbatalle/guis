@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spStatsController', function ($rootScope, $scope, $modal, $interval, $window, $stateParams, MqNaaSResourceService, AuthService, spService, arnService, cpeService, VirtualService, MQNAAS) {
+    .controller('spStatsController', function ($rootScope, $scope, $modal, $interval, $window, $stateParams, IMLService, AuthService, spService, arnService, cpeService, VirtualService, MQNAAS) {
 
         //hardcoded
         //$rootScope.networkId = "Network-Internal-1.0-2";
@@ -16,14 +16,11 @@ angular.module('mqnaasApp')
         var promise, url;
 
         $scope.getNetworkResources = function () {
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $scope.virtNetId + "/IRootResourceProvider";
-            MqNaaSResourceService.get(url).then(function (data) {
-                var resourceArray = checkIfIsArray(data.IRootResource.IRootResourceId);
-                resourceArray.forEach(function (res) {
-                    $scope.virtualResources.push({
-                        name: res,
-                        type: res.split("-")[0]
-                    });
+            var url = 'viNetworks/' + $scope.virtNetId;
+            IMLService.get(url).then(function (data) {
+                var resourceArray = data;
+                resourceArray.vi_resources.forEach(function (res) {
+                    $scope.virtualResources.push(res);
                 });
             });
         };
@@ -36,25 +33,12 @@ angular.module('mqnaasApp')
                 spService.get(data.sp_id).then(function (data) {
                     $scope.networks = data.vis;
                     data.vis.forEach(function (viNet) {
-
-                        var url = "IRootResourceProvider";
-                        MqNaaSResourceService.list(url).then(function (result) {
-                            var physicalNetworks = checkIfIsArray(result.IRootResource.IRootResourceId);
-
-                            physicalNetworks.forEach(function (phyNet) {
-                                if (phyNet === 'MQNaaS-1') return;
-                                var urlVirtNets = 'IRootResourceAdministration/' + phyNet + '/IRequestBasedNetworkManagement/' + viNet.name + '/IResourceModelReader/resourceModel';
-                                MqNaaSResourceService.list(urlVirtNets).then(function (viInfo) {
-                                    if (!viInfo) return;
-                                    $rootScope.networkCollection.push({
-                                        id: viNet.name,
-                                        physicalNetwork: phyNet,
-                                        created_at: viInfo.resource.attributes.entry.value
-                                    });
-                                });
-                            })
+                        var url = 'viNetworks';
+                        IMLService.get(url).then(function (result) {
+                            if (!result) return;
+                            $rootScope.networkCollection.push(result);
                         });
-                    });
+                    })
                 });
             });
         }
@@ -91,9 +75,9 @@ angular.module('mqnaasApp')
             $scope.dropdown2[0].click = "selectResource('" + $scope.selectedResource + "', 'CFM/OAM')";
             //get resourceInfo from OpenNaaS.
 
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + $rootScope.virtNetId + '/IRootResourceProvider/' + resourceName + '/IResourceModelReader/resourceModel/';
-            MqNaaSResourceService.get(url).then(function (data) {
-                $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri.replace("http://0.0.0.0", MQNAAS);
+            url = 'viNetworks/' + $rootScope.virtNetId + '/resource/' + resourceName;
+            IMLService.get(url).then(function (data) {
+                $rootScope.resourceUri = data.endpoint;
 
                 //load default statistic info
                 //open Dropdown list, depending on the resourceType
@@ -137,7 +121,7 @@ angular.module('mqnaasApp')
         $scope.getAvailableInterfaces = function () {
             //get OpenNaaS Ports
             var virtualResource = $scope.selectedResource;
-            VirtualService.virtualPorts(virtualResource);
+            //VirtualService.virtualPorts(virtualResource);
         };
 
         $scope.getCPEPortList = function () {

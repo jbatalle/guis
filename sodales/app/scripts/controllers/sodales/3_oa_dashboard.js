@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('SodalesOpenaccessDashCtrl', function ($rootScope, $scope, $filter, spService, $modal, UsersService, MqNaaSResourceService) {
+    .controller('SodalesOpenaccessDashCtrl', function ($rootScope, $scope, $filter, spService, $modal, UsersService, IMLService) {
 
         var url;
         $scope.listVi = [];
@@ -12,10 +12,10 @@ angular.module('mqnaasApp')
         $scope.spUsers = [];
 
         $scope.updateSpList = function () {
-            var urlVirtNets = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement';
-            MqNaaSResourceService.list(urlVirtNets).then(function (result) {
+            var url = "viNetworks"
+            IMLService.get(url).then(function (result) {
                 if (result === undefined) return;
-                $scope.networkCollection = checkIfIsArray(result.IRootResource.IRootResourceId);
+                $scope.networkCollection = result;
                 spService.getList().then(function (data) {
                     $scope.dataCollection = data;
                     var i, j;
@@ -28,8 +28,8 @@ angular.module('mqnaasApp')
                     } else {
                         for (i = 0; i < $scope.dataCollection.length; i++) {
                             for (j = 0; j < $scope.dataCollection[i].vis.length; j++) {
-                                url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + $scope.dataCollection[i].vis[j];
-                                MqNaaSResourceService.list(urlVirtNets).then(function (result) {
+                                url = 'viNetworks' + $scope.dataCollection[i].vis[j];
+                                IMLService.get(url).then(function (result) {
                                     if (result === undefined) $scope.removeVI($scope.dataCollection[i].id, $scope.dataCollection[i].vis[j].name);
                                 });
                             };
@@ -41,7 +41,7 @@ angular.module('mqnaasApp')
                     $scope.listVi.push(vi);
                 });
             });
-            UsersService.getUsers().then(function(users){
+            UsersService.getUsers().then(function (users) {
                 $scope.usersDataCollection = users;
             });
         };
@@ -124,11 +124,11 @@ angular.module('mqnaasApp')
             spService.removeUser(user.id, user.sp_id).then(function (data) {});
         };
 
-        $scope.deleteUser = function(){
+        $scope.deleteUser = function () {
             UsersService.remove(user.id).then(function (data) {});
         };
 
-        $scope.createUserDialog = function(){
+        $scope.createUserDialog = function () {
             $modal({
                 title: 'Creating user',
                 template: 'views/modals/ip_oa/modalUserCreation.html',
@@ -137,18 +137,18 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.createUser = function(user){
+        $scope.createUser = function (user) {
             console.log(user);
-            if(user.password !== user.re_password) return;
-            UsersService.register(user.username, user.password, user.email, user.fullname).then(function(result){
-console.log(result)
-               // this.$hide();
+            if (user.password !== user.re_password) return;
+            UsersService.register(user.username, user.password, user.email, user.fullname).then(function (result) {
+                console.log(result)
+                    // this.$hide();
             });
             this.$hide();
         };
 
-        $scope.activeUser = function(user){
-            UsersService.activeUser(user.id).then(function(){
+        $scope.activeUser = function (user) {
+            UsersService.activeUser(user.id).then(function () {
                 $scope.updateSpList();
             })
         };

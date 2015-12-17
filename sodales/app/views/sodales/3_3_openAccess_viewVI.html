@@ -46,7 +46,7 @@
                             <label class="col-sm-4 control-label ng-binding">Ports</label>
                             <div style="overflow-y: scroll; height:250px; width: 66%;">
                                 <li ng-repeat="res in virtualResource.ports">
-                                    {{res.id}} - {{res.attributes.entry[0].value}}
+                                    {{res.id}} - {{res.physical}}
                                 </li>
                             </div>
                         </div>

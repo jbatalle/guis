@@ -1,44 +1,32 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('listVIController', function ($scope, $rootScope, MqNaaSResourceService, $filter, localStorageService, $interval, $alert, $modal) {
+    .controller('listVIController', function ($scope, $rootScope, $filter, localStorageService, $interval, $alert, $modal, IMLService) {
         var promise;
         $scope.data = [];
         $scope.requestCollection = [];
         $scope.networkCollection = [];
 
         $scope.updateVIReqList = function () {
-            var urlListVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
-            MqNaaSResourceService.list(urlListVI).then(function (result) {
+
+            var url = "viReqNetworks"
+            IMLService.get(url).then(function (result) {
+                console.log(result);
                 $scope.requestCollection = [];
                 if (result === undefined) return;
-                var viReqs = checkIfIsArray(result.IResource.IResourceId);
-                viReqs.forEach(function (viReq) {
-                    var urlVirtNets = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestManagement/' + viReq + '/IResourceModelReader/resourceModel';
-                    MqNaaSResourceService.list(urlVirtNets).then(function (viReqInfo) {
-                        $scope.requestCollection.push({
-                            id: viReq,
-                            created_at: viReqInfo.resource.attributes.entry.value
-                        });
-                    });
-                });
+                var viReqs = result;
+                $scope.requestCollection = result;
             });
 
-            var urlVirtNets = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement';
-            MqNaaSResourceService.list(urlVirtNets).then(function (result) {
+            var url = "viNetworks"
+            IMLService.get(url).then(function (result) {
+                console.log(result);
                 $scope.networkCollection = [];
                 if (result === undefined) return;
-                var viNets = checkIfIsArray(result.IRootResource.IRootResourceId);
-                viNets.forEach(function (viNet) {
-                    var urlVirtNets = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + viNet + '/IResourceModelReader/resourceModel';
-                    MqNaaSResourceService.list(urlVirtNets).then(function (viInfo) {
-                        $scope.networkCollection.push({
-                            id: viNet,
-                            created_at: viInfo.resource.attributes.entry.value
-                        });
-                    });
-                });
+                var viNets = result;
+                $scope.networkCollection = result;
             });
+
         };
 
         $scope.deleteDialog = function (id, type) {
@@ -64,27 +52,37 @@ angular.module('mqnaasApp')
         }, 20000000);
 
         $scope.createVIRequest = function (id) {
-            var urlCreateVI = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
-            MqNaaSResourceService.put(urlCreateVI).then(function (result) {
-                if (result == null) return;
+            var url = "viReqNetworks";
+            IMLService.post(url).then(function (result) {
                 $scope.updateVIReqList();
             });
         };
         $scope.deleteVINetwork = function (viReq) {
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + viReq;
-            MqNaaSResourceService.remove(url).then(function (result) {
+            var url = "viNetworks/" + viReq
+            IMLService.delete(url).then(function (result) {
                 $scope.updateVIReqList();
             });
         };
 
         $scope.deleteVIRequest = function (viReq) {
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + viReq;
-            MqNaaSResourceService.remove(url).then(function (result) {
+            var url = "viReqNetworks/" + viReq
+            IMLService.delete(url).then(function (result) {
                 $scope.updateVIReqList();
             });
         };
 
         $scope.sendVIR = function (viReq) {
+
+            var url = "viNetworks"
+            var json = {
+                "id": viReq
+            };
+            IMLService.post(url, json).then(function (result) {
+                console.log(result);
+                $scope.updateVIReqList();
+            });
+
+
             //check if period is defined
             var urlPeriod = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + viReq + "/IRequestAdministration/period";
             MqNaaSResourceService.get(urlPeriod).then(function (result) {

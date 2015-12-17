@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .factory('VirtualService', function ($q, $rootScope, MqNaaSResourceService) {
+    .factory('VirtualService', function ($q, $rootScope, MqNaaSResourceService, IMLService) {
         var getSlice = function (resourceName, viId) { //get
             var deferred = $q.defer();
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $rootScope.viId + "/IRequestResourceManagement/" + resourceName + "/ISliceProvider/slice";
@@ -47,15 +47,18 @@ angular.module('mqnaasApp')
         };
 
         var getResource = function (resourceName) {
-            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestManagement/' + $rootScope.viId + "/IRequestResourceManagement/" + resourceName + '/IResourceModelReader/resourceModel';
-            MqNaaSResourceService.get(url).then(function (data) {
+            var url = "viNetworks/" + $rootScope.virtNetId + "/resource/" + resourceName;
+            IMLService.get(url).then(function (data) {
+                console.log(data);
                 $rootScope.resourceInfo = {};
-                $rootScope.resourceInfo.id = data.resource.id;
-                $rootScope.resourceInfo.type = data.resource.type;
+                $rootScope.resourceInfo.id = data.id;
+                $rootScope.resourceInfo.type = data.type;
+                $rootScope.resourceInfo.endpoint = data.endpoint;
                 $rootScope.resourceInfo.layer = "virtual";
                 $rootScope.resourceInfo.ports = [];
-                $rootScope.resourceInfo.ports = checkIfIsArray(data.resource.resources.resource);
-                return checkIfIsArray(data.resource.resources.resource);
+                $rootScope.resourceInfo.ports = data.vi_ports;
+                $rootScope.virtualResource = angular.copy($rootScope.resourceInfo);
+                return data.vi_ports;
                 //                return $scope.virtualResources;
             });
         };
