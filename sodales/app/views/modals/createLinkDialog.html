@@ -15,7 +15,7 @@
                                 <button ng-show="source.type === 'ARN'" type="button" class="btn btn-default" ng-model="piPort1" data-html="1" bs-options="port._interfaceId  as (port._name + '(id:' + port._interfaceId +', card: '+port._cardId+')' )  for port in physicalPorts1" bs-select>
                                     Action <span class="caret"></span>
                                 </button>
-                                <button ng-show="source.type === 'CPE'" type="button" class="btn btn-default" ng-model="piPort12" data-html="1" bs-options="port.id  as (port.id + '(' + port.attributes.entry[0].value + ')' )   for port in physicalPorts1" bs-select>
+                                <button ng-show="source.type === 'CPE'" type="button" class="btn btn-default" ng-model="piPort1" data-html="1" bs-options="port.id  as (port.attributes.entry[0].value)   for port in physicalPorts1" bs-select>
                                     Action <span class="caret"></span>
                                 </button>
                             </div>
@@ -23,8 +23,12 @@
                                 The resource {{source.label}} has no ports!
                             </div>
                             <br/>
-                            <div ng-show="!!physicalPorts2.length">Target port ({{dest.label}}):
-                                <button type="button" class="btn btn-default" ng-model="piPort2" data-html="1" bs-options="port.id  as port.attributes.entry[0].value  for port in physicalPorts2" bs-select>
+                            <div ng-show="!!physicalPorts2.length">
+                                Target port ({{dest.label}}):
+                                <button ng-show="dest.type === 'ARN'" type="button" class="btn btn-default" ng-model="piPort2" data-html="1" bs-options="port._interfaceId  as (port._name + '(id:' + port._interfaceId +', card: '+port._cardId+')' )  for port in physicalPorts2" bs-select>
+                                    Action <span class="caret"></span>
+                                </button>
+                                <button ng-show="dest.type === 'CPE'" type="button" class="btn btn-default" ng-model="piPort2" data-html="1" bs-options="port.id  as (port.attributes.entry[0].value)  for port in physicalPorts2" bs-select>
                                     Action <span class="caret"></span>
                                 </button>
                             </div>
@@ -32,15 +36,13 @@
                                 The resource {{dest.label}} has no ports!
                             </div>
                         </div>
-
-
                     </div>
                 </form>
                 <!-- /.box-body -->
                 <div class="modal-footer">
                     <div class="row">
                         <div class="col-md-12">
-                            <button ng-if="piPort1 && piPort2" type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="createLink(piPort1, piPort2)">Create link</button>         
+                            <button ng-if="piPort1 && piPort2" type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="createLink(piPort1, piPort2)">Create link</button>
                         </div>
                     </div>
                 </div>
