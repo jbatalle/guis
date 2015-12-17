@@ -156,7 +156,6 @@ angular.module('mqnaasApp')
                 $interval.cancel(promise);
             }
         });
-
     })
     .controller('editVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, $interval, $q, $alert, $modal, VirtualService) {
 
@@ -348,18 +347,8 @@ angular.module('mqnaasApp')
                 $scope.resRoot = result; //empty
                 $rootScope.info = viReq + " created";
             });
-
             $rootScope.info = viReq + " created";
         };
-
-        /*$scope.getVirtualPorts = function (virtualRes) {
-            console.log(virtualRes);
-            console.log("No furula")
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtualRes + "/IPortManagement";
-            MqNaaSResourceService.get(url).then(function (result) {
-                $scope.virtualPorts = checkIfIsArray(result.IResource.IResourceId);
-            });
-        };*/
 
         $scope.getPhysicalPorts = function (resourceName) {
             $scope.physicalPorts = [];
@@ -499,14 +488,14 @@ angular.module('mqnaasApp')
         $scope.physicalVlans = [];
 
 
-        for (var i = 0; i < 4096; i = i + 127) {
+        for (var i = 1; i < 4096; i = i + 127) {
             $scope.virtualVlans.push({
                 "lower": i,
                 "upper": i + 127
             });
         };
 
-        for (var i = 0; i < 4096; i = i + 127) {
+        for (var i = 1; i < 4096; i = i + 127) {
             $scope.physicalVlans.push({
                 lower: i,
                 upper: i + 127
@@ -564,12 +553,8 @@ angular.module('mqnaasApp')
                 return _.values(_.pick(o, 'phy'));
             });
 
-
             //mapping between resources
             var ports = $scope.mapping;
-
-
-
 
             var portRanges = $scope.generateCube(_.map($scope.mapping, function (o) {
                 return _.values(_.pick(o, 'phy'));
