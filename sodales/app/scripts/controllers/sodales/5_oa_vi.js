@@ -155,7 +155,7 @@ angular.module('mqnaasApp')
             }
         });
     })
-    .controller('editVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, $interval, $q, $alert, $modal, VirtualService) {
+    .controller('editVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, $interval, $q, $alert, $modal, VirtualService, IMLService) {
 
         $rootScope.viId = $stateParams.id;
         $rootScope.virtualPort = [];
@@ -163,8 +163,8 @@ angular.module('mqnaasApp')
         $rootScope.mappedPorts = [];
         $scope.virtualElements = [];
 
-        var urlPeriod = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestAdministration/period";
-        MqNaaSResourceService.get(urlPeriod).then(function (result) {
+        var url = "viReqNetwork/" + $scope.viId;
+        IMLService.get(url).then(function (result) {
             if (result == null) return;
             $scope.period = result.period;
             $scope.period.startDate = parseInt($scope.period.startDate * 1000);
@@ -190,8 +190,8 @@ angular.module('mqnaasApp')
         };
 
         $scope.addVirtualPortToResource = function (resourceRequest) {
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + resourceRequest + "/IPortManagement";
-            MqNaaSResourceService.put(url).then(function (result) {
+            var url = "viReqNetwork/" + $scope.viId + "/viReqResource/" + resourceRequest + "/addPort";
+            IMLService.post(url).then(function (result) {
                 $rootScope.virtualPort.push(result);
                 $scope.getMappedResources();
             });
@@ -327,6 +327,8 @@ angular.module('mqnaasApp')
 
         $scope.mapVirtualPorts = function (virtualPort, realPort) {
             console.log("Map virtual ports");
+            //var url = "viReqNetwork/" + $scope.viId + "/viReqResource/" + resourceRequest + "/addPort";
+            //IMLService.post(url).then(function (result) {
             var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceMapping/defineMapping/?arg0=" + virtualPort + "&arg1=" + realPort;
             MqNaaSResourceService.get(url).then(function (result) {
                 $scope.resRoot = result; //empty
@@ -337,15 +339,6 @@ angular.module('mqnaasApp')
                 });
                 $scope.getMappedResources();
             });
-        };
-
-        $scope.sendVIR = function (viReq) {
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/?arg0=" + viReq;
-            MqNaaSResourceService.put(url).then(function (result) {
-                $scope.resRoot = result; //empty
-                $rootScope.info = viReq + " created";
-            });
-            $rootScope.info = viReq + " created";
         };
 
         $scope.getPhysicalPorts = function (resourceName) {
@@ -429,8 +422,8 @@ angular.module('mqnaasApp')
 
         $scope.deleteItem = function (id) {
             //http://localhost:9100/rest/mqnaas/IRootResourceAdministration/Network-Internal-1.0-2/IRequestManagement/req-6/IRequestResourceManagement/req_root-10/
-            var url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRequestManagement/' + $scope.viId + "/IRequestResourceManagement/" + id);
-            MqNaaSResourceService.remove(url).then(function () {
+            var url = "viReqNetwork/" + $scope.viId + "/viReqResource/" + id;
+            IMLService.post(url).then(function (result) {
                 $alert({
                     title: 'Resource removed',
                     content: 'The resource was removed correctly',

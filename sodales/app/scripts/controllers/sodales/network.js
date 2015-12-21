@@ -143,7 +143,7 @@ angular.module('mqnaasApp')
             MqNaaSResourceService.put(url).then(function (data) {});
         };
     })
-    .controller('editVINetwork', function ($scope, $rootScope, MqNaaSResourceService, $modal, RootResourceService, VirtualService, PhysicalService) {
+    .controller('editVINetwork', function ($scope, $rootScope, MqNaaSResourceService, $modal, RootResourceService, VirtualService, PhysicalService, IMLService) {
         var url = '';
 
         $scope.nodes = new vis.DataSet();
@@ -175,8 +175,11 @@ angular.module('mqnaasApp')
         $scope.addResource = function (resourceType) {
             console.log("Add resource " + resourceType);
             resourceType = resourceType.toUpperCase();
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/?arg0=" + resourceType;
-            MqNaaSResourceService.put(url).then(function (virtualResource) {
+            var url = "/viReqNetworks/" + $scope.viId + "/viReqResource/addResource";
+            var data = {
+                "resource_type": resourceType
+            };
+            IMLService.post(url, data).then(function (virtualResource) {
                 $rootScope.resourceRequest = virtualResource;
                 $scope.nodes.add({
                     id: $scope.nodes.length,
