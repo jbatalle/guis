@@ -25,8 +25,8 @@ class ViResource
   include Mongoid::Timestamps
   include Mongoid::Attributes::Dynamic
 
-	embedded_in :vi_networḱ
-	embeds_many :vi_ports
+	embedded_in :vi_network
+  embeds_many :vi_ports
 
 end
 #class ViResource < ActiveRecord::Base

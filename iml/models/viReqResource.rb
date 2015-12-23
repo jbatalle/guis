@@ -28,7 +28,7 @@ class ViReqResource
 	#belongs_to :viReqNetworḱ
 	#embedded_in :viReqNetworḱ, inverse_of: :comments
 	#embeds_many :viReqPorts
-  embedded_in :vi_req_networḱ
+  embedded_in :vi_req_network
   embeds_many :vi_req_ports, cascade_callbacks: true
 
   accepts_nested_attributes_for :vi_req_ports, reject_if: :all_blank, allow_destroy: true
