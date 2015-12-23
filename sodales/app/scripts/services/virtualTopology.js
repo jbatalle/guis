@@ -64,7 +64,7 @@ angular.module('mqnaasApp')
         };
 
         var getResourceNetwork = function (resourceName) {
-            var url = "viNetworks/" + $rootScope.viId + "/resource/" + resourceName;
+            var url = "viNetworks/" + $rootScope.virtNetId + "/resource/" + resourceName;
             IMLService.get(url).then(function (data) {
                 console.log(data);
                 $rootScope.resourceInfo = {};
@@ -144,6 +144,9 @@ angular.module('mqnaasApp')
             },
             getResource: function (resourceName) {
                 return getResource(resourceName);
+            },
+            getResourceNetwork: function (resourceName) {
+                return getResourceNetwork(resourceName);
             },
             virtualPorts: function (resourceName) {
                 return virtualPorts(resourceName);

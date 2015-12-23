@@ -21,7 +21,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="row in displayedCollection track by $index">
-                        <td>{{row.id}}</td>
+                        <td>{{row.id}} {{row.name != '' ? "- "+ row.name : ''}}</td>
                         <td>{{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}</td>
                         <td>{{row.period.period_start *1000| date:'yyyy-MM-dd HH:mm:ss'}}</td>
                         <td ng-style="row.disabled === true && {'color': 'red'}">{{row.period.period_end *1000| date:'yyyy-MM-dd HH:mm:ss'}}</td>

@@ -47,7 +47,9 @@
                                 </td>
                                 <td>
                                     <select ng-model="selectedAddVi">
-                                        <option ng-repeat="item in listVi | viDuplicates:row.vis track by $index">{{item.id}}</option>
+                                        <option ng-repeat="item in listVi | viDuplicates:row.vis track by $index" value="{{item.id}}">
+                                            {{item.name != '' ? item.name : item.id}}
+                                        </option>
                                     </select>
                                     <a ng-click="addVI(row.id, selectedAddVi)" title="View">Add</a></td>
                                 <td>
