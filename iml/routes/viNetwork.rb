@@ -35,7 +35,15 @@ class IMLSodales < Sinatra::Application
 		else
 
 		end
-		@viNetwork = ViNetwork.new({:name => "", :period_start => @viReqNetwork['period']['period_start'], :period_end => @viReqNetwork['period']['period_end']})
+
+		if @viReqNetwork['period']['period_end'] < Time.now.to_i
+			logger.error "Period out of scope"
+			halt 400, "The period of the virtual request is out of the allowed range."
+		else
+
+		end
+
+		@viNetwork = ViNetwork.new({:name => "", :period => {:period_start => @viReqNetwork['period']['period_start'], :period_end => @viReqNetwork['period']['period_end']}})
 		#add virtual resource
 		logger.error "For each resources"
 		logger.error @viReqNetwork['vi_req_resources']
