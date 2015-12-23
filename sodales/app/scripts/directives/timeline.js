@@ -24,7 +24,7 @@ angular.module('mqnaasApp')
 
                         var options = {
                             start: $scope.ngModel[$scope.ngModel.length - 1]._timeStamp * 1000,
-                            zoomMin: 1000 * 60 * 60 * 24, // a day
+                            zoomMin: 1000 * 60, // a day
                             zoomMax: 1000 * 60 * 60 * 24 * 30 * 3 // three months
                         };
                         var timeline = new vis.Timeline($element[0], items, options);
