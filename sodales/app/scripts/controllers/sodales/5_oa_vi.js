@@ -77,10 +77,25 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.sendVIR = function (viReq) {
+        $scope.sendVIRDialog = function (viReq) {
+            $scope.viReq = viReq;
+            $modal({
+                title: 'Creating a new virtual slice',
+                template: 'views/modals/sendReqToProcess.html',
+                show: true,
+                scope: $scope
+            });
+        };
+
+        $scope.sendVIR = function (viReq, object) {
+            this.$hide();
+            console.log(object)
+            var name = "";
+            if (object) name = object.name;
             var url = "viNetworks"
             var json = {
-                "id": viReq
+                "id": viReq,
+                "name": name
             };
             IMLService.post(url, json).then(function (result, error) {
                 if (result === undefined) {
