@@ -297,14 +297,12 @@ angular.module('mqnaasApp')
             })[0];
             //var selected = $scope.task_nodes.get(properties.nodes[0]);
             console.log(selectedResource);
-            console.log(selectedResource.label);
             var url;
             if (selectedResource.group === 'physical') PhysicalService.getResource(selectedResource.label);
             else VirtualService.getResource(selectedResource.label);
         };
 
         $scope.generateNodeData = function (data) {
-            console.log($scope.network_options);
             data = checkIfIsArray(data);
             //$scope.nodes = new vis.DataSet();
             data.forEach(function (node) {
@@ -423,7 +421,6 @@ angular.module('mqnaasApp')
     });
 
 function generateNodeData(data) {
-    console.log(data);
     var nodes = [];
     data = checkIfIsArray(data);
     data.forEach(function (node) {

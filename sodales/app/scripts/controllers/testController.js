@@ -13,9 +13,6 @@ angular.module('mqnaasApp')
         $scope.selectedViPorts = ["1", "2"];
         $scope.selectedPhyPorts = ["100", "102", "104"];
 
-        $scope.tasks1 = [];
-        $scope.tasks1 = new Array(4096);
-
         var t = 4096;
         $scope.virtualVlans = [];
         for (var i = 0; i < 4096; i = i + 127) {

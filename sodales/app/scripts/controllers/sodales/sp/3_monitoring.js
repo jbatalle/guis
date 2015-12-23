@@ -28,7 +28,6 @@ angular.module('mqnaasApp')
         if ($rootScope.networkId && $rootScope.virtNetId) {
             $scope.getNetworkResources();
         } else {
-            console.log("create list of vi nets");
             AuthService.profile().then(function (data) {
                 spService.get(data.sp_id).then(function (data) {
                     $scope.networks = data.vis;
@@ -98,8 +97,6 @@ angular.module('mqnaasApp')
         };
 
         $scope.updateInterface = function () {
-            console.log($rootScope.virtualResource);
-            console.log($scope.interface);
             var port = $scope.interface.physical;
             if ($scope.virtualResource.type === 'ARN') {
                 $scope.arnStats = true;

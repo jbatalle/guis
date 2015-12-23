@@ -18,7 +18,6 @@ angular.module('mqnaasApp')
 
             var url = "viNetworks"
             IMLService.get(url).then(function (result) {
-                console.log(result);
                 $scope.networkCollection = [];
                 if (result === undefined) return;
                 $scope.networkCollection = _.map(result, function (e) {
@@ -89,7 +88,6 @@ angular.module('mqnaasApp')
 
         $scope.sendVIR = function (viReq, object) {
             this.$hide();
-            console.log(object)
             var name = "";
             if (object) name = object.name;
             var url = "viNetworks"
@@ -169,7 +167,6 @@ angular.module('mqnaasApp')
 
             var url = "viReqNetworks/" + $scope.viId;
             IMLService.put(url, jsonPeriod).then(function (result) {
-                console.log(response);
                 $alert({
                     title: "Period set.",
                     content: "",
@@ -201,88 +198,89 @@ angular.module('mqnaasApp')
                 $rootScope.mapPorts = true;
             });
         };
+        /*
+                $scope.createCubes = function (virtualResource) {
+                    $scope.saving = true;
+                    $rootScope.viId = $scope.viId;
+                    var url;
+                    var cube = [];
+                    //get virtual Ports of the resource
 
-        $scope.createCubes = function (virtualResource) {
-            $scope.saving = true;
-            $rootScope.viId = $scope.viId;
-            var url;
-            var cube = [];
-            //get virtual Ports of the resource
+                    $scope.slice = "";
+                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtualResource + "/ISliceProvider/slice";
+                    MqNaaSResourceService.getText(url).then(function (result) {
+                        $scope.slice = result;
+                        url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceMapping/mapping/?arg0=" + virtualResource;
+                        MqNaaSResourceService.getText(url).then(function (result) {
+                            var physicalResource = result;
+                            url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtualResource + "/IPortManagement";
+                            MqNaaSResourceService.get(url).then(function (ports) {
 
-            $scope.slice = "";
-            url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtualResource + "/ISliceProvider/slice";
-            MqNaaSResourceService.getText(url).then(function (result) {
-                $scope.slice = result;
-                url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceMapping/mapping/?arg0=" + virtualResource;
-                MqNaaSResourceService.getText(url).then(function (result) {
-                    var physicalResource = result;
-                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtualResource + "/IPortManagement";
-                    MqNaaSResourceService.get(url).then(function (ports) {
-
-                        $scope.listVirtualPorts = checkIfIsArray(ports.IResource.IResourceId);
-                        if ($scope.listVirtualPorts.length === 0) {
-                            //create cube?
-                            return; //for the moment
-                        }
-                        var currentRequest = 0;
-                        var deferred = $q.defer();
-                        makeNextRequest();
-
-                        function makeNextRequest() {
-                            var portId = $scope.listVirtualPorts[currentRequest];
-                            var virtualPorts = [];
-                            //angular.forEach(checkIfIsArray(ports.IResource.IResourceId), function (portId) {
-                            url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceMapping/mapping/?arg0=" + portId;
-                            MqNaaSResourceService.getText(url).then(function (result) {
-                                if (result === "") {
-                                    if (currentRequest < $scope.listVirtualPorts.length - 1) {
-                                        currentRequest++;
-                                        makeNextRequest();
-                                    } else {
-                                        $scope.cubes = $scope.generateCube(cube);
-                                        url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtualResource + "/ISliceProvider/" + $scope.slice + "/ISliceAdministration/cubes";
-                                        MqNaaSResourceService.put(url, $scope.cubes).then(function (result) {});
-                                        deferred.resolve();
-                                    }
+                                $scope.listVirtualPorts = checkIfIsArray(ports.IResource.IResourceId);
+                                if ($scope.listVirtualPorts.length === 0) {
+                                    //create cube?
+                                    return; //for the moment
                                 }
-                                virtualPorts.push(result);
-                                var virtualPort = result;
-                                url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + physicalResource + "/IPortManagement";
-                                MqNaaSResourceService.get(url).then(function (result) {
-                                    console.log(result);
-                                    var physicalPorts = checkIfIsArray(result.IResource.IResourceId);
+                                var currentRequest = 0;
+                                var deferred = $q.defer();
+                                makeNextRequest();
 
-                                    for ($scope.j = 0; $scope.j < physicalPorts.length; $scope.j++) {
-                                        if (physicalPorts[$scope.j] === virtualPort) {
-                                            cube.push($scope.j + 1);
-                                            break;
+                                function makeNextRequest() {
+                                    var portId = $scope.listVirtualPorts[currentRequest];
+                                    var virtualPorts = [];
+                                    //angular.forEach(checkIfIsArray(ports.IResource.IResourceId), function (portId) {
+                                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceMapping/mapping/?arg0=" + portId;
+                                    MqNaaSResourceService.getText(url).then(function (result) {
+                                        if (result === "") {
+                                            if (currentRequest < $scope.listVirtualPorts.length - 1) {
+                                                currentRequest++;
+                                                makeNextRequest();
+                                            } else {
+                                                $scope.cubes = $scope.generateCube(cube);
+                                                url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtualResource + "/ISliceProvider/" + $scope.slice + "/ISliceAdministration/cubes";
+                                                MqNaaSResourceService.put(url, $scope.cubes).then(function (result) {});
+                                                deferred.resolve();
+                                            }
                                         }
-                                    };
-                                    if (currentRequest < $scope.listVirtualPorts.length - 1) {
-                                        currentRequest++;
-                                        makeNextRequest();
-                                    } else {
-                                        console.log(currentRequest);
-                                        console.log(cube);
-                                        console.log("Call cubes generator");
-                                        $scope.cubes = $scope.generateCube(cube);
+                                        virtualPorts.push(result);
+                                        var virtualPort = result;
+                                        url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + physicalResource + "/IPortManagement";
+                                        MqNaaSResourceService.get(url).then(function (result) {
+                                            console.log(result);
+                                            var physicalPorts = checkIfIsArray(result.IResource.IResourceId);
 
-                                        url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtualResource + "/ISliceProvider/" + $scope.slice + "/ISliceAdministration/cubes";
-                                        MqNaaSResourceService.put(url, $scope.cubes).then(function (result) {
-                                            $scope.saving = false;
-                                            $rootScope.createMappingDialog.hide();
+                                            for ($scope.j = 0; $scope.j < physicalPorts.length; $scope.j++) {
+                                                if (physicalPorts[$scope.j] === virtualPort) {
+                                                    cube.push($scope.j + 1);
+                                                    break;
+                                                }
+                                            };
+                                            if (currentRequest < $scope.listVirtualPorts.length - 1) {
+                                                currentRequest++;
+                                                makeNextRequest();
+                                            } else {
+                                                console.log(currentRequest);
+                                                console.log(cube);
+                                                console.log("Call cubes generator");
+                                                $scope.cubes = $scope.generateCube(cube);
+
+                                                url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + $scope.viId + "/IRequestResourceManagement/" + virtualResource + "/ISliceProvider/" + $scope.slice + "/ISliceAdministration/cubes";
+                                                MqNaaSResourceService.put(url, $scope.cubes).then(function (result) {
+                                                    $scope.saving = false;
+                                                    $rootScope.createMappingDialog.hide();
+                                                });
+
+                                                deferred.resolve();
+                                            }
+
                                         });
-
-                                        deferred.resolve();
-                                    }
-
-                                });
+                                    });
+                                };
                             });
-                        };
+                        });
                     });
-                });
-            });
-        };
+                };
+                */
 
         $scope.generateCube = function (cube) {
             var cube = cube.map(function (e) {

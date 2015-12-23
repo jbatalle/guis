@@ -71,7 +71,6 @@ angular.module('mqnaasApp')
         };
 
         $scope.addSP = function (data) {
-            console.log(data);
             var name = data.name; //{"name":"SP4"}
             var sp = {
                 "name": name.replace(/\s/g, ""),
@@ -139,7 +138,6 @@ angular.module('mqnaasApp')
         };
 
         $scope.createUser = function (user) {
-            console.log(user);
             if (user.password !== user.re_password) return;
             UsersService.register(user.username, user.password, user.email, user.fullname).then(function (result) {
                 console.log(result)

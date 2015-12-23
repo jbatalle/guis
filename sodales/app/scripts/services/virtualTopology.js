@@ -49,7 +49,6 @@ angular.module('mqnaasApp')
         var getResource = function (resourceName) {
             var url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + resourceName;
             IMLService.get(url).then(function (data) {
-                console.log(data);
                 $rootScope.resourceInfo = {};
                 $rootScope.resourceInfo.id = data.id;
                 $rootScope.resourceInfo.type = data.type;
@@ -59,14 +58,12 @@ angular.module('mqnaasApp')
                 $rootScope.resourceInfo.ports = data.vi_req_ports;
                 $rootScope.virtualResource = angular.copy($rootScope.resourceInfo);
                 return data.vi_ports;
-                //                return $scope.virtualResources;
             });
         };
 
         var getResourceNetwork = function (resourceName) {
             var url = "viNetworks/" + $rootScope.virtNetId + "/resource/" + resourceName;
             IMLService.get(url).then(function (data) {
-                console.log(data);
                 $rootScope.resourceInfo = {};
                 $rootScope.resourceInfo.id = data.id;
                 $rootScope.resourceInfo.type = data.type;
@@ -76,7 +73,6 @@ angular.module('mqnaasApp')
                 $rootScope.resourceInfo.ports = data.vi_ports;
                 $rootScope.virtualResource = angular.copy($rootScope.resourceInfo);
                 return data.vi_ports;
-                //                return $scope.virtualResources;
             });
         };
 
@@ -89,9 +85,7 @@ angular.module('mqnaasApp')
 
         var virtualPorts = function (virtualResource) {
             var url = "viNetworks/" + $rootScope.virtNetId + "/resource/" + resourceName;
-            IMLService.get(url).then(function (data) {
-
-            });
+            IMLService.get(url).then(function (data) {});
         };
 
         var virtualPorts2 = function (virtualResource) {
