@@ -10,6 +10,7 @@ services.factory('IMLService', function ($http, x2js, HistoryService, IML) {
                 his.content = response.status + " - GET List (" + url + "): " + response.statusText;
                 his.type = "ERROR";
                 his.$save();
+                return response;
             });
             return promise;
         },

@@ -104,8 +104,6 @@ angular.module('mqnaasApp')
                 }
             }).then(
                 function (response) {
-                    console.log(response);
-
                     deferred.resolve(response.data);
                 },
                 function (error) {
