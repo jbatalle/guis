@@ -20,20 +20,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="row in displayedCollection">
+                    <tr ng-repeat="row in displayedCollection track by $index">
                         <td>{{row.id}}</td>
                         <td>{{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                        <td>{{row.period_start| date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                        <td>{{row.period_end| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td>{{row.period.period_start *1000| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        <td ng-style="row.disabled === true && {'color': 'red'}">{{row.period.period_end *1000| date:'yyyy-MM-dd HH:mm:ss'}}</td>
                         <td>
-                            <a ui-sref="root.spVIInfo({id: row.id})" class="btn btn-default btn-info" title="edit">View virtual slice</a>
-                            <a ui-sref="root.spStats({id: row.id})" class="btn btn-default btn-warning" title="edit">Virtual slice stats</a>
+                            <button ng-disabled="row.disabled" ui-sref="root.spVIInfo({id: row.id})" class="btn btn-default btn-info" title="edit">View virtual slice</button>
+                            <button ng-disabled="row.disabled" ui-sref="root.spStats({id: row.id})" class="btn btn-default btn-warning" title="edit">Virtual slice stats</button>
                         </td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td class="text-center" st-pagination="" st-items-by-page="20" colspan="3">
+                        <td class="text-center" st-pagination="" st-items-by-page="20" colspan="5">
                         </td>
                     </tr>
                 </tfoot>

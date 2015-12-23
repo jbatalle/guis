@@ -10,48 +10,37 @@ angular.module('mqnaasApp')
 
         $scope.updateViList = function () {
             var url = "viNetworks"
-            IMLService.get(url).then(function (result) {
-                var currentRequest = 1;
-                var availableViNets = [];
-                var deferred = $q.defer();
-                $scope.physicalNetworks = result;
-                makeNextRequest();
-                /*$scope.physicalNetworks = result;
-                var currentRequest = 1;
-                var availableViNets = [];
-                var deferred = $q.defer();
-                makeNextRequest();
+            AuthService.profile().then(function (data) {
+                var providerId = data.sp_id;
+                spService.get(providerId).then(function (providerInfo) {
+                    IMLService.get(url).then(function (result) {
+                        var currentRequest = 0;
+                        var availableViNets = [];
+                        var deferred = $q.defer();
+                        $scope.providersVis = providerInfo.vis;
+                        makeNextRequest();
 
-                function makeNextRequest() {
-                    var phyNet = $scope.physicalNetworks[currentRequest];
-                    var url = "viNetworks/"+phyNet;
-                    var url = "IRootResourceAdministration/" + phyNet + "/IRequestBasedNetworkManagement";
-                    MqNaaSResourceService.list(url).then(function (result) {*/
-                function makeNextRequest() {
-                    var viNets = result;
-                    AuthService.profile().then(function (data) {
-                        spService.get(data.sp_id).then(function (data) {
-                            angular.forEach(_.without(viNets, _.pluck(data, 'name')), function (viNet) {
-                                var url = "viNetworks/" + viNet.id;
-                                IMLService.get(url).then(function (viInfo) {
-                                    if (!viInfo) return;
-                                    currentRequest++;
-                                    availableViNets.push(viNet);
-                                    if (currentRequest < $scope.physicalNetworks.length) {
-                                        makeNextRequest();
-                                    } else {
-                                        $scope.networkCollection = availableViNets;
-                                        $scope.displayedCollection = [].concat($scope.networkCollection)
-                                        deferred.resolve();
-                                    }
-                                });
-                            })
-                        })
+                        function makeNextRequest() {
+                            var url = "viNetworks/" + $scope.providersVis[currentRequest].name;
+                            IMLService.get(url).then(function (viInfo) {
+                                if (!viInfo) return;
+                                if (viInfo.period.period_end * 1000 < new Date().getTime()) {
+                                    viInfo.disabled = true;
+                                }
+                                currentRequest++;
+                                availableViNets.push(viInfo);
+                                if (currentRequest < $scope.providersVis.length) {
+                                    makeNextRequest();
+                                } else {
+                                    $scope.networkCollection = availableViNets;
+                                    $scope.displayedCollection = [].concat($scope.networkCollection)
+                                    deferred.resolve();
+                                }
+                            });
+                        }
                     });
-                }
+                });
             });
-
-            //});
         };
 
         $scope.updateViList();
