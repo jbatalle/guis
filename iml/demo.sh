@@ -11,7 +11,7 @@ curl -XPUT http://localhost:4050/viReqNetworks/$id -d '{"period_start": "'$time_
 
 
 echo "Adding ARN#1"
-id2=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/addResource -d '{"resource_type":"ARN"}')
+id2=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/addResource -d '{"type":"ARN"}')
 id3=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/addPort)
 id4=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/addPort)
 curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapPort/$id3/port-1212
@@ -19,7 +19,7 @@ curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapVlan -
 curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapResource -d '{"id": "aa", "endpoint": "http://delta-ptin.no-ip.info:41080/cgi-bin/xml-parser.cgi"}'
 
 echo "Adding ARN#2"
-id2=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/addResource -d '{"resource_type":"ARN"}')
+id2=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/addResource -d '{"type":"ARN"}')
 id3=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/addPort)
 id4=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/addPort)
 curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapPort/$id3/port-1212
@@ -27,7 +27,7 @@ curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapVlan -
 curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapResource -d '{"id": "aa", "endpoint": "http://delta-ptin.no-ip.info:41079/cgi-bin/xml-parser.cgi"}'
 
 echo "Adding CPE#1"
-id2=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/addResource -d '{"resource_type":"CPE"}')
+id2=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/addResource -d '{"type":"CPE"}')
 id3=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/addPort)
 id4=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/addPort)
 curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapPort/$id3/port-1212
@@ -35,7 +35,7 @@ curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapVlan -
 curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapResource -d '{"id": "aa", "endpoint": "http://delta-ptin.no-ip.info:41081"}'
 
 echo "Adding CPE#2"
-id2=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/addResource -d '{"resource_type":"CPE"}')
+id2=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/addResource -d '{"type":"CPE"}')
 id3=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/addPort)
 id4=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/addPort)
 curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapPort/$id3/port-1212

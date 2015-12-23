@@ -11,16 +11,16 @@ echo "PUT"
 time_start=$(date +%s)
 time_end=$(date +%s)
 data='{"period_start": "'$time_start'", "period_end":"'$time_end'"}'
-curl -XPUT http://localhost:4050/viReqNetworks/$id -d '{"period_start": "'$time_start'", "period_end":"'$time_end'"}'
+curl -XPUT http://localhost:4050/viReqNetworks/$id -d '{"period": {"period_start": "'$time_start'", "period_end":"'$time_end'"}}'
 echo "GET"
 curl -XGET http://localhost:4050/viReqNetworks/$id
 
 echo "Insert resource"
-id2=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/addResource -d '{"resource_type":"ARN"}')
+id2=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/addResource -d '{"type":"ARN"}')
 echo "Insert port into " $id2
 id3=$(curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/addPort)
 echo "Mapping in " $id3
-curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapPort/$id3\?arg0=port
+curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapPort/$id3/port-123123
 curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapVlan -d '{"upperBound": 1, "lowerBound": 10}'
 curl -XPOST http://localhost:4050/viReqNetworks/$id/viReqResource/$id2/mapResource -d '{"id": "aa", "endpoint": "http://test"}'
 #curl -XPUT http://localhost:4050/viReqNetworks/$id/viReqResource -d '{"name": "name-21", "resource_type":"ARN", "ports": "", "mapped_resource": 1}'
@@ -35,7 +35,7 @@ echo "Create network"
 netId=$(curl -XPOST http://localhost:4050/viNetworks -d '{"id": "'$id'"}')
 
 echo $netId
-
+exit
 echo "Remove resource"
 curl -XDELETE http://localhost:4050/viReqNetworks/$id/viReqResource/$id2
 

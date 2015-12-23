@@ -29,13 +29,13 @@ class IMLSodales < Sinatra::Application
 		@viReqNetwork = ViReqNetwork.find(viNet['id'])
 		logger.error @viReqNetwork
 
-		if !@viReqNetwork['period_start'] || !@viReqNetwork['period_end'] 
+		if !@viReqNetwork['period']['period_start'] || !@viReqNetwork['period']['period_end'] 
 			logger.error "Period missing"
 			halt 400, "Period missing"
 		else
 
 		end
-		@viNetwork = ViNetwork.new({:name => "", :period_start => @viReqNetwork['period_start'], :period_end => @viReqNetwork['period_end']})
+		@viNetwork = ViNetwork.new({:name => "", :period_start => @viReqNetwork['period']['period_start'], :period_end => @viReqNetwork['period']['period_end']})
 		#add virtual resource
 		logger.error "For each resources"
 		logger.error @viReqNetwork['vi_req_resources']
@@ -43,7 +43,7 @@ class IMLSodales < Sinatra::Application
 		@viReqNetwork['vi_req_resources'].each do |viReqResource|
 			logger.error viReqResource
 			#r = 
-			@viNetwork.vi_resources << ViResource.new({:type => viReqResource['resource_type'], :mapped_resource =>  viReqResource['mapping'], :endpoint => viReqResource['mapping_uri']})
+			@viNetwork.vi_resources << ViResource.new({:type => viReqResource['type'], :mapped_resource =>  viReqResource['mapping'], :endpoint => viReqResource['mapping_uri']})
 			logger.error "For each ports"
 			#logger.error viReqResource['viReqPorts']
 			viReqResource['vi_req_ports'].each do |viReqPort|

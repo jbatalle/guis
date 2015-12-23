@@ -46,11 +46,12 @@ class IMLSodales < Sinatra::Application
 		end
 	end
 
-	get '/viReqNetworks/:id/viReqResource/:idRes' do
+		 #viReqNetworks/567a6d571aa16018a1000007/viReqResource/567a75131aa16018a100000e
+	get '/viReqNetworks/:id/viReqResource/:resourceId' do
 		begin
-			return ViReqResource.find(params['idRes']).to_json
+			return ViReqNetwork.find(params['id']).vi_req_resources.find(params['resourceId']).to_json
 		rescue Mongoid::Errors::DocumentNotFound => e
-			halt 404, "ViResource not found"
+			halt 404, "Not found"
 		end
 	end
 
@@ -71,6 +72,7 @@ class IMLSodales < Sinatra::Application
 		n = ViReqNetwork.find(params['id'])
 		r = n.vi_req_resources.find(params['resourceId'])
 		@port = r.vi_req_ports.create!()
+		logger.error @port
 		return @port['id'].to_s
 	end
 
@@ -178,11 +180,11 @@ class IMLSodales < Sinatra::Application
 
 	delete '/viReqNetworks/:id/viReqResource/:resourceId' do
 		n = ViReqNetwork.find(params['id'])
-		r = n.viReqResources.find(params['resourceId'])
-		r.viReqPorts.each do |viReqPort|
+		r = n.vi_req_resources.find(params['resourceId'])
+		r.vi_req_ports.each do |viReqPort|
 			logger.error viReqPort
 			logger.error viReqPort.id
-			r.viReqPorts.find(viReqPort['id']).delete
+			r.vi_req_ports.find(viReqPort['id']).delete
 		end
 		r.delete
 	end
@@ -193,12 +195,12 @@ class IMLSodales < Sinatra::Application
 
 	delete '/viReqNetworks/:id' do
 		n = ViReqNetwork.find(params['id'])
-		n.viReqResources.each do |viReqResource|
-			r = n.viReqResources.find(viReqResource['id'])
-				r.viReqPorts.each do |viReqPort|
+		n.vi_req_resources.each do |viReqResource|
+			r = n.vi_req_resources.find(viReqResource['id'])
+				r.vi_req_ports.each do |viReqPort|
 				logger.error viReqPort
 				logger.error viReqPort.id
-				r.viReqPorts.find(viReqPort['id']).delete
+				r.vi_req_ports.find(viReqPort['id']).delete
 			end
 			r.delete
 		end
