@@ -12,6 +12,7 @@ angular.module('mqnaasApp')
         $scope.spUsers = [];
 
         $scope.updateSpList = function () {
+            $scope.listVi = [];
             var url = "viNetworks"
             IMLService.get(url).then(function (result) {
                 if (result === undefined) return;
@@ -28,7 +29,7 @@ angular.module('mqnaasApp')
                     } else {
                         for (i = 0; i < $scope.dataCollection.length; i++) {
                             for (j = 0; j < $scope.dataCollection[i].vis.length; j++) {
-                                url = 'viNetworks' + $scope.dataCollection[i].vis[j];
+                                url = 'viNetworks/' + $scope.dataCollection[i].vis[j].name;
                                 IMLService.get(url).then(function (result) {
                                     if (result === undefined) $scope.removeVI($scope.dataCollection[i].id, $scope.dataCollection[i].vis[j].name);
                                 });

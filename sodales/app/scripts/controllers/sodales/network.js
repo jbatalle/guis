@@ -138,10 +138,6 @@ angular.module('mqnaasApp')
             }
         };
 
-        $scope.createPort = function (resourceName) {
-            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IPortManagement';
-            MqNaaSResourceService.put(url).then(function (data) {});
-        };
     })
     .controller('editVINetwork', function ($scope, $rootScope, MqNaaSResourceService, $modal, RootResourceService, VirtualService, PhysicalService, IMLService) {
         var url = '';
@@ -165,6 +161,16 @@ angular.module('mqnaasApp')
         $scope.updateListNetworks();
 
         $scope.getNetworkModel = function () {
+            url = "viReqNetworks/" + $scope.viId;
+            IMLService.get(url).then(function (data) {
+                data.vi_req_resources = _.map(data.vi_req_resources, function (e) {
+                    return _.extend({}, e, {
+                        layer: "virtual"
+                    });
+                });
+                $scope.generateNodeData(data.vi_req_resources);
+                $scope.edges.add(generateLinkData(data.vi_req_resources, $scope.nodes));
+            });
             url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IResourceModelReader/resourceModel');
             MqNaaSResourceService.list(url).then(function (data) {
                 $scope.generateNodeData(data.resource.resources.resource);
@@ -177,7 +183,7 @@ angular.module('mqnaasApp')
             resourceType = resourceType.toUpperCase();
             var url = "/viReqNetworks/" + $scope.viId + "/viReqResource/addResource";
             var data = {
-                "resource_type": resourceType
+                "type": resourceType
             };
             IMLService.post(url, data).then(function (virtualResource) {
                 $rootScope.resourceRequest = virtualResource;
@@ -266,14 +272,13 @@ angular.module('mqnaasApp')
                 $rootScope.physicalMappedResource = $scope.dest;
             }
             VirtualService.getResource($scope.source);
-            VirtualService.getRequestPorts($scope.source);
+            //VirtualService.getRequestPorts($scope.source);
             console.log($scope.source);
             console.log($scope.dest);
             PhysicalService.getResource($scope.dest, function () {});
             PhysicalService.getPhysicalPorts($scope.dest).then(function (ports) {
                 $scope.physicalPorts = ports;
             });
-
 
             $rootScope.createMappingDialog = $modal({
                 title: 'Mapping virtual resource to physical resource',
@@ -303,7 +308,7 @@ angular.module('mqnaasApp')
             data = checkIfIsArray(data);
             //$scope.nodes = new vis.DataSet();
             data.forEach(function (node) {
-                if (node.type !== undefined && node.type !== 'link' && node.type !== 'Network') {
+                if (node.type !== undefined && node.type !== 'link' && node.type !== 'Network' && node.layer !== 'virtual') {
                     //put in the other half
                     var x = 10,
                         y = 400;
@@ -315,10 +320,18 @@ angular.module('mqnaasApp')
                         group: 'physical',
                         type: node.type
                     });
-                } else if (node.type === undefined && node.type !== 'link' && node.type !== 'Network') { //VIR
-                    if (node.id !== $scope.viId) return;
-                    var vir = checkIfIsArray(node.resources.resource);
-                    vir.forEach(function (node) {
+                } else if (node.type !== 'link' && node.type !== 'Network' && node.layer === 'virtual') { //VIR
+                    $scope.nodes.add({
+                        id: $scope.nodes.lentgh,
+                        label: node.id,
+                        image: 'images/SODALES_' + node.type + '.png',
+                        shape: 'image',
+                        group: 'virtual',
+                        type: node.type
+                    });
+                    //if (node.id !== $scope.viId) return;
+                    //var vir = checkIfIsArray(node.resources.resource);
+                    /*vir.forEach(function (node) {
                         $scope.nodes.add({
                             id: $scope.nodes.lentgh,
                             label: node.id,
@@ -327,20 +340,15 @@ angular.module('mqnaasApp')
                             group: 'virtual',
                             type: node.type
                         });
-                    })
+                    })*/
                 }
             });
         };
 
-        $scope.createPort = function (resourceName) {
-            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IPortManagement';
-            MqNaaSResourceService.put(url).then(function (data) {});
-        };
-
         $scope.getVirtualResources = function () {
-            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestManagement/' + $scope.viId + '/IResourceModelReader/resourceModel';
-            MqNaaSResourceService.get(url).then(function (response) {
-                $rootScope.virtualResources = checkIfIsArray(response.resource.resources.resource);
+            url = "/viReqNetworks/" + $scope.viId;
+            IMLService.get(url).then(function (data) {
+                $rootScope.virtualResources = checkIfIsArray(data.vi_req_resources);
             });
         };
 
@@ -356,7 +364,7 @@ angular.module('mqnaasApp')
             });
         };
     })
-    .controller('spViewNetwork', function ($scope, $rootScope, MqNaaSResourceService, RootResourceService, VirtualService, IMLService) {
+    .controller('spViewNetwork', function ($scope, $rootScope, RootResourceService, VirtualService, IMLService) {
         var url = '';
 
         $scope.nodes = new vis.DataSet();
@@ -410,7 +418,7 @@ angular.module('mqnaasApp')
                 }
             })[0].label;
             //VirtualService.virtualPorts(virtualResource);
-            VirtualService.getResource(virtualResource);
+            VirtualService.getResourceNetwork(virtualResource);
         };
     });
 

@@ -24,7 +24,7 @@
                                     </div>
                                     <div class="box-body" style="display: block;">
                                         <select ng-model="selectedViPorts" name="ports" multiple size=5 style="width: 100%">
-                                            <option ng-repeat="p in virtualPorts" value="{{p}}">{{p}}</option>
+                                            <option ng-repeat="p in virtualResource.ports" value="{{p}}">{{p.id}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -120,7 +120,6 @@
                                         </div>
                                     </div>
                                     <div class="box-body " style="display: block; ">
-                                        {{resourceInfo.type}}
                                         <span ng-if="resourceInfo.type === 'CPE'">
                                                     CPE
                                                 </span>

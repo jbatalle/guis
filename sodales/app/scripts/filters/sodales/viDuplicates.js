@@ -9,7 +9,7 @@ angular.module('mqnaasApp')
                 angular.forEach(items, function (item) {
                     var isDuplicate = false;
                     for (var i = 0; i < filterOn.length; i++) {
-                        if (angular.equals(item, filterOn[i].name)) {
+                        if (angular.equals(item.id, filterOn[i].name)) {
                             isDuplicate = true;
                             break;
                         }

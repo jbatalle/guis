@@ -47,7 +47,24 @@ angular.module('mqnaasApp')
         };
 
         var getResource = function (resourceName) {
-            var url = "viNetworks/" + $rootScope.virtNetId + "/resource/" + resourceName;
+            var url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + resourceName;
+            IMLService.get(url).then(function (data) {
+                console.log(data);
+                $rootScope.resourceInfo = {};
+                $rootScope.resourceInfo.id = data.id;
+                $rootScope.resourceInfo.type = data.type;
+                $rootScope.resourceInfo.endpoint = data.endpoint;
+                $rootScope.resourceInfo.layer = "virtual";
+                $rootScope.resourceInfo.ports = [];
+                $rootScope.resourceInfo.ports = data.vi_req_ports;
+                $rootScope.virtualResource = angular.copy($rootScope.resourceInfo);
+                return data.vi_ports;
+                //                return $scope.virtualResources;
+            });
+        };
+
+        var getResourceNetwork = function (resourceName) {
+            var url = "viNetworks/" + $rootScope.viId + "/resource/" + resourceName;
             IMLService.get(url).then(function (data) {
                 console.log(data);
                 $rootScope.resourceInfo = {};
@@ -71,6 +88,13 @@ angular.module('mqnaasApp')
         };
 
         var virtualPorts = function (virtualResource) {
+            var url = "viNetworks/" + $rootScope.virtNetId + "/resource/" + resourceName;
+            IMLService.get(url).then(function (data) {
+
+            });
+        };
+
+        var virtualPorts2 = function (virtualResource) {
             var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRequestBasedNetworkManagement/' + $rootScope.virtNetId + '/IRootResourceProvider/' + virtualResource + '/IResourceModelReader/resourceModel';
             MqNaaSResourceService.list(url).then(function (data) {
                 $rootScope.virtualResource = data.resource;

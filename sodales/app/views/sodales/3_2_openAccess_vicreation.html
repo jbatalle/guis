@@ -59,7 +59,7 @@
                 <div class="panel-body">
                     <ul style="padding-left: 0px; margin-left: 20px;">
                         <li ng-repeat="viRes in virtualResources">
-                            <a ng-click="getResourceInfo(viRes.id)"> {{viRes.id}}</a> -
+                            <a ng-click="getResourceInfo(viRes.id)"> {{viRes.id}} ({{viRes.type}})</a> -
                             <a ng-click="deleteDialog(viRes.id)"> Remove </a>
                         </li>
                     </ul>
