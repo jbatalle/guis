@@ -32,7 +32,7 @@ echo "Specific VIReq"
 curl -XGET http://localhost:4050/viReqNetworks/$id
 
 echo "Create network"
-netId=$(curl -XPOST http://localhost:4050/viNetworks -d '{"id": "'$id'"}')
+netId=$(curl -XPOST http://localhost:4050/viNetworks -d '{"id": "'$id'", "name": "test-name"}')
 
 echo $netId
 exit

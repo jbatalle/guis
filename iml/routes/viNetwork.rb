@@ -43,7 +43,7 @@ class IMLSodales < Sinatra::Application
 
 		end
 
-		@viNetwork = ViNetwork.new({:name => "", :period => {:period_start => @viReqNetwork['period']['period_start'], :period_end => @viReqNetwork['period']['period_end']}})
+		@viNetwork = ViNetwork.new({:name => viNet['name'], :period => {:period_start => @viReqNetwork['period']['period_start'], :period_end => @viReqNetwork['period']['period_end']}})
 		#add virtual resource
 		logger.error "For each resources"
 		logger.error @viReqNetwork['vi_req_resources']
