@@ -100,7 +100,7 @@ angular.module('mqnaasApp')
         $scope.updateInterface = function () {
             console.log($rootScope.virtualResource);
             console.log($scope.interface);
-            var port = $scope.interface.attributes.entry[0].value;
+            var port = $scope.interface.physical;
             if ($scope.virtualResource.type === 'ARN') {
                 $scope.arnStats = true;
                 $scope.cpeStats = false;
@@ -122,6 +122,7 @@ angular.module('mqnaasApp')
             //get OpenNaaS Ports
             var virtualResource = $scope.selectedResource;
             //VirtualService.virtualPorts(virtualResource);
+            VirtualService.getResourceNetwork(virtualResource);
         };
 
         $scope.getCPEPortList = function () {

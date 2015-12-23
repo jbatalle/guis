@@ -19,7 +19,7 @@
                 <div class="list-group">
                     <ul>
                         <li ng-repeat="resource in virtualResources">
-                            <a ng-click="selectResource(resource.id, resource.type)" aria-haspopup="true" aria-expanded="false">{{resource.id}}</a>
+                            <a ng-click="selectResource(resource.id, resource.type)" aria-haspopup="true" aria-expanded="false">{{resource.id}} ({{resource.type}})</a>
                         </li>
                     </ul>
 
