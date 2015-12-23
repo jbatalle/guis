@@ -11,10 +11,8 @@ angular.module('mqnaasApp')
 
             var url = "viReqNetworks"
             IMLService.get(url).then(function (result) {
-                console.log(result);
                 $scope.requestCollection = [];
                 if (result === undefined) return;
-                var viReqs = result;
                 $scope.requestCollection = result;
             });
 
@@ -23,10 +21,18 @@ angular.module('mqnaasApp')
                 console.log(result);
                 $scope.networkCollection = [];
                 if (result === undefined) return;
-                var viNets = result;
-                $scope.networkCollection = result;
+                $scope.networkCollection = _.map(result, function (e) {
+                    if (e.period.period_end * 1000 < new Date().getTime()) {
+                        return _.extend({}, e, {
+                            disabled: true
+                        });
+                    } else {
+                        return _.extend({}, e, {
+                            disabled: false
+                        });
+                    }
+                });
             });
-
         };
 
         $scope.deleteDialog = function (id, type) {
@@ -72,24 +78,15 @@ angular.module('mqnaasApp')
         };
 
         $scope.sendVIR = function (viReq) {
-
             var url = "viNetworks"
             var json = {
                 "id": viReq
             };
-            IMLService.post(url, json).then(function (result) {
-                console.log(result);
-                $scope.updateVIReqList();
-            });
-
-
-            //check if period is defined
-            var urlPeriod = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement/" + viReq + "/IRequestAdministration/period";
-            MqNaaSResourceService.get(urlPeriod).then(function (result) {
-                if (result === null) {
+            IMLService.post(url, json).then(function (result, error) {
+                if (result === undefined) {
                     $alert({
-                        title: "Some fields not defined",
-                        content: "Period information is missing",
+                        title: "Error: ",
+                        content: $rootScope.rejection.data,
                         placement: 'top',
                         type: 'danger',
                         keyboard: true,
@@ -97,10 +94,7 @@ angular.module('mqnaasApp')
                         container: '#alerts-container',
                         duration: 5
                     });
-                    return;
-                }
-
-                if (result !== null) {
+                } else {
                     var creatingAlert = $alert({
                         title: "Processing...",
                         content: "Please wait.",
@@ -110,32 +104,11 @@ angular.module('mqnaasApp')
                         show: true,
                         container: '#alerts-container'
                     });
-                }
-
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/?arg0=" + viReq;
-                MqNaaSResourceService.put(url).then(function (result) {
-                    creatingAlert.hide();
-                    $scope.resRoot = result; //empty
-                    console.log(result);
-                    if (result === undefined || result === null) {
+                    promise = $interval(function () {
+                        creatingAlert.hide();
                         $alert({
-                            title: "Error creating network",
+                            title: "New virtual slice created.",
                             content: "",
-                            placement: 'top',
-                            type: 'danger',
-                            keyboard: true,
-                            show: true,
-                            container: '#alerts-container',
-                            duration: 5
-                        });
-                        return;
-                    } else {
-                        $rootScope.info = viReq + " created";
-                        $rootScope.info = "200 - Virtual slice created";
-                        $scope.updateVIReqList();
-                        $alert({
-                            title: "New virtual network created.",
-                            content: result,
                             placement: 'top',
                             type: 'success',
                             keyboard: true,
@@ -143,9 +116,9 @@ angular.module('mqnaasApp')
                             container: '#alerts-container',
                             duration: 5
                         });
-                        return;
-                    }
-                });
+                        $scope.updateVIReqList();
+                    }, 3000, 1);
+                }
             });
         };
 
@@ -472,7 +445,7 @@ angular.module('mqnaasApp')
     .controller('viewVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, $interval, $q, $alert, VirtualService) {
         $rootScope.virtNetId = $stateParams.id;
     })
-    .controller('mappingCtrl', function ($rootScope, $scope, MqNaaSResourceService) {
+    .controller('mappingCtrl', function ($rootScope, $scope, MqNaaSResourceService, IMLService) {
 
         $scope.selectedViPorts = [];
         $scope.selectedViVlans = [];
@@ -481,10 +454,8 @@ angular.module('mqnaasApp')
         $scope.mapping = [];
         $scope.mappingVlan = [];
 
-
         $scope.virtualVlans = [];
         $scope.physicalVlans = [];
-
 
         for (var i = 1; i < 4096; i = i + 127) {
             $scope.virtualVlans.push({
@@ -553,6 +524,59 @@ angular.module('mqnaasApp')
 
             //mapping between resources
             var ports = $scope.mapping;
+            console.log(ports);
+            console.log($scope.mapping);
+            console.log($scope.mappingVlan);
+
+
+            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + physicalResource + '/IResourceModelReader/resourceModel/';
+            MqNaaSResourceService.get(url).then(function (result) {
+                console.log(result);
+                console.log(result.resource.descriptor.endpoints.endpoint);
+                var endpoint = result.resource.descriptor.endpoints.endpoint.uri;
+                //mapping resources
+                var mapping = {
+                    "id": physicalResource,
+                    "endpoint": endpoint
+                };
+                var url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapResource";
+                IMLService.post(url, mapping).then(function (response) {
+                    console.log(response);
+
+                    angular.forEach($scope.mapping, function (port) {
+                        console.log(port);
+                        var url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapPort/" + port.virt + "/" + port.phy;
+                        IMLService.post(url, "").then(function (response) {
+                            console.log(response);
+                        });
+                    })
+
+                    angular.forEach($scope.mappingVlan, function (vlans) {
+                        console.log(vlans);
+                    });
+                    var vlans = {
+                        "upperBound": 1,
+                        "lowerBound": 10
+                    }
+                    var url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapVlan";
+                    IMLService.post(url, vlans).then(function (response) {
+                        console.log(response);
+                    });
+                });
+            });
+
+
+            //mapping ports
+            url = "viReqNetworks/$id/viReqResource/$id2/mapPort/$id3/port-123123";
+
+            //mapping vlans
+            url = "viReqNetworks/$id/viReqResource/$id2/mapVlan";
+
+
+            $rootScope.createMappingDialog.hide();
+            return;
+
+
 
             var portRanges = $scope.generateCube(_.map($scope.mapping, function (o) {
                 return _.values(_.pick(o, 'phy'));

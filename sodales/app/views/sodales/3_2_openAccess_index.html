@@ -36,8 +36,8 @@
                 <tr ng-repeat="row in displayedCollection">
                     <td><a ng-click="viewService(row.id, row.name)">{{row.id}}</a></td>
                     <td>{{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                    <td>{{row.period.period_start| date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                    <td>{{row.period.period_end| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td>{{row.period.period_start *1000| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td>{{row.period.period_end *1000| date:'yyyy-MM-dd HH:mm:ss'}}</td>
                     <td><a ng-click="sendVIR(row.id)" class="btn btn-success" title="process">Send to Process</a>
                         <a ui-sref="root.editVIRequest({ id:row.id })" class="btn btn-primary" title="edit">Edit</a>
                         <a ng-click="deleteDialog(row.id, 'request')" class="btn btn-danger" title="process">Remove</a>
@@ -63,7 +63,7 @@
             <thead>
                 <tr>
                     <th st-sort="name" class="col-sm-3 col-md-3 col-lg-3">Id</th>
-                    <th data-title="'Created date'" class="col-sm-3 col-md-3 col-lg-3">Created date</th>
+                    <th data-title="'Created date'" class="col-sm-2 col-md-2 col-lg-2">Created date</th>
                     <th data-title="'date'" class="col-sm-2 col-md-2 col-lg-2">Period start</th>
                     <th data-title="'date'" class="col-sm-2 col-md-2 col-lg-2">Period end</th>
                     <th class="col-sm-6 col-md-6 col-lg-6">Actions</th>
@@ -78,17 +78,17 @@
                 <tr ng-repeat="row in displayedNetworkCollection">
                     <td><a ng-click="viewService(row.id, row.name)">{{row.id}}</a></td>
                     <td>{{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                    <td>{{row.period_start| date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                    <td>{{row.period_end| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td>{{row.period.period_start *1000| date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td ng-style="row.disabled === true && {'color': 'red'}">{{row.period.period_end *1000| date:'yyyy-MM-dd HH:mm:ss'}}</td>
                     <td>
-                        <a ui-sref="root.viewVirtualNetwork({ id:row.id })" class="btn btn-primary" title="edit">View</a>
+                        <button ng-disabled="row.disabled" ui-sref="root.viewVirtualNetwork({ id:row.id })" class="btn btn-primary" title="edit">View</button>
                         <a ng-click="deleteDialog(row.id, 'network')" class="btn btn-danger" title="process">Remove</a>
                     </td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td class="text-center" st-pagination="" st-items-by-page="5" colspan="3">
+                    <td class="text-center" st-pagination="" st-items-by-page="5" colspan="5">
                     </td>
                 </tr>
             </tfoot>

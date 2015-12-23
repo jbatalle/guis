@@ -24,7 +24,7 @@
                                     </div>
                                     <div class="box-body" style="display: block;">
                                         <select ng-model="selectedViPorts" name="ports" multiple size=5 style="width: 100%">
-                                            <option ng-repeat="p in virtualResource.ports" value="{{p}}">{{p.id}}</option>
+                                            <option ng-repeat="p in virtualResource.ports" value="{{p.id}}">{{p.id}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -71,9 +71,11 @@
                                         <td>{{p.virt}}</td>
                                         <td>
                                             <span ng-if="resourceInfo.type === 'CPE'">
+                                                {{p.phy}}
                                                 {{physicalPorts[p.phy].attributes.entry[0].value}}
                                             </span>
                                             <span ng-if="resourceInfo.type === 'ARN'">
+                                                {{p.phy}}
                                                 {{physicalPorts[p.phy]._interfaceId}}
                                             </span></td>
                                     </tr>
@@ -120,17 +122,17 @@
                                         </div>
                                     </div>
                                     <div class="box-body " style="display: block; ">
-                                        <span ng-if="resourceInfo.type === 'CPE'">
+                                        <!--span ng-if="resourceInfo.type === 'CPE'">
                                                     CPE
                                                 </span>
                                         <span ng-if="resourceInfo.type === 'ARN'">
                                                    ARN
-                                                </span>
+                                                </span-->
                                         <select ng-model="selectedPhyPorts" name="ports" multiple size=5 style="width: 100%">
-                                            <option ng-repeat="p in physicalPorts" value="{{$index}}" ng-if="resourceInfo.type === 'CPE'">
+                                            <option ng-repeat="p in physicalPorts" value="{{p.attributes.entry[0].value}}" ng-if="resourceInfo.type === 'CPE'">
                                                 {{p.attributes.entry[0].value}}
                                             </option>
-                                            <option ng-repeat="p in physicalPorts" value="{{$index}}" ng-if="resourceInfo.type === 'ARN'">
+                                            <option ng-repeat="p in physicalPorts" value="{{p._interfaceId}}" ng-if="resourceInfo.type === 'ARN'">
                                                 {{p._interfaceId}} ({{p._cardId}}) ({{p._name}})
                                             </option>
                                         </select>
