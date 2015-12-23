@@ -27,34 +27,33 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
             $stateProvider
             // Root state to master all
                 .state('root', {
-                abstract: true,
-                controller: 'rootCtrl',
-                views: {
-                    '@': {
-                        templateUrl: 'views/layout/tpl.common.html',
-                        controller: ''
-                    },
-                    'header@root': {
-                        templateUrl: 'views/layout/header.html',
-                        controller: 'RootCtrl'
-                    },
-                    'sidebar@root': {
-                        templateUrl: 'views/layout/sidebar.html',
-                        controller: 'RootCtrl'
-                    },
-                    'main@root': {
-                        template: '<div ui-view="master"></div>',
-                        controller: 'RootCtrl'
-                    },
-                    'footer@root': {
-                        templateUrl: 'views/layout/footer.html',
-                        controller: 'RootCtrl'
-                    },
-                }
-            })
-
-            // login
-            .state('login', {
+                    abstract: true,
+                    controller: 'rootCtrl',
+                    views: {
+                        '@': {
+                            templateUrl: 'views/layout/tpl.common.html',
+                            controller: ''
+                        },
+                        'header@root': {
+                            templateUrl: 'views/layout/header.html',
+                            controller: 'RootCtrl'
+                        },
+                        'sidebar@root': {
+                            templateUrl: 'views/layout/sidebar.html',
+                            controller: 'RootCtrl'
+                        },
+                        'main@root': {
+                            template: '<div ui-view="master"></div>',
+                            controller: 'RootCtrl'
+                        },
+                        'footer@root': {
+                            templateUrl: 'views/layout/footer.html',
+                            controller: 'RootCtrl'
+                        },
+                    }
+                })
+                // login
+                .state('login', {
                     url: '/login',
                     templateUrl: 'views/user/login.html',
                     controller: 'AuthCtrl'
@@ -230,6 +229,22 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                             controller: 'settingsController'
                         }
                     }
+                }).state('root.test', {
+                    url: '/test',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/mappingTest.html',
+                            controller: 'testController'
+                        }
+                    }
+                }).state('root.test2', {
+                    url: '/test2',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/mappingTest2.html',
+                            controller: 'TasksCtrl'
+                        }
+                    }
                 });
 
             $urlRouterProvider.otherwise('/login');
@@ -262,7 +277,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                         var method = config.method;
                         var url = config.url;
                         console.log("APP INTERCEPTOR ERROR");
-
+                        $rootScope.rejection = rejection;
                         console.log(status);
 
                         if (Math.floor(Date.now() / 1000) > $window.localStorage.expiration)
