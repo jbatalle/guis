@@ -36,7 +36,7 @@ class IMLSodales < Sinatra::Application
 
 		end
 
-		if @viReqNetwork['period']['period_end'] < Time.now.to_i
+		if @viReqNetwork['period']['period_end'].to_i < Time.now.to_i
 			logger.error "Period out of scope"
 			halt 400, "The period of the virtual request is out of the allowed range."
 		else
