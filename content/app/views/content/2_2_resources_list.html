@@ -1,0 +1,64 @@
+<h3 class="page-header">Resources</h3>
+
+<table st-table="displayedCollection" st-safe-src="resourcesCollection" class="table table-striped">
+    <thead>
+        <tr>
+            <th st-sort="name" class="col-sm-3 col-md-3 col-lg-3">Id</th>
+            <th data-title="'Created date'" class="col-sm-2 col-md-2 col-lg-2">Date</th>
+            <th data-title="'date'" class="col-sm-2 col-md-2 col-lg-2">Type</th>
+            <th data-title="'date'" class="col-sm-2 col-md-2 col-lg-2">Actions</th>
+        </tr>
+        <tr>
+            <th colspan="2">
+                <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="row in displayedCollection">
+            <td><a ng-click="viewService(row.id, row.name)">{{row.id}}</a></td>
+            <td>{{row.date}}</td>
+            <td>{{row.type}}</td>
+            <td>
+                <a ng-hide="'{{row.type}}' === 'nitos'" ng-click="getResourceModel(row.id)" class="btn btn-success" title="process">Resource info</a>
+                <a ng-show="'{{row.type}}' == 'nitos'" ng-click="getNitosModel()" class="btn btn-default" title="process">See network</a>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="text-center" st-pagination="" st-items-by-page="5" colspan="4">
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+<table st-table="displayedCollection2" st-safe-src="nitosResourcesCollection" class="table table-striped">
+    <thead>
+        <tr>
+            <th st-sort="name" class="col-sm-3 col-md-3 col-lg-3">Name</th>
+            <th data-title="'date'" class="col-sm-2 col-md-2 col-lg-2">Type</th>
+            <th data-title="'date'" class="col-sm-2 col-md-2 col-lg-2">Actions</th>
+        </tr>
+        <tr>
+            <th colspan="2">
+                <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="row in displayedCollection2">
+            <td><a ng-click="viewService(row.name)">{{row.name}}</a></td>
+            <td>{{row.resource_type}}</td>
+            <td>
+                <a ng-hide="'{{row.type}}' === 'nitos'" ng-click="getResourceModelofNitosNetwork(row.id)" class="btn btn-primary">Nitos resources</a>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="text-center" st-pagination="" st-items-by-page="15" colspan="3">
+            </td>
+        </tr>
+    </tfoot>
+</table>

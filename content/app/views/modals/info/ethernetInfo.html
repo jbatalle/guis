@@ -1,0 +1,66 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <div class="modal-body">
+                <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Auto Mdi</td>
+                        <td>{{ethernet._autoMdi}}</td>
+                    </tr>
+                    <tr>
+                        <td>Auto Neg</td>
+                        <td>{{ethernet._autoNeg}}</td>
+                    </tr>
+                    <tr>
+                        <td>ESMC Enabled</td>
+                        <td>{{ethernet._esmcEnabled}}</td>
+                    </tr>
+                    <tr>
+                        <td>FlowControl</td>
+                        <td>{{ethernet._flowControl}}</td>
+                    </tr>
+                    <tr>
+                        <td>IP Source Guard Enabled</td>
+                        <td>{{ethernet._ipSourceGuardEnabled}}</td>
+                    </tr>
+                    <tr>
+                        <td>Loopback</td>
+                        <td>{{ethernet._loopback}}</td>
+                    </tr>
+                    <tr>
+                        <td>MAC</td>
+                        <td>{{ethernet._mac}}</td>
+                    </tr>
+                    <tr>
+                        <td>MAC Learning</td>
+                        <td>{{ethernet._macLearning}}</td>
+                    </tr>
+                    <tr>
+                        <td>MediaType</td>
+                        <td>{{ethernet._mediaType}}</td>
+                    </tr>
+                    <tr>
+                        <td>MediaTypes Supported</td>
+                        <td>{{ethernet._mediaTypesSupported}}</td>
+                    </tr>
+                    <tr>
+                        <td>MTU</td>
+                        <td>{{ethernet._mtu}}</td>
+                    </tr>
+                    <tr>
+                        <td>Perf. Monit. Enabled</td>
+                        <td>{{ethernet._perfMonitEnabled}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

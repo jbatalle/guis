@@ -1,0 +1,23 @@
+feature:repo-add mvn:org.mqnaas/mqnaas/0.0.1-SNAPSHOT/xml/features
+feature:install mqnaas
+
+feature:repo-add mvn:org.mqnaas.extensions/network/0.0.1-SNAPSHOT/xml/features
+feature:install network
+
+feature:repo-add mvn:net.i2cat.dana.nitos/mqnaas-nitos/0.0.1-SNAPSHOT/xml/features
+feature:install nitos
+
+feature:repo-add mvn:net.i2cat.dana.tson/tson/0.0.1-SNAPSHOT/xml/features
+feature:install tson
+
+feature:repo-add mvn:org.mqnaas.extensions/openstack/0.0.1-SNAPSHOT/xml/features
+feature:install mqnaas-openstack
+
+feature:repo-add mvn:org.mqnaas.extensions/modelreader/0.0.1-SNAPSHOT/xml/features
+feature:install mqnaas-modelreader
+
+feature:repo-add mvn:net.i2cat.dana/content-utilities/0.0.1-SNAPSHOT/xml/features
+feature:install utilities
+
+
+

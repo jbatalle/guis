@@ -1,0 +1,136 @@
+<!doctype html>
+<html class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <title>CONTENT | Convergence of Wireless Optical Network and IT REsources IN SupporT of Cloud Services</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/ionicons/css/ionicons.css" />
+    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css" />
+    <link rel="stylesheet" href="bower_components/vis/dist/vis.min.css" />
+    <link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css(.tmp) styles/main.css -->
+    <!-- endbuild -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+
+    <link rel="stylesheet" href="styles/custom.css">
+
+    <!--link href="css/custom.css" rel="stylesheet"-->
+    <link href="styles/styles.css" rel="stylesheet">
+
+    <!-- Template -->
+    <!--link rel="stylesheet" media="screen" href="css/sb-admin.css"-->
+    <link rel="stylesheet" media="screen" href="styles/default.css">
+    <link rel="stylesheet" href="styles/component.css">
+    <link rel="stylesheet" media="screen" href="styles/new_css.css">
+
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="plugin/external/jquery-ui.js"></script>
+    <link href="bower_components/jquery-ui/themes/start/jquery-ui.css" rel="stylesheet" />
+    <link type="text/css" media="screen" href="plugin/ONtoD3lib.css" rel="stylesheet">
+
+    <!-- Ionicons -->
+    <!--link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" /-->
+
+</head>
+
+<body ng-app="mqnaasApp">
+
+    <div ui-view=""></div>
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/icheck/icheck.min.js"></script>
+    <script src="bower_components/ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
+    <script src="bower_components/angular-svg-round-progressbar/build/roundProgress.min.js"></script>
+    <script src="bower_components/ng-tags-input/ng-tags-input.min.js"></script>
+    <script src="bower_components/vis/dist/vis.min.js"></script>
+    <script src="bower_components/x2js/xml2json.min.js"></script>
+    <script src="bower_components/angular-x2js/dist/x2js.min.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/d3/d3.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/config.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="config.js"></script>
+    <script src="scripts/controllers.js"></script>
+    <script src="scripts/directives.js"></script>
+
+    <script src="scripts/resources.js"></script>
+    <script src="scripts/nitos_response.js"></script>
+
+    <script type="text/javascript" src="plugin/ONtoD3lib.js"></script>
+    <script type="text/javascript" src="plugin/on_lib/script_html.js"></script>
+    <script type="text/javascript" src="plugin/on_lib/initial_vars.js"></script>
+    <script type="text/javascript" src="plugin/on_lib/multiselect.js"></script>
+    <script type="text/javascript" src="plugin/on_lib/link_mgt.js"></script>
+    <script type="text/javascript" src="plugin/draw_lib.js"></script>
+
+    <script src="scripts/controllers/auth.js"></script>
+    <script src="scripts/controllers/users.js"></script>
+    <script src="scripts/controllers/profile.js"></script>
+
+    <script src="scripts/controllers/content/1_Home.js"></script>
+    <script src="scripts/controllers/content/2_1_Resources.js"></script>
+    <script src="scripts/controllers/content/2_2_ResourceList.js"></script>
+    <script src="scripts/controllers/content/3_1_createVI.js"></script>
+    <script src="scripts/controllers/content/3_2_ListVi.js"></script>
+    <script src="scripts/controllers/content/options.js"></script>
+
+    <script src="scripts/services/auth.js"></script>
+    <script src="scripts/services/users.js"></script>
+    <script src="scripts/services/profile.js"></script>
+    <script src="scripts/services/userStatistics.js"></script>
+
+    <script src="scripts/services/mqNaaSResourceService.js"></script>
+    <script src="scripts/services/rootResource.js"></script>
+    <script src="scripts/services/content/viService.js"></script>
+    <script src="scripts/services/content/endpointService.js"></script>
+    <script src="scripts/services/historyService.js"></script>
+    <script src="scripts/services/rootResource.js"></script>
+
+    <script src="scripts/services/imlService.js"></script>
+
+    <script src="scripts/mqnaasTemplates.js"></script>
+
+    <script src="scripts/interceptors/auth.js"></script>
+
+    <script src="scripts/directives/auth.js"></script>
+    <script src="scripts/directives/contentEditable.js"></script>
+    <script src="scripts/directives/graph.js"></script>
+
+    <script src="scripts/filters/json-beautify.js"></script>
+    <script src="scripts/filters/isEmpty.js"></script>
+
+    <script src="scripts/utils.js"></script>
+    <!-- endbuild -->
+
+
+</body>
+
+</html>

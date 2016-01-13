@@ -1,0 +1,52 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <div class="modal-body">
+                <form action="createLink" method="post" name="editForm">
+                    <div>
+                        From resource ({{source.label}} to {{dest.label}})
+                        <div>
+                            <div ng-show="!!physicalPorts1.length">
+                                Source port ({{source.label}}):
+                                <button ng-show="source.type === 'ARN'" type="button" class="btn btn-default" ng-model="piPort1" data-html="1" bs-options="port._interfaceId  as (port._name + '(id:' + port._interfaceId +', card: '+port._cardId+')' )  for port in physicalPorts1" bs-select>
+                                    Action <span class="caret"></span>
+                                </button>
+                                <button ng-show="source.type === 'CPE'" type="button" class="btn btn-default" ng-model="piPort1" data-html="1" bs-options="port.id  as (port.attributes.entry[0].value)   for port in physicalPorts1" bs-select>
+                                    Action <span class="caret"></span>
+                                </button>
+                            </div>
+                            <div ng-show=" !!!physicalPorts1.length">
+                                The resource {{source.label}} has no ports!
+                            </div>
+                            <br/>
+                            <div ng-show="!!physicalPorts2.length">
+                                Target port ({{dest.label}}):
+                                <button ng-show="dest.type === 'ARN'" type="button" class="btn btn-default" ng-model="piPort2" data-html="1" bs-options="port._interfaceId  as (port._name + '(id:' + port._interfaceId +', card: '+port._cardId+')' )  for port in physicalPorts2" bs-select>
+                                    Action <span class="caret"></span>
+                                </button>
+                                <button ng-show="dest.type === 'CPE'" type="button" class="btn btn-default" ng-model="piPort2" data-html="1" bs-options="port.id  as (port.attributes.entry[0].value)  for port in physicalPorts2" bs-select>
+                                    Action <span class="caret"></span>
+                                </button>
+                            </div>
+                            <div ng-show=" !!!physicalPorts2.length">
+                                The resource {{dest.label}} has no ports!
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- /.box-body -->
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button ng-if="piPort1 && piPort2" type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="createLink(piPort1, piPort2)">Create link</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

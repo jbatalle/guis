@@ -1,0 +1,38 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" style="width: 850px !important">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <div class="modal-body">
+                <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="col-sm-1 col-md-1 col-lg-1">Id</th>
+                            <th data-title="'description'" class="col-sm-2 col-md-2 col-lg-2">MaxBwPercentage</th>
+                            <th data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">MinBwPercentage</th>
+                            <th data-title="'Add VI'" class="col-sm-2 col-md-2 col-lg-2">QueueManagementType</th>
+                            <th data-title="'Remove VI'" class="col-sm-2 col-md-2 col-lg-2">Scheduler</th>
+                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">TrafficProfileId</th>
+                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Weight</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in displayedCollection2">
+                            <td>{{row._id}}</td>
+                            <td>{{row._maxBwPercentage}}</td>
+                            <td>{{row._minBwPercentage}}</td>
+                            <td>{{row._queueManagementType}}</td>
+                            <td>{{row._scheduler}}</td>
+                            <td>{{row._trafficProfileId}}</td>
+                            <td>{{row._weight}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

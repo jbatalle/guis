@@ -1,0 +1,185 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+            Users {{location.path()}}
+          </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> system</a></li>
+        <li ng-show="currentPath != '/users'"><a href="#!/tenants"> {{selectedTenant.tenant.name}}</a></li>
+        <li class="active">users</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="nav-tabs-custom">
+        
+        <button restrict access="sysadmin" ng-click="createDialog()" class="btn btn-info btn-normal add-button"><i class='fa fa-plus'></i><span> {{ 'Add' | translate }}</span>
+        </button>
+
+        <ul class="nav nav-tabs">
+            <li ng-repeat="tab in tabs" ng-class="{active:isActiveTab(tab.url)}" ng-click="onClickTab(tab)">
+                <a>{{tab.title}}</a>
+            </li>
+        </ul>
+        <div id="mainView">
+            <div class="tab-content">
+                <div ng-include="currentTab"></div>
+            </div>
+        </div>
+        <script type="text/ng-template" id="tab_1">
+            <table st-table="displayedCollection" st-safe-src="userCollection" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th st-sort="name">User</th>
+                        <th>User name</th>
+                        <th>Email</th>
+                        <th>Tenant</th>
+                        <th st-sort="active">Active</th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr>
+                        <th colspan="4">
+                            <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in displayedCollection">
+                        <td>{{row.name}}</td>
+                        <td>{{row.fullname}}</td>
+                        <td>{{row.email}}</td>
+                        <td>{{row.tenant.name}}</td>
+                        <td><span ng-if="row.active == 1">Yes</span><span ng-if="row.active == 0">No</span></td>
+                        <td>
+                            <button type="button" ui-sref="root.users.profile({id: row.id})" class="btn btn-sm btn-info">Profile</button>
+                            <button type="button" ng-click="active(row.id)" class="btn btn-sm btn-success" ng-if="row.active === 0">Enable</button>
+                            <button type="button" ng-click="disable(row.id)" class="btn btn-sm btn-warning" ng-if="row.active === 1">Disable</button>
+                            <button type="button" ng-click="deleteDialog(row.id)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center" st-pagination="" st-items-by-page="10" colspan="6">
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </script>
+        <!-- /.tab-pane -->
+        <script type="text/ng-template" id="tab_2">
+            <table st-table="displayedCollection" st-pagination-scroll st-safe-src="userCollection" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th st-sort="name">User</th>
+                        <th>Last logins</th>
+                        <th>Fail login IP address</th>
+                        <th>Fail login date</th>
+                        <th>Failed logins</th>
+                        <th>Fail login IP address</th>
+                        <th>Fail login date</th>
+                    </tr>
+                    <tr>
+                        <th colspan="4">
+                            <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in displayedCollection">
+                        <td><a ng-click="getLastVisitedPages(row.id)">{{row.name}}</a>
+                        </td>
+                        <td><a ng-click="getLastLogins(row.id)">View{{row.logins}}</a>
+                            <td>{{row.last_login_ip}}</td>
+                            <td>{{row.last_login_timestamp | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                            <td>{{row.failed_logins}}</td>
+                            <td>{{row.last_failed_login_ip}}</td>
+                            <td>{{row.last_failed_login_timestamp | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center" st-pagination="" st-items-by-page="10" colspan="6">
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="row" ng-show="lastVisitedPages">
+                <div class="col-md-4" ng-show="lastVisitedPages">
+                    <widgetmetrics data="charts.data" options="charts" ng-if="charts.data"></widgetmetrics>
+                </div>
+                <div class="col-md-8">
+                    <div class="table-container" style="height: 400px; overflow-y: auto;">
+                        <table st-table="visitedPagesCollection" st-pagination-scroll st-safe-src="lastVisitedPages" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th st-sort="name">View</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="4">
+                                        <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in visitedPagesCollection">
+                                    <td>{{row.view}}</td>
+                                    <td>{{row.created_at | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="text-center" st-pagination="" st-items-by-page="10" colspan="6">
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-show="lastLogin">
+                <div class="col-md-8">
+                    <div class="table-container" style="height: 400px; overflow-y: auto;">
+                        <table st-table="displayedUserCollection" st-safe-src="lastLogin" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th st-sort="name">Logged?</th>
+                                    <th st-sort="name">Ip</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="4">
+                                        <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in displayedUserCollection">
+                                    <td>{{row.logged}}</td>
+                                    <td>{{row.ip}}</td>
+                                    <td>{{row.created_at | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="text-center" st-pagination="" st-items-by-page="10" colspan="6">
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <widgetmetrics data="hist.data" options="hist" ng-if="hist.data"></widgetmetrics>
+                </div>
+            </div>
+        </script>
+        <!-- /.tab-pane -->
+    </div>
+    <!-- nav-tabs-custom -->
+</section>
+<!-- /.content -->

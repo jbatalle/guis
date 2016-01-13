@@ -1,0 +1,68 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+            {{ 'Profile' | translate }}
+            <small>{{profile.name}}</small>
+          </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> system</a>
+        </li>
+        <li class="active">profile</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="box box-warning">
+                <div class="box-header">
+                    <h3 class="box-title">{{ 'General_Information' | translate }}</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form name="registerForm" role="form">
+                        <!-- text input -->
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input ng-model="profile.name" type="text" class="form-control" placeholder="profile.name" disabled/>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'Full_name' | translate }}</label>
+                            <input ng-model="profile.fullname" type="text" class="form-control" placeholder="{{profile.fullname}}" />
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'Roles' | translate }}</label>
+                            <div class="checkbox" ng-repeat="role in roles">
+                                <label>
+                                    <input type="checkbox" name="selectedRoles[]" value="{{if}}" ng-model="role.selected" ng-disabled="profile.name == 'admin' && role.name == 'sysadmin'"> {{role.name}}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input ng-model="profile.email" type="text" class="form-control" placeholder="profile.email" />
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'Tenant' | translate }}</label>
+                            <select class="form-control" ng-model="profile.tenant" ng-options="tenant.name for tenant in tenants track by tenant.id">
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ 'Policies' | translate }}</label>
+                        </div>
+                        <div class="box-footer">
+                            <button ng-click="updateProfile(profile)" type="submit" class="btn btn-primary">{{ 'Update' | translate }}</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+
+
+    </div>
+
+</section>
+<!-- /.content -->

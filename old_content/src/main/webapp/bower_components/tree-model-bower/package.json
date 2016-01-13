@@ -1,0 +1,21 @@
+{
+  "name": "tree-model-bower",
+  "version": "0.4.3",
+
+  "dependencies": {
+    "bower": "1.3.x",
+    "tree-model": "bikezilla/tree-model-js",
+    "mergesort": "0.0.1",
+    "find-insert-index": "0.0.1"
+   },
+
+  "devDependencies": {
+    "browserify": "3.31.2"
+  },
+
+  "scripts": {
+    "postinstall": "./node_modules/browserify/bin/cmd.js ./node_modules/tree-model/index.js -o TreeModel.js -s TreeModel"
+  }
+
+
+}

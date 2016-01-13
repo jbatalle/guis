@@ -1,0 +1,5 @@
+{
+    "excluded-directories": ["node_modules", "bower_components"],
+    "max-file-count": 100,
+    "max-file-size": 524288
+}
