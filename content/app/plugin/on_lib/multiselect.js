@@ -2,10 +2,10 @@ var drag = d3.behavior.drag()
     .on("drag", function (d, i) {
 
         var link = graph.vis.selectAll("line.link")
-                    .data(graph.getLinks());
-        
-        if(multiSelectMode){
-console.log("drag");
+            .data(graph.getLinks());
+
+        if (multiSelectMode) {
+            console.log("drag");
             if (startState) {
                 //return;
             }
@@ -21,11 +21,15 @@ console.log("drag");
             }
             // move states
             selection.attr("transform", function (d, i) {
-                
+
 
                 //                console.log(link.filter(function(l) { return l.source === this; }));
-                link.filter(function (l) { return l.source === d;}).attr("x1", d.x).attr("y1", d.y);
-                link.filter(function (l) { return l.target === d; }).attr("x2", d.x).attr("y2", d.y);
+                link.filter(function (l) {
+                    return l.source === d;
+                }).attr("x1", d.x).attr("y1", d.y);
+                link.filter(function (l) {
+                    return l.target === d;
+                }).attr("x2", d.x).attr("y2", d.y);
 
                 d.x += d3.event.dx;
                 d.y += d3.event.dy;
@@ -46,8 +50,8 @@ console.log("drag");
             // move transistion points of each transition where transition target is also in selection
             var selectedStates = d3.selectAll('g.node.selected').data();
             var affectedTransitions = selectedStates.reduce(function (array, state) {
-                return array.concat(state.transitions);
-            }, [])
+                    return array.concat(state.transitions);
+                }, [])
                 .filter(function (transition) {
                     return selectedStates.indexOf(transition.target) != -1;
                 });
@@ -67,9 +71,9 @@ console.log("drag");
 
 
             d3.event.sourceEvent.stopPropagation();
-        } else{
+        } else {
 
-            if(ctrlKey){
+            if (ctrlKey) {
                 var selection = d3.selectAll('.selected');
 
                 // if dragged state is not in current selection
@@ -81,7 +85,8 @@ console.log("drag");
                 }
                 // move states
                 selection.attr("transform", function (d, i) {
-                    d.px += d3.event.dx; d.py += d3.event.dy;
+                    d.px += d3.event.dx;
+                    d.py += d3.event.dy;
                     d.x = d3.event.x, d.y = d3.event.y;
                     if (d.x < 0) {
                         d.x = 20;
@@ -95,22 +100,26 @@ console.log("drag");
                     if (d.y > graph.getHeight()) {
                         d.y = graph.getHeight();
                     }
-console.log("Dragging Node - Look Ports");
+                    console.log("Dragging Node - Look Ports");
                     console.log(d);
-
-                    d.ports[0].x = d.ports[0].posx + d.x;
-                    d.ports[0].y =  d.ports[0].posy + d.y;
-                    d.ports[1].x =  d.ports[1].posx + d.x;
-                    d.ports[1].y =  d.ports[1].posy + d.y;
-                    for(var i=0; i<d.ports.length; i++){
-//                        console.log(d.ports[i]);
+                    /*
+                                        d.ports[0].x = d.ports[0].posx + d.x;
+                                        d.ports[0].y =  d.ports[0].posy + d.y;
+                                        d.ports[1].x =  d.ports[1].posx + d.x;
+                                        d.ports[1].y =  d.ports[1].posy + d.y;*/
+                    for (var i = 0; i < d.ports.length; i++) {
+                        //                        console.log(d.ports[i]);
                         transform(d.ports[i]);
-console.log(link);
-//                        link.filter(function (l) { return l.source === d.ports[i];}).attr("x1", d.ports[i].x).attr("y1", d.ports[i].y);  
-//                        link.filter(function (l) { return l.target === d.ports[i]; }).attr("x2", d.ports[i].x).attr("y2", d.ports[i].y);
+                        console.log(link);
+                        //                        link.filter(function (l) { return l.source === d.ports[i];}).attr("x1", d.ports[i].x).attr("y1", d.ports[i].y);  
+                        //                        link.filter(function (l) { return l.target === d.ports[i]; }).attr("x2", d.ports[i].x).attr("y2", d.ports[i].y);
                     }
-                    link.filter(function (l) { return l.source === d;}).attr("x1", d.x).attr("y1", d.y);
-                    link.filter(function (l) { return l.target === d; }).attr("x2", d.x).attr("y2", d.y);
+                    link.filter(function (l) {
+                        return l.source === d;
+                    }).attr("x1", d.x).attr("y1", d.y);
+                    link.filter(function (l) {
+                        return l.target === d;
+                    }).attr("x2", d.x).attr("y2", d.y);
                     return "translate(" + [d.x, d.y] + ")";
                 });
             }
@@ -146,8 +155,8 @@ console.log(link);
  * Change selection mode
  */
 function changeSelectMode() {
-    if( multiSelectMode == true ) multiSelectMode = false;
-    else  multiSelectMode = true;
-    
-    document.getElementById("selectModeButton").value="Multiselect: "+multiSelectMode;
+    if (multiSelectMode == true) multiSelectMode = false;
+    else multiSelectMode = true;
+
+    document.getElementById("selectModeButton").value = "Multiselect: " + multiSelectMode;
 }

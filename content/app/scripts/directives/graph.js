@@ -6,7 +6,9 @@ angular.module('mqnaasApp')
             scope: {},
             templateUrl: 'views/d3/editor.html',
             link: function (scope, element, attrs) {
-                graph = new myGraph("#graph");
+                graph = new myGraph("#graph", {
+                    mode: "view"
+                });
                 //                        graph.setNodes(localStorageService.get("graphNodes"));
                 scope.graph = graph;
                 timer(console.log("TIMER HEUEHE"), 0);
@@ -129,7 +131,9 @@ angular.module('mqnaasApp')
             scope: {},
             templateUrl: 'views/d3/view.html',
             link: function (scope, element, attrs) {
-                graph = new myGraph("#graph");
+                graph = new myGraph("#graph", {
+                    mode: "view"
+                });
                 //                        graph.setNodes(localStorageService.get("graphNodes"));
                 scope.graph = graph;
                 timer(console.log("TIMER HEUEHE"), 0);
@@ -433,7 +437,9 @@ angular.module('mqnaasApp')
             scope: {},
             templateUrl: 'views/d3/view.html',
             link: function (scope, element, attrs) {
-                graph = new myGraph("#graph");
+                graph = new myGraph("#graph", {
+                    mode: "view"
+                });
                 //                        graph.setNodes(localStorageService.get("graphNodes"));
                 scope.graph = graph;
                 timer(console.log(""), 1000);

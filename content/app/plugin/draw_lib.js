@@ -378,7 +378,7 @@ function myGraph(el, options) {
 
         nodeEnter.on("mousedown", function (d) {
             //if is a Virtual Resource
-            if (!ctrlKey && options.mode !== 'edit') {
+            if (!ctrlKey && options.mode === 'edit') {
                 console.log("Click on node " + d.name);
                 //                    var parentNode = graph.getNodes().filter(function (p) { return d.parent == p.id})[0];
                 var parentNode = graph.getNodes().filter(function (p) {

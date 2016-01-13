@@ -171,6 +171,7 @@
         "/home/josep/workspace/sodales/guis/sodales/bower_components/x2js/xml2json.js",
         "/home/josep/workspace/sodales/guis/content/bower_components/x2js/xml2json.js",
         "/home/josep/workspace/sodales/guis/content/app/plugin/models/wifi.js",
-        "/home/josep/workspace/sodales/guis/content/app/plugin/models/cpe.js"
+        "/home/josep/workspace/sodales/guis/content/app/plugin/models/cpe.js",
+        "/home/josep/workspace/sodales/guis/content/app/plugin/models/lte.js"
     ]
 }
