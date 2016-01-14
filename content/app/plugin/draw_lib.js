@@ -399,6 +399,10 @@ function myGraph(el, options) {
                 nodeMouseDown(startState);
                 console.log(startState);
             }
+
+            //console.log(angular.element().controller());
+            //console.log(angular.element(document.getElementById('viMgt')).controller());
+            angular.element(document.getElementById('viMgt')).scope().test(d);
         });
         nodeEnter.on("mouseup", function (d) {
             //if is a Virtual Resource

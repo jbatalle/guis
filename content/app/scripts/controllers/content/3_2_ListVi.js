@@ -75,4 +75,14 @@ angular.module('mqnaasApp')
             localStorageService.set("networkElements", result);
         });
 
+        $scope.test = function (element) {
+            console.log("CLICK");
+            console.log(element);
+            url = "viNetworks/" + $rootScope.virtNetId + "/resource/" + element.id;
+            IMLService.get(url).then(function (result) {
+                if (result === undefined) return;
+                $scope.virtualResource = result;
+            });
+        }
+
     });
