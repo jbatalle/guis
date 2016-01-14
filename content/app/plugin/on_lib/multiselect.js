@@ -5,7 +5,7 @@ var drag = d3.behavior.drag()
             .data(graph.getLinks());
 
         if (multiSelectMode) {
-            console.log("drag");
+            //console.log("drag");
             if (startState) {
                 //return;
             }
@@ -60,7 +60,7 @@ var drag = d3.behavior.drag()
                     var point = transition.points[i];
                     point.x += d3.event.dx;
                     point.y += d3.event.dy;
-                    console.log(point);
+                    //console.log(point);
                 }
             });
 
@@ -100,8 +100,8 @@ var drag = d3.behavior.drag()
                     if (d.y > graph.getHeight()) {
                         d.y = graph.getHeight();
                     }
-                    console.log("Dragging Node - Look Ports");
-                    console.log(d);
+                    //console.log("Dragging Node - Look Ports");
+                    //console.log(d);
                     /*
                                         d.ports[0].x = d.ports[0].posx + d.x;
                                         d.ports[0].y =  d.ports[0].posy + d.y;
@@ -110,7 +110,7 @@ var drag = d3.behavior.drag()
                     for (var i = 0; i < d.ports.length; i++) {
                         //                        console.log(d.ports[i]);
                         transform(d.ports[i]);
-                        console.log(link);
+                        //console.log(link);
                         //                        link.filter(function (l) { return l.source === d.ports[i];}).attr("x1", d.ports[i].x).attr("y1", d.ports[i].y);  
                         //                        link.filter(function (l) { return l.target === d.ports[i]; }).attr("x2", d.ports[i].x).attr("y2", d.ports[i].y);
                     }
@@ -126,7 +126,7 @@ var drag = d3.behavior.drag()
         }
     })
     .on("dragend", function (d) {
-        console.log("Dragend..........");
+        //console.log("Dragend..........");
         //updateNode();
         // TODO : http://stackoverflow.com/questions/14667401/click-event-not-firing-after-drag-sometimes-in-d3-js
 
