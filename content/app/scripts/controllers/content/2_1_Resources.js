@@ -18,7 +18,7 @@ angular.module('mqnaasApp')
 
         var nitos = "https://83.212.32.165:8001/resources";
 
-        NitosService.get().then(function (data) {
+        NitosService.get('resources').then(function (data) {
             console.log(data);
         });
 

@@ -12,12 +12,8 @@ angular.module('mqnaasApp')
                 //                        graph.setNodes(localStorageService.get("graphNodes"));
                 scope.graph = graph;
                 timer(console.log("TIMER HEUEHE"), 0);
-                console.log(localStorageService.get("graphNodes"));
-                console.log(localStorageService.get("networkElements"));
                 var networkElements = resources.resources;
                 var links = resources.links;
-                console.log(networkElements);
-                console.log(links);
 
                 var nodes = [];
                 for (var i = 0; i < networkElements.length; i++) {
@@ -65,9 +61,7 @@ angular.module('mqnaasApp')
                         matrix[i][j] = false;
                     }
                 }
-                //                        nodes = StaticForcealgorithm(nodes, matrix);
                 for (i = 0; i < nodes.length; i++) {
-                    //                            console.log(nodes[i].x + " " + nodes[i].y);
                     if (nodes[i].x < 0) {
                         nodes[i].x = nodes[i].x + 400 / 2;
                     }
@@ -80,7 +74,6 @@ angular.module('mqnaasApp')
                     if (nodes[i].y > 400) {
                         //                                nodes[i].y = 400;
                     }
-                    //        createSwitch(nodes[i].id, nodes[i].ports, nodes[i].x, nodes[i].y);
                     var divPos = {
                         x: nodes[i].x,
                         y: nodes[i].y
@@ -234,17 +227,18 @@ angular.module('mqnaasApp')
             scope: '&',
             controller: function ($scope, $modal) {
                 console.log($scope);
+                /*
                 $scope.openaddVIResDialog = function (nodeType, divPos) {
-                    console.log("MODAL");
-                    $scope.nodeType = nodeType;
-                    $scope.divPos = divPos;
-                    $modal({
-                        title: 'Are you sure you want to add this item?',
-                        template: 'views/content/addResInVIDialog.html',
-                        show: true,
-                        scope: $scope
-                    });
-                };
+    console.log("MODAL");
+    $scope.nodeType = nodeType;
+    $scope.divPos = divPos;
+    $modal({
+        title: 'Are you sure you want to add this item?',
+        template: 'views/content/addResInVIDialog.html',
+        show: true,
+        scope: $scope
+    });
+};*/
             },
             link: function (scope, element, attrs) {
 
@@ -293,7 +287,7 @@ angular.module('mqnaasApp')
                         if (value) {
                             console.log(value);
                             // pass value to app controller
-                            $scope.virtualElements = value;
+                            //$scope.virtualElements = value;
                         }
                     });
                 }
@@ -307,19 +301,18 @@ angular.module('mqnaasApp')
                         scope.virtualElements = value;
 
                         console.log(scope.virtualElements);
+
                     }
                 });
                 console.log(scope.virtualElements);
-                scope.$watch('virtualElements', function (newValue, oldValue) {
+                /*scope.$watch('virtualElements', function (newValue, oldValue) {
                     if (newValue) {
                         console.log("I see a data change!");
                         console.log(newValue);
                         console.log(oldValue);
                         console.log(virtualElements);
                     }
-                }, true);
-
-
+                }, true);*/
                 graph = new myGraph("#graph", {
                     mode: "edit"
                 });
@@ -429,6 +422,7 @@ angular.module('mqnaasApp')
 
                 graph.addLink("OFSwitch-23", "WNODE-14");
                 graph.addLink("OFSwitch-23", "WNODE-17");
+
             }
         };
             }]).directive('graphviewvi', ['localStorageService', '$timeout', function (localStorageService, timer) {
