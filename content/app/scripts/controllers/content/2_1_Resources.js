@@ -8,47 +8,38 @@
  * Controller of the webappApp
  */
 angular.module('mqnaasApp')
-    .controller('PIMgtCtrl', function ($scope, $rootScope, MqNaaSResourceService, localStorageService, RootResourceService) {
+    .controller('PIMgtCtrl', function ($scope, $rootScope, MqNaaSResourceService, localStorageService, RootResourceService, NitosService) {
         $rootScope.viewName = 'Dashboard';
 
         $scope.networkElements = resources.resources;
 
         localStorageService.set("networkElements", $scope.networkElements);
         console.log(localStorageService.get("networkElements"));
-        return;
 
+        var nitos = "https://83.212.32.165:8001/resources";
 
-        var url = "";
+        NitosService.get().then(function (data) {
+            console.log(data);
+        });
 
-        $scope.getResouceInfo = function (resourceName) {
-            $scope.resourceName = resourceName;
-            console.log("GET INFO RES");
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/slice";
-            console.log(url);
-            MqNaaSResourceService.getText(url).then(function (data) {
-                console.log(data);
-                $scope.getSliceInfo = data;
-                $scope.getListUnits(resourceName, data);
-            });
+        $scope.getResouceInfo = function (resource, type) {
+            $scope.resource = {};
+            if (type === 'TSON') {
+                $scope.getTsonInfo(resource);
+            } else if (type === 'TSON') {
+
+            }
         };
 
-        $scope.getListUnits = function (resourceName, slice) {
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/ISliceProvider/" + slice + "/IUnitManagement";
-            MqNaaSResourceService.get(url).then(function (data) {
-                console.log(data);
-                $scope.getUnitsList = data.IResource.IResourceId;
-            });
+        $scope.getTsonInfo = function (resource) {
+            $scope.resource = {};
+
         };
 
-        $scope.openUnitDialog = function (unit) {
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + $scope.resourceName + "/ISliceProvider/" + $scope.getSliceInfo + "/IUnitManagement/" + unit;
-            MqNaaSResourceService.get(url).then(function (data) {
+        $scope.getOfSwitches = function () {
+            NitosService.get().then(function (data) {
                 console.log(data);
-                $scope.getUnitInfo = data.unit;
-            });
-            $modal({
-                template: 'partials/resourceInfo.html',
-                scope: $scope
-            });
-        };
+            })
+        }
+
     });
