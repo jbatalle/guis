@@ -1,19 +1,17 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('optionsCtrl', function ($scope, $rootScope, endpointService) {
+    .controller('optionsCtrl', function ($scope, $rootScope, AUTHENTICATION, BACKEND) {
         $rootScope.viewName = "Options";
         var url = "";
         $scope.options = {};
-        endpointService.get().then(function (data) {
-            //http://admin:123456@84.88.41.171:9000
-            var t = data.split(":")
-            $scope.options.port = t.pop();
-            //if string contains @, if not, split with //
-            $scope.options.ip = t.pop().split("@")[1];
-        });
+        $scope.options_auth = {};
 
-        $scope.update = function (options) {
-            endpointService.post(options.ip, options.port);
-        };
+        var t = AUTHENTICATION.split(":")
+        $scope.options_auth.port = t.pop();
+        $scope.options_auth.ip = t.pop();
+
+        var t = BACKEND.split(":")
+        $scope.options.port = t.pop();
+        $scope.options.ip = t.pop();
     });

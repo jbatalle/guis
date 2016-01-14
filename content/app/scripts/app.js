@@ -151,7 +151,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                     url: '/editVIRequest/:id',
                     views: {
                         'master@root': {
-                            templateUrl: 'views/content/createVI/editor.html',
+                            templateUrl: 'views/content/3_1_vi_req_editor.html',
                             controller: 'editVIController'
                         }
                     }
@@ -191,8 +191,8 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                     url: '/settings',
                     views: {
                         'master@root': {
-                            templateUrl: 'views/sodales/settings.html',
-                            controller: 'settingsController'
+                            templateUrl: 'views/content/options.html',
+                            controller: 'optionsCtrl'
                         }
                     }
                 });
