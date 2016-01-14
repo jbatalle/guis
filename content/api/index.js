@@ -36,6 +36,8 @@ app.configure(function () {
 require('./lib/proxy')(app);
 require('./lib/arn')(app);
 require('./lib/cpe')(app);
+require('./lib/nitos')(app);
+require('./lib/tson')(app);
 //require(fs)(app);
 
 app.configure(function () {
