@@ -75,7 +75,7 @@ angular.module('mqnaasApp')
             localStorageService.set("networkElements", result);
         });
 
-        $scope.test = function (element) {
+        $scope.getResourceInfo = function (element) {
             console.log("CLICK");
             console.log(element);
             url = "viNetworks/" + $rootScope.virtNetId + "/resource/" + element.id;

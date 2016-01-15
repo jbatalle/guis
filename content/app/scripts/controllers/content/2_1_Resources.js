@@ -22,8 +22,8 @@ angular.module('mqnaasApp')
             console.log(data);
         });
 
-        $scope.getResouceInfo = function (resource, type) {
-            $scope.resource = {};
+        $scope.getResouceInfo2 = function (resource, type) {
+            $rootScope.phyResource = {};
             if (type === 'TSON') {
                 $scope.getTsonInfo(resource);
             } else if (type === 'TSON') {
@@ -31,15 +31,21 @@ angular.module('mqnaasApp')
             }
         };
 
-        $scope.getTsonInfo = function (resource) {
-            $scope.resource = {};
-
-        };
-
         $scope.getOfSwitches = function () {
             NitosService.get().then(function (data) {
                 console.log(data);
             })
+        };
+
+        $scope.getResourceInfo = function (d) {
+            console.log(d.id);
+            console.log($rootScope.phyResource);
+            $rootScope.phyResource = undefined;
+            $rootScope.phyResource = $scope.networkElements.filter(function (res) {
+                return d.id === res.id
+            })[0];
+            console.log($rootScope.phyResource);
+            //$scope.resource = d;
         }
 
     });
