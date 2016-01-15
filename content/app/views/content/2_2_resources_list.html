@@ -35,35 +35,38 @@
     </tfoot>
 </table>
 
-<table st-table="displayedCollection2" st-safe-src="nitosResourcesCollection" class="table table-striped">
-    <thead>
-        <tr>
-            <th st-sort="name" class="col-sm-3 col-md-3 col-lg-3">Name</th>
-            <th data-title="'date'" class="col-sm-2 col-md-2 col-lg-2">Type</th>
-            <th data-title="'date'" class="col-sm-2 col-md-2 col-lg-2">Actions</th>
-        </tr>
-        <tr>
-            <th colspan="1">
-                <input st-search="name" class="form-control" placeholder="name search ..." type="text" />
-            </th>
-            <th colspan="1">
-                <input st-search="resource_type" class="form-control" placeholder="type search ..." type="text" />
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="row in displayedCollection2">
-            <td><a ng-click="viewService(row.name)">{{row.name}}</a></td>
-            <td>{{row.resource_type}}</td>
-            <td>
-                <a ng-hide="'{{row.type}}' === 'nitos'" ng-click="getResourceModelofNitosNetwork(row)" class="btn btn-primary">Nitos resources</a>
-            </td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td class="text-center" st-pagination="" st-items-by-page="15" colspan="3">
-            </td>
-        </tr>
-    </tfoot>
-</table>
+<div ng-if="nitosResourcesCollection">
+    <h4>Nitos resources</h4>
+    <table st-table="displayedCollection2" st-safe-src="nitosResourcesCollection" class="table table-striped">
+        <thead>
+            <tr>
+                <th st-sort="name" class="col-sm-3 col-md-3 col-lg-3">Name</th>
+                <th data-title="'date'" class="col-sm-2 col-md-2 col-lg-2">Type</th>
+                <th data-title="'date'" class="col-sm-2 col-md-2 col-lg-2">Actions</th>
+            </tr>
+            <tr>
+                <th colspan="1">
+                    <input st-search="name" class="form-control" placeholder="name search ..." type="text" />
+                </th>
+                <th colspan="1">
+                    <input st-search="resource_type" class="form-control" placeholder="type search ..." type="text" />
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in displayedCollection2">
+                <td><a ng-click="viewService(row.name)">{{row.name}}</a></td>
+                <td>{{row.resource_type}}</td>
+                <td>
+                    <a ng-hide="'{{row.type}}' === 'nitos'" ng-click="getResourceModelofNitosNetwork(row)" class="btn btn-primary">Nitos resources</a>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="text-center" st-pagination="" st-items-by-page="15" colspan="3">
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

@@ -277,7 +277,7 @@ angular.module('mqnaasApp')
             }
         };
             }])
-    .directive('grapheditorvi', ['localStorageService', '$timeout', 'viService', function (localStorageService, timer, viService) {
+    .directive('grapheditorvi', ['localStorageService', '$timeout', function (localStorageService, timer) {
         return {
             restrict: 'A',
             templateUrl: 'views/d3/editorVI.html',
