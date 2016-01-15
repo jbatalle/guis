@@ -402,19 +402,19 @@ function myGraph(el, options) {
 
             //console.log(angular.element().controller());
             //console.log(angular.element(document.getElementById('viMgt')).controller());
-            angular.element(document.getElementById('viMgt')).scope().test(d);
+            angular.element(document.getElementById('viMgt')).scope().getResourceInfo(d);
         });
         nodeEnter.on("mouseup", function (d) {
             //if is a Virtual Resource
             var parentNode = graph.getNodes().filter(function (p) {
                 return d.name == p.name
             })[0];
-            console.log(parentNode);
-            console.log(node);
+            //console.log(parentNode);
+            //console.log(node);
             endState = d;
 
             //startState = node;
-            console.log("Change X " + (parentNode.x));
+            //console.log("Change X " + (parentNode.x));
             endState.x = (parentNode.x);
             endState.y = (parentNode.y);
             endState.transitions = [];
@@ -521,7 +521,6 @@ function myGraph(el, options) {
         var radius = 40;
         vis.on({
             mousedown: function () {
-                console.log("Selection enabled");
                 if (d3.event.target.tagName == 'svg') {
                     drag_line
                         .classed('hidden', true)

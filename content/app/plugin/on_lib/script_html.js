@@ -45,9 +45,9 @@ function createElement(name, type, divPos, data) {
         case "ofSwitch":
         case "ofswitch":
             if (jQuery.isEmptyObject(data))
-                createofSwitch(divPos);
+                createofSwitch(name, divPos);
             else
-                createofSwitchwithData(divPos, data);
+                createofSwitchwithData(name, divPos, data);
             //showInfoMessage("Element added");
             break;
         case "router":
@@ -211,7 +211,7 @@ function createTSONwithData(name, divPos, data) {
     graph.addNodewithData(tson);
 }
 
-function createofSwitch(divPos) {
+function createofSwitch(name, divPos) {
     OfSwitch.prototype = new NetworkElement();
     OfSwitch.prototype.constructor = OfSwitch;
     //    var name = "ofSw" + graph.getNodes().length;
@@ -225,7 +225,7 @@ function createofSwitch(divPos) {
     graph.addNodewithData(ofSw);
 }
 
-function createofSwitchwithData(divPos, data) {
+function createofSwitchwithData(name, divPos, data) {
     console.log("Creating Switch with data");
     OfSwitch.prototype = new NetworkElement();
     OfSwitch.prototype.constructor = OfSwitch;
