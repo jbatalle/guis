@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 
-angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqnaasApp.controllers', 'mqnaasApp.directives', 'mqnaasApp.services', 'smart-table', 'mgcrea.ngStrap', 'ngTagsInput', 'cb.x2js', 'LocalStorageModule'])
+angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqnaasApp.controllers', 'mqnaasApp.services', 'smart-table', 'mgcrea.ngStrap', 'ngTagsInput', 'cb.x2js', 'LocalStorageModule'])
 
 .run(
   ['$rootScope', '$state', '$stateParams', '$timeout',
@@ -248,7 +248,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
             });
     }
 ]
-).run(function ($window, $rootScope, $location, $state, AuthService, UserStatisticsService, $alert) {
+).run(function ($window, $rootScope, $location, $state, AuthService, $alert) {
     if ($window.localStorage.userId) $rootScope.username = $window.localStorage.username;
     if ($window.localStorage.userImg) $rootScope.user_img = $window.localStorage.userImg;
     if ($window.localStorage.user) $rootScope.user = JSON.parse($window.localStorage.user);

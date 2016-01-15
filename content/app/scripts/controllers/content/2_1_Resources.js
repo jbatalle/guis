@@ -8,7 +8,7 @@
  * Controller of the webappApp
  */
 angular.module('mqnaasApp')
-    .controller('PIMgtCtrl', function ($scope, $rootScope, MqNaaSResourceService, localStorageService, RootResourceService, NitosService) {
+    .controller('PIMgtCtrl', function ($scope, $rootScope, localStorageService, NitosService) {
         $rootScope.viewName = 'Dashboard';
 
         $scope.networkElements = resources.resources;

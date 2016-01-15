@@ -1,6 +1,6 @@
 'use strict';
 
-services.factory('IMLService', function ($http, x2js, HistoryService, IML) {
+services.factory('IMLService', function ($http, x2js, IML) {
     return {
         get: function (url) {
             var promise = $http.get(IML + url).then(function (response) {
@@ -27,9 +27,7 @@ services.factory('IMLService', function ($http, x2js, HistoryService, IML) {
             return promise;
         },
         delete: function (url) {
-            var promise = $http.delete(IML + url).then(function (response) {}, function (response) {
-                his.$save();
-            });
+            var promise = $http.delete(IML + url).then(function (response) {}, function (response) {});
             return promise;
         }
     };
