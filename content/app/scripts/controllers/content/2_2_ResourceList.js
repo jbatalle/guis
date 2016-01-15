@@ -43,7 +43,6 @@ angular.module('mqnaasApp')
         };
 
         $scope.getResourceModel = function (data) {
-
             console.log(data);
             data.info = {};
             TsonService.get(data.endpoint).then(function (response) {
@@ -54,22 +53,21 @@ angular.module('mqnaasApp')
                 $modal({
                     title: "Resource descriptor - " + data.id,
                     content: JSON.stringify(data, undefined, 4),
-                    template: "views/modals/info/descriptors.html",
+                    template: "views/modals/info/info.html",
                     show: true,
                     scope: $scope,
                 });
             })
-
-
         };
 
         $scope.getResourceModelofNitosNetwork = function (data) {
+            $scope.resource = data;
             $scope.jsonObj = JSON.stringify(data, undefined, 4);
             console.log(data);
             $modal({
                 title: "Resource descriptor - " + data.name,
                 content: JSON.stringify(data, undefined, 4),
-                template: "views/modals/info/descriptors.html",
+                template: "views/modals/info/info.html",
                 show: true,
                 scope: $scope,
             });
