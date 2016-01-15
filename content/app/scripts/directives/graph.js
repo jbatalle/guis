@@ -11,7 +11,7 @@ angular.module('mqnaasApp')
                 });
                 //                        graph.setNodes(localStorageService.get("graphNodes"));
                 scope.graph = graph;
-                timer(console.log("TIMER HEUEHE"), 0);
+                timer(console.log("TIMER"), 0);
                 var networkElements = resources.resources;
                 var links = resources.links;
 
@@ -22,7 +22,7 @@ angular.module('mqnaasApp')
                     var node = {};
                     node.id = networkElements[i].id;
                     node.type = type;
-                    node.ports = networkElements[i].ports.port;
+                    node.ports = networkElements[i].ports;
                     node.x = networkElements[i].x;
                     node.y = networkElements[i].y;
                     node.net_force = {};
@@ -129,7 +129,7 @@ angular.module('mqnaasApp')
                 });
                 //                        graph.setNodes(localStorageService.get("graphNodes"));
                 scope.graph = graph;
-                timer(console.log("TIMER HEUEHE"), 0);
+                timer(console.log("TIMER"), 0);
                 console.log(localStorageService.get("graphNodes"));
                 console.log(localStorageService.get("networkElements"));
 
@@ -343,7 +343,7 @@ angular.module('mqnaasApp')
                     var node = {};
                     node.id = networkElements[i].id;
                     node.type = type;
-                    node.ports = networkElements[i].ports.port;
+                    node.ports = networkElements[i].ports;
                     node.x = networkElements[i].x;
                     node.y = networkElements[i].y;
                     node.net_force = {};
