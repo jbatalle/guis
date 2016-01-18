@@ -3,6 +3,7 @@
 angular.module('mqnaasApp')
     .controller('operatorlistController', function ($rootScope, $scope, $filter, spService, $modal, UsersService, IMLService) {
 
+        $rootScope.viewName = 'Operators';
         var url;
         $scope.listVi = [];
         //$scope.data = [];

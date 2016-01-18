@@ -172,6 +172,15 @@
         "/home/josep/workspace/sodales/guis/content/bower_components/x2js/xml2json.js",
         "/home/josep/workspace/sodales/guis/content/app/plugin/models/wifi.js",
         "/home/josep/workspace/sodales/guis/content/app/plugin/models/cpe.js",
-        "/home/josep/workspace/sodales/guis/content/app/plugin/models/lte.js"
+        "/home/josep/workspace/sodales/guis/content/app/plugin/models/lte.js",
+        "/home/josep/workspace/sodales/guis/content/bower_components/angular-touch/angular-touch.min.js",
+        "/home/josep/workspace/sodales/guis/content/app/plugin/models/Router.js",
+        "/home/josep/workspace/sodales/guis/content/api/lib/cpe.js",
+        "/home/josep/workspace/sodales/guis/content/app/plugin/models/arn.js",
+        "/home/josep/workspace/sodales/guis/content/app/plugin/models/OfSwitch.js",
+        "/home/josep/workspace/sodales/guis/content/app/plugin/models/ports.js",
+        "/home/josep/workspace/sodales/guis/content/app/plugin/ONtoD3lib.js",
+        "/home/josep/workspace/sodales/guis/content/app/plugin/models/elements.js",
+        "/home/josep/workspace/sodales/guis/content/app/plugin/models/epc.js"
     ]
 }

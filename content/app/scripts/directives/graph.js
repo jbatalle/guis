@@ -17,6 +17,7 @@ angular.module('mqnaasApp')
 
                 var nodes = [];
                 for (var i = 0; i < networkElements.length; i++) {
+                    console.log(networkElements[i]);
                     var type = networkElements[i]["type"];
                     if (type === "switch") type = "ofswitch";
                     var node = {};
@@ -93,7 +94,7 @@ angular.module('mqnaasApp')
                 graph.addLink("OFSwitch-23", "WNODE-14");
                 graph.addLink("OFSwitch-23", "WNODE-17");
 
-                graph.update();
+                //   graph.update();
             }
         };
 
@@ -501,7 +502,7 @@ angular.module('mqnaasApp')
                  */
                 nodes = StaticForcealgorithm(nodes, matrix);
                 for (i = 0; i < nodes.length; i++) {
-                    console.log(nodes[i].x + " " + nodes[i].y);
+                    //console.log(nodes[i].x + " " + nodes[i].y);
                     if (nodes[i].x < 0) {
                         nodes[i].x = nodes[i].x + 400 / 2;
                     }

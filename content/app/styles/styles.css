@@ -9,7 +9,7 @@ i {
 }
 footer {
     width: 100%;
-    position: absolute;
+    /*position: absolute;*/
     bottom: 0;
     height: 60px;
     left: 0;

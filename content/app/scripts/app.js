@@ -16,7 +16,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
     function ($rootScope, $state, $stateParams) {
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
-            $state.transitionTo('root.dashboard');
+            $state.transitionTo('root.resourcesMgt');
     }
   ]
 )
@@ -115,7 +115,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                     }
                 })
                 // Dashboard
-                .state('root.dashboard', {
+                /*.state('root.dashboard', {
                     url: '/dashboard',
                     views: {
                         'master@root': {
@@ -123,7 +123,8 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                             controller: 'HomeCtrl'
                         }
                     }
-                }).state('root.resourcesMgt', {
+                })*/
+                .state('root.resourcesMgt', {
                     url: '/resourcesMgt',
                     views: {
                         'master@root': {
@@ -242,7 +243,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                         if (Math.floor(Date.now() / 1000) > $window.localStorage.expiration)
                             $rootScope.logout();
                         else if (status === 401 && $window.localStorage.token !== null && $window.localStorage.token !== undefined) {
-                            $location.path('/dashboard');
+                            $location.path('/resourcesMgt');
                         } else if (status === 401) {
                             $location.path('/login');
                         } else {
