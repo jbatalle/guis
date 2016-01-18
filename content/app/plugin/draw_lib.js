@@ -384,20 +384,20 @@ function myGraph(el, options) {
                 var parentNode = graph.getNodes().filter(function (p) {
                     return d.name == p.name
                 })[0];;
-                console.log(parentNode);
+                //console.log(parentNode);
                 startState = d, endState = undefined;
-                console.log(parentNode.x);
+                //console.log(parentNode.x);
                 console.log(d);
-                console.log(d.x);
+                //console.log(d.x);
                 //startState = node;
-                console.log("Change X " + (parentNode.x + d.posx));
+                //console.log("Change X " + (parentNode.x + d.posx));
                 startState.x = (parentNode.x);
                 startState.y = (parentNode.y);
                 startState.testx = (parentNode.x);
                 startState.testy = (parentNode.y);
                 startState.transitions = [];
                 nodeMouseDown(startState);
-                console.log(startState);
+                //console.log(startState);
             }
 
             //console.log(angular.element().controller());

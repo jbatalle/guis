@@ -1,25 +1,26 @@
 <div class="wrapper">
-    <div id="container" style="min-height: 100%; height: auto !important; position: relative;">
-        <div id="top-nav" class="navbar navbar-inverse navbar-static-top">
-            <div class="container-fluid">
-                <header ui-view="header"></header>
-            </div>
-        </div>
-        <!-- Left side column. contains the logo and sidebar -->
+    <!--div id="container" style="min-height: 100%; height: auto !important; position: relative;"-->
+    <div id="top-nav" class="navbar navbar-inverse navbar-static-top">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-2">
-                    <hr>
-                    <div class="main-sidebar" ui-view="sidebar"></div>
-                    <hr>
-                </div>
-                <!-- Content Wrapper. Contains page content -->
-                <div class="container col-sm-10">
-                    <div id="alerts-container"></div>
-                    <div class="content-wrapper" ui-view="main" full-height offset="61"></div>
-                </div>
+            <header ui-view="header"></header>
+        </div>
+    </div>
+    <!-- Left side column. contains the logo and sidebar -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2">
+                <hr>
+                <div class="main-sidebar" ui-view="sidebar"></div>
+                <hr>
+            </div>
+            <!-- Content Wrapper. Contains page content -->
+            <div class="container col-sm-10">
+                <div id="alerts-container"></div>
+                <div class="content-wrapper" ui-view="main" full-height offset="61"></div>
             </div>
         </div>
     </div>
+
+    <!--/div-->
     <footer class="main-footer" ui-view="footer"></footer>
 </div>

@@ -1,0 +1,165 @@
+<h2 class="page-header">OpenAccess <small> Service Providers</small></h2>
+<ol class="breadcrumb">
+    <li class="active">
+        <i class="fa fa-dashboard"></i> <a ui-sref="root.viList">Virtual slices</a>
+    </li>
+    <li class="active">
+        <i class="fa fa-history"></i> <a ui-sref="root.history">Historic</a>
+    </li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12" ng-class="{'col-md-8':collapsed}">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-users fa-fw"></i> Service Providers</h3>
+            </div>
+            <div class="panel-body">
+                <div id="sp_table">
+                    <div class="pull-right">
+                        <button class="btn btn-primary" ng-click="openSPCreationDialog()">Create SP</button>
+                        <button ng-click="updateSpList()" class="btn btn-default">Reload</button>
+                    </div>
+                    <table st-table="displayedCollection" st-safe-src="dataCollection" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th st-sort="name" class="col-sm-1 col-md-1 col-lg-1">Name</th>
+                                <th data-title="'description'" class="col-sm-1 col-md-1 col-lg-1">Description</th>
+                                <th data-title="'VI List'" class="col-sm-3 col-md-3 col-lg-3">VI List</th>
+                                <th data-title="'Add VI'" class="col-sm-2 col-md-2 col-lg-2">Add VI</th>
+                                <th data-title="'Remove VI'" class="col-sm-2 col-md-2 col-lg-2">Remove VI</th>
+                                <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Actions</th>
+                            </tr>
+                            <tr>
+                                <th colspan="2">
+                                    <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in displayedCollection">
+                                <td><a ng-click="selectedSP(row)" data-trigger="hover" data-type="success" data-title="Created at: {{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}" bs-tooltip>{{row.name}}</a></td>
+                                <td>{{row.description}}</td>
+                                <td data-title="'VI List'">
+                                    <select name="viList" size="2" style="width:70%">
+                                        <option ng-repeat="vis in row.vis">{{vis.name}}{{$last ? '' : ', '}}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select ng-model="selectedAddVi">
+                                        <option ng-repeat="item in listVi | viDuplicates:row.vis track by $index" value="{{item.id}}">
+                                            {{item.name != '' ? item.name : item.id}}
+                                        </option>
+                                    </select>
+                                    <a ng-click="addVI(row.id, selectedAddVi)" title="View">Add</a></td>
+                                <td>
+                                    <select ng-model="selectedRemoveVi">
+                                        <option ng-repeat="item in row.vis track by $index">{{item.name}}</option>
+                                    </select>
+                                    <a ng-click="removeVI(row.id, selectedRemoveVi)" title="View">Del</a></td>
+                                <td><a ng-click="removeSP(row.id)" title="View">Remove</a></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center" st-pagination="" st-items-by-page="5" colspan="6">
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-class="{'col-md-4':collapsed}" id="users_table" ng-show="current_sp !== null">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-user fa-fw"></i> Users</h3>
+            </div>
+            <div class="panel-body">
+                <div class="pull-right">
+                    <button ng-click="addUserDialog(current_sp)" class="btn btn-primary"><span class="fa fa-user-plus"></span></button>
+                </div>
+                <table st-table="displayedCollection2" st-safe-src="dataCollection2" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th st-sort="name">Name</th>
+                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Actions</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">
+                                <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in displayedCollection2">
+                            <td>{{row.name}}</td>
+                            <td><a ng-click="removeUser(row)" title="Remove">Remove</a></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="text-center" st-pagination="" st-items-by-page="5" colspan="3">
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-users fa-fw"></i> Users</h3>
+            </div>
+            <div class="panel-body">
+                <div class="pull-right">
+                    <button ng-click="createUserDialog(current_sp)" class="btn btn-primary">Create user</button>
+                </div>
+                <table st-table="usersCollection" st-safe-src="usersDataCollection" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th st-sort="name">Name</th>
+                            <th st-sort="name">Email</th>
+                            <th st-sort="name">Active</th>
+                            <th st-sort="name">SP</th>
+                            <th st-sort="name">Roles</th>
+                            <th st-sort="name">Last login</th>
+                            <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Actions</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">
+                                <input st-search="" class="form-control" placeholder="global search ..." type="text" />
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in usersCollection">
+                            <td>{{row.name}}</td>
+                            <td>{{row.email}}</td>
+                            <td>{{row.active}}</td>
+                            <td>{{row.sp_id}}</td>
+                            <td>
+                                <li ng-if="role.name !== 'guest'" ng-repeat="role in row.roles" style="content:','; padding:'0';">{{role.name}}</li>
+                            </td>
+                            <td>{{row.last_login_timestamp}}</td>
+                            <td>
+                                <a ng-if="row.active !== 1" ng-click="activeUser(row)" title="View">Active</a>
+                                <a ng-if="row.name !== 'admin'" ng-click="deleteUser(row)" title="View">Remove</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="text-center" st-pagination="" st-items-by-page="5" colspan="7">
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

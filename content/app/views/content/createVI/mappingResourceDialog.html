@@ -1,0 +1,71 @@
+<div class="modal" tabindex="-1" role="dialog" ng-controller="mappingCtrl">
+    <div class="modal-dialog" style="width: 80%;">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Virtual resource ({{virtMapRes.id}})</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.col-sm-4 -->
+                    <div class="col-sm-4 ">
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading ">
+                                <div class="row ">
+                                    <div class="col-xs-12 text-left ">
+                                        <div>
+                                            Mapping info
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="">
+                            <br/>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Virtual resource</th>
+                                        <th>Physical resource</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{virtMapRes.id}}</td>
+                                        <td>{{phyMapRes.id}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="icon ">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <button ng-click="map(source, dest)" class="btn btn-primary btn-flat ">Process mapping</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 ">
+                        <div class="panel panel-default ">
+                            <div class="panel-heading ">
+                                <h3 class="panel-title ">Physical resource ({{phyMapRes.id}})</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" ng-show="saving" style="text-align: center">
+                            <i class="fa fa-refresh fa-spin"></i> Attaching mapping information... Please wait until the resource is mapped.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

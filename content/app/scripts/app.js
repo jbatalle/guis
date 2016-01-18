@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 
-angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqnaasApp.controllers', 'mqnaasApp.services', 'smart-table', 'mgcrea.ngStrap', 'ngTagsInput', 'cb.x2js', 'LocalStorageModule'])
+angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqnaasApp.controllers', 'mqnaasApp.services', 'mqnaasApp.directives', 'smart-table', 'mgcrea.ngStrap', 'ngTagsInput', 'cb.x2js', 'LocalStorageModule'])
 
 .run(
   ['$rootScope', '$state', '$stateParams', '$timeout',
@@ -193,6 +193,14 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                         'master@root': {
                             templateUrl: 'views/content/options.html',
                             controller: 'optionsCtrl'
+                        }
+                    }
+                }).state('root.vimgt', {
+                    url: '/viMgt',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/content/4_1_viOperators.html',
+                            controller: 'operatorlistController'
                         }
                     }
                 });
