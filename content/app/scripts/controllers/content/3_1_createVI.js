@@ -321,6 +321,7 @@ angular.module('mqnaasApp')
             })[0];
 
             console.log(virtRes);
+            console.log(virtRes.type);
             console.log(phyRes);
 
             if (virtRes.type !== phyRes.type) {
@@ -330,14 +331,14 @@ angular.module('mqnaasApp')
             if (virtRes.type === "TSON") {
                 //lambda -> timeslots
                 $scope.mappedElementName = "Lambdas"
-            } else if (virtRes.type === "EPC") {
+            } else if (virtRes.type === "EPC" || virtRes.type === "LTE" || virtRes.type === "LTE") { //wifi
 
-            } else if (virtRes.type === "LTE") {
+            } else if (virtRes.type === "EPC" || virtRes.type === "LTE") {
 
             }
 
 
-            if (virtRes.type === "WNODE") {
+            if (virtRes.type === "WNODE" || virtRes.type === "EPC" || virtRes.type === "LTE") {
                 //mapp without ports either vlans
                 $scope.mappedElementName = "Resource";
                 $scope.virtMapRes = virtRes;
@@ -345,6 +346,15 @@ angular.module('mqnaasApp')
                 $modal({
                     title: 'Mapping resources',
                     template: 'views/content/createVI/mappingResourceDialog.html',
+                    show: true,
+                    scope: $scope
+                });
+            } else if (virtRes.type === "tson") {
+                console.log($scope);
+                $scope.mappedElementName = "Lambdas"
+                $modal({
+                    title: 'Mapping resources',
+                    template: 'views/content/createVI/mappingLambdaDialog.html',
                     show: true,
                     scope: $scope
                 });

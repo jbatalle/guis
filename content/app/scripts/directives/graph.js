@@ -14,7 +14,7 @@ angular.module('mqnaasApp')
                 timer(console.log("TIMER"), 0);
                 var networkElements = resources.resources;
                 var links = resources.links;
-
+                console.log(resources.resources);
                 var nodes = [];
                 for (var i = 0; i < networkElements.length; i++) {
                     console.log(networkElements[i]);
@@ -257,7 +257,7 @@ angular.module('mqnaasApp')
                         };
 
                         console.log("Create with draw");
-                        console.log(graph.getNodes());
+                        //console.log(graph.getNodes());
                         scope.openaddVIResDialog(nodeType, divPos);
                         //                                createElement("randomName", nodeType, divPos);
 
@@ -324,9 +324,9 @@ angular.module('mqnaasApp')
                 console.log(localStorageService.get("virtualElements"));
                 console.log(scope);
                 console.log(scope.$parent);
-                console.log(scope.virtualElements);
-                console.log(scope.$parent.virtualElements);
-                console.log(resources);
+                //console.log(scope.virtualElements);
+                //console.log(scope.$parent.virtualElements);
+                //console.log(resources);
                 var networkElements = resources.resources;
                 var links = resources.links;
 
@@ -438,7 +438,7 @@ angular.module('mqnaasApp')
                 //                        graph.setNodes(localStorageService.get("graphNodes"));
                 scope.graph = graph;
                 timer(console.log(""), 1000);
-                console.log(localStorageService.get("graphNodes"));
+                //console.log(localStorageService.get("graphNodes"));
                 console.log(localStorageService.get("networkElements"));
 
                 var networkElements = localStorageService.get("networkElements").vi_resources;
@@ -463,7 +463,6 @@ angular.module('mqnaasApp')
                         y: 0
                     };
                     nodes.push(node);
-                    console.log(nodes);
                     //{id:1, x: 10, y: 20, net_force: {}, velocity: {}
                 }
                 var edges = [];
@@ -528,4 +527,4 @@ angular.module('mqnaasApp')
                 }
             }
         };
-            }]);
+}]);

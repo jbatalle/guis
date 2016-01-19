@@ -1,0 +1,28 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <div class="modal-body">
+                <form action="createSP" method="post" name="editForm">
+
+                    <b>Name:</b>
+                    <input type="text" ng-model="sp.name" name="name" class="form-control">
+                    <br/>
+                    <b>Description:</b>
+                    <input type="text" ng-model="sp.description" name="description" class="form-control">
+                    <br/>
+                    <b>Url:</b>
+                    <input type="text" ng-model="sp.url" name="url" class="form-control">
+                    <br/>
+                </form>
+                <!-- /.box-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="addSP(sp)">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

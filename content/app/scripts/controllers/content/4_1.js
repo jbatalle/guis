@@ -52,8 +52,8 @@ angular.module('mqnaasApp')
 
         $scope.openSPCreationDialog = function () {
             $modal({
-                title: 'Create new SP.',
-                template: 'views/modals/ip_oa/spCreationDialog.html',
+                title: 'Create new operator.',
+                template: 'views/modals/operators/spCreationDialog.html',
                 show: true,
                 scope: $scope
             });
@@ -106,8 +106,8 @@ angular.module('mqnaasApp')
                 $scope.spUsers = data;
             });
             $modal({
-                title: 'Adding user to SP ' + row.name + '.',
-                template: 'views/modals/ip_oa/addUser.html',
+                title: 'Adding user to operator ' + row.name + '.',
+                template: 'views/modals/operators/addUser.html',
                 show: true,
                 scope: $scope,
             });
@@ -132,7 +132,7 @@ angular.module('mqnaasApp')
         $scope.createUserDialog = function () {
             $modal({
                 title: 'Creating user',
-                template: 'views/modals/ip_oa/modalUserCreation.html',
+                template: 'views/modals/operators/modalUserCreation.html',
                 show: true,
                 scope: $scope,
             });

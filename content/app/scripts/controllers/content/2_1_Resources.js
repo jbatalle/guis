@@ -11,6 +11,9 @@ angular.module('mqnaasApp')
     .controller('PIMgtCtrl', function ($scope, $rootScope, localStorageService, NitosService) {
         $rootScope.viewName = 'Dashboard';
 
+        var phyResources = resources.resources;
+        //$scope.test = resources.resources;;
+        //
         $scope.networkElements = resources.resources;
 
         localStorageService.set("networkElements", $scope.networkElements);
@@ -26,7 +29,7 @@ angular.module('mqnaasApp')
             $rootScope.phyResource = {};
             if (type === 'TSON') {
                 $scope.getTsonInfo(resource);
-            } else if (type === 'TSON') {
+            } else if (type !== 'TSON') {
 
             }
         };
@@ -39,7 +42,9 @@ angular.module('mqnaasApp')
 
         $scope.getResourceInfo = function (d) {
             console.log(d.id);
+            console.log(phyResources)
             console.log($rootScope.phyResource);
+            console.log($scope.networkElements);
             $rootScope.phyResource = undefined;
             $rootScope.phyResource = $scope.networkElements.filter(function (res) {
                 return d.id === res.id
