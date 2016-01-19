@@ -21,15 +21,12 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
   ]
 )
 
-.config(['uiGmapGoogleMapApiProvider', 'uiGmapGoogleMapApiProvider',
-    function (GoogleMapApi, GoogleMapApiProviders) {
-        GoogleMapApi.configure({
-            //    key: 'your api key',
-            // v: '3.20',
-            libraries: 'weather,geometry,visualization'
-        });
-        GoogleMapApiProviders.configure({
-            china: true
+.config(['uiGmapGoogleMapApiProvider',
+    function (uiGmapGoogleMapApiProvider) {
+        uiGmapGoogleMapApiProvider.configure({
+            key: 'AIzaSyBvHPUMbKIkIC6FPweEXCQoxUZO8XKI2u4',
+            v: '3.17',
+            libraries: 'geometry'
         });
 
 }]).config(
