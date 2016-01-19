@@ -40,7 +40,8 @@ NetworkElement.prototype = {
         this.y = y;
     },
     setPorts: function (ports, parentId) {
-        ports = definePortPositions(ports, parentId);
+        //ports = definePortPositions(ports, parentId);
+
         this.ports = ports;
     },
     getPorts: function () {
