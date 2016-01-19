@@ -16,7 +16,7 @@ class IMLSodales < Sinatra::Application
 	get '/viNetworks/:id/resource/:resourceId' do
 		logger.error ViNetwork.find(params['id']).vi_resources
 		begin
-			return ViNetwork.find(params['id']).vi_resources.find(params['resourceId']).to_json
+			return ViNetwork.find(params['id']).vi_resources.find_by(:id => params['resourceId']).to_json
 		rescue Mongoid::Errors::DocumentNotFound => e
 			halt 404, "Not found"
 		end
@@ -53,14 +53,18 @@ class IMLSodales < Sinatra::Application
 			#r = 
 			@viNetwork.vi_resources << ViResource.new({:type => viReqResource['type'], :mapped_resource =>  viReqResource['mapping'], :endpoint => viReqResource['mapping_uri']})
 			logger.error "For each ports"
-			#logger.error viReqResource['viReqPorts']
-			viReqResource['vi_req_ports'].each do |viReqPort|
+			logger.error viReqResource['vi_req_ports']
+			if viReqResource['vi_req_ports'].empty?
+				logger.error "Do nothing... no ports defined"
+			else
+				viReqResource['vi_req_ports'].each do |viReqPort|
 				logger.error viReqPort
 				#logger.error @viNetwork.viResources.last
 				#p = ViReqPort.new({:physical => viReqPort['mapped'] })
 				#logger.error p
 				@viNetwork.vi_resources.last.vi_ports << ViPort.new({:physical => viReqPort['mapped'] })
 				#@viNetwork.viResources << ViResource.new({:type => viReqResource, :endpoint => ""})
+				end
 			end
 		end
 		
