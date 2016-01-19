@@ -96,16 +96,18 @@ angular.module('mqnaasApp')
                 "name": name
             };
             IMLService.post(url, json).then(function (result, error) {
-                if (result === undefined) {
+                console.log(result);
+                console.log(error);
+                if (result.status === 500) {
                     $alert({
                         title: "Error: ",
-                        content: $rootScope.rejection.data,
+                        content: $rootScope.rejection.data.replace(/<(?:.|\n)*?>/gm, ''),
                         placement: 'top',
                         type: 'danger',
                         keyboard: true,
                         show: true,
                         container: '#alerts-container',
-                        duration: 5
+                        duration: 8
                     });
                 } else {
                     var creatingAlert = $alert({
@@ -343,7 +345,7 @@ angular.module('mqnaasApp')
                 $scope.mappedElementName = "Resource";
                 $scope.virtMapRes = virtRes;
                 $scope.phyMapRes = phyRes;
-                $modal({
+                $rootScope.createMappingDialog = $modal({
                     title: 'Mapping resources',
                     template: 'views/content/createVI/mappingResourceDialog.html',
                     show: true,
@@ -352,7 +354,7 @@ angular.module('mqnaasApp')
             } else if (virtRes.type === "tson") {
                 console.log($scope);
                 $scope.mappedElementName = "Lambdas"
-                $modal({
+                $rootScope.createMappingDialog = $modal({
                     title: 'Mapping resources',
                     template: 'views/content/createVI/mappingLambdaDialog.html',
                     show: true,
@@ -360,7 +362,7 @@ angular.module('mqnaasApp')
                 });
             } else {
                 console.log($scope);
-                $modal({
+                $rootScope.createMappingDialog = $modal({
                     title: 'Mapping resources',
                     template: 'views/content/createVI/mappingPortsDialog.html',
                     show: true,
@@ -527,8 +529,9 @@ angular.module('mqnaasApp')
             };
         });
 
-
         $scope.map = function (virtualResource, physicalResource) {
+            console.log(virtualResource);
+            console.log(physicalResource);
             $scope.saving = true;
             $scope.cubes = [];
             console.log($scope.mapping);
@@ -543,7 +546,6 @@ angular.module('mqnaasApp')
             console.log($scope.mappingVlan);
 
 
-            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + physicalResource + '/IResourceModelReader/resourceModel/';
             /* MqNaaSResourceService.get(url).then(function (result) {
                     console.log(result);
                     console.log(result.resource.descriptor.endpoints.endpoint);
@@ -581,7 +583,7 @@ angular.module('mqnaasApp')
 
 
             //mapping ports
-            url = "viReqNetworks/$id/viReqResource/$id2/mapPort/$id3/port-123123";
+            var url = "viReqNetworks/$id/viReqResource/$id2/mapPort/$id3/port-123123";
 
             //mapping vlans
             url = "viReqNetworks/$id/viReqResource/$id2/mapVlan";
@@ -589,8 +591,6 @@ angular.module('mqnaasApp')
 
             $rootScope.createMappingDialog.hide();
             return;
-
-
 
             var portRanges = $scope.generateCube(_.map($scope.mapping, function (o) {
                 return _.values(_.pick(o, 'phy'));

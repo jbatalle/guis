@@ -32,7 +32,7 @@ var resources_list = {
         {
             id: "Tson-25",
             type: "tson",
-            endpoint: "http://137.222.177.118:8080",
+            endpoint: "http://137.222.177.119:8080",
             ports: [
                 {
                     id: "T11"

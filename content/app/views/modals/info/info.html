@@ -10,17 +10,19 @@
                     <div class="col-md-6 col-xs-6">
                         <div class="form-group">
                             <label for="node_os">Name:</label>
-                            <input type="text" readonly class="form-control" id="node_os" value="{{resource.name}}">
+                            <input ng-if="resource.id" type="text" readonly class="form-control" id="node_os" value="{{resource.id}}">
+                            <input ng-if="resource.name" type="text" readonly class="form-control" id="node_os" value="{{resource.name}}">
                         </div>
                     </div>
                     <div class="col-md-6 col-xs-6">
                         <div class="form-group">
                             <label for="node_os_version">Type:</label>
-                            <input type="text" readonly class="form-control" id="node_os_version" value="{{resource.resource_type}}">
+                            <input ng-if="resource.type" type="text" readonly class="form-control" id="node_os_version" value="{{resource.type}}">
+                            <input ng-if="resource.resource_type" type="text" readonly class="form-control" id="node_os_version" value="{{resource.resource_type}}">
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" ng-if="resource.uuid">
                     <div class="col-md-12 col-xs-12">
                         <div class="form-group">
                             <label for="node_platform">UUID:</label>
@@ -91,13 +93,27 @@
                             </div>
                         </div>
                     </div>
-
-                    <pre class="beautify" ng-bind-html="jsonObj | prettify"></pre>
-                    <!-- /.box-body -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="$hide()">Close</button>
+                </div>
+                <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
+                    <div class="panel panel-default" ng-repeat="panel in panels">
+                        <div class="panel-heading" role="tab">
+                            <h4 class="panel-title">
+                                <a bs-collapse-toggle>JSON format</a>
+                            </h4>
+                        </div>
+                        <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+                            <div class="panel-body">
+                                <pre class="beautify" ng-bind-html="jsonObj | prettify"></pre>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <!-- /.box-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="$hide()">Close</button>
                 </div>
             </div>
         </div>
     </div>
+</div>

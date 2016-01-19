@@ -14,7 +14,7 @@ services.factory('IMLService', function ($http, x2js, IML) {
             var promise = $http.post(IML + url, data).then(function (response) {
                 return response.data;
             }, function (response) {
-                his.$save();
+                return response;
             });
             return promise;
         },
@@ -22,7 +22,7 @@ services.factory('IMLService', function ($http, x2js, IML) {
             var promise = $http.put(IML + url, data).then(function (response) {
                 return response.data;
             }, function (response) {
-                his.$save();
+                return response;
             });
             return promise;
         },

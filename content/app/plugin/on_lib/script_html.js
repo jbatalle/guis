@@ -41,6 +41,17 @@ $(function () {
 });
 
 function createElement(name, type, divPos, data) {
+    console.log(name);
+    console.log(type);
+    console.log(graph.getNodes());
+    var n = graph.getNodes();
+    var t = n.filter(function (d) {
+        return d.id === name;
+    })
+    console.log(t);
+    console.log(t.length > 0);
+    //if (t.length > 0) return;
+    //console.log(graph.findNode(name))
     switch (type) {
         case "ofSwitch":
         case "ofswitch":

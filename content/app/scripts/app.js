@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 
-angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqnaasApp.controllers', 'mqnaasApp.services', 'mqnaasApp.directives', 'smart-table', 'mgcrea.ngStrap', 'ngTagsInput', 'cb.x2js', 'LocalStorageModule'])
+angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqnaasApp.controllers', 'mqnaasApp.services', 'mqnaasApp.directives', 'smart-table', 'mgcrea.ngStrap', 'ngTagsInput', 'cb.x2js', 'LocalStorageModule', 'uiGmapgoogle-maps'])
 
 .run(
   ['$rootScope', '$state', '$stateParams', '$timeout',
@@ -21,7 +21,18 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
   ]
 )
 
-.config(
+.config(['uiGmapGoogleMapApiProvider', 'uiGmapGoogleMapApiProvider',
+    function (GoogleMapApi, GoogleMapApiProviders) {
+        GoogleMapApi.configure({
+            //    key: 'your api key',
+            // v: '3.20',
+            libraries: 'weather,geometry,visualization'
+        });
+        GoogleMapApiProviders.configure({
+            china: true
+        });
+
+}]).config(
   ['$stateProvider', '$urlRouterProvider', '$httpProvider',
     function ($stateProvider, $urlRouterProvider, $httpProvider) {
             $stateProvider
@@ -204,6 +215,14 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                             controller: 'operatorlistController'
                         }
                     }
+                }).state('root.map', {
+                    url: '/map',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/content/5_map.html',
+                            controller: 'mapController'
+                        }
+                    }
                 });
 
             $urlRouterProvider.otherwise('/login');
@@ -291,3 +310,10 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
 var services = angular.module('mqnaasApp.services', ['ngResource']);
 var genericUrl = "rest/mqnaas/";
 var graph;
+if (typeof _.contains === 'undefined') {
+    _.contains = _.includes;
+    _.prototype.contains = _.includes;
+}
+if (typeof _.object === 'undefined') {
+    _.object = _.zipObject;
+}

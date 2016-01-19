@@ -43,13 +43,12 @@ angular.module('mqnaasApp')
         };
 
         $scope.getResourceModel = function (data) {
-            console.log(data);
             data.info = {};
             TsonService.get(data.endpoint).then(function (response) {
-                console.log(response);
                 data.info = response.Request;
+                $scope.resource = data;
                 $scope.jsonObj = JSON.stringify(data, undefined, 4);
-                console.log(data);
+                console.log($scope.jsonObj)
                 $modal({
                     title: "Resource descriptor - " + data.id,
                     content: JSON.stringify(data, undefined, 4),
@@ -63,7 +62,6 @@ angular.module('mqnaasApp')
         $scope.getResourceModelofNitosNetwork = function (data) {
             $scope.resource = data;
             $scope.jsonObj = JSON.stringify(data, undefined, 4);
-            console.log(data);
             $modal({
                 title: "Resource descriptor - " + data.name,
                 content: JSON.stringify(data, undefined, 4),

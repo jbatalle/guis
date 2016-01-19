@@ -295,14 +295,132 @@ angular.module('mqnaasApp')
             ],
             link: function (scope, element, attrs) {
 
+                graph = new myGraph("#graph", {
+                    mode: "edit"
+                });
+
                 attrs.$observe('grapheditorvi', function (value) {
                     if (value) {
                         console.log(value);
                         // pass value to app controller
                         scope.virtualElements = value;
 
+                        //     }
+                        //});
                         console.log(scope.virtualElements);
 
+                        //                        graph.setNodes(localStorageService.get("graphNodes"));
+                        scope.graph = graph;
+                        timer(console.log("TIMER"), 2);
+                        console.log(localStorageService.get("graphNodes"));
+                        console.log(localStorageService.get("virtualElements"));
+                        console.log(scope);
+                        console.log(scope.$parent);
+                        //console.log(scope.virtualElements);
+                        //console.log(scope.$parent.virtualElements);
+                        //console.log(resources);
+                        var networkElements = resources.resources;
+                        var links = resources.links;
+
+                        var nodes = [];
+                        var virtualElements = scope.virtualElements;
+                        console.log(scope.virtualElements);
+                        console.log(virtualElements);
+                        //networkElements = networkElements.concat(virtualElements).filter(function (el) {
+                        networkElements = networkElements.concat(scope.virtualRequest.vi_req_resources).filter(function (el) {
+                            console.log(el);
+                            return el !== null;
+                        });
+                        console.log(t);
+                        //for each network element
+                        for (var i = 0; i < networkElements.length; i++) {
+                            var type = networkElements[i]["type"].toLowerCase();
+                            if (type === "switch") type = "ofSwitch";
+                            var node = {};
+                            node.ports = [];
+                            node.id = networkElements[i].id;
+                            node.type = type;
+                            if (networkElements[i].ports !== undefined) node.ports = networkElements[i].ports;
+                            node.x = networkElements[i].x;
+                            node.y = networkElements[i].y;
+                            node.net_force = {};
+                            node.velocity = {
+                                x: 0,
+                                y: 0
+                            };
+                            nodes.push(node);
+                            //{id:1, x: 10, y: 20, net_force: {}, velocity: {}
+                        }
+                        var edges = [];
+                        var edge = {};
+
+                        for (var i = 0; i < links.length; i++) {
+                            edge = {};
+                            for (var j = 0; j < nodes.length; j++) {
+                                if (nodes[j].ports !== undefined)
+                                    for (var t = 0; t < nodes[j].ports.length; t++) {
+                                        if (nodes[j].ports[t]._id === links[i].srcPort) {
+                                            var srcP = j;
+                                        }
+                                        if (nodes[j].ports[t]._id === links[i].dstPort) {
+                                            var dstP = j;
+                                        }
+                                    }
+                            }
+                            edge = {
+                                s: srcP,
+                                t: dstP
+                            };
+                            edges.push(edge);
+                        }
+
+                        //create edges
+                        var matrix = [];
+                        for (var i = 0; i < nodes.length; i++) {
+                            matrix[i] = [];
+                            for (var j = 0; j < nodes.length; j++) {
+                                matrix[i][j] = false;
+                            }
+                        }
+                        /*                    for (var i = 0; i < edges.length; i++) {
+                         matrix[edges[i].s][edges[i].t] = true;
+                         matrix[edges[i].t][edges[i].s] = true;
+                         }
+                         */
+                        // nodes = StaticForcealgorithm(nodes, matrix);
+                        for (i = 0; i < nodes.length; i++) {
+                            //                            console.log(nodes[i].x + " " + nodes[i].y);
+                            if (nodes[i].x < 0) {
+                                nodes[i].x = nodes[i].x + 400 / 2;
+                            }
+                            if (nodes[i].y < 0) {
+                                nodes[i].y = nodes[i].y + 400 / 2;
+                            }
+                            if (nodes[i].x > 400) {
+                                //                                nodes[i].x = 400;
+                            }
+                            if (nodes[i].y > 400) {
+                                //                                nodes[i].y = 400;
+                            }
+                            //        createSwitch(nodes[i].id, nodes[i].ports, nodes[i].x, nodes[i].y);
+                            var divPos = {
+                                x: nodes[i].x,
+                                y: nodes[i].y
+                            };
+                            var data = {
+                                id: nodes[i].id,
+                                ports: nodes[i].ports
+                            };
+                            createElement(nodes[i].id, nodes[i].type, divPos, data);
+                        }
+                        graph.addLink("OFSwitch-23", "Tson-24");
+                        graph.addLink("Tson-24", "Tson-25");
+                        graph.addLink("Tson-24", "Tson-26");
+                        graph.addLink("Tson-25", "Tson-26");
+                        graph.addLink("OFSwitch-23", "EPC-20");
+
+                        graph.addLink("OFSwitch-23", "WNODE-14");
+                        graph.addLink("OFSwitch-23", "WNODE-17");
                     }
                 });
                 console.log(scope.virtualElements);
@@ -314,119 +432,11 @@ angular.module('mqnaasApp')
                         console.log(virtualElements);
                     }
                 }, true);*/
-                graph = new myGraph("#graph", {
-                    mode: "edit"
-                });
-                //                        graph.setNodes(localStorageService.get("graphNodes"));
-                scope.graph = graph;
-                timer(console.log("TIMER"), 2);
-                console.log(localStorageService.get("graphNodes"));
-                console.log(localStorageService.get("virtualElements"));
-                console.log(scope);
-                console.log(scope.$parent);
-                //console.log(scope.virtualElements);
-                //console.log(scope.$parent.virtualElements);
-                //console.log(resources);
-                var networkElements = resources.resources;
-                var links = resources.links;
 
-                var nodes = [];
-                var virtualElements = scope.virtualElements;
-                console.log(scope.virtualElements);
-                console.log(virtualElements);
-                /*networkElements = networkElements.concat(virtualElements).filter(function (el) {
-                    return el !== null;
-                });*/
-                //for each network element
-                for (var i = 0; i < networkElements.length; i++) {
-                    var type = networkElements[i]["type"];
-                    if (type === "switch") type = "ofSwitch";
-                    var node = {};
-                    node.id = networkElements[i].id;
-                    node.type = type;
-                    node.ports = networkElements[i].ports;
-                    node.x = networkElements[i].x;
-                    node.y = networkElements[i].y;
-                    node.net_force = {};
-                    node.velocity = {
-                        x: 0,
-                        y: 0
-                    };
-                    nodes.push(node);
-                    //{id:1, x: 10, y: 20, net_force: {}, velocity: {}
-                }
-                var edges = [];
-                var edge = {};
-                for (var i = 0; i < links.length; i++) {
-                    edge = {};
-                    for (var j = 0; j < nodes.length; j++) {
-                        for (var t = 0; t < nodes[j].ports.length; t++) {
-                            if (nodes[j].ports[t]._id === links[i].srcPort) {
-                                var srcP = j;
-                            }
-                            if (nodes[j].ports[t]._id === links[i].dstPort) {
-                                var dstP = j;
-                            }
-                        }
-                    }
-                    edge = {
-                        s: srcP,
-                        t: dstP
-                    };
-                    edges.push(edge);
-                }
-
-                //create edges
-                var matrix = [];
-                for (var i = 0; i < nodes.length; i++) {
-                    matrix[i] = [];
-                    for (var j = 0; j < nodes.length; j++) {
-                        matrix[i][j] = false;
-                    }
-                }
-                /*                    for (var i = 0; i < edges.length; i++) {
-                 matrix[edges[i].s][edges[i].t] = true;
-                 matrix[edges[i].t][edges[i].s] = true;
-                 }
-                 */
-                nodes = StaticForcealgorithm(nodes, matrix);
-                for (i = 0; i < nodes.length; i++) {
-                    //                            console.log(nodes[i].x + " " + nodes[i].y);
-                    if (nodes[i].x < 0) {
-                        nodes[i].x = nodes[i].x + 400 / 2;
-                    }
-                    if (nodes[i].y < 0) {
-                        nodes[i].y = nodes[i].y + 400 / 2;
-                    }
-                    if (nodes[i].x > 400) {
-                        //                                nodes[i].x = 400;
-                    }
-                    if (nodes[i].y > 400) {
-                        //                                nodes[i].y = 400;
-                    }
-                    //        createSwitch(nodes[i].id, nodes[i].ports, nodes[i].x, nodes[i].y);
-                    var divPos = {
-                        x: nodes[i].x,
-                        y: nodes[i].y
-                    };
-                    var data = {
-                        id: nodes[i].id,
-                        ports: nodes[i].ports
-                    };
-                    createElement(nodes[i].id, nodes[i].type, divPos, data);
-                }
-                graph.addLink("OFSwitch-23", "Tson-24");
-                graph.addLink("Tson-24", "Tson-25");
-                graph.addLink("Tson-24", "Tson-26");
-                graph.addLink("Tson-25", "Tson-26");
-                graph.addLink("OFSwitch-23", "EPC-20");
-
-                graph.addLink("OFSwitch-23", "WNODE-14");
-                graph.addLink("OFSwitch-23", "WNODE-17");
 
             }
         };
-            }]).directive('graphviewvi', ['localStorageService', '$timeout', function (localStorageService, timer) {
+    }]).directive('graphviewvi', ['localStorageService', '$timeout', function (localStorageService, timer) {
         return {
             restrict: 'EA',
             scope: {},

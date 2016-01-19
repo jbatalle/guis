@@ -37,7 +37,11 @@
 
 <div ng-if="nitosResourcesCollection">
     <h4>Nitos resources</h4>
-    <table st-table="displayedCollection2" st-safe-src="nitosResourcesCollection" class="table table-striped">
+
+    <div style="text-align: center">
+        <i ng-if="nitosResourcesCollection.length == 0" class="fa fa-refresh fa-spin fa-3x"></i>
+    </div>
+    <table ng-if="nitosResourcesCollection.length > 0" st-table="displayedCollection2" st-safe-src="nitosResourcesCollection" class="table table-striped">
         <thead>
             <tr>
                 <th st-sort="name" class="col-sm-3 col-md-3 col-lg-3">Name</th>

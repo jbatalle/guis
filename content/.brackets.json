@@ -181,6 +181,11 @@
         "/home/josep/workspace/sodales/guis/content/app/plugin/models/ports.js",
         "/home/josep/workspace/sodales/guis/content/app/plugin/ONtoD3lib.js",
         "/home/josep/workspace/sodales/guis/content/app/plugin/models/elements.js",
-        "/home/josep/workspace/sodales/guis/content/app/plugin/models/epc.js"
+        "/home/josep/workspace/sodales/guis/content/app/plugin/models/epc.js",
+        "/home/josep/workspace/sodales/guis/content/app/plugin/models/networkElement.js",
+        "/home/josep/workspace/sodales/guis/content/app/plugin/models/tson.js",
+        "/home/josep/workspace/sodales/guis/content/app/plugin/external/xml2json.js",
+        "/home/josep/workspace/sodales/guis/content/app/scripts/controllers/content/5_map.js",
+        "/home/josep/workspace/sodales/guis/content/bower_components/d3/d3.js"
     ]
 }
