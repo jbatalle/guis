@@ -402,7 +402,11 @@ function myGraph(el, options) {
 
             //console.log(angular.element().controller());
             //console.log(angular.element(document.getElementById('viMgt')).controller());
-            angular.element(document.getElementById('viMgt')).scope().getResourceInfo(d);
+            //angular.element(document.getElementById('test')).scope().getResourceInfo(d).$apply();
+            var scope = angular.element(document.getElementById("viMgt")).scope();
+            scope.$apply(function () {
+                scope.getResourceInfo(d);
+            });
         });
         nodeEnter.on("mouseup", function (d) {
             //if is a Virtual Resource
