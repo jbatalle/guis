@@ -18,7 +18,7 @@ angular.module('mqnaasApp')
                 var nodes = [];
                 for (var i = 0; i < networkElements.length; i++) {
                     console.log(networkElements[i]);
-                    var type = networkElements[i]["type"];
+                    var type = networkElements[i]["type"].toLowerCase();
                     if (type === "switch") type = "ofswitch";
                     var node = {};
                     node.id = networkElements[i].id;
@@ -327,10 +327,12 @@ angular.module('mqnaasApp')
                         console.log(scope.virtualElements);
                         console.log(virtualElements);
                         //networkElements = networkElements.concat(virtualElements).filter(function (el) {
-                        networkElements = networkElements.concat(scope.virtualRequest.vi_req_resources).filter(function (el) {
-                            console.log(el);
-                            return el !== null;
-                        });
+                        if (scope.virtualRequest !== undefined) {
+                            networkElements = networkElements.concat(scope.virtualRequest.vi_req_resources).filter(function (el) {
+                                console.log(el);
+                                return el !== null;
+                            });
+                        }
                         console.log(t);
                         //for each network element
                         for (var i = 0; i < networkElements.length; i++) {

@@ -2,5 +2,15 @@
 
     <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
     </ui-gmap-marker>
+
+    <ui-gmap-markers models="randomMarkers" coords="'self'" typeOptions="'options'">
+    </ui-gmap-markers>
+
 </ui-gmap-google-map>
 {{map}}
+
+
+<ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="options" bounds="map.bounds">
+    <ui-gmap-markers models="randomMarkers" coords="'self'" icon="'icon'">
+    </ui-gmap-markers>
+</ui-gmap-google-map>

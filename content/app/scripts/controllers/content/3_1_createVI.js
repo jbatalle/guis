@@ -476,6 +476,8 @@ angular.module('mqnaasApp')
         $scope.selectedPhyPorts = [];
         $scope.mapping = [];
         $scope.mappingVlan = [];
+        $scope.mappingLambda = [];
+        $scope.mappingTimeslot = [];
         $scope.selectedPhyLambdas = [];
         $scope.selectedPhyTimeslots = [];
         $scope.selectedViLambdas = [];
@@ -489,20 +491,33 @@ angular.module('mqnaasApp')
         $scope.physicalLambdas = [];
 
 
-        for (var i = 1; i < 10; i = i + 1) {
+        for (var i = 1; i < 91; i = i + 11) {
             $scope.virtualTimeslots.push({
                 "lower": i,
-                "upper": i + 1
+                "upper": i + 11
             });
         };
 
-        for (var i = 1; i < 10; i = i + 1) {
+        for (var i = 1; i < 91; i = i + 11) {
             $scope.physicalTimeslots.push({
                 "lower": i,
-                "upper": i + 1
+                "upper": i + 11
             });
         };
 
+        for (var i = 1; i < 3; i = i + 1) {
+            $scope.virtualLambdas.push({
+                "lower": i,
+                "upper": i
+            });
+        };
+
+        for (var i = 1; i < 3; i = i + 1) {
+            $scope.physicalLambdas.push({
+                "lower": i,
+                "upper": i
+            });
+        };
 
         for (var i = 1; i < 4096; i = i + 127) {
             $scope.virtualVlans.push({
@@ -561,6 +576,31 @@ angular.module('mqnaasApp')
             };
         });
 
+        $scope.mappingLambda = [];
+        $scope.$watchGroup(['selectedViLambdas', 'selectedPhyLambdas'], function () {
+            $scope.preMappingLambda = [];
+            for (var i = 0; i < $scope.selectedViLambdas.length; i++) {
+                $scope.preMappingLambda.push({
+                    virt: $scope.selectedViLambdas[i],
+                    phy: $scope.selectedPhyLambdas[i]
+                });
+                angular.copy($scope.preMappingLambda, $scope.mappingLambda);
+            };
+        });
+
+
+        $scope.mappingTimeslot = [];
+        $scope.$watchGroup(['selectedViTimeslots', 'selectedPhyTimeslots'], function () {
+            $scope.preMappingTimeslot = [];
+            for (var i = 0; i < $scope.selectedViTimeslots.length; i++) {
+                $scope.preMappingTimeslot.push({
+                    virt: $scope.selectedViTimeslots[i],
+                    phy: $scope.selectedPhyTimeslots[i]
+                });
+                angular.copy($scope.preMappingTimeslot, $scope.mappingTimeslot);
+            };
+        });
+
 
         $scope.mapResource = function (virtualResource, physicalResource) {
             console.log(virtualResource);
@@ -571,6 +611,52 @@ angular.module('mqnaasApp')
                 console.log(response);
                 $rootScope.createMappingDialog.hide();
                 return;
+            });
+        };
+
+        $scope.mapTson = function (virtualResource, physicalResource) {
+            console.log(virtualResource);
+            console.log(physicalResource);
+
+            var mapping = {
+                "id": physicalResource
+            };
+            console.log($scope.mappingLambda);
+            console.log($scope.mappingTimeslot);
+            var url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapResource";
+            IMLService.post(url, mapping).then(function (response) {
+                console.log(response);
+
+
+                angular.forEach($scope.mappingLambda, function (d) {
+                    console.log(d);
+                    var mappingLambda = {
+                        "upperBound": d.phy.upper,
+                        "lowerBound": d.phy.lower,
+                    }
+                });
+                url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapping/lambda";
+                IMLService.post(url, mappingLambda).then(function (response) {
+                    console.log(response);
+                });
+
+                angular.forEach($scope.mappingLambda, function (d) {
+                    console.log(d);
+                    var mappingTimeslot = {
+                        "upperBound": d.phy.upper,
+                        "lowerBound": d.phy.lower,
+                    }
+                });
+                var mappingTimeslot = {
+                    "upperBound": 1,
+                    "lowerBound": 10
+                }
+                url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapping/timeslot";
+                IMLService.post(url, mappingTimeslot).then(function (response) {
+                    console.log(response);
+
+                });
+                $rootScope.createMappingDialog.hide();
             });
         };
 

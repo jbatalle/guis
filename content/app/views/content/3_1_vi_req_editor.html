@@ -39,20 +39,6 @@
         </div>
     </div>
     <div class="col-md-3">
-        <h4>Configuration </h4>
-        <div class="form-group">
-            <input class="btn btn-default" type="submit" ng-click="openAutoMappingDialog()" value="Auto Mapping" />
-            <input class="btn btn-default" type="submit" ng-click="openMappingDialog()" value="Manual Mapping" />
-            <br/>
-            <input class="btn btn-default" type="submit" ng-click="openSlicesDialog()" value="Configure VR" />
-        </div>
-    </div>
-    <div class="col-md-9">
-        <div id="viMgt">
-            <div grapheditorVI="{{virtualElements}}"></div>
-        </div>
-    </div>
-    <div class="col-md-3">
         <div class="form-group">
             <label class="control-label"><i class="fa fa-calendar"></i> <i class="fa fa-arrows-h"></i>
                 <i class="fa fa-calendar"></i> VI Period range </label>
@@ -65,11 +51,31 @@
             </div>
             <input class="btn btn-default" type="submit" ng-click="setPeriod(period)" value="Set period" />
         </div>
+    </div>
+    <div class="col-md-9">
+        <div id="viMgt">
+            <div grapheditorVI="{{virtualElements}}"></div>
+        </div>
+    </div>
+    <div class="col-md-3">
         <div>
             <h3>List of resources</h3>
             <ul>
                 <li ng-repeat="res in virtualElements">
                     {{res.id}} ({{res.type}})
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h3>Mapping</h3>
+            <ul style="padding-left: 0px; margin-left: 20px;">
+                <li ng-repeat="viRes in virtualElements" ng-if="viRes.mapped">
+                    <a ng-click="mappingDialog(viRes.id, viRes.mapped)">{{viRes.id}} -> {{viRes.mapped}}</a>
+                    <ul>
+                        <li ng-repeat="viPorts in viRes.ports">
+                            {{viPorts.id}} -> {{viPorts.mapped}}
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
