@@ -16,7 +16,7 @@
                             <div class="panel-body">
                                 <div class="box box-primary direct-chat direct-chat-primary">
                                     <div class="box-header with-border">
-                                        <h3 class="box-title">Ports {{mappedElementName}}</h3>
+                                        <h3 class="box-title">Ports</h3>
                                         <div class="box-tools pull-right">
                                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                             </button>
@@ -24,7 +24,7 @@
                                     </div>
                                     <div class="box-body" style="display: block;">
                                         <select ng-model="selectedViPorts" name="ports" multiple size=5 style="width: 100%">
-                                            <option ng-repeat="p in virtualResource.ports" value="{{p.id}}">{{p.id}}</option>
+                                            <option ng-repeat="p in virtualPorts" value="{{p.id}}">{{p.id}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -115,25 +115,16 @@
                             <div class="panel-body ">
                                 <div class="box box-primary direct-chat direct-chat-primary ">
                                     <div class="box-header with-border ">
-                                        <h3 class="box-title ">Ports {{mappedElementName}}</h3>
+                                        <h3 class="box-title ">Ports </h3>
                                         <div class="box-tools pull-right ">
                                             <button type="button " class="btn btn-box-tool " data-widget="collapse "><i class="fa fa-minus "></i>
                                             </button>
                                         </div>
                                     </div>
                                     <div class="box-body " style="display: block; ">
-                                        <!--span ng-if="resourceInfo.type === 'CPE'">
-                                                    CPE
-                                                </span>
-                                        <span ng-if="resourceInfo.type === 'ARN'">
-                                                   ARN
-                                                </span-->
                                         <select ng-model="selectedPhyPorts" name="ports" multiple size=5 style="width: 100%">
-                                            <option ng-repeat="p in physicalPorts" value="{{p.attributes.entry[0].value}}" ng-if="resourceInfo.type === 'CPE'">
-                                                {{p.attributes.entry[0].value}}
-                                            </option>
-                                            <option ng-repeat="p in physicalPorts" value="{{p._interfaceId}}" ng-if="resourceInfo.type === 'ARN'">
-                                                {{p._interfaceId}} ({{p._cardId}}) ({{p._name}})
+                                            <option ng-repeat="p in physicalPorts" value="{{p.id}}">
+                                                {{p.id}}
                                             </option>
                                         </select>
                                     </div>
