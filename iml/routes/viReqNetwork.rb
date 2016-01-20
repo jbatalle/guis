@@ -83,7 +83,7 @@ class IMLSodales < Sinatra::Application
 
 		n = ViReqNetwork.find(params['id'])
 		r = n.vi_req_resources.find(params['resourceId'])
-		r.update_attribute('mapping', data['id'])
+		r.update_attribute('mapped', data['id'])
 		r.update_attribute('mapping_uri', data['endpoint'])
 		return n.to_json
 	end
@@ -125,7 +125,20 @@ class IMLSodales < Sinatra::Application
 		n = ViReqNetwork.find(params['id'])
 		r = n.vi_req_resources.find(params['resourceId'])
 		logger.error r
-		r.update_attribute('mappingVlans', data)
+		r.update_attribute('mappedVlans', data)
+		logger.error r
+		return @viReqNetwork.to_json
+	end
+
+	post '/viReqNetworks/:id/viReqResource/:resourceId/mapping/:unit' do
+		logger.error "MAP unit: "+params[:unit]
+		data, errors = parse_json(request.body.read)
+		return 400, errors.to_json if errors
+		logger.error data.to_json
+		n = ViReqNetwork.find(params['id'])
+		r = n.vi_req_resources.find(params['resourceId'])
+		logger.error r
+		r.update_attribute('mapped_'+params[:unit], data)
 		logger.error r
 		return @viReqNetwork.to_json
 	end
