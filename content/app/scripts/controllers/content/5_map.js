@@ -31,7 +31,11 @@ angular.module('mqnaasApp')
                     longitude: -2.5386133365631167
                 },
                 options: {
-                    draggable: true
+                    draggable: true,
+                    icon: {
+                        url: "plugin/img/CONTENT_EPC.png",
+                        scaledSize: new google.maps.Size(50, 40)
+                    }
                 },
                 events: {
                     dragend: function (marker, eventName, args) {
@@ -46,6 +50,7 @@ angular.module('mqnaasApp')
                             labelContent: "lat: " + $scope.marker.coords.latitude + ' ' + 'lon: ' + $scope.marker.coords.longitude,
                             labelAnchor: "100 0",
                             labelClass: "marker-labels"
+
                         };
                     }
                 }
