@@ -634,11 +634,12 @@ angular.module('mqnaasApp')
                         "upperBound": d.phy.upper,
                         "lowerBound": d.phy.lower,
                     }
+                    url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapping/lambda";
+                    IMLService.post(url, mappingLambda).then(function (response) {
+                        console.log(response);
+                    });
                 });
-                url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapping/lambda";
-                IMLService.post(url, mappingLambda).then(function (response) {
-                    console.log(response);
-                });
+
 
                 angular.forEach($scope.mappingLambda, function (d) {
                     console.log(d);
@@ -646,15 +647,11 @@ angular.module('mqnaasApp')
                         "upperBound": d.phy.upper,
                         "lowerBound": d.phy.lower,
                     }
-                });
-                var mappingTimeslot = {
-                    "upperBound": 1,
-                    "lowerBound": 10
-                }
-                url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapping/timeslot";
-                IMLService.post(url, mappingTimeslot).then(function (response) {
-                    console.log(response);
+                    url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapping/timeslot";
+                    IMLService.post(url, mappingTimeslot).then(function (response) {
+                        console.log(response);
 
+                    });
                 });
                 $rootScope.createMappingDialog.hide();
             });

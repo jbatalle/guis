@@ -32,7 +32,7 @@ angular.module('mqnaasApp')
                 console.log(data);
                 angular.forEach(data.resource_response.resources, function (res) {
                         //$scope.nitosResourcesCollection.push(res);
-                        if (res.resource_type === 'epc' || res.resource_type === 'ltedongle' || res.resource_type === 'openflowswitch') $scope.nitosResourcesCollection.push(res);
+                        if (res.resource_type === 'epc' || res.resource_type === 'enodeb' || res.resource_type === 'openflowswitch' || res.resource_type === 'node') $scope.nitosResourcesCollection.push(res);
                     })
                     //$scope.nitosResourcesCollection = data.resource_response.resources;
                     //ng-if="row.resource_type === 'epc'"
