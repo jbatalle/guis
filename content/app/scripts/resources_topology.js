@@ -59,11 +59,17 @@ var resources = {
             y: 350,
             id: "EPC-20",
             type: "EPC",
-            ports: [{
-                id: "T31"
-                            }, {
-                id: "T32"
-                            }]
+            ports: [
+                {
+                    id: "E01"
+                },
+                {
+                    id: "E02"
+                },
+                {
+                    id: "E03"
+                }
+            ]
         },
         {
             x: 200,
@@ -101,66 +107,78 @@ var resources = {
             y: 100,
             id: "WNODE-15",
             type: "wnode",
-            ports: [{
-                id: "T31"
-                            }, {
-                id: "T32"
-                            }]
+            ports: [
+                {
+                    id: "if0"
+                }, {
+                    id: "if1"
+                }
+            ]
         },
         {
             x: 100,
             y: 200,
             id: "WNODE-16",
             type: "wnode",
-            ports: [{
-                id: "T31"
-                            }, {
-                id: "T32"
-                            }]
+            ports: [
+                {
+                    id: "if0"
+                }, {
+                    id: "if1"
+                }
+            ]
         },
         {
             x: 200,
             y: 200,
             id: "WNODE-17",
             type: "wnode",
-            ports: [{
-                id: "T31"
-                            }, {
-                id: "T32"
-                            }]
+            ports: [
+                {
+                    id: "if0"
+                }, {
+                    id: "if1"
+                }
+            ]
         },
         {
             x: 100,
             y: 300,
             id: "WNODE-18",
             type: "wnode",
-            ports: [{
-                id: "T31"
-                            }, {
-                id: "T32"
-                            }]
+            ports: [
+                {
+                    id: "if0"
+                }, {
+                    id: "if1"
+                }
+            ]
         },
         {
             x: 100,
             y: 400,
             id: "WNODE-19",
             type: "wnode",
-            ports: [{
-                id: "T31"
-                            }, {
-                id: "T32"
-                            }]
+            ports: [
+                {
+                    id: "if0"
+                }, {
+                    id: "if1"
+                }
+            ]
         },
         {
             x: 100,
             y: 150,
             id: "WNODE-9",
             type: "wnode",
-            ports: [{
-                id: "T31"
-                            }, {
-                id: "T32"
-                            }]
+            ports: [
+                {
+                    id: "if0"
+                }, {
+                    id: "if1"
+                }
+            ]
         },
         ],
     links: [

@@ -14,7 +14,6 @@ angular.module('mqnaasApp')
             areaLng = -2.2471641,
             areaZoom = 3;
 
-
         $scope.map = {
             center: {
                 latitude: areaLat,
@@ -24,28 +23,9 @@ angular.module('mqnaasApp')
             bounds: {}
         };
         $scope.options = {
-            scrollwheel: false
+            scrollwheel: true
         };
-        var createRandomMarker = function (i, bounds, idKey) {
-            var lat_min = bounds.southwest.latitude,
-                lat_range = bounds.northeast.latitude - lat_min,
-                lng_min = bounds.southwest.longitude,
-                lng_range = bounds.northeast.longitude - lng_min;
 
-            if (idKey == null) {
-                idKey = "id";
-            }
-
-            var latitude = lat_min + (Math.random() * lat_range);
-            var longitude = lng_min + (Math.random() * lng_range);
-            var ret = {
-                latitude: latitude,
-                longitude: longitude,
-                title: 'm' + i
-            };
-            ret[idKey] = i;
-            return ret;
-        };
         $scope.randomMarkers = [];
         // Get the bounds from the map once it's loaded
         $scope.$watch(function () {
@@ -58,16 +38,18 @@ angular.module('mqnaasApp')
                     console.log(res);
                     var ret = {
                         id: index,
-                        coords: {
-                            latitude: res.lat,
-                            longitude: res.long,
+                        latitude: res.lat,
+                        longitude: res.long,
+                        icon: {
+                            url: "plugin/img/" + res.type + ".png",
+                            scaledSize: new google.maps.Size(50, 40)
                         },
+                        showWindow: false,
+                        show: true,
                         options: {
-                            draggable: true,
-                            icon: {
-                                url: "plugin/img/CONTENT_EPC.png",
-                                scaledSize: new google.maps.Size(50, 40)
-                            }
+                            labelContent: 'Markers id 3',
+                            labelAnchor: "26 0",
+                            labelClass: "marker-labels"
                         }
                     };
                     markers.push(ret);
