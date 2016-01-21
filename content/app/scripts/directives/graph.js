@@ -449,7 +449,7 @@ angular.module('mqnaasApp')
                 });
                 //                        graph.setNodes(localStorageService.get("graphNodes"));
                 scope.graph = graph;
-                timer(console.log(""), 1000);
+                timer(console.log(""), 2000);
                 //console.log(localStorageService.get("graphNodes"));
                 console.log(localStorageService.get("networkElements"));
 

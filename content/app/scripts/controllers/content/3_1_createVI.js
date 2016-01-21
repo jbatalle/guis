@@ -326,7 +326,7 @@ angular.module('mqnaasApp')
                 return;
             }
 
-            if (virtRes.type === "WNODE" || virtRes.type === "EPC" || virtRes.type === "LTE") {
+            if (virtRes.type === "wnode" || virtRes.type === "EPC" || virtRes.type === "LTE") {
                 //mapp without ports either vlans
                 $scope.mappedElementName = "Resource";
                 $scope.virtMapRes = virtRes;
@@ -605,6 +605,10 @@ angular.module('mqnaasApp')
         $scope.mapResource = function (virtualResource, physicalResource) {
             console.log(virtualResource);
             console.log(physicalResource);
+
+            var mapping = {
+                id: physicalResource
+            }
 
             var url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapResource";
             IMLService.post(url, mapping).then(function (response) {

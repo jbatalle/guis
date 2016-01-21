@@ -11,7 +11,7 @@
                     <div class="col-sm-4">
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <h3 class="panel-title">Virtual resource ({{source}})</h3>
+                                <h3 class="panel-title">Virtual resource ({{viRes}})</h3>
                             </div>
                             <div class="panel-body">
                                 <div class="box box-primary direct-chat direct-chat-primary">
@@ -70,14 +70,8 @@
                                     <tr>
                                         <td>{{p.virt}}</td>
                                         <td>
-                                            <span ng-if="resourceInfo.type === 'CPE'">
-                                                {{p.phy}}
-                                                {{physicalPorts[p.phy].attributes.entry[0].value}}
-                                            </span>
-                                            <span ng-if="resourceInfo.type === 'ARN'">
-                                                {{p.phy}}
-                                                {{physicalPorts[p.phy]._interfaceId}}
-                                            </span></td>
+                                            {{p.phy}}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -102,7 +96,7 @@
                         </div>
                         <div class="input-group" ng-show="mappingVlan.length>0 && mapping.length>0 && 
                                                   selectedViVlans.length <= selectedPhyVlans.length && selectedViPorts.length <= selectedPhyPorts.length">
-                            <button ng-click="map(source, dest)" class="btn btn-primary btn-flat ">Process mapping</button>
+                            <button ng-click="map(viRes, piRes)" class="btn btn-primary btn-flat ">Process mapping</button>
                             </span>
                         </div>
                     </div>
@@ -110,7 +104,7 @@
                     <div class="col-sm-4 ">
                         <div class="panel panel-default ">
                             <div class="panel-heading ">
-                                <h3 class="panel-title ">Physical resource ({{dest}})</h3>
+                                <h3 class="panel-title ">Physical resource ({{piRes}})</h3>
                             </div>
                             <div class="panel-body ">
                                 <div class="box box-primary direct-chat direct-chat-primary ">
