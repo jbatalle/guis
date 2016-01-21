@@ -51,20 +51,31 @@ class IMLSodales < Sinatra::Application
 		@viReqNetwork['vi_req_resources'].each do |viReqResource|
 			logger.error viReqResource
 			#r = 
-			@viNetwork.vi_resources << ViResource.new({:type => viReqResource['type'], :mapped_resource =>  viReqResource['mapping'], :endpoint => viReqResource['mapping_uri']})
+			@viNetwork.vi_resources << ViResource.new({:type => viReqResource['type'], :mapped_resource =>  viReqResource['mapped'], :endpoint => viReqResource['mapping_uri']})
 			logger.error "For each ports"
 			logger.error viReqResource['vi_req_ports']
 			if viReqResource['vi_req_ports'].empty?
 				logger.error "Do nothing... no ports defined"
 			else
 				viReqResource['vi_req_ports'].each do |viReqPort|
-				logger.error viReqPort
-				#logger.error @viNetwork.viResources.last
-				#p = ViReqPort.new({:physical => viReqPort['mapped'] })
-				#logger.error p
-				@viNetwork.vi_resources.last.vi_ports << ViPort.new({:physical => viReqPort['mapped'] })
-				#@viNetwork.viResources << ViResource.new({:type => viReqResource, :endpoint => ""})
+					logger.error viReqPort
+					#logger.error @viNetwork.viResources.last
+					#p = ViReqPort.new({:physical => viReqPort['mapped'] })
+					#logger.error p
+					@viNetwork.vi_resources.last.vi_ports << ViPort.new({:physical => viReqPort['mapped'] })
+					#@viNetwork.viResources << ViResource.new({:type => viReqResource, :endpoint => ""})
 				end
+			end
+
+			#map vlans/lambdas/timeslots
+			if !viReqResource['mappedVlans'].nil?
+				@viNetwork.vi_resources.last['mappedVlans'] = viReqResource['mappedVlans']
+			end
+			if !viReqResource['mapped_lambda'].nil?
+				@viNetwork.vi_resources.last['mapped_lambda'] = viReqResource['mapped_lambda']
+			end
+			if !viReqResource['mapped_timeslot'].nil?
+				@viNetwork.vi_resources.last['mapped_timeslot'] = viReqResource['mapped_timeslot']
 			end
 		end
 		
