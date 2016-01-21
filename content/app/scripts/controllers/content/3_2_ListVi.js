@@ -68,9 +68,11 @@ angular.module('mqnaasApp')
     })
     .controller('viewVIController', function ($scope, $rootScope, $stateParams, $modal, localStorageService, IMLService) {
         $rootScope.virtNetId = $stateParams.id;
+
         var url = "viNetworks/" + $rootScope.virtNetId;
         IMLService.get(url).then(function (result) {
             if (result === undefined) return;
+            console.log(result);
             $scope.vi = result;
             localStorageService.set("networkElements", result);
         });
