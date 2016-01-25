@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .factory('PhysicalService', function ($q, $rootScope, MqNaaSResourceService, arnService) {
+    .factory('PhysicalService', function ($q, $rootScope, MqNaaSResourceService, arnService, IMLService) {
         var getSlice = function (resourceName) { //get
             var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/ISliceProvider/slice';
             MqNaaSResourceService.getText(url).then(function (data) {
@@ -47,8 +47,11 @@ angular.module('mqnaasApp')
             });
         };
         var getResource = function (resourceName) {
-            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel';
-            MqNaaSResourceService.list(url).then(function (data) {
+            //var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel';
+            //MqNaaSResourceService.list(url).then(function (data) {
+
+            var url = 'phyNetworks/' + $rootScope.networkId + '/resources/' + resourceName;
+            IMLService.get(url).then(function (data) {
                 $rootScope.resourceInfo = {};
                 $rootScope.resourceInfo.layer = "physical";
                 $rootScope.resourceInfo.id = data.resource.id;
@@ -76,8 +79,11 @@ angular.module('mqnaasApp')
         }
         var getPhysicalPorts = function (resourceName) {
             var deferred = $q.defer();
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/IResourceModelReader/resourceModel";
-            var promise = MqNaaSResourceService.get(url).then(
+            //var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/IResourceModelReader/resourceModel";
+            //var promise = MqNaaSResourceService.get(url).then(
+
+            var url = 'phyNetworks/' + $rootScope.networkId + '/resources/' + resourceName;
+            var promise = IMLService.get(url).then(
                 function (data) {
                     $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
                     var ports = [];

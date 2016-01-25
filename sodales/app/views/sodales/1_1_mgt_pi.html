@@ -7,7 +7,7 @@
                     <h3 class="panel-title"><i class="fa fa-globe fa-fw"></i> Networks</h3>
                 </div>
                 <div class="panel-body" style="text-align: center;">
-                    <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network for network in listNetworks" bs-select ng-change="setNetworkId(selectedNetwork)">
+                    <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network.id for network in listNetworks" bs-select ng-change="setNetworkId(selectedNetwork)">
                         Select <span class="caret"></span>
                     </button>
                     <h3 class="lead">Physical resources</h3>

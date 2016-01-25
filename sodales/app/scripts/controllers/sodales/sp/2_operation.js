@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spVIController', function ($scope, $rootScope, $stateParams, $http, $modal, MqNaaSResourceService, arnService, cpeService, AuthService, spService, MQNAAS, IMLService) {
+    .controller('spVIController', function ($scope, $rootScope, $stateParams, $http, $modal, arnService, cpeService, AuthService, spService, IMLService) {
 
         //hardcoded
         //$rootScope.networkId = "Network-Internal-1.0-2";
@@ -58,9 +58,7 @@ angular.module('mqnaasApp')
             url = 'viNetworks/' + $rootScope.virtNetId + '/resource/' + resourceName;
             IMLService.get(url).then(function (data) {
                 $rootScope.resourceUri = data.endpoint;
-                //data.resource.descriptor.endpoints.endpoint.uri.replace("http://0.0.0.0", MQNAAS);
                 console.log($rootScope.resourceUri);
-                //$rootScope.resourceUri.replace("http://0.0.0.0", MQNAAS)
                 console.log($rootScope.resourceUri);
                 $scope.operation = true;
                 if (type === 'ARN') {
@@ -453,25 +451,6 @@ angular.module('mqnaasApp')
         $scope.deleteCpeService = function (serviceId) {
             url = "deleteServiceVlan.html?unit=0&serviceId=" + serviceId;
             cpeService.get(url).then(function (response) {});
-        };
-
-        $scope.Configure = function (type, form) {
-            console.log(type);
-            if (type === "arn") {
-                console.log(form);
-                var arn = form;
-                var data = getARNVlanConnectivity(arn.upLinkIfaces1, arn.upLinkIfaces2, arn.downLinkIfaces1, arn.downLinkIfaces2, arn.upLinkVlan, arn.downLinkVlan);
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider/" + $scope.virtualResourceOp + "/IVlanConnectivity/vlanConnectivity";
-                MqNaaSResourceService.put(url, data).then(function (result) {});
-            } else if (type === "cpe") {
-                console.log(form);
-                var cpe = form;
-                var data = getCPEVlanConnectivity(cpe.egressPortId, cpe.egressVlan, cpe.ingressPortId, cpe.ingressVlan, cpe.unitId);
-                var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestBasedNetworkManagement/" + $rootScope.virtNetId + "/IRootResourceProvider/" + $scope.virtualResourceOp + "/IVlanConnectivity/vlanConnectivity";
-                MqNaaSResourceService.put(url, data).then(function (result) {});
-            }
-            $rootScope.info = "200 - Operation done";
-            this.$hide();
         };
 
         $scope.endToEndConnectivity = function () {

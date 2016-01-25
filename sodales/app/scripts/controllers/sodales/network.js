@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('viewNetwork', function ($scope, $rootScope, MqNaaSResourceService, RootResourceService) {
+    .controller('viewNetwork', function ($scope, $rootScope, IMLService) {
         var url = '';
 
         $scope.nodes = new vis.DataSet();
@@ -13,14 +13,14 @@ angular.module('mqnaasApp')
                 },
                 function () {
                     if ($rootScope.networkId === undefined) return;
-                    url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IResourceModelReader/resourceModel');
-                    MqNaaSResourceService.list(url).then(function (data) {
+                    url = "phyNetworks/" + $rootScope.networkId.id;
+                    IMLService.get(url).then(function (data) {
                         if (data === undefined) {
                             $rootScope.networkId = undefined;
                             return;
                         }
-                        $scope.nodes.add(generateNodeData(data.resource.resources.resource));
-                        $scope.edges.add(generateLinkData(data.resource.resources.resource, $scope.nodes));
+                        $scope.nodes.add(generateNodeData(data.phy_resources));
+                        $scope.edges.add(generateLinkData(data.phy_links, $scope.nodes));
                     });
                 });
         };
@@ -47,32 +47,31 @@ angular.module('mqnaasApp')
         };
 
     })
-    .controller('editPhyNetwork', function ($scope, $rootScope, MqNaaSResourceService, $modal, RootResourceService, $interval, PhysicalService) {
+    .controller('editPhyNetwork', function ($scope, $rootScope, $modal, $interval, PhysicalService, IMLService) {
         var url = '';
         $scope.nodes = new vis.DataSet();
         $scope.edges = new vis.DataSet();
 
         $scope.updateListNetworks = function () {
-            RootResourceService.list().then(function (data) {
+            var url = "phyNetworks"
+            IMLService.get(url).then(function (data) {
                 if (!data) return;
-                data = checkIfIsArray(data.IRootResource.IRootResourceId);
-                $scope.listNetworks = data;
+                data = checkIfIsArray(data);
                 if (!$rootScope.networkId) {
-                    $rootScope.networkId = data[1];
+                    $rootScope.networkId = data[0];
                 }
                 $scope.selectedNetwork = $rootScope.networkId;
                 $scope.getNetworkModel();
-
             });
         };
         $scope.updateListNetworks();
 
         $scope.getNetworkModel = function () {
-            url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IResourceModelReader/resourceModel');
-            MqNaaSResourceService.list(url).then(function (data) {
+            url = "phyNetworks/" + $rootScope.networkId.id;
+            IMLService.get(url).then(function (data) {
                 if (data === undefined) return;
-                $scope.nodes.add(generateNodeData(data.resource.resources.resource));
-                $scope.edges.add(generateLinkData(data.resource.resources.resource, $scope.nodes));
+                $scope.nodes.add(generateNodeData(data.phy_resources));
+                $scope.edges.add(generateLinkData(data.phy_links, $scope.nodes));
             });
         };
 
@@ -113,19 +112,19 @@ angular.module('mqnaasApp')
                 }
             }
         };
-
-        $scope.mappingPortsToLink = function (res1, port1, portInternalId, portEth) {
-            var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + res1 + "/IPortManagement/" + port1 + "/IAttributeStore/attribute/?arg0=" + portInternalId + "&arg1=" + portEth;
-            MqNaaSResourceService.put(url).then(function (result) {
-                $scope.resRoot = result; //empty
-                $scope.mappedPort = "Mapped";
-                $scope.mappedPorts.push({
-                    virt: virtualPort,
-                    real: realPort
-                });
-            });
-        };
-
+        /*
+                $scope.mappingPortsToLink = function (res1, port1, portInternalId, portEth) {
+                    var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + res1 + "/IPortManagement/" + port1 + "/IAttributeStore/attribute/?arg0=" + portInternalId + "&arg1=" + portEth;
+                    MqNaaSResourceService.put(url).then(function (result) {
+                        $scope.resRoot = result; //empty
+                        $scope.mappedPort = "Mapped";
+                        $scope.mappedPorts.push({
+                            virt: virtualPort,
+                            real: realPort
+                        });
+                    });
+                };
+        */
         $scope.onNodeSelect = function (properties) {
             var resource = $scope.nodes.get({
                 filter: function (item) {
@@ -139,19 +138,19 @@ angular.module('mqnaasApp')
         };
 
     })
-    .controller('editVINetwork', function ($scope, $rootScope, MqNaaSResourceService, $modal, RootResourceService, VirtualService, PhysicalService, IMLService) {
+    .controller('editVINetwork', function ($scope, $rootScope, $modal, VirtualService, PhysicalService, IMLService) {
         var url = '';
 
         $scope.nodes = new vis.DataSet();
         $scope.edges = new vis.DataSet();
 
         $scope.updateListNetworks = function () {
-            RootResourceService.list().then(function (data) {
+            var url = "phyNetworks"
+            IMLService.get(url).then(function (data) {
                 if (!data) return;
-                data = checkIfIsArray(data.IRootResource.IRootResourceId);
-                $scope.listNetworks = data;
+                data = checkIfIsArray(data);
                 if (!$rootScope.networkId) {
-                    $rootScope.networkId = data[1];
+                    $rootScope.networkId = data[0];
                 }
                 $scope.selectedNetwork = $rootScope.networkId;
                 $scope.getNetworkModel();
@@ -171,10 +170,11 @@ angular.module('mqnaasApp')
                 $scope.generateNodeData(data.vi_req_resources);
                 $scope.edges.add(generateLinkData(data.vi_req_resources, $scope.nodes));
             });
-            url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IResourceModelReader/resourceModel');
-            MqNaaSResourceService.list(url).then(function (data) {
-                $scope.generateNodeData(data.resource.resources.resource);
-                $scope.edges.add(generateLinkData(data.resource.resources.resource, $scope.nodes));
+            url = "phyNetworks/" + $rootScope.networkId.id;
+            IMLService.get(url).then(function (data) {
+                console.log(data);
+                $scope.generateNodeData(data.phy_resource);
+                $scope.edges.add(generateLinkData(data.phy_links, $scope.nodes));
             });
         };
 
@@ -352,9 +352,9 @@ angular.module('mqnaasApp')
 
         $scope.getPhysicalResources = function () {
             $scope.physicalResources = [];
-            var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IResourceModelReader/resourceModel';
-            MqNaaSResourceService.get(url).then(function (response) {
-                var rawResources = checkIfIsArray(response.resource.resources.resource);
+            url = "phyNetworks/" + $rootScope.networkId.id;
+            IMLService.get(url).then(function (response) {
+                var rawResources = checkIfIsArray(response.phy_resource);
                 angular.forEach(rawResources, function (resource) {
                     if (resource.type !== 'Network' && resource.type !== 'link' && resource.type !== undefined)
                         $scope.physicalResources.push(resource);
@@ -362,7 +362,7 @@ angular.module('mqnaasApp')
             });
         };
     })
-    .controller('spViewNetwork', function ($scope, $rootScope, RootResourceService, VirtualService, IMLService) {
+    .controller('spViewNetwork', function ($scope, $rootScope, VirtualService, IMLService) {
         var url = '';
 
         $scope.nodes = new vis.DataSet();

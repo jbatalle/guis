@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('SodalesHomeCtrl', function ($scope, $rootScope, HistoryService, spService, MqNaaSResourceService, $modal, $alert, RootResourceService) {
+    .controller('SodalesHomeCtrl', function ($scope, $rootScope, HistoryService, spService, $modal, $alert, IMLService) {
 
         var url = '';
 
         //heartbeat mqnaas
-        var url = 'IRootResourceProvider';
-        MqNaaSResourceService.list(url).then(function (result) {
+        var url = "phyNetworks"
+        IMLService.get(url).then(function (result) {
             if (result === undefined) {
                 $rootScope.networkId = undefined;
                 $scope.alert.title = "Opennaas is offline!";
@@ -26,11 +26,12 @@ angular.module('mqnaasApp')
         };
 
         $scope.updateListNetworks = function () {
-            RootResourceService.list().then(function (data) {
+            var url = "phyNetworks"
+            IMLService.get(url).then(function (data) {
                 if (!data) return;
-                data = checkIfIsArray(data.IRootResource.IRootResourceId);
+                data = checkIfIsArray(data);
                 if (!$rootScope.networkId) {
-                    $rootScope.networkId = data[1];
+                    $rootScope.networkId = data[0];
                 }
             });
         };
@@ -53,16 +54,16 @@ angular.module('mqnaasApp')
                     $scope.viSize = 0;
                     $scope.resourcesSize = 0;
                 } else {
-                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRequestManagement";
-                    MqNaaSResourceService.list(url).then(function (result) {
+                    var url = "viNetworks";
+                    IMLService.get(url).then(function (result) {
                         if (result === undefined) $scope.viSize = 0;
-                        else $scope.viSize = checkIfIsArray(result.IResource.IResourceId).length;
+                        else $scope.viSize = checkIfIsArray(result).length;
                     });
 
-                    url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceProvider";
-                    MqNaaSResourceService.list(url).then(function (result) {
+                    url = "phyNetworks/" + $rootScope.networkId.id;
+                    IMLService.get(url).then(function (result) {
                         if (result === undefined) $scope.resourcesSize = 0;
-                        else $scope.resourcesSize = checkIfIsArray(result.IRootResource.IRootResourceId).length;
+                        else $scope.resourcesSize = checkIfIsArray(result).length;
                     });
                 }
             }

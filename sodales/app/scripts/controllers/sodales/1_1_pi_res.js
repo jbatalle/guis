@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('sodalesPiResourcesCtrl', function ($scope, $rootScope, $window, $modal, MqNaaSResourceService, RootResourceService, arnService, cpeService, $alert, $interval) {
+    .controller('sodalesPiResourcesCtrl', function ($scope, $rootScope, $window, $modal, arnService, cpeService, $alert, $interval, IMLService) {
         var url = '';
 
         var resourceId = "";
@@ -9,19 +9,18 @@ angular.module('mqnaasApp')
         $scope.resources = [];
 
         $scope.updateResourceList = function () {
-            url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceProvider');
-            MqNaaSResourceService.list(url).then(function (data) {
-                $scope.resources = checkIfIsArray(data.IRootResource.IRootResourceId);
+            url = "phyNetworks/" + $rootScope.networkId;
+            IMLService.get(url).then(function (data) {
+                $scope.resources = data.phy_resources; //checkIfIsArray(data.IRootResource.IRootResourceId);
             });
         };
         $scope.updateResourceList();
 
-        $scope.getResourceInfo = function (id) {
-            //get resource type given Id
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + id + '/IResourceModelReader/resourceModel/';
-            MqNaaSResourceService.get(url).then(function (data) {
-                $scope.type = data.resource.type;
-                $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
+        $scope.getResourceInfo = function (resource) {
+            url = "phyNetworks/" + $rootScope.networkId + "/resource/" + resource.id;
+            IMLService.get(url).then(function (data) {
+                $scope.type = data.type;
+                $rootScope.resourceUri = data.endpoint;
                 var req, url;
                 if ($scope.type === 'ARN') {
                     arnService.put(getEquipment()).then(function (data) {

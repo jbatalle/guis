@@ -1,5 +1,5 @@
 angular.module('mqnaasApp')
-    .controller('SodalesMonitoringController', function ($rootScope, $scope, $filter, $modal, arnService, cpeService, $interval, $window, MqNaaSResourceService) {
+    .controller('SodalesMonitoringController', function ($rootScope, $scope, $filter, $modal, arnService, cpeService, $interval, $window, IMLService) {
         var promise;
         var availableResources = [];
         $scope.selectedResource = "";
@@ -13,13 +13,14 @@ angular.module('mqnaasApp')
         else $rootScope.netId = null;
 
         $scope.updateResourceList = function () {
-            url = generateUrl('IRootResourceAdministration', $rootScope.networkId, 'IRootResourceProvider');
-            MqNaaSResourceService.list(url).then(function (data) {
-                var resourceArray = checkIfIsArray(data.IRootResource.IRootResourceId);
+            url = "phyNetworks/" + $rootScope.networkId;
+            IMLService.get(url).then(function (data) {
+                console.log(data);
+                var resourceArray = data.phy_resources; //(data.IRootResource.IRootResourceId);
                 resourceArray.forEach(function (res) {
                     $scope.physicalResources.push({
-                        name: res,
-                        type: res.split("-")[0]
+                        name: res.id,
+                        type: res.type
                     });
                 });
             });
@@ -55,10 +56,9 @@ angular.module('mqnaasApp')
             $scope.arnOAM = undefined;
 
             //get resourceModel of the resource -> extract endpoint URI
-
-            url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel/';
-            MqNaaSResourceService.get(url).then(function (data) {
-                $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
+            url = "phyNetworks/" + $rootScope.networkId + '/resource/' + resourceName;
+            IMLService.get(url).then(function (data) {
+                $rootScope.resourceUri = data.endpoint; // data.resource.descriptor.endpoints.endpoint.uri;
 
                 $scope.cards = [];
                 $scope.card = {};

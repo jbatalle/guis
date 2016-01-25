@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .controller('spStatsController', function ($rootScope, $scope, $modal, $interval, $window, $stateParams, IMLService, AuthService, spService, arnService, cpeService, VirtualService, MQNAAS) {
+    .controller('spStatsController', function ($rootScope, $scope, $modal, $interval, $window, $stateParams, IMLService, AuthService, spService, arnService, cpeService, VirtualService) {
 
         //hardcoded
         //$rootScope.networkId = "Network-Internal-1.0-2";

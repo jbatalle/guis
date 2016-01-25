@@ -8,7 +8,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
-                        <select placeholder="select resource" bs-select ng-model="resource" bs-options="resource for resource in resources" ng-change="updateResource()"></select>
+                        <select placeholder="select resource" bs-select ng-model="resource" bs-options="resource.id for resource in resources" ng-change="updateResource()"></select>
                     </div>
                     <div class="list-group" ng-show="equipmentInfo">
                         <div class="fx-form-block-controls fx-first collapse am-collapse in" data-uxfwk-collapse-target="">

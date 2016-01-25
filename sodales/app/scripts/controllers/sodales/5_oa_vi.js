@@ -455,8 +455,48 @@ angular.module('mqnaasApp')
             this.$hide();
         };
     })
-    .controller('viewVIController', function ($scope, $rootScope, MqNaaSResourceService, $stateParams, $interval, $q, $alert, VirtualService) {
+    .controller('viewVIController', function ($scope, $rootScope, IMLService, $stateParams, $interval, $q, $alert, VirtualService) {
         $rootScope.virtNetId = $stateParams.id;
+        var url = "viNetworks/" + $rootScope.virtNetId;
+        IMLService.get(url).then(function (result) {
+            if (result === undefined) return;
+            console.log(result);
+            $scope.vi = result;
+            for(var j in $scope.vi.vi_resources){
+                for (var i in $scope.vi.vi_resources[j]) {
+                    if ($scope.vi.vi_resources[j][i] === null || $scope.vi.vi_resources[j][i] === undefined) {
+                        delete $scope.vi.vi_resources[j][i];
+                    }
+                    console.log(i);
+                    console.log($scope.vi.vi_resources[j]);
+                    //if($scope.vi.vi_resources[j][i] !== undefined)
+                    //if($scope.vi.vi_resources[j][i].vi_ports !== undefined)
+                    if(i = "vi_ports"){
+                        console.log($scope.vi.vi_resources[j][i]);
+                        for (var t in $scope.vi.vi_resources[j][i]) {
+                            console.log(t);
+                            for (var w in $scope.vi.vi_resources[j][i][t]) {
+                                if ($scope.vi.vi_resources[j][i][t][w] === null || $scope.vi.vi_resources[j][i][t][w] === undefined) {
+                                    delete $scope.vi.vi_resources[j][i][t][w];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            $scope.jsonObj = JSON.stringify($scope.vi, undefined, 4);
+        });
+
+        $scope.getResourceInfo = function (element) {
+            console.log("CLICK");
+            console.log(element);
+            url = "viNetworks/" + $rootScope.virtNetId + "/resource/" + element.id;
+            IMLService.get(url).then(function (result) {
+                if (result === undefined) return;
+                $scope.virtualResource = result;
+            });
+        }
     })
     .controller('mappingCtrl', function ($rootScope, $scope, MqNaaSResourceService, IMLService) {
 

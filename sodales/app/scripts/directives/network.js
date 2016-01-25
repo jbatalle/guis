@@ -56,7 +56,6 @@ angular.module('mqnaasApp')
                             }
                         });
                     }
-                    console.log(network);
                     $scope.ngModel.nodes.update(updates);
                 };
             }
