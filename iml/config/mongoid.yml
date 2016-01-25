@@ -1,6 +1,6 @@
 development:
   sessions:
     default:
-      database: iml
+      database: iml_sodales
       hosts:
       - 84.88.40.90:27017
