@@ -105,3 +105,7 @@ tags-input .autocomplete {
 .datepicker.dropdown-menu.datepicker-mode-2 tbody button {
     height: 65px;
 }
+.angular-google-map-container {
+    height: 400px;
+    height: 700px;
+}

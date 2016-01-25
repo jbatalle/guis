@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 
-angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqnaasApp.controllers', 'mqnaasApp.directives', 'mqnaasApp.services', 'smart-table', 'mgcrea.ngStrap', 'ngTagsInput', 'cb.x2js', 'LocalStorageModule'])
+angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqnaasApp.controllers', 'mqnaasApp.directives', 'mqnaasApp.services', 'smart-table', 'mgcrea.ngStrap', 'ngTagsInput', 'cb.x2js', 'LocalStorageModule', 'uiGmapgoogle-maps'])
 
 .run(
   ['$rootScope', '$state', '$stateParams', '$timeout',
@@ -20,7 +20,15 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
     }
   ]
 )
+.config(['uiGmapGoogleMapApiProvider',
+    function (uiGmapGoogleMapApiProvider) {
+        uiGmapGoogleMapApiProvider.configure({
+            key: 'AIzaSyBvHPUMbKIkIC6FPweEXCQoxUZO8XKI2u4',
+            v: '3.17',
+            libraries: 'geometry'
+        });
 
+}])
 .config(
   ['$stateProvider', '$urlRouterProvider', '$httpProvider',
     function ($stateProvider, $urlRouterProvider, $httpProvider) {
@@ -229,6 +237,14 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                             controller: 'settingsController'
                         }
                     }
+                }).state('root.map', {
+                    url: '/map',
+                    views: {
+                        'master@root': {
+                            templateUrl: 'views/sodales/4_map.html',
+                            controller: 'mapController'
+                        }
+                    }
                 }).state('root.test', {
                     url: '/test',
                     views: {
@@ -264,6 +280,9 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                             } else {
                                 config.url = config.url + '?token=' + authToken;
                             }
+                        } else if (!angular.isDefined($window.localStorage.token)) {
+                            console.log("LOCATION LOGIN")
+                            $location.path('/login');
                         }
                         return config || $q.when(config);
                     }
@@ -333,3 +352,9 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
 var services = angular.module('mqnaasApp.services', ['ngResource']);
 var genericUrl = "rest/mqnaas/";
 var graph;
+if( typeof _.contains === 'undefined' ) {
+    _.contains = _.includes;
+}
+if( typeof _.object === 'undefined' ) {
+    _.object = _.zipObject;
+}
