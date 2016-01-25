@@ -408,6 +408,15 @@ function myGraph(el, options) {
                 scope.getResourceInfo(d);
             });
         });
+
+        nodeEnter.on("dblclick", function (d) {
+            console.log("Double click");
+            var scope = angular.element(document.getElementById("viMgt")).scope();
+            scope.$apply(function () {
+                scope.getJSONModel(d);
+            });
+        });
+
         nodeEnter.on("mouseup", function (d) {
             //if is a Virtual Resource
             var parentNode = graph.getNodes().filter(function (p) {

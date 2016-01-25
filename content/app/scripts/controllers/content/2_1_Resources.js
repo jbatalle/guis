@@ -53,4 +53,18 @@ angular.module('mqnaasApp')
             //$scope.resource = d;
         }
 
+        $scope.getJSONModel = function (d) {
+            console.log(d.id);
+            console.log(phyResources)
+            console.log($rootScope.phyResource);
+            console.log($scope.networkElements);
+            
+            $rootScope.phyResource = undefined;
+            $rootScope.phyResource = $scope.networkElements.filter(function (res) {
+                return d.id === res.id
+            })[0];
+            $scope.jsonObj = JSON.stringify($rootScope.phyResource, undefined, 4);
+
+        };
+
     });

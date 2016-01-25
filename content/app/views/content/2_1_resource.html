@@ -22,7 +22,7 @@
                 </ul>
                 <div ng-show="phyResource">
                     <h3>Resource information</h3>
-                    <div class="list-group">
+                    <div class="list-group" ng-if="!jsonObj">
                         <div class="fx-form-block-controls fx-first collapse am-collapse in" data-uxfwk-collapse-target="">
                             <div class="form-group">
                                 <label class="col-sm-4 control-label ng-binding">Name</label>
@@ -47,6 +47,13 @@
                                         {{res.id}}
                                     </li>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group" ng-if="jsonObj">
+                        <div class="fx-form-block-controls fx-first collapse am-collapse in" data-uxfwk-collapse-target="">
+                            <div class="form-group">
+                            <pre class="beautify" ng-bind-html="jsonObj | prettify"></pre>
                             </div>
                         </div>
                     </div>
