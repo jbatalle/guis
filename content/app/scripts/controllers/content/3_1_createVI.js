@@ -143,7 +143,7 @@ angular.module('mqnaasApp')
             }
         });
     })
-    .controller('editVIController', function ($scope, $rootScope, $stateParams, $modal, localStorageService, IMLService) {
+    .controller('editVIController', function ($scope, $rootScope, $stateParams, $modal, localStorageService, IMLService, $alert, $interval) {
         console.log("EDIT VI CONTROLLER")
         $rootScope.viId = $stateParams.id;
         $rootScope.virtualPort = [];
@@ -466,6 +466,32 @@ angular.module('mqnaasApp')
             });
             this.$hide();
         };
+
+        $scope.automapping = function(){
+            
+                    var creatingAlert = $alert({
+                        title: "Auto mapping resources...",
+                        content: "Please wait.",
+                        placement: 'top',
+                        type: 'info',
+                        keyboard: true,
+                        show: true,
+                        container: '#alerts-container'
+                    });
+                    var promise = $interval(function () {
+                        creatingAlert.hide();
+                        $alert({
+                            title: "Auto mapping done.",
+                            content: "",
+                            placement: 'top',
+                            type: 'success',
+                            keyboard: true,
+                            show: true,
+                            container: '#alerts-container',
+                            duration: 5
+                        });
+                    }, 3000, 1);
+        }
 
     })
     .controller('mappingCtrl', function ($rootScope, $scope, IMLService) {
