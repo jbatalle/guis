@@ -16,7 +16,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
     function ($rootScope, $state, $stateParams) {
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
-            $state.transitionTo('root.resourcesMgt');
+            $state.transitionTo('root.map');
     }
   ]
 )
@@ -259,7 +259,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
                         if (Math.floor(Date.now() / 1000) > $window.localStorage.expiration)
                             $rootScope.logout();
                         else if (status === 401 && $window.localStorage.token !== null && $window.localStorage.token !== undefined) {
-                            $location.path('/resourcesMgt');
+                            $location.path('/map');
                         } else if (status === 401) {
                             $location.path('/login');
                         } else {

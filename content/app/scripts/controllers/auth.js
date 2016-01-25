@@ -66,7 +66,7 @@ angular.module('mqnaasApp')
 
                         $rootScope.user = JSON.parse($window.localStorage.user);
                         $scope.loginError = '';
-                        $location.path('/resourcesMgt');
+                        $location.path('/map');
                     }, function (error) {
                         $scope.loginError = 'Login failed';
                     });
