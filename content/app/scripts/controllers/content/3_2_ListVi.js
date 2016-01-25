@@ -75,6 +75,33 @@ angular.module('mqnaasApp')
             console.log(result);
             $scope.vi = result;
             localStorageService.set("networkElements", result);
+            //_($scope.vi.vi_resources).omit(_.isUndefined).omit(_.isNull).value();
+            //var t = _.omit($scope.vi.vi_resources, function(v) { return _.isUndefined(v) || _.isNull(v); })
+            //console.log(t);
+            for(var j in $scope.vi.vi_resources){
+                for (var i in $scope.vi.vi_resources[j]) {
+                    if ($scope.vi.vi_resources[j][i] === null || $scope.vi.vi_resources[j][i] === undefined) {
+                        delete $scope.vi.vi_resources[j][i];
+                    }
+                    console.log(i);
+                    console.log($scope.vi.vi_resources[j]);
+                    //if($scope.vi.vi_resources[j][i] !== undefined)
+                    //if($scope.vi.vi_resources[j][i].vi_ports !== undefined)
+                    if(i = "vi_ports"){
+                        console.log($scope.vi.vi_resources[j][i]);
+                        for (var t in $scope.vi.vi_resources[j][i]) {
+                            console.log(t);
+                            for (var w in $scope.vi.vi_resources[j][i][t]) {
+                                if ($scope.vi.vi_resources[j][i][t][w] === null || $scope.vi.vi_resources[j][i][t][w] === undefined) {
+                                    delete $scope.vi.vi_resources[j][i][t][w];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            $scope.jsonObj = JSON.stringify($scope.vi, undefined, 4);
         });
 
         $scope.getResourceInfo = function (element) {
