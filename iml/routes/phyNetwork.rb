@@ -41,7 +41,7 @@ class IMLSodales < Sinatra::Application
 		end
 	end
 
-	post '/phyNetworks/:id/phyResource/addResource' do
+	post '/phyNetworks/:id/resource/addResource' do
 		phyRes, errors = parse_json(request.body.read)
 		return 400, errors.to_json if errors
 
@@ -54,7 +54,7 @@ class IMLSodales < Sinatra::Application
 		#return @viReqNetwork.vi_req_resources.last['id'].to_s
 	end
 
-	post '/phyNetworks/:id/phyLink/addLink' do
+	post '/phyNetworks/:id/link/addLink' do
 		phyLink, errors = parse_json(request.body.read)
 		return 400, errors.to_json if errors
 
@@ -66,6 +66,23 @@ class IMLSodales < Sinatra::Application
 		#logger.error @viReqNetwork.vi_req_resources.last['id'].to_s
 		#return @viReqNetwork.vi_req_resources.last['id'].to_s
 	end
+
+	delete '/phyNetworks/:id/resource/:resourceId' do
+		n = PhyNetwork.find(params['id'])
+		r = n.phy_resources.find(params['resourceId'])
+		r.phy_ports.each do |viReqPort|
+			logger.error viReqPort
+			logger.error viReqPort.id
+			r.phy_ports.find(viReqPort['id']).delete
+		end
+		r.delete
+	end
+
+	delete '/phyNetworks/:id/link/:resourceId' do
+		n = PhyNetwork.find(params['id'])
+		r = n.phy_links.find(params['resourceId']).delete
+	end
+
 
 	delete '/phyNetworks/:id' do
 		n = PhyNetwork.find(params['id'])

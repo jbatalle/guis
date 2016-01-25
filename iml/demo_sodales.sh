@@ -8,10 +8,10 @@ echo $phyId
 
 
 echo "Add physical resource"
-phyIdRes=$(curl -XPOST http://localhost:4050/phyNetworks/$phyId/phyResource/addResource -d '{"type":"ARN", "coords": {"lat": "40", "lon": "2"}}')
-phyIdRes2=$(curl -XPOST http://localhost:4050/phyNetworks/$phyId/phyResource/addResource -d '{"type":"CPE", "coords": {"lat": "40", "lon": "2"}}')
+phyIdRes=$(curl -XPOST http://localhost:4050/phyNetworks/$phyId/resource/addResource -d '{"type":"ARN", "coords": {"lat": "40", "lon": "2"}}')
+phyIdRes2=$(curl -XPOST http://localhost:4050/phyNetworks/$phyId/resource/addResource -d '{"type":"CPE", "coords": {"lat": "40", "lon": "2"}}')
 
-phyIdLink=$(curl -XPOST http://localhost:4050/phyNetworks/$phyId/phyLink/addLink -d '{"from": "$phyIdLink", "to": "$phyIdLink2"}')
+phyIdLink=$(curl -XPOST http://localhost:4050/phyNetworks/$phyId/link/addLink -d '{"from": "$phyIdLink", "to": "$phyIdLink2"}')
 
 
 echo $phyId
