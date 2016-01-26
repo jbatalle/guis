@@ -71,7 +71,7 @@ angular.module('mqnaasApp')
                     });
                 }
                 $rootScope.resourceInfo.slicing = {};
-                getSlice(resourceName);
+                //getSlice(resourceName);
             });
         }
         var getPhysicalPorts = function (resourceName) {
@@ -79,9 +79,9 @@ angular.module('mqnaasApp')
             var url = 'phyNetworks/' + $rootScope.networkId.id + '/resource/' + resourceName;
             var promise = IMLService.get(url).then(
                 function (data) {
-                    $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
+                    $rootScope.resourceUri = data.endpoint;
                     var ports = [];
-                    if (data.resource.type === 'CPE') {
+                    if (data.type === 'CPE') {
                         //$rootScope.resourceInfo.ports = [];
                         var cpePorts = checkIfIsArray(data.resource.resources.resource);
                         angular.forEach(cpePorts, function (port) {
@@ -89,7 +89,7 @@ angular.module('mqnaasApp')
                             ports.push(port);
                         });
 
-                    } else if (data.resource.type === 'ARN') {
+                    } else if (data.type === 'ARN') {
                         var deferred2 = $q.defer();
                         //if is ARN, get Card, and type of port
                         ports = arnService.put(getAllInterfaces()).then(function (data) {

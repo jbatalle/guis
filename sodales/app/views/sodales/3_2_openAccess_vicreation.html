@@ -94,7 +94,7 @@
                         <li ng-repeat="viRes in virtualResources" ng-if="viRes.mapped">
                             <a ng-click="mappingDialog(viRes.id, viRes.mapped)">{{viRes.id}} -> {{viRes.mapped}}</a>
                             <ul>
-                                <li ng-repeat="viPorts in viRes.ports">
+                                <li ng-repeat="viPorts in viRes.vi_req_ports">
                                     {{viPorts.id}} -> {{viPorts.mapped}}
                                 </li>
                             </ul>

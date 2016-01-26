@@ -15,7 +15,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
-                    <a ui-sref="root.dashboard">Home</a>
+                    <a restrict access="ip" ui-sref="root.dashboard">Home</a>
+                    <a restrict access="sp" ui-sref="root.spInfo">Home</a>
                 </li>
                 <li id="mgtResLi" class="dropdown">
                     <a restrict access="ip" class="dropdown-toggle" data-toggle="dropdown">PHY Management</a>

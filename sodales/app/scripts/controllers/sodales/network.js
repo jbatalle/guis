@@ -173,7 +173,7 @@ angular.module('mqnaasApp')
             url = "phyNetworks/" + $rootScope.networkId.id;
             IMLService.get(url).then(function (data) {
                 console.log(data);
-                $scope.generateNodeData(data.phy_resource);
+                $scope.generateNodeData(data.phy_resources);
                 $scope.edges.add(generateLinkData(data.phy_links, $scope.nodes));
             });
         };
@@ -441,46 +441,47 @@ function generateLinkData(data, nodes) {
     var edges = [];
     if (data === undefined) return edges;
     data = checkIfIsArray(data);
-    data.forEach(function (node) {
-        if (node.resources)
-            if (node.type === 'link' && node.resources.resource instanceof Array) {
-                var src = {},
-                    dst = {};
-                data.forEach(function (element) {
-                    if (element.type !== 'link') {
-                        var t = checkIfIsArray(element.resources.resource);
-                        t.forEach(function (port) {
-                            if (port.id === node.resources.resource[0].id) src = element;
-                        });
-                    }
-                });
-
-                data.forEach(function (element) {
-                    if (element.type !== 'link') {
-                        var t = checkIfIsArray(element.resources.resource);
-                        t.forEach(function (port) {
-                            if (port.id === node.resources.resource[1].id) dst = element;
-                        });
-                    }
-                });
-                var srcNode = nodes.get({
-                    filter: function (item) {
-                        return item.label == src.id;
-                    }
-                })[0];
-                var dstNode = nodes.get({
-                    filter: function (item) {
-                        return item.label == dst.id;
-                    }
-                })[0];
-
-                edges.push({
-                    id: edges.lentgh,
-                    from: srcNode.id,
-                    to: dstNode.id,
-                    label: node.id
+    data.forEach(function (link) {
+        //if (node.resources)
+        //if (link)
+        //if (node.type === 'link' && node.resources.resource instanceof Array) {
+        var src = {},
+            dst = {};
+        /*data.forEach(function (element) {
+            if (element.type !== 'link') {
+                var t = checkIfIsArray(element.resources.resource);
+                t.forEach(function (port) {
+                    if (port.id === node.resources.resource[0].id) src = element;
                 });
             }
+        });
+
+        data.forEach(function (element) {
+            if (element.type !== 'link') {
+                var t = checkIfIsArray(element.resources.resource);
+                t.forEach(function (port) {
+                    if (port.id === node.resources.resource[1].id) dst = element;
+                });
+            }
+        });*/
+        var srcNode = nodes.get({
+            filter: function (item) {
+                return item.label == link.resource_from;
+            }
+        })[0];
+        var dstNode = nodes.get({
+            filter: function (item) {
+                return item.label == link.resource_target;
+            }
+        })[0];
+
+        edges.push({
+            id: edges.lentgh,
+            from: srcNode.id,
+            to: dstNode.id,
+            label: link.id
+        });
+        //}
     });
     return edges;
 }
