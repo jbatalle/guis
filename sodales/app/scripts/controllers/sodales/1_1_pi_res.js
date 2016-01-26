@@ -9,15 +9,30 @@ angular.module('mqnaasApp')
         $scope.resources = [];
 
         $scope.updateResourceList = function () {
-            url = "phyNetworks/" + $rootScope.networkId;
+            var url = "phyNetworks"
             IMLService.get(url).then(function (data) {
-                $scope.resources = data.phy_resources; //checkIfIsArray(data.IRootResource.IRootResourceId);
+                if (!data) return;
+                $scope.listNetworks = data;
+                if ($scope.listNetworks.length === 1) {
+                    $rootScope.networkId = '';
+                    $window.localStorage.networkId = '';
+                }
+                if (!$rootScope.networkId) {
+                    $rootScope.networkId = data[0];
+                    $window.localStorage.networkId = data[0];
+                }
+
+
+                url = "phyNetworks/" + $rootScope.networkId.id;
+                IMLService.get(url).then(function (data) {
+                    $scope.resources = data.phy_resources;
+                });
             });
         };
         $scope.updateResourceList();
 
         $scope.getResourceInfo = function (resource) {
-            url = "phyNetworks/" + $rootScope.networkId + "/resource/" + resource.id;
+            url = "phyNetworks/" + $rootScope.networkId.id + "/resource/" + resource.id;
             IMLService.get(url).then(function (data) {
                 $scope.type = data.type;
                 $rootScope.resourceUri = data.endpoint;

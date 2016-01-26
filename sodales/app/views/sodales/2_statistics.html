@@ -10,12 +10,12 @@
                     <div class="list-group">
                         <ul>
                             <li ng-repeat="resource in physicalResources">
-                                <a ng-click="selectResource(resource.name, resource.type)" bs-dropdown="resource.type == 'ARN' ? dropdown:dropdown2" aria-haspopup="true" aria-expanded="false">{{resource.name}}</a>
+                                <a ng-click="selectResource(resource.id, resource.type)" bs-dropdown="resource.type == 'ARN' ? dropdown:dropdown2" aria-haspopup="true" aria-expanded="false">{{resource.id}}</a>
                             </li>
                         </ul>
 
-                        <a ng-if="resource.type == 'ARN'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.name, resource.type)" class="list-group-item" ng-class="navClass('{{resource.name}}')" data-animation="am-flip-x" bs-dropdown="dropdown">{{resource.name}}</a>
-                        <a ng-if="resource.type == 'CPE'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.name, resource.type)" class="list-group-item" ng-class="navClass('{{resource.name}}')" data-animation="am-flip-x" bs-dropdown="dropdown2">{{resource.name}}</a>
+                        <a ng-if="resource.type == 'ARN'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.id, resource.type)" class="list-group-item" ng-class="navClass('{{resource.id}}')" data-animation="am-flip-x" bs-dropdown="dropdown">{{resource.id}}</a>
+                        <a ng-if="resource.type == 'CPE'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.id, resource.type)" class="list-group-item" ng-class="navClass('{{resource.id}}')" data-animation="am-flip-x" bs-dropdown="dropdown2">{{resource.id}}</a>
                     </div>
                 </div>
             </div>

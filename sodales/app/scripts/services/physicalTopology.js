@@ -47,24 +47,21 @@ angular.module('mqnaasApp')
             });
         };
         var getResource = function (resourceName) {
-            //var url = 'IRootResourceAdministration/' + $rootScope.networkId + '/IRootResourceAdministration/' + resourceName + '/IResourceModelReader/resourceModel';
-            //MqNaaSResourceService.list(url).then(function (data) {
-
-            var url = 'phyNetworks/' + $rootScope.networkId + '/resources/' + resourceName;
+            var url = 'phyNetworks/' + $rootScope.networkId.id + '/resource/' + resourceName;
             IMLService.get(url).then(function (data) {
                 $rootScope.resourceInfo = {};
                 $rootScope.resourceInfo.layer = "physical";
-                $rootScope.resourceInfo.id = data.resource.id;
-                $rootScope.resourceInfo.type = data.resource.type;
-                $rootScope.resourceInfo.endpoint = data.resource.descriptor.endpoints.endpoint.uri;
-                $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;
-                if (data.resource.type === 'Network' && data.resource.type === 'link' && data.resource.type === undefined) {
+                $rootScope.resourceInfo.id = data.id;
+                $rootScope.resourceInfo.type = data.type;
+                $rootScope.resourceInfo.endpoint = data.endpoint;
+                $rootScope.resourceUri = data.endpoint;
+                if (data.type === 'Network' && data.type === 'link' && data.type === undefined) {
                     ///nothing
-                } else if (data.resource.type === 'CPE') {
+                } else if (data.type === 'CPE') {
                     $rootScope.resourceInfo.ports = [];
-                    var cpePorts = checkIfIsArray(data.resource.resources.resource);
+                    var cpePorts = checkIfIsArray(data.phy_ports);
                     angular.forEach(cpePorts, function (port) {
-                        if (parseInt(port.attributes.entry[0].value) > 99 && parseInt(port.attributes.entry[0].value) < 112)
+                        if (parseInt(port) > 99 && parseInt(port) < 112)
                             $rootScope.resourceInfo.ports.push(port);
                     });
                 } else {
@@ -79,10 +76,7 @@ angular.module('mqnaasApp')
         }
         var getPhysicalPorts = function (resourceName) {
             var deferred = $q.defer();
-            //var url = "IRootResourceAdministration/" + $rootScope.networkId + "/IRootResourceAdministration/" + resourceName + "/IResourceModelReader/resourceModel";
-            //var promise = MqNaaSResourceService.get(url).then(
-
-            var url = 'phyNetworks/' + $rootScope.networkId + '/resources/' + resourceName;
+            var url = 'phyNetworks/' + $rootScope.networkId.id + '/resource/' + resourceName;
             var promise = IMLService.get(url).then(
                 function (data) {
                     $rootScope.resourceUri = data.resource.descriptor.endpoints.endpoint.uri;

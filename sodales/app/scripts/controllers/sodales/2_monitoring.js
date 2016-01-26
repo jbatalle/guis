@@ -13,15 +13,24 @@ angular.module('mqnaasApp')
         else $rootScope.netId = null;
 
         $scope.updateResourceList = function () {
-            url = "phyNetworks/" + $rootScope.networkId;
+            var url = "phyNetworks"
             IMLService.get(url).then(function (data) {
-                console.log(data);
-                var resourceArray = data.phy_resources; //(data.IRootResource.IRootResourceId);
-                resourceArray.forEach(function (res) {
-                    $scope.physicalResources.push({
-                        name: res.id,
-                        type: res.type
-                    });
+                if (!data) return;
+
+                $scope.listNetworks = data;
+                if ($scope.listNetworks.length === 1) {
+                    $rootScope.networkId = '';
+                    $window.localStorage.networkId = '';
+                }
+                if (!$rootScope.networkId) {
+                    $rootScope.networkId = data[0];
+                    $window.localStorage.networkId = data[0];
+                }
+                $scope.selectedNetwork = $rootScope.networkId.id;
+
+                url = "phyNetworks/" + $rootScope.networkId.id;
+                IMLService.get(url).then(function (data) {
+                    $scope.physicalResources = data.phy_resources;
                 });
             });
         };
@@ -56,9 +65,9 @@ angular.module('mqnaasApp')
             $scope.arnOAM = undefined;
 
             //get resourceModel of the resource -> extract endpoint URI
-            url = "phyNetworks/" + $rootScope.networkId + '/resource/' + resourceName;
+            url = "phyNetworks/" + $rootScope.networkId.id + '/resource/' + resourceName;
             IMLService.get(url).then(function (data) {
-                $rootScope.resourceUri = data.endpoint; // data.resource.descriptor.endpoints.endpoint.uri;
+                $rootScope.resourceUri = data.endpoint;
 
                 $scope.cards = [];
                 $scope.card = {};

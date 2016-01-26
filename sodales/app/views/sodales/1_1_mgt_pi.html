@@ -7,7 +7,7 @@
                     <h3 class="panel-title"><i class="fa fa-globe fa-fw"></i> Networks</h3>
                 </div>
                 <div class="panel-body" style="text-align: center;">
-                    <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network.id for network in listNetworks" bs-select ng-change="setNetworkId(selectedNetwork)">
+                    <button type="button" class="btn btn-default" ng-model="selectedNetwork" disabled data-html="1" bs-options="network.id for network in listNetworks" bs-select ng-change="setNetworkId(selectedNetwork)">
                         Select <span class="caret"></span>
                     </button>
                     <h3 class="lead">Physical resources</h3>
@@ -35,8 +35,8 @@
                     <div class="panel-body">
                         <ul>
                             <li ng-repeat="res in physicalResources">
-                                <a ng-click="getResourceInfo(res)"> {{res}}</a> -
-                                <a ng-click="deleteDialog(res)"> Remove </a>
+                                <a ng-click="getResourceInfo(res.id)"> {{res.id}}</a> -
+                                <a ng-click="deleteDialog(res.id)"> Remove </a>
                             </li>
                         </ul>
                     </div>
@@ -78,7 +78,7 @@
         </div>
     </div>
     <div class="col-lg-3">
-        <div ng-show="networkId && resourceInfo.ports">
+        <div ng-show="networkId && resourceInfo">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-square-o fa-fw"></i> Endpoint</h3>
