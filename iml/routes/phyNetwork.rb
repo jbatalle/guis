@@ -67,6 +67,27 @@ class IMLSodales < Sinatra::Application
 		#return @viReqNetwork.vi_req_resources.last['id'].to_s
 	end
 
+	post '/phyNetworks/:id/resource/:resourceId/addPorts' do
+		phyPorts, errors = parse_json(request.body.read)
+		return 400, errors.to_json if errors
+
+		begin
+			r = PhyNetwork.find(params['id']).phy_resources.find_by(:id => params['resourceId'])
+		rescue Mongoid::Errors::DocumentNotFound => e
+			halt 404, "Resource not found"
+		end
+
+		#r = r.vi_req_resources.find(params['resourceId'])
+		r.phy_ports.create!(phyPorts)
+		#r.vi_req_ports.create!()
+		logger.error @port
+		return r.to_json
+
+		#@viReqNetwork.phy_resources << PhyResource.new(phyRes)
+		#logger.error @viReqNetwork.vi_req_resources.last['id'].to_s
+		#return @viReqNetwork.vi_req_resources.last['id'].to_s
+	end
+
 	delete '/phyNetworks/:id/resource/:resourceId' do
 		n = PhyNetwork.find(params['id'])
 		r = n.phy_resources.find(params['resourceId'])
