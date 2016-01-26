@@ -1,11 +1,9 @@
 body {
     padding-top: 60px;
 }
-
 ng-hide {
     display: none;
 }
-
 .loader {
     font-size: 36px;
     line-height: 36px;
@@ -20,43 +18,35 @@ ng-hide {
     right: 0;
     margin: auto;
 }
-
 .statsTable {
     width: 100%;
     margin: 10px 0px 10px 0px;
 }
-
 statsTable,
 th.ng-binding.ng-scope {
     width: 50px;
     text-align: center;
 }
-
 statsTable,
 td.ng-binding.ng-scope {
     text-align: center;
 }
-
 a {
     cursor: pointer;
 }
-
 #myDraggableZone {
     height: 500px;
 }
-
 footer.main-footer.ng-scope {
     background-color: #FDF5D7;
     background-size: 100% 100%;
     padding: 10px;
 }
-
 .login-box,
 .register-box {
     width: 360px;
     margin: 7% auto;
 }
-
 .login-logo,
 .register-logo {
     font-size: 35px;
@@ -64,20 +54,17 @@ footer.main-footer.ng-scope {
     margin-bottom: 25px;
     font-weight: 300;
 }
-
 .login-box-msg,
 .register-box-msg {
     margin: 0;
     text-align: center;
     padding: 0 20px 20px 20px;
 }
-
 html,
 body,
 .full-height {
     height: 100%;
 }
-
 #well1 {
     height: 15%;
     /*fall back for IE8, Safari 5.1, Opera Mini and pre-4.4 Android browsers*/
@@ -85,51 +72,42 @@ body,
     overflow: hidden;
     /*better to decide how you want to handle this than to let the browser decide*/
 }
-
 #well2 {
     height: 85%;
     margin-bottom: 0;
     overflow: auto;
 }
-
 .modal-align {
     /* text-align: right;*/
 }
-
 tags-input .autocomplete {
     position: inherit;
 }
-
 .select.dropdown-menu {
     max-height: 200px;
     overflow: auto;
 }
-
 .datepicker.dropdown-menu {
     width: 250px;
     height: 270px;
 }
-
 .datepicker.dropdown-menu button {
     outline: none;
     border: 0px;
 }
-
 .datepicker.dropdown-menu tbody {
     height: 180px;
 }
-
 .datepicker.dropdown-menu tbody button {
     padding: 6px;
 }
-
 .datepicker.dropdown-menu.datepicker-mode-1 tbody button,
 .datepicker.dropdown-menu.datepicker-mode-2 tbody button {
     height: 65px;
 }
-
 .angular-google-map-container {
-    height: 400px;
+    /*height: 500px;*/
     width: 100%;
+    height: 100vh;
     /*position: absolute;*/
 }
