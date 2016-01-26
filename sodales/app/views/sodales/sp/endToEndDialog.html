@@ -6,8 +6,8 @@
                 <h4 class="modal-title" ng-bind="title"></h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" class="non-margined" name="sourceCPESvc">
-                    <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
+                <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
+                    <form class="form-horizontal" class="non-margined" name="endToEndForm">
                         <div class="panel panel-default" ng-repeat="panel in panels">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
@@ -22,8 +22,8 @@
                                             <button type="button" class="btn btn-default" ng-model="sourceCPESvc.srcPort" data-html="1" bs-options="res.id for res in sourceResource.vi_ports track by res.id" bs-select style="margin: 0 0 10px;" required>
                                                 Select <span class="caret" style="position: relative;z-index: 5000"></span>
                                             </button>
-                                            <span style="color:red" ng-show="sourceCPESvc.srcPort.$dirty && sourceCPESvc.srcPort.$invalid">
-                                            <span ng-show="sourceCPESvc.srcPort.$error.required">Source port is required.</span>
+                                            <span style="color:red" ng-show="endToEndForm.srcPort.$dirty && endToEndForm.srcPort.$invalid">
+                                            <span ng-show="endToEndForm.srcPort.$error.required">Source port is required.</span>
                                             </span>
                                             <br/>
                                         </div>
@@ -34,8 +34,8 @@
                                             <button type="button" class="btn btn-default" ng-model="sourceCPESvc.dstPort" data-html="1" bs-options="res.id for res in sourceResource.vi_ports track by res.id" bs-select style="margin: 0 0 10px;" required>
                                                 Select <span class="caret" style="position: relative;z-index: 5000"></span>
                                             </button>
-                                            <span style="color:red" ng-show="sourceCPESvc.dstPort.$dirty && sourceCPESvc.dstPort.$invalid">
-                                            <span ng-show="sourceCPESvc.dstPort.$error.required">Target port is required.</span>
+                                            <span style="color:red" ng-show="endToEndForm.dstPort.$dirty && endToEndForm.dstPort.$invalid">
+                                            <span ng-show="endToEndForm.dstPort.$error.required">Target port is required.</span>
                                             <br/>
                                             </span>
                                         </div>
@@ -43,7 +43,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Vlan</label>
                                         <div class="col-sm-8">
-                                            <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" data-ng-maxlength="64" ng-model="sourceCPESvc.vlanEdit_flowtype_outer" required>
+                                            <input type="text" class="form-control input-sm ng-pristine" name="vlan" data-ng-maxlength="64" ng-model="sourceCPESvc.vlanEdit_flowtype_outer" required>
                                             <br/>
                                         </div>
                                     </div>
@@ -85,19 +85,19 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Vlan</label>
                                         <div class="col-sm-8">
-                                            <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" data-ng-maxlength="64" ng-model="destCPESvc.vlanEdit_flowtype_outer" required>
+                                            <input type="text" id="name" class="form-control input-sm ng-pristine" data-ng-maxlength="64" ng-model="destCPESvc.vlanEdit_flowtype_outer" required>
                                             <br/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
+                </div>
 
-                    <div class="modal-footer">
-                        <button class="btn btn-sm btn-primary" ng-click="createEndToEnd(sourceCPESvc, destCPESvc)">Create Service</button>
-                    </div>
-                </form>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-primary" ng-click="createEndToEndOperation(sourceCPESvc, destCPESvc)" ng-disabled="!endToEndForm.$valid">Create Service</button>
+                </div>
             </div>
         </div>
     </div>

@@ -117,6 +117,9 @@ angular.module('mqnaasApp')
 
             }
 
+            $scope.sourceCPESvc = {};
+            $scope.destCPESvc = {};
+
             $modal({
                 title: 'End to end connectivity',
                 template: 'views/sodales/sp/endToEndDialog.html',
@@ -124,11 +127,6 @@ angular.module('mqnaasApp')
                 scope: $scope
             });
         };
-
-        $scope.createEndToEnd = function (sourceCPE, targetCPE) {
-            console.log(sourceCPE);
-        };
-
 
         $scope.openOperationARNDialog = function (resourceName, type) {
             $scope.virtualResourceOp = resourceName;
@@ -433,6 +431,15 @@ angular.module('mqnaasApp')
                 else possibleId = Math.floor((Math.random() * 200) + 1);
                 outServiceId = serviceId + 1
             }
+
+            if (cpeSvc.type !== "CFM") {
+                cpe.vlanEdit_flowtype_out = cpe.vlanEdit_flowtype_outer;
+                cpe.vlanEdit_flowtype_outer_out = cpe.vlanEdit_flowtype;
+            } else {
+                cpe.vlanEdit_flowtype_out = cpe.vlanEdit_flowtype;
+                cpe.vlanEdit_flowtype_outer_out = cpe.vlanEdit_flowtype_outer;
+            }
+
             console.log(serviceId);
             var clusterId = cpeSvc.dstPort;
             url = "createServiceVlan.html?unit=0&serviceId=" + serviceId + "&srcPort=" + cpeSvc.srcPort + "&policerId=" + cpeSvc.police.id + "&pmId=3&eIngressType=" + cpeSvc.eIngressType + "&outer_vlanId=" + cpeSvc.innerVlan + "&clusterId=" + clusterId + "&vlanEdit_flowtype=" + cpeSvc.vlanEdit_flowtype + "&vlanEdit_outer_command=" + cpe.vlanEdit_flowtype_outer + "&vlanEdit_outer_vlan=" + cpeSvc.outerVlan;
@@ -440,7 +447,7 @@ angular.module('mqnaasApp')
                 console.log(response);
                 $scope.cpeServices = checkIfIsArray(response.meaServiceMap);
             });
-            url = "createServiceVlan.html?unit=0&serviceId=" + outServiceId + "&srcPort=" + clusterId + "&policerId=" + cpeSvc.police.id + "&pmId=3&eIngressType=" + cpeSvc.eIngressType_outer + "&outer_vlanId=" + cpeSvc.outerVlan + "&clusterId=" + cpeSvc.srcPort + "&vlanEdit_flowtype=" + cpe.vlanEdit_flowtype_outer + "&vlanEdit_outer_command=" + cpe.vlanEdit_flowtype + "&vlanEdit_outer_vlan=" + cpeSvc.innerVlan;
+            url = "createServiceVlan.html?unit=0&serviceId=" + outServiceId + "&srcPort=" + clusterId + "&policerId=" + cpeSvc.police.id + "&pmId=3&eIngressType=" + cpeSvc.eIngressType_outer + "&outer_vlanId=" + cpeSvc.outerVlan + "&clusterId=" + cpeSvc.srcPort + "&vlanEdit_flowtype=" + cpe.vlanEdit_flowtype_out + "&vlanEdit_outer_command=" + cpe.vlanEdit_flowtype_outer_out + "&vlanEdit_outer_vlan=" + cpeSvc.innerVlan;
             cpeService.post(url).then(function (response) {
                 console.log(response);
                 $scope.cpeServices = checkIfIsArray(response.meaServiceMap);
@@ -457,8 +464,63 @@ angular.module('mqnaasApp')
 
             url = "egress_port_setting.html?unit=0&port_id=" + cpeSvc.srcPort + "&tx_enable=1&crc_check=1";
             cpeService.post(url).then(function (response) {});
+
+
+            if (cpeSvc.type === "CFM") {
+                url = "ccmSetting.html?unit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId=" + cpeSvc.innerVlan + "0&srcPort=" + cpeSvc.srcPort + "&megLevel=4&cfmVersion=0&ccmPeriod=1&rdiEnable=1&megId=ccmTest&lmEnable=1&remoteMepId=10&localMepId=9&policerId=" + policerId + "&outServiceId=" + outService + "&inServiceId=" + inService + "&Priority=7";
+                cpeService.post(url).then(function (response) {});
+            }
+
         };
 
+        $scope.createEndToEndOperation = function (sourceCPE, targetCPE) {
+            console.log(sourceCPE);
+            console.log(targetCPE);
+
+            if (true) {
+                //CFM Traffic
+                var cpeInfo = {
+                    srcPort: sourceCPE.srcPort,
+                    dstPort: sourceCPE.dstPort,
+                    police: {
+                        id: 3
+                    },
+                    eIngressType: 1,
+                    eIngressType_outer: 1,
+                    vlanEdit_flowtype: 2,
+                    vlanEdit_flowtype_outer: 3,
+                    innerVlan: sourceCPE.vlanEdit_flowtype_outer,
+                    outerVlan: sourceCPE.vlanEdit_flowtype_outer
+                };
+                //$scope.createCFMService();
+            }
+
+            //configure source CPE
+            var cpeInfo = {
+                srcPort: sourceCPE.srcPort,
+                dstPort: sourceCPE.dstPort,
+                vlanEdit_flowtype_outer: 2,
+                police: {
+                    id: 3
+                },
+                eIngressType: 1,
+                eIngressType_outer: 0,
+                innerVlan: sourceCPE.vlanEdit_flowtype_outer,
+                vlanEdit_flowtype: 1,
+                outerVlan: 0
+            };
+            console.log(cpeInfo);
+            //$scope.createCpeService(cpeInfo);
+
+            //configure last CPE
+
+
+            //configure ARNs
+        };
+
+
+
+        //to remove????
         $scope.createCFMService = function (cpeSvc) {
 
             url = "ingress_port_setting.html?unit=0&port_id=" + clusterId + "&rx_enable=1&crc_check=1&my_mac=00:01:03:05:06:05";
@@ -486,14 +548,14 @@ angular.module('mqnaasApp')
                 outServiceId = inServiceId + 1
             }
 
-            url = "createServiceVlan.html?unit=0&serviceId=" + inServiceId + "&srcPort=" + cpeSvc.srcPort + "&policerId=" + cpeSvc.police.id + "&pmId=3&eIngressType=1&outer_vlanId=" + cpeSvc.innerVlan + "&clusterId=" + clusterId + "&vlanEdit_flowtype=2&vlanEdit_outer_command=3&vlanEdit_outer_vlan=" + cpeSvc.innerVlan;
+            url = "createServiceVlan.html?unit=0&serviceId=" + inServiceId + "&srcPort=" + cpeSvc.srcPort + "&policerId=" + cpeSvc.police.id + "&pmId=5&eIngressType=1&outer_vlanId=" + cpeSvc.innerVlan + "&clusterId=" + clusterId + "&vlanEdit_flowtype=2&vlanEdit_outer_command=3&vlanEdit_outer_vlan=" + cpeSvc.innerVlan;
 
             cpeService.post(url).then(function (response) {
                 console.log(response);
                 $scope.cpeServices = checkIfIsArray(response.meaServiceMap);
             });
 
-            url = "createServiceVlan.html?unit=0&serviceId=" + outServiceId + "&srcPort=" + clusterId + "&policerId=" + cpeSvc.police.id + "&pmId=3&eIngressType=1&outer_vlanId=" + cpeSvc.innerVlan + "&clusterId=" + cpeSvc.srcPort + "&vlanEdit_flowtype=2&vlanEdit_outer_command=3&vlanEdit_outer_vlan=" + cpeSvc.innerVlan;
+            url = "createServiceVlan.html?unit=0&serviceId=" + outServiceId + "&srcPort=" + clusterId + "&policerId=" + cpeSvc.police.id + "&pmId=5&eIngressType=1&outer_vlanId=" + cpeSvc.innerVlan + "&clusterId=" + cpeSvc.srcPort + "&vlanEdit_flowtype=2&vlanEdit_outer_command=3&vlanEdit_outer_vlan=" + cpeSvc.innerVlan;
 
             cpeService.post(url).then(function (response) {
                 console.log(response);
