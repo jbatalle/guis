@@ -14,10 +14,14 @@ phyIdRes2=$(curl -XPOST http://localhost:4050/phyNetworks/$phyId/resource/addRes
 phyIdLink=$(curl -XPOST http://localhost:4050/phyNetworks/$phyId/link/addLink -d '{"from": "$phyIdLink", "to": "$phyIdLink2"}')
 
 
+phyIdResPorts=$(curl -XPOST http://localhost:4050/phyNetworks/$phyId/resource/$phyIdRes/addPorts -d '[{"id": "aaaaa", "card": "bbbbb"}, {"id": "ccccc", "card": "ddddd"}]')
+
+
 echo $phyId
 echo $phyIdRes
 echo $phyIdRes2
 echo $phyIdLink
+echo $phyIdResPorts
 
 echo "EXIT................................"
 
