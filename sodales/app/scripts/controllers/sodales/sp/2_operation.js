@@ -23,7 +23,7 @@ angular.module('mqnaasApp')
             });
         };
 
-        if ($rootScope.networkId && $rootScope.virtNetId) {
+        if ($rootScope.virtNetId) {
             $scope.getNetworkResources();
         } else {
             console.log("create list of vi nets");
@@ -47,13 +47,6 @@ angular.module('mqnaasApp')
             $scope.getNetworkResources();
         };
 
-        $scope.createOperation = function () {
-            $modal({
-                template: 'partials/sodales/sp/arnOpDialog.html',
-                scope: $scope
-            });
-        };
-
         $scope.operationButton = function (resourceName, type) {
             url = 'viNetworks/' + $rootScope.virtNetId + '/resource/' + resourceName;
             IMLService.get(url).then(function (data) {
@@ -71,8 +64,71 @@ angular.module('mqnaasApp')
                     $scope.openOperationCPEDialog(resourceName, type);
 
                 }
-            })
+            });
         };
+
+        $rootScope.createEndToEnd2 = function (source, dest) {
+            console.log("Create end to end connectivity");
+
+            console.log(source);
+            $scope.source = source;
+            $scope.dest = dest;
+            if (source.type === "CPE") {
+
+            }
+
+            if (source.type === "ARN") {
+
+            }
+
+            $modal({
+                title: 'End to end connectivity',
+                template: 'views/sodales/sp/endToEndDialog.html',
+                show: true,
+                scope: $scope
+            });
+        };
+
+        $rootScope.createEndToEnd = function (source, dest) {
+            console.log("Create end to end connectivity");
+
+            console.log(source);
+            $scope.source = source;
+            $scope.dest = dest;
+
+            //get resource info
+            var url = 'viNetworks/' + $rootScope.virtNetId + '/resource/' + source.label;
+            IMLService.get(url).then(function (data) {
+                console.log(data);
+                $scope.sourceResource = data;
+            });
+
+            url = 'viNetworks/' + $rootScope.virtNetId + '/resource/' + dest.label;
+            IMLService.get(url).then(function (data) {
+                console.log(data);
+                $scope.destResource = data;
+            });
+
+            if (source.type === "CPE") {
+
+            }
+
+            if (source.type === "ARN") {
+
+            }
+
+            $modal({
+                title: 'End to end connectivity',
+                template: 'views/sodales/sp/endToEndDialog.html',
+                show: true,
+                scope: $scope
+            });
+        };
+
+        $scope.createEndToEnd = function (sourceCPE, targetCPE) {
+            console.log(sourceCPE);
+        };
+
 
         $scope.openOperationARNDialog = function (resourceName, type) {
             $scope.virtualResourceOp = resourceName;

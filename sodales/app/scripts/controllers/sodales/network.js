@@ -373,7 +373,7 @@ angular.module('mqnaasApp')
                     return rootScope.networkId
                 },
                 function () {
-                    if ($rootScope.networkId === undefined) return;
+                    //if ($rootScope.networkId === undefined) return;
 
                     url = "viNetworks/" + $rootScope.virtNetId;
                     IMLService.get(url).then(function (data) {
@@ -406,7 +406,25 @@ angular.module('mqnaasApp')
                     "springConstant": 0
                 }
             },
-            locale: 'en'
+            locale: 'en',
+            manipulation: {
+                addNode: false,
+                editEdge: false,
+                deleteNode: false,
+                deleteEdge: false,
+                addEdge: function (data, callback) {
+                    console.log("Adding link");
+                    $rootScope.createEndToEnd($scope.nodes.get(data.from), $scope.nodes.get(data.to));
+                    if (data.from == data.to) {
+                        var r = confirm('Do you want to connect the node to itself?');
+                        if (r == true) {
+                            callback(data);
+                        }
+                    } else {
+                        callback(null);
+                    }
+                }
+            }
         };
 
         $scope.onNodeSelect = function (properties) {

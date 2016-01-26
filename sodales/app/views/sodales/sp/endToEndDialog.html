@@ -1,0 +1,104 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title"></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" class="non-margined" name="sourceCPESvc">
+                    <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
+                        <div class="panel panel-default" ng-repeat="panel in panels">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                <a bs-collapse-toggle style="cursor: pointer;">Source resource ({{source.label}})</a>
+                            </h4>
+                            </div>
+                            <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Source port</label>
+                                        <div class="col-sm-8">
+                                            <button type="button" class="btn btn-default" ng-model="sourceCPESvc.srcPort" data-html="1" bs-options="res.id for res in sourceResource.vi_ports track by res.id" bs-select style="margin: 0 0 10px;" required>
+                                                Select <span class="caret" style="position: relative;z-index: 5000"></span>
+                                            </button>
+                                            <span style="color:red" ng-show="sourceCPESvc.srcPort.$dirty && sourceCPESvc.srcPort.$invalid">
+                                            <span ng-show="sourceCPESvc.srcPort.$error.required">Source port is required.</span>
+                                            </span>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Target port</label>
+                                        <div class="col-sm-8">
+                                            <button type="button" class="btn btn-default" ng-model="sourceCPESvc.dstPort" data-html="1" bs-options="res.id for res in sourceResource.vi_ports track by res.id" bs-select style="margin: 0 0 10px;" required>
+                                                Select <span class="caret" style="position: relative;z-index: 5000"></span>
+                                            </button>
+                                            <span style="color:red" ng-show="sourceCPESvc.dstPort.$dirty && sourceCPESvc.dstPort.$invalid">
+                                            <span ng-show="sourceCPESvc.dstPort.$error.required">Target port is required.</span>
+                                            <br/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Vlan</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" data-ng-maxlength="64" ng-model="sourceCPESvc.vlanEdit_flowtype_outer" required>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default" ng-repeat="panel in panels">
+                            <div class="panel-heading" role="tab">
+                                <h4 class="panel-title">
+                                <a bs-collapse-toggle style="cursor: pointer;">Target resource ({{dest.label}})</a>
+                            </h4>
+                            </div>
+                            <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Source port</label>
+                                        <div class="col-sm-8">
+                                            <button type="button" class="btn btn-default" ng-model="destCPESvc.srcPort" data-html="1" bs-options="res.id for res in destResource.vi_ports track by res.id" bs-select style="margin: 0 0 10px;" required>
+                                                Select <span class="caret" style="position: relative;z-index: 5000"></span>
+                                            </button>
+                                            <span style="color:red" ng-show="destCPESvc.srcPort.$dirty && destCPESvc.srcPort.$invalid">
+                                            <span ng-show="destCPESvc.srcPort.$error.required">Source port is required.</span>
+                                            </span>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Target port</label>
+                                        <div class="col-sm-8">
+                                            <button type="button" class="btn btn-default" ng-model="destCPESvc.dstPort" data-html="1" bs-options="res.id for res in destResource.vi_ports track by res.id" bs-select style="margin: 0 0 10px;" required>
+                                                Select <span class="caret" style="position: relative;z-index: 5000"></span>
+                                            </button>
+                                            <span style="color:red" ng-show="destCPESvc.dstPort.$dirty && destCPESvc.dstPort.$invalid">
+                                            <span ng-show="destCPESvc.dstPort.$error.required">Target port is required.</span>
+                                            <br/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Vlan</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" data-ng-maxlength="64" ng-model="destCPESvc.vlanEdit_flowtype_outer" required>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-sm btn-primary" ng-click="createEndToEnd(sourceCPESvc, destCPESvc)">Create Service</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
