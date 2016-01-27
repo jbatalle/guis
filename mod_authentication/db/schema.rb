@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150812102131) do
+ActiveRecord::Schema.define(version: 20151124111111) do
 
   create_table "histories", force: :cascade do |t|
     t.integer  "user_id"
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 20150812102131) do
   create_table "vi_resources", force: :cascade do |t|
     t.string "name"
     t.string "type"
+    t.string "uri"
   end
 
   create_table "vis", force: :cascade do |t|
