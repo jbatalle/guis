@@ -60,12 +60,42 @@
     <div id="piMgt" class="col-md-9" ng-show="type === 'ARN' || type === 'CPE'">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Interfaces information</h3>
+                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> {{type}} information</h3>
             </div>
             <div class="panel-body">
                 <div ng-show="type === 'ARN' ">
                     <select placeholder="select card" bs-select ng-model="card" bs-options="card._name for card in cards" ng-change="updateARNCard()"></select>
                     <div class="col-lg-12">
+                        <label class="col-sm-4 control-label ng-binding">Card information</label>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-1 col-md-1 col-lg-1">Interface id</th>
+                                    <th data-title="'description'" class="col-sm-2 col-md-2 col-lg-2">Name</th>
+                                    <th data-title="'VI List'" class="col-sm-2 col-md-2 col-lg-2">Version</th>
+                                    <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Serial number</th>
+                                    <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Temperature (ºC)</th>
+                                    <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">CPU (%)</th>
+                                    <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Memory (%)</th>
+                                    <th data-title="'actions'" class="col-sm-1 col-md-1 col-lg-1">Storage (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{card._name}}</td>
+                                    <td>{{card._version}}</td>
+                                    <td>{{card._serialNumber}}</td>
+                                    <td>{{card.status._temperature/100}}</td>
+                                    <td>{{card.status._cpuUsage/100}}</td>
+                                    <td>{{card.status._memoryUsage/100}}</td>
+                                    <td>{{card.status._storageUsage/100}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-lg-12">
+                        <label class="col-sm-4 control-label ng-binding">Interface information</label>
                         <table st-table="displayedCollection" st-safe-src="dataCollection" class="table table-striped">
                             <thead>
                                 <tr>

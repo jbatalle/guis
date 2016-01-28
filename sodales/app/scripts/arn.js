@@ -2,6 +2,10 @@ getCards = function () {
     return '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="show" entity="card"><card equipmentId="0" _id="0"/></operation></request>';
 };
 
+getCard = function (cardId) {
+    return '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="showStatus" entity="card"><card equipmentId="0" _id="2" cardId="' + cardId + '"/></operation></request>';
+};
+
 getEquipment = function () {
     return '<?xml version="1.0" encoding="UTF-8"?><request ><operation token="58" type="show" entity="equipment"><equipment id="0"></equipment></operation></request>';
 }

@@ -76,11 +76,31 @@ angular.module('mqnaasApp')
             $scope.dataCollection = [];
             var data = getCards();
             arnService.put(data).then(function (response) {
+                console.log(response);
                 $scope.cards = response.response.operation.cardList.card;
             });
         };
 
+        $scope.getARNCard = function (cardId) {
+            $scope.cardInfo = [];
+            var data = getCard(cardId);
+            arnService.put(data).then(function (response) {
+                $scope.cardsInfo = response.response.operation.cardList.card;
+                console.log($scope.cardsInfo);
+                var cardInfo = _.filter($scope.cardsInfo, {
+                    _id: cardId
+                })[0];
+                /*$scope.cardsInfo.filter(function (d) {
+                                    return d._id === cardId
+                                });*/
+                console.log(cardInfo);
+                _.extend($scope.card, cardInfo);
+                console.log($scope.card);
+            });
+        }
+
         $scope.updateARNCard = function () {
+            $scope.getARNCard($scope.card._id);
             $scope.getEthernetInterfaces($scope.card._id);
             $scope.cos = [];
         };
