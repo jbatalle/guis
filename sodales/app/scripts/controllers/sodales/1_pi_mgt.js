@@ -57,7 +57,7 @@ angular.module('mqnaasApp')
             console.log('Select networkId to rootScope: ' + netId);
             $rootScope.networkId = netId;
             $window.localStorage.networkId = netId;
-            getMqNaaSResource($rootScope.networkId);
+            $scope.updateResourceList();
         };
 
         $scope.createNetwork = function () {
@@ -119,31 +119,6 @@ angular.module('mqnaasApp')
                 duration: 5
             });
             this.$hide();
-        };
-
-        //it is used????
-
-        var getMqNaaSResource = function (root, url) {
-            if (root === undefined) return;
-            url = generateUrl('IRootResourceAdministration', root, 'IRootResourceProvider');
-            MqNaaSResourceService.list(url).then(function (data) {
-                if (data === undefined) return;
-                data = checkIfIsArray(data.IRootResource.IRootResourceId);
-                $scope.networkElements = data;
-                if (data.length > 0) {
-                    data.forEach(function (resource) {
-                        $scope.getRealPorts(resource);
-                    });
-                }
-
-                $scope.generateNodeData(checkIfIsArray(data.IRootResource.IRootResourceId));
-
-                $window.localStorage.networkElements = data;
-
-            }, function (error) {
-                console.log('ERROR get Mqnaas resource');
-                console.log(error);
-            });
         };
 
         $scope.openAddResourceDialog = function (nodeType, divPos) {

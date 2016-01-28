@@ -54,7 +54,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="row in displayedCollection">
-                                <td>{{row._interfaceId}}</td>
+                                <td><a ng-click="createPacketsGraph(row._cardId, row._interfaceId)">{{row._interfaceId}}</a></td>
                                 <td>{{row._name}}</td>
                                 <td>{{row._admin}}</td>
                                 <td>{{row.ethStatus._mediaType}}</td>
@@ -74,6 +74,11 @@
                             </tr>
                         </tfoot>
                     </table>
+                </div>
+                <div ng-show="arnInterfaces && packetsData">
+                    Graph:
+                    <graph2d ng-model="packetsData" options="network_options" id="previewNetwork">
+                    </graph2d>
                 </div>
                 <div ng-show="cpePorts">
                     <ol class="breadcrumb">

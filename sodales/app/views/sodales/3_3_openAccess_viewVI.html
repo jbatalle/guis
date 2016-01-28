@@ -49,6 +49,11 @@
                             <div style="overflow-y: scroll; height:250px; width: 66%;">
                                 <li ng-repeat="res in virtualResource.ports">
                                     {{res.id}} - {{res.physical}}
+                                    <ul>
+                                        <li ng-repeat="vlan in res.vlans">
+                                            {{vlan.lowerBound}} - {{vlan.upperBound}}
+                                        </li>
+                                    </ul>
                                 </li>
                             </div>
                         </div>

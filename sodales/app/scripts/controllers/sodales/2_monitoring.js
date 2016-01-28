@@ -174,7 +174,7 @@ angular.module('mqnaasApp')
         };
 
         $scope.getNotificationsLogging = function () {
-            $scope.monitored_data = "Alarms"
+            $scope.monitored_data = "Alarms";
             var requestData = getAlarmShow();
             arnService.put(requestData).then(function (response) {
                 //$scope.notiLog = response.response.operation.cardList.card.status;
@@ -215,4 +215,84 @@ angular.module('mqnaasApp')
                 $interval.cancel(promise);
             }
         });
+
+        $scope.createPacketsGraph = function (cardId, interfaceId) {
+
+            $scope.infId = interfaceId;
+            var groups = new vis.DataSet();
+            groups.add({
+                id: 0,
+                content: "packets64Octets"
+            })
+            groups.add({
+                id: 1,
+                content: "packets65to127Octets"
+            })
+            groups.add({
+                id: 2,
+                content: "packets128to255Octets"
+            });
+            groups.add({
+                id: 3,
+                content: "packets256to511Octets"
+            });
+            groups.add({
+                id: 4,
+                content: "packets512to1023Octets"
+            });
+            groups.add({
+                id: 5,
+                content: "packets1024to1518Octets"
+            });
+            items = [];
+            var requestData = getCounters(cardId, interfaceId);
+            arnService.put(requestData).then(function (response) {
+                var data = response.response.operation.interfaceList.interface.ethernet.counters;
+                _.each(data.tx, function (val, key) {
+                    if (key === '_packets64Octets')
+                        items.push({
+                            x: new Date(),
+                            y: parseInt(val),
+                            group: 0
+                        });
+                    else if (key === '_packets65to127Octets')
+                        items.push({
+                            x: new Date(),
+                            y: parseInt(val),
+                            group: 1
+                        });
+                    else if (key === '_packets128to255Octets')
+                        items.push({
+                            x: new Date(),
+                            y: parseInt(val),
+                            group: 2
+                        });
+                    else if (key === '_packets256to511Octets')
+                        items.push({
+                            x: new Date(),
+                            y: parseInt(val),
+                            group: 3
+                        });
+                    else if (key === '_packets512to1023Octets')
+                        items.push({
+                            x: new Date(),
+                            y: parseInt(val),
+                            group: 4
+                        });
+                    else if (key === '_packets1024to1518Octets')
+                        items.push({
+                            x: new Date(),
+                            y: parseInt(val),
+                            group: 5
+                        });
+                    console.log(items);
+
+                });
+                console.log(items);
+                $scope.packetsData = {
+                    items: items,
+                    groups: groups
+                };
+            });
+        };
     });
