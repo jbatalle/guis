@@ -90,19 +90,18 @@ class IMLSodales < Sinatra::Application
 
 	#?arg0=port
 	post '/viReqNetworks/:id/viReqResource/:resourceId/mapPort/:portId/:phyPort' do
-		#data, errors = parse_json(request.body.read)
-		#return 400, errors.to_json if errors
+		data, errors = parse_json(request.body.read)
+		return 400, errors.to_json if errors
 
 #		ViReqPort.find(params['portId']).update_attributes(:mapped => data['phyPort'])
 		n = ViReqNetwork.find(params['id'])
 		r = n.vi_req_resources.find(params['resourceId'])
-		logger.error r.id
 		p = r.vi_req_ports.find(params['portId'])
 		logger.error p.id
 
 		#remove
 		r.vi_req_ports.find(params['portId']).delete
-		p = r.vi_req_ports.create!({:name => "adasda", :mapped => params['phyPort']})
+		p = r.vi_req_ports.create!({:mapped => params['phyPort'], :vlans => data})
 		#a = r.vi_req_ports.find(params['portId']).update({:mapped => data['phyPort']})
 
 		return r.vi_req_ports.last['id'].to_s

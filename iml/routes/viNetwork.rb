@@ -62,7 +62,7 @@ class IMLSodales < Sinatra::Application
 					#logger.error @viNetwork.viResources.last
 					#p = ViReqPort.new({:physical => viReqPort['mapped'] })
 					#logger.error p
-					@viNetwork.vi_resources.last.vi_ports << ViPort.new({:physical => viReqPort['mapped'] })
+					@viNetwork.vi_resources.last.vi_ports << ViPort.new({:physical => viReqPort['mapped'], :vlans => viReqPort['vlans']})
 					#@viNetwork.viResources << ViResource.new({:type => viReqResource, :endpoint => ""})
 				end
 			end
