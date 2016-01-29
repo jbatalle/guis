@@ -109,9 +109,7 @@ angular.module('mqnaasApp')
                 $scope.destResource = data;
             });
 
-            if (source.type === "CPE") {
-
-            }
+            if (source.type === "CPE") {}
 
             if (source.type === "ARN") {
 
@@ -137,12 +135,12 @@ angular.module('mqnaasApp')
 
             arnService.put(getNetworkServices()).then(function (response) {
                 console.log(response);
-                $scope.networkServices = response.response.operation.networkServiceList.networkService;
+                $scope.networkServices = checkIfIsArray(response.response.operation.networkServiceList.networkService);
             });
 
             arnService.put(getClientServices()).then(function (response) {
                 console.log(response);
-                $scope.clientServices = response.response.operation.clientServiceList.clientService;
+                $scope.clientServices = checkIfIsArray(response.response.operation.clientServiceList.clientService);
             });
         };
 
@@ -228,16 +226,30 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.createNetworkService = function (ns) {
+        $scope.createNetworkService = function (ns, listPorts) {
             console.log(ns);
-            return;
-            arnService.put(createNetworkService(id, 2, ns.name, ns.type.id, ns.uplinkVlanId, ns.uniVlanId)).then(function (response) {
+            console.log(listPorts)
+                //return;
+            var id = "1"
+            console.log(ns.interfaces);
+            arnService.put(createNetworkService(2, ns.name, ns.serviceType.id, ns.uplinkVlanId, ns.uniVlanId)).then(function (response) {
                 console.log(response);
-                arnService.put(addPortsToNetworkService(id, cardId, interfaceId, 1)).then(function (response) {});
+                arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, $scope.cards[0].id, $scope.cards[0].interface, 1)).then(function (response) {});
+                arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, $scope.cards[3].id, $scope.cards[3].interface, 1)).then(function (response) {});
+                arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, $scope.cards[4].id, $scope.cards[4].interface, 1)).then(function (response) {});
+                /*ns.interfaces.forEach(function (d) {
+                    console.log(d);
+                    var t = $scope.cards.filter(function (d) {
+                        return d.id == 0;
+                    })
+                    console.log(t);
+                    arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, t.card, t.interface, 1)).then(function (response) {});
+                });*/
             });
         };
 
         $scope.activateNetworkService = function (data) {
+            var id = 2;
             var interfaceId = data._id;
             var admin = 0;
             if (data._admin === '1') admin = 2;
@@ -249,8 +261,9 @@ angular.module('mqnaasApp')
 
         $scope.createClientService = function (cs) {
             console.log(cs);
-            return;
-            arnService.put(createClientService(networkServiceId, 2, cs.name, cs.uniVlanId)).then(function (response) {
+            //return;
+            //networkServiceId, admin, name, uniVlan
+            arnService.put(createClientService(cs.ns._id, 2, cs.name, cs.uniVlanId)).then(function (response) {
                 console.log(response);
                 //$scope.LAGs = response.response.operation.interfaceList.interface;
             });
@@ -327,6 +340,31 @@ angular.module('mqnaasApp')
         }, {
             id: 5,
             name: "MAC Bridge"
+        }];
+
+        $scope.cards = [{
+            id: 0,
+            name: "LAG",
+            interface: "8781824"
+        }, {
+            id: 1,
+            name: "Card 1",
+            interface: ""
+        }, {
+            id: 2,
+            name: "Card 2",
+            interface: ""
+        }, {
+            id: 3,
+            name: "Card 3",
+            interface: "58982400"
+        }, {
+            id: 4,
+            name: "Card 4",
+            interface: "75759616"
+        }, {
+            id: 5,
+            name: "Card 5"
         }];
 
         $scope.listPorts = [];
@@ -477,7 +515,7 @@ angular.module('mqnaasApp')
             console.log(sourceCPE);
             console.log(targetCPE);
 
-            if (true) {
+            if (false) {
                 //CFM Traffic
                 var cpeInfo = {
                     srcPort: sourceCPE.srcPort,
@@ -496,7 +534,7 @@ angular.module('mqnaasApp')
             }
 
             //configure source CPE
-            var cpeInfo = {
+            var cpeSourceInfo = {
                 srcPort: sourceCPE.srcPort,
                 dstPort: sourceCPE.dstPort,
                 vlanEdit_flowtype_outer: 2,
@@ -509,13 +547,36 @@ angular.module('mqnaasApp')
                 vlanEdit_flowtype: 1,
                 outerVlan: 0
             };
-            console.log(cpeInfo);
-            //$scope.createCpeService(cpeInfo);
+            console.log(cpeSourceInfo);
+            $scope.createCpeService(cpeSourceInfo);
+
+            var cpeTargetInfo = {
+                srcPort: targetCPE.srcPort,
+                dstPort: targetCPE.dstPort,
+                vlanEdit_flowtype_outer: 2,
+                police: {
+                    id: 3
+                },
+                eIngressType: 1,
+                eIngressType_outer: 0,
+                innerVlan: targetCPE.vlanEdit_flowtype_outer,
+                vlanEdit_flowtype: 1,
+                outerVlan: 0
+            };
+            console.log(cpeTargetInfo);
+            $scope.createCpeService(cpeTargetInfo);
 
             //configure last CPE
-
-
             //configure ARNs
+
+            var arnClientService = {
+                networkServiceId: "id",
+                admin: "2",
+                name: "test-service",
+                uniVlan: ""
+            };
+            //configure client service
+            $scope.createClientService(arnClientService);
         };
 
 

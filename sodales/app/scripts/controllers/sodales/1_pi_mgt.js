@@ -10,8 +10,10 @@ angular.module('mqnaasApp')
         $rootScope.resourceInfo = undefined;
         // $scope.buttonToogle = true;
 
-        if ($window.localStorage.networkId) $rootScope.netId = $window.localStorage.networkId;
-        else $rootScope.netId = null;
+        if ($window.localStorage.networkId) {
+            $rootScope.netId = $window.localStorage.networkId;
+            $scope.selectedNetwork = $window.localStorage.networkId.id;
+        } else $rootScope.netId = null;
 
         $scope.updateListNetworks = function () {
             var url = "phyNetworks"
@@ -26,7 +28,6 @@ angular.module('mqnaasApp')
                     $rootScope.networkId = data[0];
                     $window.localStorage.networkId = data[0];
                 }
-                $scope.selectedNetwork = $rootScope.networkId;
                 $scope.updateResourceList();
             });
         };
@@ -38,6 +39,8 @@ angular.module('mqnaasApp')
                 if (data === undefined) return;
                 $scope.physicalResources = data.phy_resources;
                 $scope.physicalLinks = data.phy_links;
+                console.log("Emit");
+                $scope.$broadcast('updatePhyTopology', "");
             });
         };
 
@@ -61,11 +64,39 @@ angular.module('mqnaasApp')
         };
 
         $scope.createNetwork = function () {
-            var xml = getNETWORK();
             var url = "phyNetworks"
             IMLService.post(url).then(function (data) {
                 $rootScope.networkId = data;
                 $scope.updateListNetworks();
+            });
+        };
+
+        $scope.deleteNetworkDialog = function (id) {
+            $modal({
+                title: 'Are you sure you want to delete this network?',
+                template: 'views/modals/modalNetworkRemove.html',
+                show: true,
+                scope: $scope
+            });
+        };
+
+        $scope.deleteNetwork = function () {
+            console.log($rootScope.networkId);
+            var url = "phyNetworks/" + $rootScope.networkId.id;
+            IMLService.delete(url).then(function (data) {
+                $rootScope.networkId = {};
+                $scope.updateListNetworks();
+                $alert({
+                    title: 'Resource removed',
+                    content: 'The resource was removed correctly',
+                    placement: 'top',
+                    type: 'success',
+                    keyboard: true,
+                    show: true,
+                    container: '#alerts-container',
+                    duration: 5
+                });
+                this.$hide();
             });
         };
 
@@ -237,9 +268,9 @@ angular.module('mqnaasApp')
                     });
                 } else if (resource.type === 'CPE') {
                     url = 'meaPortMapping.xml';
-                    cpeService.get(url).then(function (data) {
+                    cpeService.get(url).then(function (result) {
                         $scope.equipmentInfo = null;
-                        var foo = data.meaPortMapping.portMapping;
+                        var foo = result.meaPortMapping.portMapping;
                         _.each(foo, function (element, index) {
                             var type = "internal";
                             if (parseInt(element.port) > 99 && parseInt(element.port) < 112) type = "external";
@@ -248,7 +279,7 @@ angular.module('mqnaasApp')
                             });
                         })
                         ports = foo;
-                        var url = "phyNetworks/" + $rootScope.networkId.id + "/resource/" + data.id + "/addPorts";
+                        var url = "phyNetworks/" + $rootScope.networkId.id + "/resource/" + data + "/addPorts";
                         IMLService.post(url, ports).then(function (data) {
                             $scope.creating = false;
                             $scope.createDialog.hide();

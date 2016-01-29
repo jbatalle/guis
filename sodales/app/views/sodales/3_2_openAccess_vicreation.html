@@ -137,7 +137,7 @@
                                     <li ng-repeat="res in resourceInfo.ports" ng-if="resourceInfo.type === 'ARN' && res._admin !== '2' && resourceInfo.layer === 'physical'">
                                         {{res._name}} ({{res._interfaceId}} - {{res._cardId}})
                                     </li>
-                                    <li ng-repeat="res in resourceInfo.ports" ng-if="resourceInfo.type === 'CPE' && res.type !== 'internal' && resourceInfo.layer === 'physical'">port {{res.attributes.entry[0].value}}
+                                    <li ng-repeat="res in resourceInfo.ports" ng-if="resourceInfo.type === 'CPE' && res.type !== 'internal' && resourceInfo.layer === 'physical'">port {{res.port}}
                                     </li>
                                     <li ng-repeat="res in resourceInfo.ports" ng-if="resourceInfo.layer === 'virtual'">{{res.id}}
                                     </li>

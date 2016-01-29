@@ -3,7 +3,7 @@
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Resource Information</h3>
+                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Networks</h3>
             </div>
             <div class="panel-body">
                 <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network.id for network in listNetworks" bs-select ng-change="setNetworkId(selectedNetwork)">
@@ -11,9 +11,9 @@
                 </button>
             </div>
         </div>
-        <div class="panel panel-default">
+        <div class="panel panel-default" ng-if="networkId">
             <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Resource Information</h3>
+                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Resource List</h3>
             </div>
             <div class="panel-body">
                 <ul>

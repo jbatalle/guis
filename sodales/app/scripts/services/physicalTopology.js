@@ -61,7 +61,7 @@ angular.module('mqnaasApp')
                     $rootScope.resourceInfo.ports = [];
                     var cpePorts = checkIfIsArray(data.phy_ports);
                     angular.forEach(cpePorts, function (port) {
-                        if (parseInt(port) > 99 && parseInt(port) < 112)
+                        if (parseInt(port.port) > 99 && parseInt(port.port) < 112)
                             $rootScope.resourceInfo.ports.push(port);
                     });
                 } else {
@@ -83,7 +83,7 @@ angular.module('mqnaasApp')
                     var ports = [];
                     if (data.type === 'CPE') {
                         //$rootScope.resourceInfo.ports = [];
-                        var cpePorts = checkIfIsArray(data.resource.resources.resource);
+                        var cpePorts = checkIfIsArray(data.phy_ports);
                         angular.forEach(cpePorts, function (port) {
                             //    if (parseInt(port.attributes.entry[0].value) > 99 && parseInt(port.attributes.entry[0].value) < 112)
                             ports.push(port);

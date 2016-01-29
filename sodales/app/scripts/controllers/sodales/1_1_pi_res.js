@@ -21,8 +21,6 @@ angular.module('mqnaasApp')
                     $rootScope.networkId = data[0];
                     $window.localStorage.networkId = data[0];
                 }
-
-
                 url = "phyNetworks/" + $rootScope.networkId.id;
                 IMLService.get(url).then(function (data) {
                     $scope.resources = data.phy_resources;
@@ -86,16 +84,10 @@ angular.module('mqnaasApp')
             var data = getCard(cardId);
             arnService.put(data).then(function (response) {
                 $scope.cardsInfo = response.response.operation.cardList.card;
-                console.log($scope.cardsInfo);
                 var cardInfo = _.filter($scope.cardsInfo, {
                     _id: cardId
                 })[0];
-                /*$scope.cardsInfo.filter(function (d) {
-                                    return d._id === cardId
-                                });*/
-                console.log(cardInfo);
                 _.extend($scope.card, cardInfo);
-                console.log($scope.card);
             });
         }
 
@@ -126,6 +118,14 @@ angular.module('mqnaasApp')
                 template: 'views/modals/info/ethernetInfo.html',
                 show: true,
                 scope: $scope
+            });
+        };
+
+        $scope.getMoreInfo = function (cardId, interfaceId) {
+            var data = getInterfaceOpticalInfo(cardId, interfaceId);
+            arnService.put(data).then(function (response) {
+                console.log(response.response.operation);
+                $scope.interfaceInfo = response.response.operation;
             });
         };
     });

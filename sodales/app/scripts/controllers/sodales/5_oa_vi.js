@@ -89,12 +89,17 @@ angular.module('mqnaasApp')
         $scope.sendVIR = function (viReq, object) {
             this.$hide();
             var name = "";
-            if (object) name = object.name;
-            var url = "viNetworks"
-            var json = {
-                "id": viReq,
-                "name": name
-            };
+            if (object) {
+                var json = {
+                    "id": viReq,
+                    "name": object.name
+                };
+            } else {
+                var json = {
+                    "id": viReq
+                };
+            }
+            var url = "viNetworks";
             IMLService.post(url, json).then(function (result, error) {
                 if (result === undefined) {
                     $alert({

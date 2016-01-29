@@ -61,15 +61,26 @@ angular.module('mqnaasApp')
                     $rootScope.networkId = data[0];
                 }
                 $scope.selectedNetwork = $rootScope.networkId;
-                $scope.getNetworkModel();
+                $rootScope.getNetworkModel();
             });
         };
         $scope.updateListNetworks();
 
-        $scope.getNetworkModel = function () {
+        $scope.$on('updatePhyTopology', function (event, args) {
+            console.log("args");
+            $rootScope.getNetworkModel();
+        });
+
+
+        $rootScope.getNetworkModel = function () {
+            console.log($rootScope.networkId.id);
+
             url = "phyNetworks/" + $rootScope.networkId.id;
             IMLService.get(url).then(function (data) {
+                $scope.nodes.clear();
+                $scope.edges.clear();
                 if (data === undefined) return;
+                console.log(data);
                 $scope.nodes.add(generateNodeData(data.phy_resources));
                 $scope.edges.add(generateLinkData(data.phy_links, $scope.nodes));
             });
@@ -492,14 +503,14 @@ function generateLinkData(data, nodes) {
                 return item.label == link.resource_target;
             }
         })[0];
-
-        edges.push({
-            id: edges.lentgh,
-            from: srcNode.id,
-            to: dstNode.id,
-            label: link.id
-        });
-        //}
+        if (srcNode !== undefined) {
+            edges.push({
+                id: edges.lentgh,
+                from: srcNode.id,
+                to: dstNode.id,
+                label: link.id
+            });
+        }
     });
     return edges;
 }

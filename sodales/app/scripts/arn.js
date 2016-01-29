@@ -26,6 +26,10 @@ getInterface = function (interfaceId) {
     return '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="showStatus" entity="interface"><interfaceXsfp equipmentId="0" interfaceId="' + interfaceId + '"/></operation></request>';
 };
 
+getInterfaceOpticalInfo = function (cardId, interfaceId) {
+    return '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="showStatus" entity="interface/ethernet"><ethernet equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '"/></operation><operation token="2" type="showStatus" entity="interfaceOptical"><interfaceOptical equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '"/></operation></request>';
+};
+
 //operations
 createLAG = function (cardId, interfaceId, loadBalanceMode, attachedPorts, description) {
     return '<?xml version="1.0" encoding="UTF-8"?>\
