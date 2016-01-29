@@ -51,15 +51,34 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">Cards</label>
                             <div class="col-sm-8">
-                                <button type="button" class="btn btn-default form-control input-sm ng-pristine ng-untouched ng-valid ng-valid-maxlength" ng-model="ns.interfaces" data-html="1" bs-options="card.name for card in cards" bs-select style="margin: 0 0 10px;" required>
-                                    Select <span class="caret"></span>
-                                </button>
+                                <tags-input ng-model="listPorts" display-property="id" placeholder="Add interfaces" replace-spaces-with-dashes="false" add-from-autocomplete-only="true" template="tag-template" required>
+                                    <auto-complete source="loadNodes($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>
+                                </tags-input>
+                                <script type="text/ng-template" id="tag-template">
+                                    <div class="tag-template">
+                                        <div class="right-panel">
+                                            <span>{{$getDisplayText()}}</span>
+                                            <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+                                        </div>
+                                    </div>
+                                </script>
+                                <script type="text/ng-template" id="autocomplete-template">
+                                    <div class="autocomplete-template" style="position: relative;
+    z-index: 5000;">
+                                        <div class="right-panel">
+                                            <span ng-bind-html="$highlight($getDisplayText())"></span>
+                                            <span>({{data}})</span>
+                                        </div>
+                                    </div>
+                                </script>
                             </div>
+
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
+                {{errorMessage}}
                 <button class="btn btn-sm btn-primary" ng-click="createNetworkService(ns, listPorts)" ng-disabled="!nsForm.$valid">Create Network Service</button>
             </div>
         </div>

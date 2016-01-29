@@ -17,7 +17,6 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Source port</label>
                         <div class="col-sm-8">
-                            {{virtualResource.ports}}
                             <button type="button" class="btn btn-default" ng-model="cpeSvc.srcPort" data-html="1" bs-options="res.id for res in virtualResource.ports track by res.id" bs-select style="margin: 0 0 10px;" required>
                                 Select <span class="caret" style="position: relative;
     z-index: 5000"></span>
@@ -79,7 +78,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-sm btn-primary" ng-click="createCpeService(cpeSvc)" ng-disabled="!cpeSvcForm.$valid">Create Service</button>
+                <button class="btn btn-sm btn-primary" ng-click="createCpeService(cpeSvc, 'CCM')" ng-disabled="!cpeSvcForm.$valid">Create Service</button>
             </div>
         </div>
         <!-- /.box-body -->

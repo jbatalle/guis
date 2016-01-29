@@ -48,6 +48,10 @@ angular.module('mqnaasApp')
         };
 
         $scope.operationButton = function (resourceName, type) {
+            $scope.operationResource = {
+                name: resourceName,
+                type: type
+            };
             url = 'viNetworks/' + $rootScope.virtNetId + '/resource/' + resourceName;
             IMLService.get(url).then(function (data) {
                 $rootScope.resourceUri = data.endpoint;
@@ -62,7 +66,6 @@ angular.module('mqnaasApp')
                     $scope.arnOperation = false;
                     $scope.cpeOperation = true;
                     $scope.openOperationCPEDialog(resourceName, type);
-
                 }
             });
         };
@@ -142,6 +145,18 @@ angular.module('mqnaasApp')
                 console.log(response);
                 $scope.clientServices = checkIfIsArray(response.response.operation.clientServiceList.clientService);
             });
+
+            $scope.interfaces = [];
+            $scope.cards = [];
+            arnService.put(getAllInterfaces()).then(function (response) {
+                $scope.interfaces = response.response.operation.interfaceList.interface;
+            });
+
+            arnService.put(getCards()).then(function (response) {
+                console.log(response);
+                $scope.cards = response.response.operation.cardList.card;
+            });
+            operationButton($scope.operationResource.name, $scope.operationResource.type);
         };
 
         $scope.openOperationCPEDialog = function (resourceName, type) {
@@ -229,22 +244,34 @@ angular.module('mqnaasApp')
         $scope.createNetworkService = function (ns, listPorts) {
             console.log(ns);
             console.log(listPorts)
-                //return;
+
+            $scope.interfaces.filter(function (d) {
+                console.log(d);
+                return d._id === listPorts
+            });
             var id = "1"
             console.log(ns.interfaces);
             arnService.put(createNetworkService(2, ns.name, ns.serviceType.id, ns.uplinkVlanId, ns.uniVlanId)).then(function (response) {
                 console.log(response);
-                arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, $scope.cards[0].id, $scope.cards[0].interface, 1)).then(function (response) {});
-                arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, $scope.cards[3].id, $scope.cards[3].interface, 1)).then(function (response) {});
-                arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, $scope.cards[4].id, $scope.cards[4].interface, 1)).then(function (response) {});
-                /*ns.interfaces.forEach(function (d) {
-                    console.log(d);
-                    var t = $scope.cards.filter(function (d) {
-                        return d.id == 0;
-                    })
-                    console.log(t);
-                    arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, t.card, t.interface, 1)).then(function (response) {});
-                });*/
+                angular.forEach(listPorts, function (port) {
+
+                    var equipment = $scope.interfaces.filter(function (d) {
+                        console.log(d);
+                        return d._interfaceId === port.physical
+                    })[0];
+                    var iface = $scope.interfaces.filter(function (d) {
+                        console.log(d);
+                        return (d._name === "intEth 1" && d._cardId === equipment._cardId)
+                    })[0];
+                    if (response.response.operation.result.error) {
+                        console.log("Error creating the network service.");
+                        $scope.errorMessage = response.response.operation.result.errorStr;
+                    }
+                    arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, equipment._cardId, iface._interfaceId, 2)).then(function (response) {});
+                });
+                arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, 0, 8781824, 2)).then(function (response) {});
+                /*arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, $scope.cards[3].id, $scope.cards[3].interface, 2)).then(function (response) {});
+                arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, $scope.cards[4].id, $scope.cards[4].interface, 2)).then(function (response) {});*/
             });
         };
 
@@ -255,7 +282,7 @@ angular.module('mqnaasApp')
             if (data._admin === '1') admin = 2;
             else if (data._admin === '2') admin = 1;
             arnService.put(changeStatusNetworkService(id, admin)).then(function (response) {
-                console.log(response);
+                console.log(response.response.operation.result);
             });
         };
 
@@ -264,7 +291,7 @@ angular.module('mqnaasApp')
             //return;
             //networkServiceId, admin, name, uniVlan
             arnService.put(createClientService(cs.ns._id, 2, cs.name, cs.uniVlanId)).then(function (response) {
-                console.log(response);
+                console.log(response.response.operation.result);
                 //$scope.LAGs = response.response.operation.interfaceList.interface;
             });
         };
@@ -275,7 +302,7 @@ angular.module('mqnaasApp')
             if (data._admin === '1') admin = 2;
             else if (data._admin === '2') admin = 1;
             arnService.put(changeStatusClientService(id, admin)).then(function (response) {
-                console.log(response);
+                console.log(response.response.operation.result);
             });
         };
 
@@ -342,31 +369,6 @@ angular.module('mqnaasApp')
             name: "MAC Bridge"
         }];
 
-        $scope.cards = [{
-            id: 0,
-            name: "LAG",
-            interface: "8781824"
-        }, {
-            id: 1,
-            name: "Card 1",
-            interface: ""
-        }, {
-            id: 2,
-            name: "Card 2",
-            interface: ""
-        }, {
-            id: 3,
-            name: "Card 3",
-            interface: "58982400"
-        }, {
-            id: 4,
-            name: "Card 4",
-            interface: "75759616"
-        }, {
-            id: 5,
-            name: "Card 5"
-        }];
-
         $scope.listPorts = [];
         $scope.loadNodes = function (query) {
             return $http.get('', {
@@ -421,6 +423,12 @@ angular.module('mqnaasApp')
             });
         };
 
+        $scope.editDialog = function (obj, type) {
+            $scope.itemToDelete = obj;
+            $scope.itemType = type;
+
+        };
+
         $scope.deleteItem = function (obj, type) {
             console.log(obj);
             if (type === 'LAG') {
@@ -440,10 +448,13 @@ angular.module('mqnaasApp')
                     console.log(response);
                 });
             } else if (type === 'CS') {
-                arnService.put(removeClientService(obj._id, obj.interfaceList_ref.interface_ref._cardId)).then(function (response) {
+                var interfaceList = "";
+                if (obj.interfaceList_ref !== "") interfaceList = obj.interfaceList_ref.interface_ref._cardId;
+                arnService.put(removeClientService(obj._id, interfaceList)).then(function (response) {
                     console.log(response);
                 });
             }
+
             this.$hide();
         };
 
@@ -455,37 +466,41 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.createCpeService = function (cpeSvc) {
+        $scope.createCpeService = function (cpeSvc, type) {
+            console.log(cpeSvc);
+            cpeSvc.type = type;
             var possibleId = Math.floor((Math.random() * 200) + 1);
             var serviceId = null;
             //var inServiceId = null;
             var outServiceId = null;
             while (serviceId === null) {
                 //find should replace filter?
-                var l = $scope.cpeServices.filter(function (d) {
-                    return d.serviceId === "6"
-                });
-                if (l.length > 0) serviceId = possibleId;
-                else possibleId = Math.floor((Math.random() * 200) + 1);
+                /*var l = $scope.cpeServices.filter(function (d) {
+                    return d.serviceId === "2"
+                });*/
+                //if (l.length > 0) serviceId = possibleId;
+                //else 
+                possibleId = Math.floor((Math.random() * 200) + 1);
+                serviceId = possibleId;
                 outServiceId = serviceId + 1
             }
 
             if (cpeSvc.type !== "CFM") {
-                cpe.vlanEdit_flowtype_out = cpe.vlanEdit_flowtype_outer;
-                cpe.vlanEdit_flowtype_outer_out = cpe.vlanEdit_flowtype;
+                cpeSvc.vlanEdit_flowtype_out = cpeSvc.vlanEdit_flowtype_outer;
+                cpeSvc.vlanEdit_flowtype_outer_out = cpeSvc.vlanEdit_flowtype;
             } else {
-                cpe.vlanEdit_flowtype_out = cpe.vlanEdit_flowtype;
-                cpe.vlanEdit_flowtype_outer_out = cpe.vlanEdit_flowtype_outer;
+                cpeSvc.vlanEdit_flowtype_out = cpeSvc.vlanEdit_flowtype;
+                cpeSvc.vlanEdit_flowtype_outer_out = cpeSvc.vlanEdit_flowtype_outer;
             }
 
             console.log(serviceId);
-            var clusterId = cpeSvc.dstPort;
-            url = "createServiceVlan.html?unit=0&serviceId=" + serviceId + "&srcPort=" + cpeSvc.srcPort + "&policerId=" + cpeSvc.police.id + "&pmId=3&eIngressType=" + cpeSvc.eIngressType + "&outer_vlanId=" + cpeSvc.innerVlan + "&clusterId=" + clusterId + "&vlanEdit_flowtype=" + cpeSvc.vlanEdit_flowtype + "&vlanEdit_outer_command=" + cpe.vlanEdit_flowtype_outer + "&vlanEdit_outer_vlan=" + cpeSvc.outerVlan;
+            var clusterId = cpeSvc.dstPort.physical;
+            url = "createServiceVlan.html?unit=0&serviceId=" + serviceId + "&srcPort=" + cpeSvc.srcPort.physical + "&policerId=" + cpeSvc.police.id + "&pmId=3&eIngressType=" + cpeSvc.eIngressType + "&outer_vlanId=" + cpeSvc.innerVlan + "&clusterId=" + clusterId + "&vlanEdit_flowtype=" + cpeSvc.vlanEdit_flowtype + "&vlanEdit_outer_command=" + cpeSvc.vlanEdit_flowtype_outer + "&vlanEdit_outer_vlan=" + cpeSvc.outerVlan;
             cpeService.post(url).then(function (response) {
                 console.log(response);
                 $scope.cpeServices = checkIfIsArray(response.meaServiceMap);
             });
-            url = "createServiceVlan.html?unit=0&serviceId=" + outServiceId + "&srcPort=" + clusterId + "&policerId=" + cpeSvc.police.id + "&pmId=3&eIngressType=" + cpeSvc.eIngressType_outer + "&outer_vlanId=" + cpeSvc.outerVlan + "&clusterId=" + cpeSvc.srcPort + "&vlanEdit_flowtype=" + cpe.vlanEdit_flowtype_out + "&vlanEdit_outer_command=" + cpe.vlanEdit_flowtype_outer_out + "&vlanEdit_outer_vlan=" + cpeSvc.innerVlan;
+            url = "createServiceVlan.html?unit=0&serviceId=" + outServiceId + "&srcPort=" + clusterId + "&policerId=" + cpeSvc.police.id + "&pmId=3&eIngressType=" + cpeSvc.eIngressType_outer + "&outer_vlanId=" + cpeSvc.outerVlan + "&clusterId=" + cpeSvc.srcPort.physical + "&vlanEdit_flowtype=" + cpeSvc.vlanEdit_flowtype_out + "&vlanEdit_outer_command=" + cpeSvc.vlanEdit_flowtype_outer_out + "&vlanEdit_outer_vlan=" + cpeSvc.innerVlan;
             cpeService.post(url).then(function (response) {
                 console.log(response);
                 $scope.cpeServices = checkIfIsArray(response.meaServiceMap);
@@ -494,13 +509,13 @@ angular.module('mqnaasApp')
             url = "ingress_port_setting.html?unit=0&port_id=" + clusterId + "&rx_enable=1&crc_check=1&my_mac=00:01:03:05:06:05";
             cpeService.post(url).then(function (response) {});
 
-            url = "ingress_port_setting.html?unit=0&port_id=" + cpeSvc.srcPort + "&rx_enable=1&crc_check=1";
+            url = "ingress_port_setting.html?unit=0&port_id=" + cpeSvc.srcPort.physical + "&rx_enable=1&crc_check=1";
             cpeService.post(url).then(function (response) {});
 
             url = "egress_port_setting.html?unit=0&port_id=" + clusterId + "&tx_enable=1&crc_check=1";
             cpeService.post(url).then(function (response) {});
 
-            url = "egress_port_setting.html?unit=0&port_id=" + cpeSvc.srcPort + "&tx_enable=1&crc_check=1";
+            url = "egress_port_setting.html?unit=0&port_id=" + cpeSvc.srcPort.physical + "&tx_enable=1&crc_check=1";
             cpeService.post(url).then(function (response) {});
 
 
@@ -638,4 +653,25 @@ angular.module('mqnaasApp')
             //read the list of links
             //vlans
         };
+
+
+        $scope.cards = [];
+        $scope.interfaces = [];
+
+        $scope.getEthernetInterfaces = function (id) {
+            $scope.dataCollection = [];
+            arnService.put(getCardInterfaces(id)).then(function (data) {
+                $scope.dataCollection = data.response.operation.interfaceList.interface;
+            });
+        };
+        $scope.getARNCards = function () {
+            $scope.cards = [];
+            $scope.dataCollection = [];
+            var data = getCards();
+            arnService.put(data).then(function (response) {
+                console.log(response);
+                $scope.cards = response.response.operation.cardList.card;
+            });
+        };
+
     });

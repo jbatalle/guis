@@ -41,7 +41,6 @@ angular.module('mqnaasApp')
         $scope.updateListNetworks();
 
         $scope.getResourceInfo = function (resourceName) {
-
             PhysicalService.getResource(resourceName);
         };
 
