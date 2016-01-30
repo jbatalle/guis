@@ -48,11 +48,12 @@
                                 <br/>
                             </div>
                         </div>
+                        {{listCards}} {{tagList}}
                         <div class="form-group">
-                            <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">Interfaces</label>
+                            <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">Cards</label>
                             <div class="col-sm-8">
-                                <tags-input ng-model="listPorts" display-property="id" placeholder="Add interfaces" replace-spaces-with-dashes="false" add-from-autocomplete-only="true" template="tag-template" required>
-                                    <auto-complete source="loadNodes($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>
+                                <tags-input ng-model="listCards" display-property="_id" placeholder="Add cards" replace-spaces-with-dashes="false" add-from-autocomplete-only="true" template="tag-template" required>
+                                    <auto-complete source="loadCards($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="autocomplete-template"></auto-complete>
                                 </tags-input>
                                 <script type="text/ng-template" id="tag-template">
                                     <div class="tag-template">
@@ -66,18 +67,19 @@
                                     <div class="autocomplete-template" style="position: relative;z-index: 5000;">
                                         <div class="right-panel">
                                             <span ng-bind-html="$highlight($getDisplayText())"></span>
-                                            <span>({{data.physical}})</span>
+                                            <span>({{data._name}})</span>
                                         </div>
                                     </div>
                                 </script>
                             </div>
+
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 {{errorMessage}}
-                <button class="btn btn-sm btn-primary" ng-click="createNetworkService(ns, listPorts)" ng-disabled="!nsForm.$valid">Create Network Service</button>
+                <button class="btn btn-sm btn-primary" ng-click="createNetworkService(ns, listCards)" ng-disabled="!nsForm.$valid">Create Network Service</button>
             </div>
         </div>
         <!-- /.box-body -->

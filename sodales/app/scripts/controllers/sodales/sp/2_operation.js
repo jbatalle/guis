@@ -156,7 +156,6 @@ angular.module('mqnaasApp')
                 console.log(response);
                 $scope.cards = response.response.operation.cardList.card;
             });
-            operationButton($scope.operationResource.name, $scope.operationResource.type);
         };
 
         $scope.openOperationCPEDialog = function (resourceName, type) {
@@ -254,7 +253,6 @@ angular.module('mqnaasApp')
             arnService.put(createNetworkService(2, ns.name, ns.serviceType.id, ns.uplinkVlanId, ns.uniVlanId)).then(function (response) {
                 console.log(response);
                 angular.forEach(listPorts, function (port) {
-
                     var equipment = $scope.interfaces.filter(function (d) {
                         console.log(d);
                         return d._interfaceId === port.physical
@@ -374,7 +372,7 @@ angular.module('mqnaasApp')
             return $http.get('', {
                 cache: true
             }).then(function () {
-                var ports = $rootScope.virtualResource.ports
+                var ports = $rootScope.virtualResource.ports;
                 return ports.filter(function (port) {
                     return port.id.toLowerCase().indexOf(query.toLowerCase()) != -1;
                 });

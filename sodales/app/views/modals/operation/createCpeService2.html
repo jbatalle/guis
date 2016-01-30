@@ -17,7 +17,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Source port</label>
                         <div class="col-sm-8">
-                            <button type="button" class="btn btn-default" ng-model="cpeSvc.srcPort" data-html="1" bs-options="res.id for res in virtualResource.ports track by res.id" bs-select style="margin: 0 0 10px;" required>
+                            <button type="button" class="btn btn-default" ng-model="cpeSvc.srcPort" data-html="1" bs-options="res.port for res in resourceInfo.ports track by res.id" bs-select style="margin: 0 0 10px;" required>
                                 Select <span class="caret" style="position: relative;
     z-index: 5000"></span>
                             </button>
@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Target port</label>
                         <div class="col-sm-8">
-                            <button type="button" class="btn btn-default" ng-model="cpeSvc.dstPort" data-html="1" bs-options="res.id for res in virtualResource.ports track by res.id" bs-select style="margin: 0 0 10px;" required>
+                            <button type="button" class="btn btn-default" ng-model="cpeSvc.dstPort" data-html="1" bs-options="res.port for res in resourceInfo.ports track by res.id" bs-select style="margin: 0 0 10px;" required>
                                 Select <span class="caret" style="position: relative;
     z-index: 5000"></span>
                             </button>
