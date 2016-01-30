@@ -51,7 +51,7 @@ createNetworkService = function (admin, name, type, uplinkVlanId, uniVlanId) {
 };
 
 addPortsToNetworkService = function (id, cardId, interfaceId, role) {
-    return '<?xml version="1.0" encoding="utf-8"?><request><operation token="1" type="attach" entity="networkService"><networkService equipmentId="0" id="' + id + '"><attach><interface cardId="' + cardId + '" interfaceId="' + interfaceId + '" role="' + role + '" /></attach></networkService></operation> < /request>';
+    return '<?xml version="1.0" encoding="utf-8"?><request><operation token="1" type="attach" entity="networkService"><networkService equipmentId="0" id="' + id + '"><attach><interface cardId="' + cardId + '" interfaceId="' + interfaceId + '" role="' + role + '"/></attach></networkService></operation></request>';
 };
 
 changeStatusNetworkService = function (id, admin) {
