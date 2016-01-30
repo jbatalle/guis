@@ -1,6 +1,7 @@
 angular.module('mqnaasApp')
     .controller('SodalesMonitoringController', function ($rootScope, $scope, $filter, $modal, arnService, cpeService, $interval, $window, IMLService) {
         var promise;
+        var promise2;
         var availableResources = [];
         $scope.selectedResource = "";
         $scope.physicalResources = [];
@@ -214,9 +215,13 @@ angular.module('mqnaasApp')
             if (promise) {
                 $interval.cancel(promise);
             }
+            if (promise2) {
+                $interval.cancel(promise2);
+            }
         });
 
         $scope.createPacketsGraph = function (cardId, interfaceId) {
+            $scope.arnCounterStatistics(cardId, interfaceId);
 
             $scope.infId = interfaceId;
             var groups = new vis.DataSet();
@@ -294,5 +299,25 @@ angular.module('mqnaasApp')
                     groups: groups
                 };
             });
+        };
+
+        $scope.arnCounterStatistics = function (cardId, interfaceId) {
+            console.log();
+            var initial;
+            if ($scope.arnCounterEnd !== 0) initial = $scope.arnCounterEnd;
+            var end;
+            $scope.packetsData2 = [];
+            promise2 = $interval(function () {
+                var requestData = '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="showCounters" entity="interface/ethernet"><ethernet equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '"/></operation></request>';
+                arnService.put(requestData).then(function (response) {
+                    end = response.response.operation.interfaceList.interface.ethernet.counters;
+                    console.log(end);
+                    console.log(parseInt(end.tx._packets));
+                    $scope.packetsData2.push({
+                        x: new Date(),
+                        y: parseInt(end.tx._packets)
+                    });
+                });
+            }, 5000);
         };
     });

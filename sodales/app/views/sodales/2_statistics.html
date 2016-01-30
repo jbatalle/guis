@@ -76,8 +76,8 @@
                     </table>
                 </div>
                 <div ng-show="arnInterfaces && packetsData">
-                    Graph:
-                    <graph2d ng-model="packetsData" options="network_options" id="previewNetwork">
+                    Graph: {{packetsData2}}
+                    <graph2d ng-model="packetsData2" options="network_options" id="previewNetwork2">
                     </graph2d>
                 </div>
                 <div ng-show="cpePorts">

@@ -12,39 +12,33 @@ angular.module('mqnaasApp')
             },
             link: function ($scope, $element, $attrs, ngModel) {
                 $scope.$watch('ngModel', function (newValue, oldValue) {
+                    console.log(newValue);
+                    console.log(oldValue);
                     if (newValue) {
                         var items = [];
                         console.log($scope.ngModel);
+                        console.log($scope.ngModel);
 
                         var options = {
-                            style: 'bar',
-                            barChart: {
-                                width: 50,
-                                align: 'center',
-                                sideBySide: true
-                            }, // align: left, center, right
-                            drawPoints: true,
+                            start: vis.moment().add(-30, 'seconds'), // changed so its faster
+                            end: vis.moment(),
                             dataAxis: {
                                 left: {
                                     range: {
-                                        min: -5,
-                                        max: 30
+                                        min: 0,
+                                        max: 100 u
                                     }
-                                },
-                                right: {
-                                    range: {
-                                        min: -5
-                                    }
-                                },
-                                icons: true
+                                }
                             },
-                            orientation: 'top',
-                            start: '2016-01-10',
-                            end: '2016-02-18'
-
+                            drawPoints: {
+                                style: 'circle' // square, circle
+                            },
+                            shaded: {
+                                orientation: 'bottom' // top, bottom
+                            }
                         };
-                        var dataset = new vis.DataSet($scope.ngModel.items);
-                        var timeline = new vis.Graph2d($element[0], $scope.ngModel.items, $scope.ngModel.groups, options);
+                        var dataset = new vis.DataSet($scope.ngModel);
+                        var timeline = new vis.Graph2d($element[0], $scope.ngModel, options);
                     }
                 });
             }
