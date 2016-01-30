@@ -47,7 +47,8 @@ angular.module('mqnaasApp')
             $scope.getNetworkResources();
         };
 
-        $scope.operationButton = function (resourceName, type) {
+        $rootScope.operationButton = function (resourceName, type) {
+            console.log("Operation");
             $scope.operationResource = {
                 name: resourceName,
                 type: type

@@ -18,7 +18,7 @@
             <div class="panel-body">
                 <ul>
                     <li ng-repeat="res in physicalResources">
-                        <a ng-click="getResourceInfo(res.id)"> {{res.id}} ({{res.type}})</a>
+                        <a ng-click="getResourceInfo(res.id, res.type)"> {{res.id}} ({{res.type}})</a>
                     </li>
                 </ul>
             </div>
@@ -57,7 +57,7 @@
                                 </p>
                             </div>
                         </div>
-                        <button class="btn btn-sm btn-primary" ng-click="operationButton(resourceInfo.id, resourceInfo.type)">Operate</button>
+                        <!--button class="btn btn-sm btn-primary" ng-click="operationButton(resourceInfo.id, resourceInfo.type)">Operate</button-->
                     </div>
                 </div>
                 <!-- /.row -->
@@ -281,7 +281,7 @@
                                                 <td>{{row.src_port}}</td>
                                                 <td>{{row.serviceOutputPort.cluster.clusterId}}</td>
                                                 <td>
-                                                    <button type="button" ng-click="deleteCpeService(row.serviceId)" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
+                                                    <button type="button" ng-click="deleteItem(row, 'cpeService')" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove-circle"></i></button>
                                                 </td>
                                             </tr>
                                         </tbody>

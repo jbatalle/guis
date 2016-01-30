@@ -40,8 +40,9 @@ angular.module('mqnaasApp')
 
         $scope.updateListNetworks();
 
-        $scope.getResourceInfo = function (resourceName) {
+        $scope.getResourceInfo = function (resourceName, type) {
             PhysicalService.getResource(resourceName);
+            $scope.operationButton(resourceName, type);
         };
 
         $scope.setNetworkId = function (netId) {
@@ -388,6 +389,9 @@ angular.module('mqnaasApp')
                 arnService.put(removeClientService(obj._id, obj.interfaceList_ref.interface_ref._cardId)).then(function (response) {
                     console.log(response);
                 });
+            } else if (type === 'cpeService') {
+                url = "deleteServiceVlan.html?unit=0&serviceId=" + obj.serviceId;
+                cpeService.get(url).then(function (response) {});
             }
             this.$hide();
         };

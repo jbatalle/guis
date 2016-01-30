@@ -19,7 +19,7 @@ angular.module('mqnaasApp')
                 }
                 if (!$rootScope.networkId) {
                     $rootScope.networkId = data[0];
-                    $window.localStorage.networkId = data[0];
+                    $window.localStorage.networkId = JSON.stringify(data[0]);
                 }
                 url = "phyNetworks/" + $rootScope.networkId.id;
                 IMLService.get(url).then(function (data) {
@@ -30,7 +30,7 @@ angular.module('mqnaasApp')
         $scope.updateResourceList();
 
         $scope.getResourceInfo = function (resource) {
-            url = "phyNetworks/" + $rootScope.networkId.id + "/resource/" + resource.id;
+            url = "phyNetworks/" + $rootScope.networkId.id + "/resource/" + resource;
             IMLService.get(url).then(function (data) {
                 $scope.type = data.type;
                 $rootScope.resourceUri = data.endpoint;
@@ -98,6 +98,7 @@ angular.module('mqnaasApp')
         };
 
         $scope.updateResource = function () {
+            console.log($scope.resource);
             $scope.getResourceInfo($scope.resource);
         };
 

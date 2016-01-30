@@ -481,11 +481,31 @@ angular.module('mqnaasApp')
         });
 
         $scope.mappingVlan = [];
+        $scope.$watchGroup(['vlanViText', 'vlanPhyText'], function () {
+            console.log($scope.vlanViText);
+            var phy = {
+                upper: $scope.vlanViText,
+                lower: $scope.vlanViText,
+            }
+            $scope.preMappingVlan = [];
+            $scope.preMappingVlan.push({
+                upperBound: $scope.vlanViText,
+                lowerBound: $scope.vlanViText,
+                phy: phy
+            });
+            angular.copy($scope.preMappingVlan, $scope.mappingVlan);
+        });
+
         $scope.$watchGroup(['selectedViVlans', 'selectedPhyVlans'], function () {
             $scope.preMappingVlan = [];
             for (var i = 0; i < $scope.selectedViVlans.length; i++) {
-                $scope.preMappingVlan.push({
+                /*$scope.preMappingVlan.push({
                     virt: $scope.selectedViVlans[i],
+                    phy: $scope.selectedPhyVlans[i]
+                });*/
+                $scope.preMappingVlan.push({
+                    upperBound: $scope.selectedViVlans[i].upper,
+                    lowerBound: $scope.selectedViVlans[i].lower,
                     phy: $scope.selectedPhyVlans[i]
                 });
                 angular.copy($scope.preMappingVlan, $scope.mappingVlan);
@@ -522,34 +542,36 @@ angular.module('mqnaasApp')
                     console.log(response);
 
                     angular.forEach($scope.mapping, function (port) {
-                            console.log(port);
+                        console.log(port);
+                        console.log($scope.mappingVlan);
+                        var url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapPort/" + port.virt + "/" + port.phy;
+                        IMLService.post(url, $scope.mappingVlan).then(function (response) {
+                            console.log(response);
+                        });
+                        /*angular.forEach($scope.mappingVlan, function (vlans) {
+                            console.log(vlans);
+                            var vlans = {
+                                "upperBound": vlan.virt.upper,
+                                "lowerBound": vlan.virt.lower
+                            }
 
-                            angular.forEach($scope.mappingVlan, function (vlans) {
-                                console.log(vlans);
-                                var vlans = {
-                                    "upperBound": 1,
-                                    "lowerBound": 10
-                                }
+                            var url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapPort/" + port.virt + "/" + port.phy;
+                            
+                        });*/
 
-                                var url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapPort/" + port.virt + "/" + port.phy;
-                                IMLService.post(url, vlans).then(function (response) {
-                                    console.log(response);
-                                });
-                            });
-
-                        })
-                        /*
-                                            angular.forEach($scope.mappingVlan, function (vlans) {
-                                                console.log(vlans);
-                                            });
-                                            var vlans = {
-                                                "upperBound": 1,
-                                                "lowerBound": 10
-                                            }
-                                            var url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapVlan";
-                                            IMLService.post(url, vlans).then(function (response) {
-                                                console.log(response);
-                                            });*/
+                    });
+                    /*
+                                        angular.forEach($scope.mappingVlan, function (vlans) {
+                                            console.log(vlans);
+                                        });
+                                        var vlans = {
+                                            "upperBound": 1,
+                                            "lowerBound": 10
+                                        }
+                                        var url = "viReqNetworks/" + $rootScope.viId + "/viReqResource/" + virtualResource + "/mapVlan";
+                                        IMLService.post(url, vlans).then(function (response) {
+                                            console.log(response);
+                                        });*/
                 });
             });
 

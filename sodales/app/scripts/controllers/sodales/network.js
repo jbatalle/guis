@@ -443,9 +443,9 @@ angular.module('mqnaasApp')
                 filter: function (item) {
                     return item.id == properties.nodes[0];
                 }
-            })[0].label;
-            //VirtualService.virtualPorts(virtualResource);
-            VirtualService.getResourceNetwork(virtualResource);
+            })[0];
+            VirtualService.getResourceNetwork(virtualResource.label);
+            $rootScope.operationButton(virtualResource.label, virtualResource.type);
         };
     });
 

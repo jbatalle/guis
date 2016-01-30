@@ -37,6 +37,7 @@
                                         </div>
                                     </div>
                                     <div class="box-body" style="display: block;">
+                                        <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" ng-model="vlanViText">
                                         <select ng-model="selectedViVlans" name="vlans" multiple size=10 style="width: 100%" ng-options="n as (n.lower + '-' + n.upper) for n in virtualVlans"></select>
                                     </div>
                                 </div>
@@ -91,7 +92,7 @@
                                 </thead>
                                 <tbody ng-repeat="p in mappingVlan">
                                     <tr>
-                                        <td>{{p.virt.lower}} - {{p.virt.upper}}</td>
+                                        <td>{{p.lowerBound}} - {{p.upperBound}}</td>
                                         <td>{{p.phy.lower}} - {{p.phy.upper}} </td>
                                     </tr>
                                 </tbody>
