@@ -12,7 +12,7 @@ angular.module('mqnaasApp')
 
         if ($window.localStorage.networkId) {
             $rootScope.netId = $window.localStorage.networkId;
-            $scope.selectedNetwork = $window.localStorage.networkId.id;
+            $scope.selectedNetwork = JSON.parse($window.localStorage.networkId);
         } else $rootScope.netId = null;
 
         $scope.updateListNetworks = function () {
@@ -26,7 +26,7 @@ angular.module('mqnaasApp')
                 }
                 if (!$rootScope.networkId) {
                     $rootScope.networkId = data[0];
-                    $window.localStorage.networkId = data[0];
+                    $window.localStorage.networkId = JSON.stringify(data[0]);
                 }
                 $scope.updateResourceList();
             });
@@ -59,7 +59,7 @@ angular.module('mqnaasApp')
         $scope.setNetworkId = function (netId) {
             console.log('Select networkId to rootScope: ' + netId);
             $rootScope.networkId = netId;
-            $window.localStorage.networkId = netId;
+            $window.localStorage.networkId = $window.localStorage.user = JSON.stringify(netId);
             $scope.updateResourceList();
         };
 
