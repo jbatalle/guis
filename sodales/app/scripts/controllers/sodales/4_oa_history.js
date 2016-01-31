@@ -2,11 +2,16 @@
 
 angular.module('mqnaasApp')
     .controller('SodalesHistoryController', function ($scope, HistoryService, $filter) {
-        HistoryService.query({}, function (result) {
-            $scope.dataCollection = result.reverse();
-        });
+
+        $scope.listHistory = function () {
+            HistoryService.query({}, function (result) {
+                $scope.dataCollection = result.reverse();
+            });
+        };
 
         $scope.clearHistory = function () {
-            HistoryService.remove({}, function (result) {});
+            HistoryService.remove({}, function (result) {
+                $scope.listHistory();
+            });
         };
     });

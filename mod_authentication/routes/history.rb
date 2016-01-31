@@ -30,7 +30,8 @@ class Authentication < Sinatra::Application
 	end
 
 	delete "/history" do
-		return History.delete_all
+		History.delete_all
+		status 200
 	end
 	
 	get "/history" do
