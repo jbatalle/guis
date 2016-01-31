@@ -53,7 +53,7 @@ angular.module('mqnaasApp')
             // Only need to regenerate once
             if (!ov.southwest && nv.southwest) {
                 var markers = [];
-                var url = "phyNetworks/" + $rootScope.networkId.id;
+                var url = "phyNetworks/" + $rootScope.networkId;
                 IMLService.get(url).then(function (data) {
                     angular.forEach(data.phy_resources, function (res, index) {
                         var ret = {

@@ -6,8 +6,6 @@ angular.module('mqnaasApp')
         $scope.data = [];
         $rootScope.networkCollection = [];
 
-        $rootScope.networkId = "Network-Internal-1.0-2";
-
         $scope.updateViList = function () {
             var url = "viNetworks"
             AuthService.profile().then(function (data) {

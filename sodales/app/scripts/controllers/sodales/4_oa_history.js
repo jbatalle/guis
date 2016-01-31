@@ -8,6 +8,7 @@ angular.module('mqnaasApp')
                 $scope.dataCollection = result.reverse();
             });
         };
+        $scope.listHistory();
 
         $scope.clearHistory = function () {
             HistoryService.remove({}, function (result) {
