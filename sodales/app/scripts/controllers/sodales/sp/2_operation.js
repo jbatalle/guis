@@ -315,6 +315,9 @@ angular.module('mqnaasApp')
                 template = 'views/modals/operation/createCS.html';
                 label = "Create Client Service";
             } else if (mode === 'createService') {
+                $scope.eIngressTypes = eIngressType;
+                $scope.vlanEdit_flowtypes = vlanEdit_flowtype;
+                $scope.vlanEdit_flowtype_outers = vlanEdit_outer_command;
                 template = 'views/modals/operation/createCpeService.html';
                 label = "Create service";
             } else if (mode === 'createCFMService') {

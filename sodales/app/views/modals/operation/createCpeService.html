@@ -17,7 +17,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Source port</label>
                         <div class="col-sm-8">
-                            <button type="button" class="btn btn-default" ng-model="cpeSvc.srcPort" data-html="1" bs-options="res.id as (res.id + '('+ res.physical + ')' ) for res in virtualResource.ports track by res.id" bs-select style="margin: 0 0 10px;" required>
+                            <button type="button" class="btn btn-default" ng-model="cpeSvc.srcPort" data-html="1" bs-options="res as (res.id + '('+ res.physical + ')' ) for res in virtualResource.ports track by res.id" bs-select style="margin: 0 0 10px;" required>
                                 Select <span class="caret" style="position: relative;
     z-index: 5000"></span>
                             </button>
@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Target port</label>
                         <div class="col-sm-8">
-                            <button type="button" class="btn btn-default" ng-model="cpeSvc.dstPort" data-html="1" bs-options="res.id as (res.id + '('+ res.physical + ')' ) for res in virtualResource.ports track by res.id" bs-select style="margin: 0 0 10px;" required>
+                            <button type="button" class="btn btn-default" ng-model="cpeSvc.dstPort" data-html="1" bs-options="res as (res.id + '('+ res.physical + ')' ) for res in virtualResource.ports track by res.id" bs-select style="margin: 0 0 10px;" required>
                                 Select <span class="caret" style="position: relative;
     z-index: 5000"></span>
                             </button>
@@ -41,37 +41,41 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Flow type </label>
+                        <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Flow type (Traffic type) </label>
                         <div class="col-sm-8">
-                            <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" data-ng-maxlength="64" ng-model="cpeSvcForm.eIngressType" required placeholder="1">
+                            {{eIngressTypes}}
+                            <select class="btn btn-default form-control input-sm" style="margin: 0 0 10px;" ng-model="cpeSvc.eIngressType" bs-options="item.id as item.label for item in eIngressTypes" bs-select required>
+                            </select>
                             <br/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Vlan Flowtype</label>
                         <div class="col-sm-8">
-                            <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" data-ng-maxlength="64" ng-model="cpeSvcForm.vlanEdit_flowtype" required>
+                            <select class="btn btn-default form-control input-sm" style="margin: 0 0 10px;" ng-model="cpeSvc.vlanEdit_flowtype" bs-options="item.id as item.label for item in vlanEdit_flowtypes" bs-select required>
+                            </select>
                             <br/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Vlan Flowtype outer</label>
                         <div class="col-sm-8">
-                            <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" data-ng-maxlength="64" ng-model="cpeSvcForm.vlanEdit_flowtype_outer" required>
+                            <select class="btn btn-default form-control input-sm" style="margin: 0 0 10px;" ng-model="cpeSvc.vlanEdit_flowtype_outer" bs-options="item.id as item.label for item in vlanEdit_flowtype_outers" bs-select required>
+                            </select>
                             <br/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Inner Vlan</label>
                         <div class="col-sm-8">
-                            <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" data-ng-maxlength="64" ng-model="cpeSvcForm.innerVlan" required>
+                            <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" data-ng-maxlength="64" ng-model="cpeSvc.innerVlan" required>
                             <br/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Outer Vlan</label>
                         <div class="col-sm-8">
-                            <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" data-ng-maxlength="64" ng-model="cpeSvcForm.outerVlan" required>
+                            <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" data-ng-maxlength="64" ng-model="cpeSvc.outerVlan" required>
                             <br/>
                         </div>
                     </div>
