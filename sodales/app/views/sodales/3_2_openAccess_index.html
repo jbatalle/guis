@@ -38,7 +38,7 @@
                     <td>{{row.created_at| date:'yyyy-MM-dd HH:mm:ss'}}</td>
                     <td>{{row.period.period_start *1000| date:'yyyy-MM-dd HH:mm:ss'}}</td>
                     <td>{{row.period.period_end *1000| date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                    <td><a ng-click="sendVIRDialog(row.id)" class="btn btn-success" title="process">Send to Process</a>
+                    <td><a ng-click="sendVIRDialog(row.id)" class="btn btn-success" title="process">Process</a>
                         <a ui-sref="root.editVIRequest({ id:row.id })" class="btn btn-primary" title="edit">Edit</a>
                         <a ng-click="deleteDialog(row.id, 'request')" class="btn btn-danger" title="process">Remove</a>
                     </td>

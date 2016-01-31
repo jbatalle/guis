@@ -11,7 +11,16 @@ angular.module('mqnaasApp')
                 options: '='
             },
             link: function ($scope, $element, $attrs, ngModel) {
+                console.log("AAA")
+                console.log(ngModel);
+                console.log(ngModel.packetsData2);
+                $scope.packetsData2 = ngModel.packetsData2;
+                $scope.$watch('packetsData2', function (newValue, oldValue) {
+                    console.log("New model3")
+                });
+
                 $scope.$watch('ngModel', function (newValue, oldValue) {
+                    console.log("New model2")
                     console.log(newValue);
                     console.log(oldValue);
                     if (newValue) {
@@ -26,7 +35,7 @@ angular.module('mqnaasApp')
                                 left: {
                                     range: {
                                         min: 0,
-                                        max: 100 u
+                                        max: 100
                                     }
                                 }
                             },

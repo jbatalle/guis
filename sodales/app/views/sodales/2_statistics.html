@@ -75,10 +75,15 @@
                         </tfoot>
                     </table>
                 </div>
-                <div ng-show="arnInterfaces && packetsData">
+                <div ng-show="arnInterfaces && packetsData2">
                     Graph: {{packetsData2}}
                     <graph2d ng-model="packetsData2" options="network_options" id="previewNetwork2">
                     </graph2d>
+                </div>
+                <div ng-show="arnInterfaces && packetsData">
+                    Graph2: {{packetsData}}
+                    <graph2dbar ng-model="packetsData" options="network_options" id="previewNetwork3">
+                    </graph2dbar>
                 </div>
                 <div ng-show="cpePorts">
                     <ol class="breadcrumb">

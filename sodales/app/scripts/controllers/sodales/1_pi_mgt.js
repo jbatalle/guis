@@ -7,12 +7,16 @@ angular.module('mqnaasApp')
         $scope.nodes = new vis.DataSet();
         $scope.edges = new vis.DataSet();
         $scope.listNetworks = [];
+        $scope.selectedNetwork = {};
         $rootScope.resourceInfo = undefined;
-        // $scope.buttonToogle = true;
-
+        $window.localStorage.removeItem("networkId");
         if ($window.localStorage.networkId) {
-            $rootScope.netId = $window.localStorage.networkId;
+            //console.log(JSON.parse($window.localStorage.networkId));
+            //console.log($window.localStorage.networkId);
+            $rootScope.netId = JSON.parse($window.localStorage.networkId);
+            console.log($scope.selectedNetwork);
             $scope.selectedNetwork = JSON.parse($window.localStorage.networkId);
+            console.log($scope.selectedNetwork);
         } else $rootScope.netId = null;
 
         $scope.updateListNetworks = function () {
@@ -59,8 +63,10 @@ angular.module('mqnaasApp')
         $scope.setNetworkId = function (netId) {
             console.log('Select networkId to rootScope: ' + netId);
             $rootScope.networkId = netId;
+            console.log($scope.selectedNetwork);
             $window.localStorage.networkId = $window.localStorage.user = JSON.stringify(netId);
             $scope.updateResourceList();
+            console.log($scope.selectedNetwork);
         };
 
         $scope.createNetwork = function () {
@@ -155,8 +161,8 @@ angular.module('mqnaasApp')
         $scope.openAddResourceDialog = function (nodeType, divPos) {
             $scope.resource = {};
             $scope.resource.type = nodeType;
-            if (nodeType == 'arn') $scope.resource.endpoint = 'http://fibratv.dtdns.net:41080';
-            else if (nodeType == 'cpe') $scope.resource.endpoint = 'http://fibratv.dtdns.net:41081';
+            if (nodeType == 'arn') $scope.resource.endpoint = 'http://185.37.215.49';
+            else if (nodeType == 'cpe') $scope.resource.endpoint = 'http://185.37.215.4';
             $scope.createDialog = $modal({
                 title: 'Adding a new ' + nodeType,
                 template: 'views/modals/resourceDialog.html',

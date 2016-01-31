@@ -5,7 +5,7 @@ angular.module('mqnaasApp')
 
         var url = '';
 
-        if ($window.localStorage.networkId) $rootScope.netId = $window.localStorage.networkId;
+        if ($window.localStorage.networkId) $rootScope.netId = JSON.parse($window.localStorage.networkId);
         else $rootScope.netId = null;
         $scope.selectedNetwork;
         $scope.operation = false;

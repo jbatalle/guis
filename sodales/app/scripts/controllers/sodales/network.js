@@ -71,10 +71,7 @@ angular.module('mqnaasApp')
             $rootScope.getNetworkModel();
         });
 
-
         $rootScope.getNetworkModel = function () {
-            console.log($rootScope.networkId.id);
-
             url = "phyNetworks/" + $rootScope.networkId.id;
             IMLService.get(url).then(function (data) {
                 $scope.nodes.clear();

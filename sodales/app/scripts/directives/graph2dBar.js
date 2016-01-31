@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mqnaasApp')
-    .directive('graph2dBar', function () {
+    .directive('graph2dbar', function () {
         return {
             restrict: 'E',
             require: '^ngModel',
@@ -12,6 +12,7 @@ angular.module('mqnaasApp')
             },
             link: function ($scope, $element, $attrs, ngModel) {
                 $scope.$watch('ngModel', function (newValue, oldValue) {
+                    console.log("New model")
                     if (newValue) {
                         var items = [];
                         console.log($scope.ngModel);
