@@ -19,6 +19,10 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Source port</label>
                                         <div class="col-sm-8">
+                                            <button type="button" class="btn btn-default" ng-model="sourceCPESvc.srcPort" data-html="1" bs-options="res.id as (res.id + '('+ res.physical + ')' ) for res in sourceResource.vi_ports track by res.id" bs-select style="margin: 0 0 10px;" required>
+                                                Select <span class="caret" style="position: relative;
+    z-index: 5000"></span>
+                                            </button>
                                             <button type="button" class="btn btn-default" ng-model="sourceCPESvc.srcPort" data-html="1" bs-options="res.id for res in sourceResource.vi_ports track by res.id" bs-select style="margin: 0 0 10px;" required>
                                                 Select <span class="caret" style="position: relative;z-index: 5000"></span>
                                             </button>
@@ -31,8 +35,9 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Target port</label>
                                         <div class="col-sm-8">
-                                            <button type="button" class="btn btn-default" ng-model="sourceCPESvc.dstPort" data-html="1" bs-options="res.id for res in sourceResource.vi_ports track by res.id" bs-select style="margin: 0 0 10px;" required>
-                                                Select <span class="caret" style="position: relative;z-index: 5000"></span>
+                                            <button type="button" class="btn btn-default" ng-model="sourceCPESvc.dstPort" data-html="1" bs-options="res.id as (res.id + '('+ res.physical + ')' ) for res in sourceResource.vi_ports track by res.id" bs-select style="margin: 0 0 10px;" required>
+                                                Select <span class="caret" style="position: relative;
+    z-index: 5000"></span>
                                             </button>
                                             <span style="color:red" ng-show="endToEndForm.dstPort.$dirty && endToEndForm.dstPort.$invalid">
                                             <span ng-show="endToEndForm.dstPort.$error.required">Target port is required.</span>
@@ -61,8 +66,9 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label ng-scope fx-required-field modal-align"> Source port</label>
                                         <div class="col-sm-8">
-                                            <button type="button" class="btn btn-default" ng-model="destCPESvc.srcPort" data-html="1" bs-options="res.id for res in destResource.vi_ports track by res.id" bs-select style="margin: 0 0 10px;" required>
-                                                Select <span class="caret" style="position: relative;z-index: 5000"></span>
+                                            <button type="button" class="btn btn-default" ng-model="destCPESvc.srcPort" data-html="1" bs-options="res.id as (res.id + '('+ res.physical + ')' ) for res in destResource.vi_ports track by res.id" bs-select style="margin: 0 0 10px;" required>
+                                                Select <span class="caret" style="position: relative;
+    z-index: 5000"></span>
                                             </button>
                                             <span style="color:red" ng-show="destCPESvc.srcPort.$dirty && destCPESvc.srcPort.$invalid">
                                             <span ng-show="destCPESvc.srcPort.$error.required">Source port is required.</span>

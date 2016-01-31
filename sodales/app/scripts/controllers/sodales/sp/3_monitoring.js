@@ -3,10 +3,6 @@
 angular.module('mqnaasApp')
     .controller('spStatsController', function ($rootScope, $scope, $modal, $interval, $window, $stateParams, IMLService, AuthService, spService, arnService, cpeService, VirtualService) {
 
-        //hardcoded
-        //$rootScope.networkId = "Network-Internal-1.0-2";
-        //$rootScope.virtNetId = "Network-virtual-7";
-
         if ($stateParams.id) $rootScope.virtNetId = $stateParams.id;
         $scope.virtualResources = [];
         $rootScope.networkCollection = [];
@@ -14,9 +10,10 @@ angular.module('mqnaasApp')
         $scope.selectedResource = "";
         //$scope.selectedNetwork;
         var promise, url;
+        var promise2;
 
         $scope.getNetworkResources = function () {
-            var url = 'viNetworks/' + $scope.virtNetId;
+            var url = 'viNetworks/' + $rootScope.virtNetId;
             IMLService.get(url).then(function (data) {
                 var resourceArray = data;
                 resourceArray.vi_resources.forEach(function (res) {
@@ -25,7 +22,7 @@ angular.module('mqnaasApp')
             });
         };
 
-        if ($rootScope.networkId && $rootScope.virtNetId) {
+        if ($rootScope.virtNetId) {
             $scope.getNetworkResources();
         } else {
             AuthService.profile().then(function (data) {
@@ -229,4 +226,105 @@ angular.module('mqnaasApp')
                 $interval.cancel(promise);
             }
         });
+        var items;
+        $scope.createPacketsGraph = function (cardId, interfaceId) {
+            $scope.arnCounterStatistics(cardId, interfaceId);
+
+            $scope.infId = interfaceId;
+            var groups = new vis.DataSet();
+            groups.add({
+                id: 0,
+                content: "packets64Octets"
+            })
+            groups.add({
+                id: 1,
+                content: "packets65to127Octets"
+            })
+            groups.add({
+                id: 2,
+                content: "packets128to255Octets"
+            });
+            groups.add({
+                id: 3,
+                content: "packets256to511Octets"
+            });
+            groups.add({
+                id: 4,
+                content: "packets512to1023Octets"
+            });
+            groups.add({
+                id: 5,
+                content: "packets1024to1518Octets"
+            });
+            items = [];
+            var requestData = getCounters(cardId, interfaceId);
+            arnService.put(requestData).then(function (response) {
+                var data = response.response.operation.interfaceList.interface.ethernet.counters;
+                _.each(data.tx, function (val, key) {
+                    if (key === '_packets64Octets')
+                        items.push({
+                            x: new Date(),
+                            y: parseInt(val),
+                            group: 0
+                        });
+                    else if (key === '_packets65to127Octets')
+                        items.push({
+                            x: new Date(),
+                            y: parseInt(val),
+                            group: 1
+                        });
+                    else if (key === '_packets128to255Octets')
+                        items.push({
+                            x: new Date(),
+                            y: parseInt(val),
+                            group: 2
+                        });
+                    else if (key === '_packets256to511Octets')
+                        items.push({
+                            x: new Date(),
+                            y: parseInt(val),
+                            group: 3
+                        });
+                    else if (key === '_packets512to1023Octets')
+                        items.push({
+                            x: new Date(),
+                            y: parseInt(val),
+                            group: 4
+                        });
+                    else if (key === '_packets1024to1518Octets')
+                        items.push({
+                            x: new Date(),
+                            y: parseInt(val),
+                            group: 5
+                        });
+                    console.log(items);
+
+                });
+                console.log(items);
+                $scope.packetsData = {
+                    items: items,
+                    groups: groups
+                };
+            });
+        };
+
+        $scope.arnCounterStatistics = function (cardId, interfaceId) {
+            console.log();
+            var initial;
+            if ($scope.arnCounterEnd !== 0) initial = $scope.arnCounterEnd;
+            var end;
+            $scope.packetsData2 = [];
+            promise2 = $interval(function () {
+                var requestData = '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="showCounters" entity="interface/ethernet"><ethernet equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '"/></operation></request>';
+                arnService.put(requestData).then(function (response) {
+                    end = response.response.operation.interfaceList.interface.ethernet.counters;
+                    console.log(end);
+                    console.log(parseInt(end.tx._packets));
+                    $scope.packetsData2.push({
+                        x: new Date(),
+                        y: parseInt(end.tx._packets)
+                    });
+                });
+            }, 5000);
+        };
     });

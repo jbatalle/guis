@@ -26,8 +26,8 @@
                         <td>{{row.period.period_start *1000| date:'yyyy-MM-dd HH:mm:ss'}}</td>
                         <td ng-style="row.disabled === true && {'color': 'red'}">{{row.period.period_end *1000| date:'yyyy-MM-dd HH:mm:ss'}}</td>
                         <td>
-                            <button ng-disabled="row.disabled" ui-sref="root.spVIInfo({id: row.id})" class="btn btn-default btn-info" title="edit">View virtual slice</button>
-                            <button ng-disabled="row.disabled" ui-sref="root.spStats({id: row.id})" class="btn btn-default btn-warning" title="edit">Virtual slice stats</button>
+                            <button ng-disabled="row.disabled" ui-sref="root.spVIInfo({id: row.id})" class="btn btn-default btn-info" title="edit">Virtual slice</button>
+                            <button ng-disabled="row.disabled" ui-sref="root.spStats({id: row.id})" class="btn btn-default btn-warning" title="edit">Stats</button>
                         </td>
                     </tr>
                 </tbody>

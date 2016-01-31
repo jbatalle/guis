@@ -11,20 +11,22 @@
 <div class="row" ng-show="virtNetId">
     <h3 class="page-header">Performance monitoring <small> {{virtNetId}}</small></h3>
     <div class="col-md-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Virtual resources</h3>
-            </div>
-            <div class="panel-body">
-                <div class="list-group">
-                    <ul>
-                        <li ng-repeat="resource in virtualResources">
-                            <a ng-click="selectResource(resource.id, resource.type)" aria-haspopup="true" aria-expanded="false">{{resource.id}} ({{resource.type}})</a>
-                        </li>
-                    </ul>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-cubes fa-fw"></i> Virtual resources</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <ul>
+                            <li ng-repeat="resource in virtualResources">
+                                <a ng-click="selectResource(resource.id, resource.type)" aria-haspopup="true" aria-expanded="false">{{resource.id}} ({{resource.type}})</a>
+                            </li>
+                        </ul>
 
-                    <a ng-if="resource.type == 'ARN'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.name, resource.type)" class="list-group-item" ng-class="navClass('{{resource.name}}')" data-animation="am-flip-x" bs-dropdown="dropdown">{{resource.name}}</a>
-                    <a ng-if="resource.type == 'CPE'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.name, resource.type)" class="list-group-item" ng-class="navClass('{{resource.name}}')" data-animation="am-flip-x" bs-dropdown="dropdown2">{{resource.name}}</a>
+                        <a ng-if="resource.type == 'ARN'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.name, resource.type)" class="list-group-item" ng-class="navClass('{{resource.name}}')" data-animation="am-flip-x" bs-dropdown="dropdown">{{resource.name}}</a>
+                        <a ng-if="resource.type == 'CPE'" ng-repeat="resource in availableResources" href="" ng-click="selectResource(resource.name, resource.type)" class="list-group-item" ng-class="navClass('{{resource.name}}')" data-animation="am-flip-x" bs-dropdown="dropdown2">{{resource.name}}</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,11 +63,9 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="row in displayedCollection">
-                                    <td><a ng-click="showDescriptor(row)" data-trigger="hover" data-type="success" data-title="Description" bs-tooltip>{{row._interfaceId}}</a></td>
+                                    <td><a ng-click="createPacketsGraph(row._cardId, row._interfaceId)">{{row._interfaceId}}</a></td>
                                     <td>{{row._name}}</td>
-                                    <td>{{row._cardId}}</td>
                                     <td>{{row._admin}}</td>
-                                    <td>{{row._equipmentId}}</td>
                                     <td>{{row.ethStatus._mediaType}}</td>
                                     <td>{{row.ethStatus._collision}}</td>
                                     <td>{{row.ethStatus._link}}</td>
@@ -99,6 +99,16 @@
                                 </td>
                             </tr>
                         </table>
+                    </div>
+                    <div ng-show="packetsData2">
+                        Graph: {{packetsData2}}
+                        <graph2d ng-model="packetsData2" options="network_options" id="previewNetwork2">
+                        </graph2d>
+                    </div>
+                    <div ng-show="packetsData">
+                        Graph2: {{packetsData}}
+                        <graph2dbar ng-model="packetsData" options="network_options" id="previewNetwork3">
+                        </graph2dbar>
                     </div>
                     <div ng-show="cpeStats">
                         <table st-table="cpePortStatsCollection" st-safe-src="cpePortStatus" class="table table-striped">

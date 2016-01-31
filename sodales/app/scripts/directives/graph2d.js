@@ -15,7 +15,13 @@ angular.module('mqnaasApp')
                 console.log(ngModel);
                 console.log(ngModel.packetsData2);
                 $scope.packetsData2 = ngModel.packetsData2;
-                $scope.$watch('packetsData2', function (newValue, oldValue) {
+
+                $scope.$watch(function () {
+                    return ngModel.$modelValue;
+                }, function (v) {
+                    console.log("!!!!!");
+                })
+                $scope.$watch('ngModel', function (newValue, oldValue) {
                     console.log("New model3")
                 });
 

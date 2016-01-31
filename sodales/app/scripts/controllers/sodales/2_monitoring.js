@@ -64,6 +64,7 @@ angular.module('mqnaasApp')
             $scope.cpePorts = undefined;
             $scope.arnInterfaces = undefined;
             $scope.arnOAM = undefined;
+            $scope.CFM_OAM = false;
 
             //get resourceModel of the resource -> extract endpoint URI
             url = "phyNetworks/" + $rootScope.networkId + '/resource/' + resourceName;

@@ -3,9 +3,6 @@
 angular.module('mqnaasApp')
     .controller('spVIController', function ($scope, $rootScope, $stateParams, $http, $modal, arnService, cpeService, AuthService, spService, IMLService) {
 
-        //hardcoded
-        //$rootScope.networkId = "Network-Internal-1.0-2";
-        //$rootScope.virtNetId = "Network-virtual-7";
         var url = '';
         if ($stateParams.id) $rootScope.virtNetId = $stateParams.id;
         $scope.virtualPort = [];
@@ -583,17 +580,57 @@ angular.module('mqnaasApp')
             //configure last CPE
             //configure ARNs
 
-            var arnClientService = {
-                networkServiceId: "id",
-                admin: "2",
-                name: "test-service",
-                uniVlan: ""
-            };
-            //configure client service
-            $scope.createClientService(arnClientService);
+            var ns = {
+                name: "end-to-end-" + Math.floor((Math.random() * 200) + 1),
+                serviceType: {
+                    id: 2
+                },
+                uplinkVlanId: 6,
+                uniVlanId: 6
+            }
+            var listPorts = [{
+                physical: 8781824
+            }, {
+                physical: 50397184
+            }, {
+                physical: 67174400
+            }];
+
+            arnService.put(createNetworkService(2, ns.name, ns.serviceType.id, ns.uplinkVlanId, ns.uniVlanId)).then(function (response) {
+                console.log(response);
+                angular.forEach(listPorts, function (port) {
+                    var equipment = $scope.interfaces.filter(function (d) {
+                        console.log(d);
+                        return d._interfaceId === port.physical
+                    })[0];
+                    var iface = $scope.interfaces.filter(function (d) {
+                        console.log(d);
+                        return (d._name === "intEth 1" && d._cardId === equipment._cardId)
+                    })[0];
+                    if (response.response.operation.result.error) {
+                        console.log("Error creating the network service.");
+                        $scope.errorMessage = response.response.operation.result.errorStr;
+                    }
+                    arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, equipment._cardId, iface._interfaceId, 2)).then(function (response) {});
+                });
+                arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, 0, 8781824, 2)).then(function (response) {
+                    console.log(response);
+                    var arnClientService = {
+                        networkServiceId: "id",
+                        admin: "2",
+                        name: "test-service",
+                        uniVlan: ""
+                    };
+                    //configure client service
+                    //$scope.createClientService(arnClientService);
+                });
+                /*arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, $scope.cards[3].id, $scope.cards[3].interface, 2)).then(function (response) {});
+                arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, $scope.cards[4].id, $scope.cards[4].interface, 2)).then(function (response) {});*/
+            });
+
+
+
         };
-
-
 
         //to remove????
         $scope.createCFMService = function (cpeSvc) {
