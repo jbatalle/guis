@@ -47,6 +47,8 @@ module.exports = function(config) {
       'bower_components/angular-simple-logger/dist/angular-simple-logger.js',
       'bower_components/lodash/lodash.js',
       'bower_components/angular-google-maps/dist/angular-google-maps.js',
+      'bower_components/d3/d3.js',
+      'bower_components/metrics-graphics/dist/metricsgraphics.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-translate/angular-translate.js',
       'bower_components/angular-translate-loader-partial/angular-translate-loader-partial.js',

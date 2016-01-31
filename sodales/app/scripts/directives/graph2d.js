@@ -3,14 +3,35 @@
 angular.module('mqnaasApp')
     .directive('graph2d', function () {
         return {
-            restrict: 'E',
-            require: '^ngModel',
+            restrict: 'AE',
             scope: {
                 ngModel: '=',
                 onSelect: '&',
-                options: '='
+                options: '=',
+                data: '=data',
+                options: '=options'
             },
-            link: function ($scope, $element, $attrs, ngModel) {
+            link: function (scope, $element, $attrs, ngModel) {
+
+                var container = $element[0];
+
+                var graph = null;
+                graph = new vis.Graph2d(container, scope.data, scope.options);
+
+                scope.$watch(function () {
+                    console.log("watch")
+                    console.log(scope.data)
+                    return scope.data;
+                }, function (value) {
+                    graph = new vis.Graph2d(container, scope.data, scope.options);
+                });
+
+                graph.on('select', function (properties) {
+                    console.info('select.properties.nodes', properties.nodes);
+                    console.info('select.properties.edges', properties.edges);
+                });
+
+                /*
                 console.log("AAA")
                 console.log(ngModel);
                 console.log(ngModel.packetsData2);
@@ -55,7 +76,8 @@ angular.module('mqnaasApp')
                         var dataset = new vis.DataSet($scope.ngModel);
                         var timeline = new vis.Graph2d($element[0], $scope.ngModel, options);
                     }
-                });
+                });*/
             }
+
         }
     });

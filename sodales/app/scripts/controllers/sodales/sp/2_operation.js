@@ -39,7 +39,8 @@ angular.module('mqnaasApp')
         };
 
         $scope.setVirtualNetwork = function () {
-            $rootScope.virtNetId = $scope.selectedNetwork.id;
+            console.log($scope.selectedNetwork);
+            $rootScope.virtNetId = $scope.selectedNetwork;
             $rootScope.networkId = $scope.selectedNetwork.physicalNetwork;
             $scope.getNetworkResources();
         };
