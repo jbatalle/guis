@@ -13,7 +13,7 @@ angular.module('mqnaasApp')
                 },
                 function () {
                     if ($rootScope.networkId === undefined) return;
-                    url = "phyNetworks/" + $rootScope.networkId.id;
+                    url = "phyNetworks/" + $rootScope.networkId;
                     IMLService.get(url).then(function (data) {
                         if (data === undefined) {
                             $rootScope.networkId = undefined;
@@ -52,27 +52,13 @@ angular.module('mqnaasApp')
         $scope.nodes = new vis.DataSet();
         $scope.edges = new vis.DataSet();
 
-        $scope.updateListNetworks = function () {
-            var url = "phyNetworks"
-            IMLService.get(url).then(function (data) {
-                if (!data) return;
-                data = checkIfIsArray(data);
-                if (!$rootScope.networkId) {
-                    $rootScope.networkId = data[0];
-                }
-                $scope.selectedNetwork = $rootScope.networkId;
-                $rootScope.getNetworkModel();
-            });
-        };
-        $scope.updateListNetworks();
-
         $scope.$on('updatePhyTopology', function (event, args) {
             console.log("args");
             $rootScope.getNetworkModel();
         });
 
         $rootScope.getNetworkModel = function () {
-            url = "phyNetworks/" + $rootScope.networkId.id;
+            url = "phyNetworks/" + $rootScope.networkId;
             IMLService.get(url).then(function (data) {
                 $scope.nodes.clear();
                 $scope.edges.clear();
@@ -151,21 +137,6 @@ angular.module('mqnaasApp')
 
         $scope.nodes = new vis.DataSet();
         $scope.edges = new vis.DataSet();
-
-        $scope.updateListNetworks = function () {
-            var url = "phyNetworks"
-            IMLService.get(url).then(function (data) {
-                if (!data) return;
-                data = checkIfIsArray(data);
-                if (!$rootScope.networkId) {
-                    $rootScope.networkId = data[0];
-                }
-                $scope.selectedNetwork = $rootScope.networkId;
-                $scope.getNetworkModel();
-            });
-        };
-
-        $scope.updateListNetworks();
 
         $scope.getNetworkModel = function () {
             url = "viReqNetworks/" + $scope.viId;

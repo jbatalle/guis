@@ -20,8 +20,8 @@ angular.module('mqnaasApp')
                     $window.localStorage.networkId = '';
                 }
                 if (!$rootScope.networkId) {
-                    $rootScope.networkId = data[0];
-                    $window.localStorage.networkId = data[0];
+                    $rootScope.networkId = data[0].id;
+                    $window.localStorage.networkId = JSON.stringify(data[0].id);
                 }
                 $scope.selectedNetwork = $rootScope.networkId;
                 $scope.updateResourceList();
@@ -29,12 +29,12 @@ angular.module('mqnaasApp')
         };
 
         $scope.updateResourceList = function () {
-            if ($rootScope.networkId === undefined) return;
-            var url = "phyNetworks/" + $rootScope.networkId.id;
+            url = "phyNetworks/" + $rootScope.networkId;
             IMLService.get(url).then(function (data) {
                 if (data === undefined) return;
                 $scope.physicalResources = data.phy_resources;
                 $scope.physicalLinks = data.phy_links;
+                $scope.$broadcast('updatePhyTopology', "");
             });
         };
 
@@ -45,15 +45,14 @@ angular.module('mqnaasApp')
             $scope.operationButton(resourceName, type);
         };
 
-        $scope.setNetworkId = function (netId) {
-            console.log('Select networkId to rootScope: ' + netId);
-            $rootScope.networkId = netId;
-            $window.localStorage.networkId = netId;
+        $scope.setNetworkId = function () {
+            $rootScope.networkId = $scope.selectedNetwork;
+            $window.localStorage.networkId = JSON.stringify($scope.selectedNetwork);
             $scope.updateResourceList();
         };
 
         $scope.operationButton = function (resourceName, type) {
-            url = 'phyNetworks/' + $rootScope.networkId.id + '/resource/' + resourceName;
+            url = 'phyNetworks/' + $rootScope.networkId + '/resource/' + resourceName;
             IMLService.get(url).then(function (data) {
                 $rootScope.resourceUri = data.endpoint;
                 console.log($rootScope.resourceUri);

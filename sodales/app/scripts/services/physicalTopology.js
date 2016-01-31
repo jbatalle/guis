@@ -47,7 +47,7 @@ angular.module('mqnaasApp')
             });
         };
         var getResource = function (resourceName) {
-            var url = 'phyNetworks/' + $rootScope.networkId.id + '/resource/' + resourceName;
+            var url = 'phyNetworks/' + $rootScope.networkId + '/resource/' + resourceName;
             IMLService.get(url).then(function (data) {
                 $rootScope.resourceInfo = {};
                 $rootScope.resourceInfo.layer = "physical";
@@ -76,7 +76,7 @@ angular.module('mqnaasApp')
         }
         var getPhysicalPorts = function (resourceName) {
             var deferred = $q.defer();
-            var url = 'phyNetworks/' + $rootScope.networkId.id + '/resource/' + resourceName;
+            var url = 'phyNetworks/' + $rootScope.networkId + '/resource/' + resourceName;
             var promise = IMLService.get(url).then(
                 function (data) {
                     $rootScope.resourceUri = data.endpoint;

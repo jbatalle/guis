@@ -12,7 +12,7 @@ angular.module('mqnaasApp')
         $rootScope.networkCollection = [];
         $scope.selected = ""; //unused???
         $scope.selectedResource = "";
-        $scope.selectedNetwork;
+        //$scope.selectedNetwork;
         var promise, url;
 
         $scope.getNetworkResources = function () {

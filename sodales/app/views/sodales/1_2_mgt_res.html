@@ -92,7 +92,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-lg-12" ng-if="dataCollection">
+                    <div class="col-lg-12" ng-if="dataCollection.length > 0">
                         <label class="col-sm-4 control-label ng-binding">Interfaces information</label>
                         <table st-table="displayedCollection" st-safe-src="dataCollection" class="table table-striped">
                             <thead>
@@ -123,7 +123,7 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="row in displayedCollection">
-                                    <td><a ng-click="getMoreInfo(row._cardId, row._interfaceId)">{{row._interfaceId}}</a></td>
+                                    <td>{{row._interfaceId}}</td>
                                     <td>{{row._name}}</td>
                                     <td>{{row._type}}</td>
                                     <td>{{row._admin}}</td>
@@ -135,9 +135,7 @@
                                     </span>
                                     </td>
                                     <td>
-                                        <span ng-if="row._type === '6'">
-                                    <a ng-click="getEthernet(row.ethernet)">Ethernet</a>
-                                </span>
+                                        <a ng-click="getInfo(row)">Get information</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -149,11 +147,11 @@
                             </tfoot>
                         </table>
                     </div>
-                    <div class="col-lg-12" ng-if="interfaceInfo">
+                    <div class="col-lg-12" ng-if="interfaceInfo || ethernet">
                         <label class="col-sm-4 control-label ng-binding">Interface information</label>
                         <br/>
                         <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default" ng-if="interfaceInfo[1].interfaceList.interface.opticalStatus">
                                 <div class="panel-heading" role="tab">
                                     <h4 class="panel-title">
                                         <a bs-collapse-toggle>
@@ -202,13 +200,66 @@
                                 <div class="panel-heading" role="tab">
                                     <h4 class="panel-title">
                                         <a bs-collapse-toggle>
-                                          Details
+                                          L2
                                         </a>
                                       </h4>
                                 </div>
                                 <div class="panel-collapse" role="tabpanel" bs-collapse-target>
                                     <div class="panel-body">
-                                        {{interfaceInfo}}
+                                        <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
+                                            <tr>
+                                                <th>Metric</th>
+                                                <th>Value</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Auto Mdi</td>
+                                                <td>{{ethernet._autoMdi}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Auto Neg</td>
+                                                <td>{{ethernet._autoNeg}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ESMC Enabled</td>
+                                                <td>{{ethernet._esmcEnabled}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>FlowControl</td>
+                                                <td>{{ethernet._flowControl}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>IP Source Guard Enabled</td>
+                                                <td>{{ethernet._ipSourceGuardEnabled}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Loopback</td>
+                                                <td>{{ethernet._loopback}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>MAC</td>
+                                                <td>{{ethernet._mac}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>MAC Learning</td>
+                                                <td>{{ethernet._macLearning}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>MediaType</td>
+                                                <td>{{ethernet._mediaType}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>MediaTypes Supported</td>
+                                                <td>{{ethernet._mediaTypesSupported}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>MTU</td>
+                                                <td>{{ethernet._mtu}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Perf. Monit. Enabled</td>
+                                                <td>{{ethernet._perfMonitEnabled}}</td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

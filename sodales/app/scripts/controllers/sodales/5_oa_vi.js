@@ -464,7 +464,7 @@ angular.module('mqnaasApp')
             $scope.preMapping = [];
             angular.forEach($scope.selectedViPorts, function (port, i) {
                 //for (var i = 0; i < $scope.selectedViPorts.length; i++) {
-                var url = "phyNetworks/" + $rootScope.networkId.id + "/resource/" + $scope.dest;
+                var url = "phyNetworks/" + $rootScope.networkId + "/resource/" + $scope.dest;
                 IMLService.get(url).then(function (result) {
                     var ports = checkIfIsArray(result.phy_ports);
                     var srcPort = ports.find(function (p) {
@@ -527,7 +527,7 @@ angular.module('mqnaasApp')
             console.log($scope.mapping);
             console.log($scope.mappingVlan);
 
-            var url = 'phyNetworks/' + $rootScope.networkId.id + '/resource/' + physicalResource;
+            var url = 'phyNetworks/' + $rootScope.networkId + '/resource/' + physicalResource;
             IMLService.get(url).then(function (result) {
                 console.log(result);
                 console.log(result.endpoint);

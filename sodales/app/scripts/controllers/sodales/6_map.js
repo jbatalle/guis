@@ -14,9 +14,9 @@ angular.module('mqnaasApp')
                 $rootScope.networkId = '';
             }
             if (!$rootScope.networkId) {
-                $rootScope.networkId = data[0];
+                $rootScope.networkId = data[0].id;
             }
-            $scope.selectedNetwork = $rootScope.networkId.id;
+            $scope.selectedNetwork = $rootScope.networkId;
         });
 
 

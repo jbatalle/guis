@@ -9,11 +9,10 @@ angular.module('mqnaasApp')
         $scope.listNetworks = [];
         $scope.selectedNetwork = {};
         $rootScope.resourceInfo = undefined;
-        $window.localStorage.removeItem("networkId");
+        //$window.localStorage.removeItem("networkId");
         if ($window.localStorage.networkId) {
-            //console.log(JSON.parse($window.localStorage.networkId));
-            //console.log($window.localStorage.networkId);
             $rootScope.netId = JSON.parse($window.localStorage.networkId);
+            $rootScope.networkId = JSON.parse($window.localStorage.networkId);
             console.log($scope.selectedNetwork);
             $scope.selectedNetwork = JSON.parse($window.localStorage.networkId);
             console.log($scope.selectedNetwork);
@@ -29,44 +28,29 @@ angular.module('mqnaasApp')
                     $window.localStorage.networkId = '';
                 }
                 if (!$rootScope.networkId) {
-                    $rootScope.networkId = data[0];
-                    $window.localStorage.networkId = JSON.stringify(data[0]);
+                    $rootScope.networkId = data[0].id;
+                    $window.localStorage.networkId = JSON.stringify(data[0].id);
                 }
                 $scope.updateResourceList();
             });
         };
 
         $scope.updateResourceList = function () {
-            if ($rootScope.networkId === undefined) return;
-            var url = "phyNetworks/" + $rootScope.networkId.id;
+            var url = "phyNetworks/" + $rootScope.networkId;
             IMLService.get(url).then(function (data) {
                 if (data === undefined) return;
                 $scope.physicalResources = data.phy_resources;
                 $scope.physicalLinks = data.phy_links;
-                console.log("Emit");
                 $scope.$broadcast('updatePhyTopology', "");
             });
         };
 
         $scope.updateListNetworks();
 
-        var promise = $interval(function () {
+        $scope.setNetworkId = function () {
+            $rootScope.networkId = $scope.selectedNetwork;
+            $window.localStorage.networkId = JSON.stringify($scope.selectedNetwork);
             $scope.updateResourceList();
-        }, 2000000);
-
-        $scope.$on('$destroy', function () {
-            if (promise) {
-                $interval.cancel(promise);
-            }
-        });
-
-        $scope.setNetworkId = function (netId) {
-            console.log('Select networkId to rootScope: ' + netId);
-            $rootScope.networkId = netId;
-            console.log($scope.selectedNetwork);
-            $window.localStorage.networkId = $window.localStorage.user = JSON.stringify(netId);
-            $scope.updateResourceList();
-            console.log($scope.selectedNetwork);
         };
 
         $scope.createNetwork = function () {
@@ -88,7 +72,7 @@ angular.module('mqnaasApp')
 
         $scope.deleteNetwork = function () {
             console.log($rootScope.networkId);
-            var url = "phyNetworks/" + $rootScope.networkId.id;
+            var url = "phyNetworks/" + $rootScope.networkId;
             IMLService.delete(url).then(function (data) {
                 $rootScope.networkId = {};
                 $scope.updateListNetworks();
@@ -102,8 +86,8 @@ angular.module('mqnaasApp')
                     container: '#alerts-container',
                     duration: 5
                 });
-                this.$hide();
             });
+            this.$hide();
         };
 
         $scope.deleteDialog = function (id) {
@@ -124,7 +108,7 @@ angular.module('mqnaasApp')
             })[0];
 
             if (n !== undefined) {
-                var url = "phyNetworks/" + $rootScope.networkId.id + "/resource/" + id;
+                var url = "phyNetworks/" + $rootScope.networkId + "/resource/" + id;
                 IMLService.delete(url).then(function (data) {
                     $rootScope.network_data.nodes.remove({
                         id: n.id
@@ -132,7 +116,7 @@ angular.module('mqnaasApp')
                     $scope.updateResourceList();
                 });
             } else if (n === undefined) {
-                var url = "phyNetworks/" + $rootScope.networkId.id + "/link/" + id;
+                var url = "phyNetworks/" + $rootScope.networkId + "/link/" + id;
                 IMLService.delete(url).then(function (data) {});
                 var n = $rootScope.network_data.edges.get({
                     filter: function (item) {
@@ -162,7 +146,7 @@ angular.module('mqnaasApp')
             $scope.resource = {};
             $scope.resource.type = nodeType;
             if (nodeType == 'arn') $scope.resource.endpoint = 'http://185.37.215.49';
-            else if (nodeType == 'cpe') $scope.resource.endpoint = 'http://185.37.215.4';
+            else if (nodeType == 'cpe') $scope.resource.endpoint = 'http://185.37.215.4:8080';
             $scope.createDialog = $modal({
                 title: 'Adding a new ' + nodeType,
                 template: 'views/modals/resourceDialog.html',
@@ -227,7 +211,7 @@ angular.module('mqnaasApp')
                 resource.coords.lon = $scope.map.clickedMarker.coords.longitude;
             }
 
-            var url = "phyNetworks/" + $rootScope.networkId.id + "/resource/addResource";
+            var url = "phyNetworks/" + $rootScope.networkId + "/resource/addResource";
             IMLService.post(url, resource).then(function (data) {
                 if (data === undefined) {
                     console.log("Resource not generated");
@@ -265,7 +249,7 @@ angular.module('mqnaasApp')
                         });
                         console.log(ports);
                         //return;
-                        var url = "phyNetworks/" + $rootScope.networkId.id + "/resource/" + data + "/addPorts";
+                        var url = "phyNetworks/" + $rootScope.networkId + "/resource/" + data + "/addPorts";
                         IMLService.post(url, ports).then(function (data) {
                             $scope.creating = false;
                             $scope.createDialog.hide();
@@ -285,7 +269,7 @@ angular.module('mqnaasApp')
                             });
                         })
                         ports = foo;
-                        var url = "phyNetworks/" + $rootScope.networkId.id + "/resource/" + data + "/addPorts";
+                        var url = "phyNetworks/" + $rootScope.networkId + "/resource/" + data + "/addPorts";
                         IMLService.post(url, ports).then(function (data) {
                             $scope.creating = false;
                             $scope.createDialog.hide();
@@ -437,7 +421,7 @@ angular.module('mqnaasApp')
                         to: dstPort
                     };
 
-                    var url = "phyNetworks/" + $rootScope.networkId.id + "/link/addLink";
+                    var url = "phyNetworks/" + $rootScope.networkId + "/link/addLink";
                     IMLService.post(url, link).then(function (result) {
                         console.log(result);
 

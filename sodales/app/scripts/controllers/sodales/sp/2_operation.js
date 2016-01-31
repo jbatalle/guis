@@ -14,7 +14,7 @@ angular.module('mqnaasApp')
 
         $scope.operation = false;
         $rootScope.virtualResource = null;
-        $scope.selectedNetwork;
+        //$scope.selectedNetwork;
 
         $scope.getNetworkResources = function () {
             url = 'viNetworks/' + $rootScope.virtNetId;

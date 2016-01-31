@@ -7,12 +7,12 @@
                     <h3 class="panel-title"><i class="fa fa-globe fa-fw"></i> Networks</h3>
                 </div>
                 <div class="panel-body" style="text-align: center;">
-                    <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network as network.id for network in listNetworks" bs-select ng-change="setNetworkId(selectedNetwork)">
+                    <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network.id as network.id for network in listNetworks" bs-select ng-change="setNetworkId()">
                         Select <span class="caret"></span>
                     </button>
                     <br/>
                     <a ng-click="createNetwork()" class="btn btn-xs btn-default" title="Create Network">Create</a>
-                    <a ng-if="networkId.id" ng-click="deleteNetwork()" class="btn btn-xs btn-danger" title="Create Network">Remove</a>
+                    <a ng-if="selectedNetwork" ng-click="deleteNetworkDialog()" class="btn btn-xs btn-danger" title="Create Network">Remove</a>
                 </div>
             </div>
         </div>

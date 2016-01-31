@@ -31,7 +31,7 @@ angular.module('mqnaasApp')
                 if (!data) return;
                 data = checkIfIsArray(data);
                 if (!$rootScope.networkId) {
-                    $rootScope.networkId = data[0];
+                    $rootScope.networkId = data[0].id;
                 }
             });
         };

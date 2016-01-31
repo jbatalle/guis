@@ -18,10 +18,10 @@ angular.module('mqnaasApp')
                     $window.localStorage.networkId = '';
                 }
                 if (!$rootScope.networkId) {
-                    $rootScope.networkId = data[0];
-                    $window.localStorage.networkId = JSON.stringify(data[0]);
+                    $rootScope.networkId = data[0].id;
+                    $window.localStorage.networkId = JSON.stringify(data[0].id);
                 }
-                url = "phyNetworks/" + $rootScope.networkId.id;
+                url = "phyNetworks/" + $rootScope.networkId;
                 IMLService.get(url).then(function (data) {
                     $scope.resources = data.phy_resources;
                 });
@@ -30,7 +30,7 @@ angular.module('mqnaasApp')
         $scope.updateResourceList();
 
         $scope.getResourceInfo = function (resource) {
-            url = "phyNetworks/" + $rootScope.networkId.id + "/resource/" + resource;
+            url = "phyNetworks/" + $rootScope.networkId + "/resource/" + resource;
             IMLService.get(url).then(function (data) {
                 $scope.type = data.type;
                 $rootScope.resourceUri = data.endpoint;
@@ -113,13 +113,13 @@ angular.module('mqnaasApp')
         };
 
         $scope.getEthernet = function (ethernet) {
-            $scope.ethernet = ethernet;
-            $modal({
+            $scope.ethernet = ethernet.ethernet;
+            /*$modal({
                 title: 'Ethernet information',
                 template: 'views/modals/info/ethernetInfo.html',
                 show: true,
                 scope: $scope
-            });
+            });*/
         };
 
         $scope.getMoreInfo = function (cardId, interfaceId) {
@@ -128,5 +128,12 @@ angular.module('mqnaasApp')
                 console.log(response.response.operation);
                 $scope.interfaceInfo = response.response.operation;
             });
+        };
+
+        $scope.getInfo = function (row) {
+            $scope.ethernet = {};
+            $scope.interfaceInfo = {};
+            $scope.getEthernet(row.ethernet);
+            $scope.getMoreInfo(row._cardId, row._interfaceId);
         };
     });

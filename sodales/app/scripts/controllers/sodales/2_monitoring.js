@@ -24,12 +24,12 @@ angular.module('mqnaasApp')
                     $window.localStorage.networkId = '';
                 }
                 if (!$rootScope.networkId) {
-                    $rootScope.networkId = data[0];
-                    $window.localStorage.networkId = data[0];
+                    $rootScope.networkId = data[0].id;
+                    $window.localStorage.networkId = JSON.stringify(data[0].id);
                 }
-                $scope.selectedNetwork = $rootScope.networkId.id;
+                // $scope.selectedNetwork = $rootScope.networkId.id;
 
-                url = "phyNetworks/" + $rootScope.networkId.id;
+                url = "phyNetworks/" + $rootScope.networkId;
                 IMLService.get(url).then(function (data) {
                     $scope.physicalResources = data.phy_resources;
                 });
@@ -66,7 +66,7 @@ angular.module('mqnaasApp')
             $scope.arnOAM = undefined;
 
             //get resourceModel of the resource -> extract endpoint URI
-            url = "phyNetworks/" + $rootScope.networkId.id + '/resource/' + resourceName;
+            url = "phyNetworks/" + $rootScope.networkId + '/resource/' + resourceName;
             IMLService.get(url).then(function (data) {
                 $rootScope.resourceUri = data.endpoint;
 

@@ -330,6 +330,7 @@ angular.module('mqnaasApp', ['ui.router', 'ngSanitize', 'mqnaasApp.config', 'mqn
         if ($window.localStorage.userId) $rootScope.username = $window.localStorage.username;
         if ($window.localStorage.userImg) $rootScope.user_img = $window.localStorage.userImg;
         if ($window.localStorage.user) $rootScope.user = JSON.parse($window.localStorage.user);
+        $window.localStorage.removeItem("networkId");
         if ($window.localStorage.networkId) $rootScope.networkId = JSON.parse($window.localStorage.networkId);
 
         $rootScope.logout = function () {
