@@ -149,13 +149,15 @@ angular.module('mqnaasApp')
                 $scope.generateNodeData(data.vi_req_resources);
                 $scope.edges.add(generateLinkData(data.vi_req_resources, $scope.nodes));
             });
-            url = "phyNetworks/" + $rootScope.networkId.id;
+            url = "phyNetworks/" + $rootScope.networkId;
             IMLService.get(url).then(function (data) {
                 console.log(data);
                 $scope.generateNodeData(data.phy_resources);
                 $scope.edges.add(generateLinkData(data.phy_links, $scope.nodes));
             });
         };
+
+        $scope.getNetworkModel();
 
         $scope.addResource = function (resourceType) {
             console.log("Add resource " + resourceType);
@@ -331,7 +333,7 @@ angular.module('mqnaasApp')
 
         $scope.getPhysicalResources = function () {
             $scope.physicalResources = [];
-            url = "phyNetworks/" + $rootScope.networkId.id;
+            url = "phyNetworks/" + $rootScope.networkId;
             IMLService.get(url).then(function (response) {
                 var rawResources = checkIfIsArray(response.phy_resource);
                 angular.forEach(rawResources, function (resource) {
