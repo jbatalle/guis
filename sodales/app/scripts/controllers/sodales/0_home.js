@@ -60,7 +60,7 @@ angular.module('mqnaasApp')
                         else $scope.viSize = checkIfIsArray(result).length;
                     });
 
-                    url = "phyNetworks/" + $rootScope.networkId.id;
+                    url = "phyNetworks/" + $rootScope.networkId;
                     IMLService.get(url).then(function (result) {
                         if (result === undefined) $scope.resourcesSize = 0;
                         else $scope.resourcesSize = checkIfIsArray(result).length;
