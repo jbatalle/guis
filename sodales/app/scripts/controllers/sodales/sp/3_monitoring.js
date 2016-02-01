@@ -408,37 +408,23 @@ angular.module('mqnaasApp')
             var initial;
             if ($scope.arnCounterEnd !== 0) initial = $scope.arnCounterEnd;
             var end;
-            var initialRx = 0,
-                initalTx = 0;
+            var initialTx = 0,
+                initialRx = 0;
             $scope.packetsData2 = [];
             promise2 = $interval(function () {
                 var requestData = '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="showCounters" entity="interface/ethernet"><ethernet equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '"/></operation></request>';
                 arnService.put(requestData).then(function (response) {
                     end = response.response.operation.interfaceList.interface.ethernet.counters;
                     if ($scope.data.items.get().length === 0) {
-                        initalTx = end.tx._packets;
-                        initalRx = end.rx._packets;
+                        initialTx = parseInt(end.tx._packets);
+                        initialRx = parseInt(end.rx._packets);
                         currentTx = currentRx = 0;
                     } else {
-
-                        var lastTx = $scope.data.items.get({
-                            group: 0
-                        })[$scope.data.items.get({
-                            group: 0
-                        }).length - 1].y;
-                        var currentTx = parseInt(end.tx._packets) - initalTx;
-
-                        var lastRx = $scope.data.items.get({
-                            group: 1
-                        })[$scope.data.items.get({
-                            group: 1
-                        }).length - 1].y;
-                        var currentRx = parseInt(end.rx._packets) - initalRx;
-                        initalTx = end.tx._packets;
-                        initalRx = end.rx._packets;
+                        var currentTx = parseInt(end.tx._packets) - initialTx;
+                        var currentRx = parseInt(end.rx._packets) - initialRx;
+                        initialTx = end.tx._packets;
+                        initialRx = end.rx._packets;
                     }
-                    console.log(currentTx);
-                    console.log(currentRx);
                     $scope.data.items.add({
                         x: new Date(),
                         y: currentTx,
