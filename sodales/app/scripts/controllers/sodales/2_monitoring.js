@@ -274,13 +274,13 @@ angular.module('mqnaasApp')
                 });
                 $scope.chartsTx = {
                     title: 'Transmited packets',
-                    description: 'This graph shows the last 20 visited pages',
+                    description: 'Transmited packets according the packet size',
                     data: res,
                     chart_type: 'bar',
                     x_accessor: 'value',
                     y_accessor: 'label',
-                    width: 295,
-                    height: 150,
+                    width: 350,
+                    height: 250,
                     right: 10,
                     animate_on_load: true,
                     target: '#bar2',
@@ -288,13 +288,13 @@ angular.module('mqnaasApp')
                 };
                 $scope.chartsRx = {
                     title: 'Recevied packets',
-                    description: 'This graph shows the last 20 visited pages',
+                    description: 'Recevied packets according the packet size',
                     data: resRx,
                     chart_type: 'bar',
                     x_accessor: 'value',
                     y_accessor: 'label',
-                    width: 295,
-                    height: 150,
+                    width: 350,
+                    height: 250,
                     right: 10,
                     animate_on_load: true,
                     target: '#bar2',
@@ -343,7 +343,7 @@ angular.module('mqnaasApp')
                         position: "bottom-left"
                     }
                 },
-                start: vis.moment().add(-30, 'seconds'), // changed so its faster
+                start: vis.moment().add(-10, 'seconds'), // changed so its faster
                 end: vis.moment(),
             };
             var items = [];
@@ -358,37 +358,37 @@ angular.module('mqnaasApp')
             var initial;
             if ($scope.arnCounterEnd !== 0) initial = $scope.arnCounterEnd;
             var end;
+            var initialRx = 0,
+                initalTx = 0;
             $scope.packetsData2 = [];
             promise2 = $interval(function () {
                 var requestData = '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="showCounters" entity="interface/ethernet"><ethernet equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '"/></operation></request>';
                 arnService.put(requestData).then(function (response) {
                     end = response.response.operation.interfaceList.interface.ethernet.counters;
-                    if ($scope.data.items.get().length === 0) currentTx = currentRx = 0;
-                    else {
-                        var lastIdTx = $scope.data.items.get({
-                            group: 0
-                        })[$scope.data.items.get({
-                            group: 0
-                        }).length - 1];
+                    if ($scope.data.items.get().length === 0) {
+                        initalTx = end.tx._packets;
+                        initalRx = end.rx._packets;
+                        currentTx = currentRx = 0;
+                    } else {
+
                         var lastTx = $scope.data.items.get({
                             group: 0
                         })[$scope.data.items.get({
                             group: 0
                         }).length - 1].y;
-                        var current = parseInt(end.tx.packets) - lastTx;
+                        var currentTx = parseInt(end.tx._packets) - initalTx;
 
-                        var lastIdRx = $scope.data.items.get({
-                            group: 1
-                        })[$scope.data.items.get({
-                            group: 1
-                        }).length - 1];
                         var lastRx = $scope.data.items.get({
                             group: 1
                         })[$scope.data.items.get({
                             group: 1
                         }).length - 1].y;
-                        var currentRx = parseInt(end.rx.packets) - lastRx;
+                        var currentRx = parseInt(end.rx._packets) - initalRx;
+                        initalTx = end.tx._packets;
+                        initalRx = end.rx._packets;
                     }
+                    console.log(currentTx);
+                    console.log(currentRx);
                     $scope.data.items.add({
                         x: new Date(),
                         y: currentTx,
