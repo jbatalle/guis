@@ -8,80 +8,93 @@ angular.module('mqnaasApp')
                 ngModel: '=',
                 onSelect: '&',
                 options: '=',
-                data: '=data',
-                options: '=options'
+                data: '=data'
             },
             link: function (scope, $element, $attrs, ngModel) {
-
+                console.log("initial Directive");
                 var container = $element[0];
-
                 var graph = null;
-                graph = new vis.Graph2d(container, scope.data, scope.options);
 
-                scope.$watch(function () {
-                    console.log("watch")
-                    console.log(scope.data)
-                    return scope.data;
-                }, function (value) {
-                    graph = new vis.Graph2d(container, scope.data, scope.options);
-                });
-
-                graph.on('select', function (properties) {
-                    console.info('select.properties.nodes', properties.nodes);
-                    console.info('select.properties.edges', properties.edges);
-                });
-
-                /*
-                console.log("AAA")
-                console.log(ngModel);
-                console.log(ngModel.packetsData2);
-                $scope.packetsData2 = ngModel.packetsData2;
-
-                $scope.$watch(function () {
-                    return ngModel.$modelValue;
-                }, function (v) {
-                    console.log("!!!!!");
-                })
-                $scope.$watch('ngModel', function (newValue, oldValue) {
-                    console.log("New model3")
-                });
-
-                $scope.$watch('ngModel', function (newValue, oldValue) {
-                    console.log("New model2")
-                    console.log(newValue);
-                    console.log(oldValue);
-                    if (newValue) {
-                        var items = [];
-                        console.log($scope.ngModel);
-                        console.log($scope.ngModel);
-
-                        var options = {
-                            start: vis.moment().add(-30, 'seconds'), // changed so its faster
-                            end: vis.moment(),
-                            dataAxis: {
-                                left: {
-                                    range: {
-                                        min: 0,
-                                        max: 100
-                                    }
-                                }
-                            },
-                            drawPoints: {
-                                style: 'circle' // square, circle
-                            },
-                            shaded: {
-                                orientation: 'bottom' // top, bottom
+                var options = {
+                    start: vis.moment().add(-30, 'seconds'), // changed so its faster
+                    end: vis.moment(),
+                    dataAxis: {
+                        customRange: {
+                            left: {
+                                min: -10,
+                                max: 10
                             }
-                        };
-                        var dataset = new vis.DataSet($scope.ngModel);
-                        var timeline = new vis.Graph2d($element[0], $scope.ngModel, options);
+                        }
+                    },
+                    drawPoints: {
+                        style: 'circle' // square, circle
+                    },
+                    shaded: {
+                        orientation: 'bottom' // top, bottom
                     }
-                });*/
-            }
+                };
 
+
+                scope.options = {
+                    start: vis.moment().add(-30, 'seconds'), // changed so its faster
+                    end: vis.moment(),
+                    dataAxis: {
+                        left: {
+                            range: {
+                                min: 0,
+                                max: 100
+                            }
+                        }
+                    },
+                    drawPoints: {
+                        style: 'circle' // square, circle
+                    },
+                    shaded: {
+                        orientation: 'bottom' // top, bottom
+                    }
+                };
+
+                //graph = new vis.Graph2d(container, scope.data, scope.options);
+                scope.data = new vis.DataSet(scope.ngModel);
+
+                scope.$watch('packetsData2', function () {
+                    console.log("UPDATE PACKETS2")
+                });
+
+                scope.$watch(function (newVal, oldVal) {
+                        if (newVal != oldVal) {
+                            console.log("UPDATE");
+                        }
+                        console.log("watch");
+                        console.log(scope.data);
+                        console.log(scope.data.get());
+                        console.log(scope.data.get().length);
+                        console.log(scope.data.get().length - 1);
+
+                        if (scope.data.get().length > 0) {
+                            var lastId = scope.data.get()[scope.data.get().length - 1];
+                            var last = scope.data.get()[scope.data.get().length - 1].y;
+                            console.log(last);
+                            var current = parseInt(scope.ngModel.tx._packets) - last;
+                            console.log(scope.ngModel);
+                            if (scope.ngModel === undefined || scope.ngModel.length === 0) return;
+                            scope.data.add({
+                                x: new Date(),
+                                y: current
+                            });
+                        } else {
+                            scope.data.add({
+                                x: new Date(),
+                                y: 0
+                            });
+                        }
+                    },
+                    function (value) {
+                        graph = new vis.Graph2d(container, scope.data, scope.options);
+                    });
+            }
         }
     }).directive('visGraph2d', function () {
-        'use strict';
         return {
             restrict: 'EA',
             transclude: false,
@@ -103,7 +116,6 @@ angular.module('mqnaasApp')
                 var graph = null;
 
                 scope.$watch('data', function () {
-                    console.log("Update data");
                     // Sanity check
                     if (scope.data == null) {
                         return;

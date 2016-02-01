@@ -69,16 +69,16 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td class="text-center" st-pagination="" st-items-by-page="10" colspan="8">
+                                <td class="text-center" st-pagination="" st-items-by-page="10" colspan="9">
                                 </td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
                 <div ng-show="arnInterfaces && packetsData2">
-                    Graph: {{packetsData2}}
-                    <graph2d ng-model="packetsData2" options="network_options" id="previewNetwork2">
-                    </graph2d>
+                    <vis-graph2d data="data" options="options"></vis-graph2d>
+                    <!--graph2d ng-model="packetsData2" options="options" id="previewNetwork2">
+                    </graph2d-->
                 </div>
                 <div ng-show="chartsTx || chartsRx">
                     <div class="row">

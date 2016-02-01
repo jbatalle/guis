@@ -306,7 +306,55 @@ angular.module('mqnaasApp')
         };
 
         $scope.arnCounterStatistics = function (cardId, interfaceId) {
-            console.log();
+
+            var groups = new vis.DataSet();
+            groups.add({
+                id: 0,
+                content: "Transmission",
+                options: {
+                    drawPoints: {
+                        style: 'square' // square, circle
+                    },
+                    shaded: {
+                        orientation: 'bottom' // top, bottom
+                    }
+                }
+            });
+
+            groups.add({
+                id: 1,
+                content: "Reception",
+                options: {
+                    drawPoints: {
+                        style: 'circle' // square, circle
+                    },
+                    shaded: {
+                        orientation: 'bottom' // top, bottom
+                    }
+                }
+            });
+
+            $scope.options = {
+                dataAxis: {
+                    showMinorLabels: false
+                },
+                legend: {
+                    left: {
+                        position: "bottom-left"
+                    }
+                },
+                start: vis.moment().add(-30, 'seconds'), // changed so its faster
+                end: vis.moment(),
+            };
+            var items = [];
+
+            $scope.data = {
+                items: new vis.DataSet(items),
+                groups: groups
+            };
+            if (promise2) {
+                $interval.cancel(promise2);
+            }
             var initial;
             if ($scope.arnCounterEnd !== 0) initial = $scope.arnCounterEnd;
             var end;
@@ -315,11 +363,41 @@ angular.module('mqnaasApp')
                 var requestData = '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="showCounters" entity="interface/ethernet"><ethernet equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '"/></operation></request>';
                 arnService.put(requestData).then(function (response) {
                     end = response.response.operation.interfaceList.interface.ethernet.counters;
-                    console.log(end);
-                    console.log(parseInt(end.tx._packets));
-                    $scope.packetsData2.push({
+                    if ($scope.data.items.get().length === 0) currentTx = currentRx = 0;
+                    else {
+                        var lastIdTx = $scope.data.items.get({
+                            group: 0
+                        })[$scope.data.items.get({
+                            group: 0
+                        }).length - 1];
+                        var lastTx = $scope.data.items.get({
+                            group: 0
+                        })[$scope.data.items.get({
+                            group: 0
+                        }).length - 1].y;
+                        var current = parseInt(end.tx.packets) - lastTx;
+
+                        var lastIdRx = $scope.data.items.get({
+                            group: 1
+                        })[$scope.data.items.get({
+                            group: 1
+                        }).length - 1];
+                        var lastRx = $scope.data.items.get({
+                            group: 1
+                        })[$scope.data.items.get({
+                            group: 1
+                        }).length - 1].y;
+                        var currentRx = parseInt(end.rx.packets) - lastRx;
+                    }
+                    $scope.data.items.add({
                         x: new Date(),
-                        y: parseInt(end.tx._packets)
+                        y: currentTx,
+                        group: 0
+                    });
+                    $scope.data.items.add({
+                        x: new Date(),
+                        y: currentRx,
+                        group: 1
                     });
                 });
             }, 5000);
