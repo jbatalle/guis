@@ -279,7 +279,7 @@ angular.module('mqnaasApp')
                     }
                     arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, equipment._cardId, iface._interfaceId, 2)).then(function (response) {});
                 });
-                arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, 0, 8781824, 2)).then(function (response) {
+                arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, 0, 8781824, 1)).then(function (response) {
                     $scope.openOperationARNDialog($scope.virtualResourceOp, 'ARN');
                 });
                 /*arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, $scope.cards[3].id, $scope.cards[3].interface, 2)).then(function (response) {});
