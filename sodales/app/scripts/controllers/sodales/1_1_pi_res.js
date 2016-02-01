@@ -113,7 +113,7 @@ angular.module('mqnaasApp')
         };
 
         $scope.getEthernet = function (ethernet) {
-            $scope.ethernet = ethernet.ethernet;
+            $scope.ethernet = ethernet;
             /*$modal({
                 title: 'Ethernet information',
                 template: 'views/modals/info/ethernetInfo.html',

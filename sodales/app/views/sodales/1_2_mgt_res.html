@@ -135,7 +135,7 @@
                                     </span>
                                     </td>
                                     <td>
-                                        <a ng-click="getInfo(row)">Get information</a>
+                                        <a ng-click="getInfo(row)">Information</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -196,7 +196,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default" ng-if="ethernet">
                                 <div class="panel-heading" role="tab">
                                     <h4 class="panel-title">
                                         <a bs-collapse-toggle>
@@ -240,7 +240,7 @@
                                                 <td>{{ethernet._mac}}</td>
                                             </tr>
                                             <tr>
-                                                <td>MAC Learning</td>
+                                                <td>MACs Learning</td>
                                                 <td>{{ethernet._macLearning}}</td>
                                             </tr>
                                             <tr>
@@ -260,6 +260,139 @@
                                                 <td>{{ethernet._perfMonitEnabled}}</td>
                                             </tr>
                                         </table>
+                                        <div class="panel-group" ng-model="panels.activePanel2" role="tablist" aria-multiselectable="true" bs-collapse>
+                                            <div class="panel panel-default" ng-if="ethernet.macLimiting">
+                                                <div class="panel-heading" role="tab">
+                                                    <h4 class="panel-title"><a bs-collapse-toggle>Mac Limiting</a></h4>
+                                                </div>
+                                                <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+                                                    <div class="panel-body">
+                                                        <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
+                                                            <tr>
+                                                                <th>Metric</th>
+                                                                <th>Value</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Mac Limiting Action</td>
+                                                                <td>{{ethernet.macLimiting._macLimitAction}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Mac Limit Max</td>
+                                                                <td>{{ethernet.macLimiting._macLimitMaxMac}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Mac Limiting enabled</td>
+                                                                <td>{{ethernet.macLimiting._macLimitEnabled}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Mac Limit Notify</td>
+                                                                <td>{{ethernet.macLimiting._macLimitNotify}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default" ng-if="ethernet.trafficShaping">
+                                                <div class="panel-heading" role="tab">
+                                                    <h4 class="panel-title">
+                                                        <a bs-collapse-toggle>Traffic Shaping</a></h4>
+                                                </div>
+                                                <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+                                                    <div class="panel-body">
+                                                        <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
+                                                            <tr>
+                                                                <th>Metric</th>
+                                                                <th>Value</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Max Bw Percentage</td>
+                                                                <td>{{ethernet.trafficShaping._maxBwPercentage}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default" ng-if="ethernet.multicast">
+                                                <div class="panel-heading" role="tab">
+                                                    <h4 class="panel-title">
+                                                        <a bs-collapse-toggle>Multicast</a></h4>
+                                                </div>
+                                                <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+                                                    <div class="panel-body">
+                                                        <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
+                                                            <tr>
+                                                                <th>Metric</th>
+                                                                <th>Value</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Max Number Groups</td>
+                                                                <td>{{ethernet.multicast._maxNumberGroups}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Max Bandwidth</td>
+                                                                <td>{{ethernet.multicast._maxBandwidth}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default" ng-if="ethernet.dynArpInspect">
+                                                <div class="panel-heading" role="tab">
+                                                    <h4 class="panel-title">
+                                                        <a bs-collapse-toggle>Traffic Shaping</a></h4>
+                                                </div>
+                                                <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+                                                    <div class="panel-body">
+                                                        <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
+                                                            <tr>
+                                                                <th>Metric</th>
+                                                                <th>Value</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Burst Interval</td>
+                                                                <td>{{ethernet.dynArpInspect._burstInterval}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Rate Limit</td>
+                                                                <td>{{ethernet.dynArpInspect._rateLimit}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Trust State</td>
+                                                                <td>{{ethernet.dynArpInspect._trustState}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default" ng-if="ethernet.vlan">
+                                                <div class="panel-heading" role="tab">
+                                                    <h4 class="panel-title">
+                                                        <a bs-collapse-toggle>Vlan</a></h4>
+                                                </div>
+                                                <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+                                                    <div class="panel-body">
+                                                        <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
+                                                            <tr>
+                                                                <th>Metric</th>
+                                                                <th>Value</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Accept Frame Type</td>
+                                                                <td>{{ethernet.vlan._acceptFrameType}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Default Priority</td>
+                                                                <td>{{ethernet.vlan._defaultPriority}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Default VlanId</td>
+                                                                <td>{{ethernet.vlan._defaultVlanId}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
