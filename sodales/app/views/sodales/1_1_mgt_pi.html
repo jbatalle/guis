@@ -103,7 +103,7 @@
                     <h3 class="panel-title"><i class="fa fa-square-o fa-fw"></i> Ports</h3>
                 </div>
                 <div class="panel-body">
-                    <div style="overflow-y: scroll; height:380px;">
+                    <div style="overflow-y: scroll; height:370px;">
                         <ul style="margin-left: 20px; padding: 0;">
                             <li ng-repeat="res in resourceInfo.ports" ng-if="resourceInfo.type === 'ARN' && res._admin !== '2'">
                                 {{res._name}} ({{res._interfaceId}} - {{res._cardId}})
