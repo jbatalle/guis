@@ -362,6 +362,7 @@ angular.module('mqnaasApp')
                 initialRx = 0;
             $scope.packetsData2 = [];
             promise2 = $interval(function () {
+                //$scope.options.end = vis.moment();
                 var requestData = '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="showCounters" entity="interface/ethernet"><ethernet equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '"/></operation></request>';
                 arnService.put(requestData).then(function (response) {
                     end = response.response.operation.interfaceList.interface.ethernet.counters;
