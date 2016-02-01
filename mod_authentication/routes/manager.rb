@@ -58,8 +58,20 @@ class Authentication < Sinatra::Application
 		sp = SP.find(params[:spId])
 		logger.error sp.name
 		#user.sp = sp
-		user.roles << Role.where(name: "sp").first
-		user.update_attribute(:sp_id, sp.id)
+		puts "ERROR:"
+		logger.error user.roles
+		user.roles do |item|
+			logger.error item
+			logger.error item[:name]
+		end
+		puts "ERROR:"
+		logger.error user.roles.include?(Role.where(name: 'sp').first)
+		if (!user.roles.include?(Role.where(name: 'sp').first))
+			user.roles << Role.where(name: "sp").first
+			user.update_attribute(:sp_id, sp.id)
+		end
+		puts "ERROR2:"
+		
 		status 200
 	end
 	
