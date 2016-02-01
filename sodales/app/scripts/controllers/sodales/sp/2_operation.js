@@ -265,10 +265,13 @@ angular.module('mqnaasApp')
                     }
                     arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, equipment._cardId, iface._interfaceId, 2)).then(function (response) {});
                 });
-                arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, 0, 8781824, 2)).then(function (response) {});
+                arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, 0, 8781824, 2)).then(function (response) {
+                    $scope.openOperationARNDialog($scope.virtualResourceOp, 'ARN');
+                });
                 /*arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, $scope.cards[3].id, $scope.cards[3].interface, 2)).then(function (response) {});
                 arnService.put(addPortsToNetworkService(response.response.operation.networkService._id, $scope.cards[4].id, $scope.cards[4].interface, 2)).then(function (response) {});*/
             });
+            this.$hide();
         };
 
         $scope.activateNetworkService = function (data) {
@@ -279,6 +282,7 @@ angular.module('mqnaasApp')
             else if (data._admin === '2') admin = 1;
             arnService.put(changeStatusNetworkService(id, admin)).then(function (response) {
                 console.log(response.response.operation.result);
+                $scope.openOperationARNDialog($scope.virtualResourceOp, 'ARN');
             });
         };
 
@@ -288,8 +292,10 @@ angular.module('mqnaasApp')
             //networkServiceId, admin, name, uniVlan
             arnService.put(createClientService(cs.ns._id, 2, cs.name, cs.uniVlanId)).then(function (response) {
                 console.log(response.response.operation.result);
+                $scope.openOperationARNDialog($scope.virtualResourceOp, 'ARN');
                 //$scope.LAGs = response.response.operation.interfaceList.interface;
             });
+            this.$hide();
         };
 
         $scope.activateClientService = function (data) {
@@ -299,6 +305,7 @@ angular.module('mqnaasApp')
             else if (data._admin === '2') admin = 1;
             arnService.put(changeStatusClientService(id, admin)).then(function (response) {
                 console.log(response.response.operation.result);
+                $scope.openOperationARNDialog($scope.virtualResourceOp, 'ARN');
             });
         };
 
