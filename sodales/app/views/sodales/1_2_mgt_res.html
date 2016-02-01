@@ -148,47 +148,47 @@
                         </table>
                     </div>
                     <div class="col-lg-12" ng-if="interfaceInfo || ethernet">
-                        <label class="col-sm-4 control-label ng-binding">Interface information</label>
+                        <label class=" col-sm-4 control-label ng-binding ">Interface information</label>
                         <br/>
-                        <div class="panel-group" ng-model="panels.activePanel" role="tablist" aria-multiselectable="true" bs-collapse>
-                            <div class="panel panel-default" ng-if="interfaceInfo[1].interfaceList.interface.opticalStatus">
-                                <div class="panel-heading" role="tab">
-                                    <h4 class="panel-title">
+                        <div class="panel-group " ng-model="panels.activePanel " role="tablist " aria-multiselectable="true " bs-collapse>
+                            <div class="panel panel-default " ng-if="interfaceInfo[1].interfaceList.interface.opticalStatus ">
+                                <div class="panel-heading " role="tab ">
+                                    <h4 class="panel-title ">
                                         <a bs-collapse-toggle>
                                           Optical details
                                         </a>
                                       </h4>
                                 </div>
-                                <div class="panel-collapse" role="tabpanel" bs-collapse-target>
-                                    <div class="panel-body">
-                                        <div class="form-group">
-                                            <label class="col-sm-6 control-label ng-binding">Laser status</label>
-                                            <div class="col-sm-6">
-                                                <p class="form-control-static ng-binding ng-scope">
+                                <div class="panel-collapse " role="tabpanel " bs-collapse-target>
+                                    <div class="panel-body ">
+                                        <div class="form-group ">
+                                            <label class="col-sm-6 control-label ng-binding ">Laser status</label>
+                                            <div class="col-sm-6 ">
+                                                <p class="form-control-static ng-binding ng-scope ">
                                                     {{interfaceInfo[1].interfaceList.interface.opticalStatus._laserStatus}}
                                                 </p>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-6 control-label ng-binding">Optical power transmission (dBm)</label>
-                                            <div class="col-sm-6">
-                                                <p class="form-control-static ng-binding ng-scope">
+                                        <div class="form-group ">
+                                            <label class="col-sm-6 control-label ng-binding ">Optical power transmission (dBm)</label>
+                                            <div class="col-sm-6 ">
+                                                <p class="form-control-static ng-binding ng-scope ">
                                                     {{interfaceInfo[1].interfaceList.interface.opticalStatus._biasCurrent}}
                                                 </p>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-6 control-label ng-binding">Optical power received (dBm)</label>
-                                            <div class="col-sm-6">
-                                                <p class="form-control-static ng-binding ng-scope">
+                                        <div class="form-group ">
+                                            <label class="col-sm-6 control-label ng-binding ">Optical power received (dBm)</label>
+                                            <div class="col-sm-6 ">
+                                                <p class="form-control-static ng-binding ng-scope ">
                                                     {{interfaceInfo[1].interfaceList.interface.opticalStatus._rxPower}}
                                                 </p>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-6 control-label ng-binding">Temperature</label>
-                                            <div class="col-sm-6">
-                                                <p class="form-control-static ng-binding ng-scope">
+                                        <div class="form-group ">
+                                            <label class="col-sm-6 control-label ng-binding ">Temperature</label>
+                                            <div class="col-sm-6 ">
+                                                <p class="form-control-static ng-binding ng-scope ">
                                                     {{interfaceInfo[1].interfaceList.interface.opticalStatus._temperature}}
                                                 </p>
                                             </div>
@@ -196,17 +196,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="panel panel-default" ng-if="ethernet">
-                                <div class="panel-heading" role="tab">
-                                    <h4 class="panel-title">
+                            <div class="panel panel-default " ng-if="ethernet">
+                                <div class="panel-heading " role="tab ">
+                                    <h4 class="panel-title ">
                                         <a bs-collapse-toggle>
                                           L2
                                         </a>
                                       </h4>
                                 </div>
-                                <div class="panel-collapse" role="tabpanel" bs-collapse-target>
-                                    <div class="panel-body">
-                                        <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
+                                <div class="panel-collapse " role="tabpanel " bs-collapse-target>
+                                    <div class="panel-body ">
+                                        <table st-table="displayedCollection2 " st-safe-src="cos " class="table table-striped ">
                                             <tr>
                                                 <th>Metric</th>
                                                 <th>Value</th>
@@ -260,14 +260,14 @@
                                                 <td>{{ethernet._perfMonitEnabled}}</td>
                                             </tr>
                                         </table>
-                                        <div class="panel-group" ng-model="panels.activePanel2" role="tablist" aria-multiselectable="true" bs-collapse>
-                                            <div class="panel panel-default" ng-if="ethernet.macLimiting">
-                                                <div class="panel-heading" role="tab">
-                                                    <h4 class="panel-title"><a bs-collapse-toggle>Mac Limiting</a></h4>
+                                        <div class="panel-group " ng-model="panels.activePanel2 " role="tablist " aria-multiselectable="true " bs-collapse>
+                                            <div class="panel panel-default " ng-if="ethernet.macLimiting ">
+                                                <div class="panel-heading " role="tab ">
+                                                    <h4 class="panel-title "><a bs-collapse-toggle>Mac Limiting</a></h4>
                                                 </div>
-                                                <div class="panel-collapse" role="tabpanel" bs-collapse-target>
-                                                    <div class="panel-body">
-                                                        <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
+                                                <div class="panel-collapse " role="tabpanel " bs-collapse-target>
+                                                    <div class="panel-body ">
+                                                        <table st-table="displayedCollection2 " st-safe-src="cos " class="table table-striped ">
                                                             <tr>
                                                                 <th>Metric</th>
                                                                 <th>Value</th>
@@ -292,14 +292,14 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="panel panel-default" ng-if="ethernet.trafficShaping">
-                                                <div class="panel-heading" role="tab">
-                                                    <h4 class="panel-title">
+                                            <div class="panel panel-default " ng-if="ethernet.trafficShaping ">
+                                                <div class="panel-heading " role="tab ">
+                                                    <h4 class="panel-title ">
                                                         <a bs-collapse-toggle>Traffic Shaping</a></h4>
                                                 </div>
-                                                <div class="panel-collapse" role="tabpanel" bs-collapse-target>
-                                                    <div class="panel-body">
-                                                        <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
+                                                <div class="panel-collapse " role="tabpanel " bs-collapse-target>
+                                                    <div class="panel-body ">
+                                                        <table st-table="displayedCollection2 " st-safe-src="cos " class="table table-striped ">
                                                             <tr>
                                                                 <th>Metric</th>
                                                                 <th>Value</th>
@@ -312,14 +312,14 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="panel panel-default" ng-if="ethernet.multicast">
-                                                <div class="panel-heading" role="tab">
-                                                    <h4 class="panel-title">
+                                            <div class="panel panel-default " ng-if="ethernet.multicast ">
+                                                <div class="panel-heading " role="tab ">
+                                                    <h4 class="panel-title ">
                                                         <a bs-collapse-toggle>Multicast</a></h4>
                                                 </div>
-                                                <div class="panel-collapse" role="tabpanel" bs-collapse-target>
-                                                    <div class="panel-body">
-                                                        <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
+                                                <div class="panel-collapse " role="tabpanel " bs-collapse-target>
+                                                    <div class="panel-body ">
+                                                        <table st-table="displayedCollection2 " st-safe-src="cos " class="table table-striped ">
                                                             <tr>
                                                                 <th>Metric</th>
                                                                 <th>Value</th>
@@ -336,14 +336,14 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="panel panel-default" ng-if="ethernet.dynArpInspect">
-                                                <div class="panel-heading" role="tab">
-                                                    <h4 class="panel-title">
+                                            <div class="panel panel-default " ng-if="ethernet.dynArpInspect ">
+                                                <div class="panel-heading " role="tab ">
+                                                    <h4 class="panel-title ">
                                                         <a bs-collapse-toggle>Traffic Shaping</a></h4>
                                                 </div>
-                                                <div class="panel-collapse" role="tabpanel" bs-collapse-target>
-                                                    <div class="panel-body">
-                                                        <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
+                                                <div class="panel-collapse " role="tabpanel " bs-collapse-target>
+                                                    <div class="panel-body ">
+                                                        <table st-table="displayedCollection2 " st-safe-src="cos " class="table table-striped ">
                                                             <tr>
                                                                 <th>Metric</th>
                                                                 <th>Value</th>
@@ -364,14 +364,14 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="panel panel-default" ng-if="ethernet.vlan">
-                                                <div class="panel-heading" role="tab">
-                                                    <h4 class="panel-title">
+                                            <div class="panel panel-default " ng-if="ethernet.vlan ">
+                                                <div class="panel-heading " role="tab ">
+                                                    <h4 class="panel-title ">
                                                         <a bs-collapse-toggle>Vlan</a></h4>
                                                 </div>
-                                                <div class="panel-collapse" role="tabpanel" bs-collapse-target>
-                                                    <div class="panel-body">
-                                                        <table st-table="displayedCollection2" st-safe-src="cos" class="table table-striped">
+                                                <div class="panel-collapse " role="tabpanel " bs-collapse-target>
+                                                    <div class="panel-body ">
+                                                        <table st-table="displayedCollection2 " st-safe-src="cos " class="table table-striped ">
                                                             <tr>
                                                                 <th>Metric</th>
                                                                 <th>Value</th>
@@ -399,29 +399,29 @@
                         </div>
                     </div>
                 </div>
-                <div class="row" ng-show="type === 'CPE'">
-                    <div class="col-lg-12">
-                        <table st-table="displayedCollection3" st-safe-src="dataCollection" class="table table-striped">
+                <div class="row " ng-show="type==='CPE' ">
+                    <div class="col-lg-12 ">
+                        <table st-table="displayedCollection3 " st-safe-src="dataCollection " class="table table-striped ">
                             <thead>
                                 <tr>
-                                    <th class="col-sm-1 col-md-1 col-lg-1">Port id</th>
-                                    <th data-title="'unit'" class="col-sm-2 col-md-2 col-lg-2">Unit</th>
-                                    <th data-title="'unit'" class="col-sm-2 col-md-2 col-lg-2">Type</th>
+                                    <th class="col-sm-1 col-md-1 col-lg-1 ">Port id</th>
+                                    <th data-title=" 'unit' " class="col-sm-2 col-md-2 col-lg-2 ">Unit</th>
+                                    <th data-title=" 'unit' " class="col-sm-2 col-md-2 col-lg-2 ">Type</th>
                                 </tr>
                                 <tr>
-                                    <th colspan="1">
-                                        <input st-search="port" class="form-control" placeholder="" type="text" />
+                                    <th colspan="1 ">
+                                        <input st-search="port " class="form-control " placeholder=" " type="text " />
                                     </th>
-                                    <th colspan="1">
-                                        <input st-search="unit" class="form-control" placeholder="" type="text" />
+                                    <th colspan="1 ">
+                                        <input st-search="unit " class="form-control " placeholder=" " type="text " />
                                     </th>
-                                    <th colspan="1">
-                                        <input st-search="type" class="form-control" placeholder="" type="text" />
+                                    <th colspan="1 ">
+                                        <input st-search="type " class="form-control " placeholder=" " type="text " />
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="row in displayedCollection3">
+                                <tr ng-repeat="row in displayedCollection3 ">
                                     <td>{{row.port}}</td>
                                     <td>{{row.unit}}</td>
                                     <td>{{row.type}}
@@ -430,7 +430,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td class="text-center" st-pagination="" st-items-by-page="10" colspan="3"></td>
+                                    <td class="text-center " st-pagination=" " st-items-by-page="10 " colspan="3 "></td>
                                 </tr>
                             </tfoot>
                         </table>

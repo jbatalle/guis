@@ -92,6 +92,8 @@ angular.module('mqnaasApp')
         }
 
         $scope.updateARNCard = function () {
+            $scope.ethernet = undefined;
+            $scope.interfaceInfo = undefined;
             $scope.getARNCard($scope.card._id);
             $scope.getEthernetInterfaces($scope.card._id);
             $scope.cos = [];
@@ -131,8 +133,8 @@ angular.module('mqnaasApp')
         };
 
         $scope.getInfo = function (row) {
-            $scope.ethernet = {};
-            $scope.interfaceInfo = {};
+            $scope.ethernet = undefined;
+            $scope.interfaceInfo = undefined;
             $scope.getEthernet(row.ethernet);
             $scope.getMoreInfo(row._cardId, row._interfaceId);
         };
