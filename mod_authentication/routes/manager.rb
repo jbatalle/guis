@@ -23,14 +23,16 @@ class Authentication < Sinatra::Application
 		token = Token.where(:token => request.env['HTTP_X_AUTH_TOKEN']).first
         if token
 			user = User.find(token.user_id)
-            return user.to_json
+		#            return user.to_json
         else
 			halt 401, {'Content-Type' => 'text/plain'}, 'Token invalid'
 		end
+		
 		if user.id == params["id"]
 			halt 401, {'Content-Type' => 'text/plain'}, 'You can not remove yourself'
 		end
 		User.find(params["id"]).destroy
+		status 200
 	end
 	
 	#activate users

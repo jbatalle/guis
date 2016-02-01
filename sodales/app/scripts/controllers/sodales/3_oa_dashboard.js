@@ -124,8 +124,11 @@ angular.module('mqnaasApp')
             spService.removeUser(user.id, user.sp_id).then(function (data) {});
         };
 
-        $scope.deleteUser = function () {
+        $scope.deleteUser = function (user) {
             UsersService.remove(user.id).then(function (data) {});
+            UsersService.getUsers().then(function (users) {
+                $scope.usersDataCollection = users;
+            });
         };
 
         $scope.createUserDialog = function () {
@@ -140,8 +143,11 @@ angular.module('mqnaasApp')
         $scope.createUser = function (user) {
             if (user.password !== user.re_password) return;
             UsersService.register(user.username, user.password, user.email, user.fullname).then(function (result) {
-                console.log(result)
-                    // this.$hide();
+                console.log(result);
+                UsersService.getUsers().then(function (users) {
+                    $scope.usersDataCollection = users;
+                });
+                // this.$hide();
             });
             this.$hide();
         };
