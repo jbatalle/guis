@@ -243,8 +243,6 @@ angular.module('mqnaasApp')
             console.log(listPorts);
             if (ns.igmp) ns.igmp = 1;
             if (!ns.igmp) ns.igmp = 0;
-            if (ns.serviceType === 2) ns.mcastProxyEnable = 1;
-            else ns.mcastProxyEnable = 0;
             if (ns.mcastProxyEnable) ns.mcastProxyEnable = 1;
             if (!ns.mcastProxyEnable) ns.mcastProxyEnable = 0;
             if (ns.stackEnable) ns.stackEnable = 1;
@@ -255,6 +253,7 @@ angular.module('mqnaasApp')
             if (!ns.dhcpv6Enable) ns.dhcpv6Enable = 0;
             if (ns.multicastFlood) ns.multicastFlood = 1;
             if (!ns.multicastFlood) ns.multicastFlood = 0;
+            //pppoeEnable
 
             $scope.interfaces.filter(function (d) {
                 console.log(d);
@@ -301,6 +300,7 @@ angular.module('mqnaasApp')
 
         $scope.createClientService = function (cs, listPorts) {
             console.log(cs);
+            console.log(listPorts);
             //return;
             //networkServiceId, admin, name, uniVlan
             arnService.put(createClientService(cs.ns._id, 2, cs.name, cs.uniVlanId)).then(function (response) {
@@ -310,11 +310,11 @@ angular.module('mqnaasApp')
                         console.log(d);
                         return d._interfaceId === port.physical
                     })[0];
-                    var iface = $scope.interfaces.filter(function (d) {
+                    /*var iface = $scope.interfaces.filter(function (d) {
                         console.log(d);
                         return (d._name === "intEth 1" && d._cardId === equipment._cardId)
-                    })[0];
-                    arnService.put(addPortsToClientService(response.response.operation.clientService._id, equipment._cardId, iface._interfaceId, 2)).then(function (response) {});
+                    })[0];*/
+                    arnService.put(addPortsToClientService(response.response.operation.clientService._id, equipment._cardId, port.physical, 2)).then(function (response) {});
                 });
                 $scope.openOperationARNDialog($scope.virtualResourceOp, 'ARN');
                 //$scope.LAGs = response.response.operation.interfaceList.interface;

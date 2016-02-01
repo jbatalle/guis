@@ -181,7 +181,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td class="text-center" st-pagination="" st-items-by-page="10" colspan="4">
+                                                <td class="text-center" st-pagination="" st-items-by-page="10" colspan="7">
                                                 </td>
                                             </tr>
                                         </tfoot>
@@ -199,6 +199,7 @@
                                                 <th class="col-sm-2 col-md-2 col-lg-2">Name</th>
                                                 <th class="col-sm-2 col-md-2 col-lg-2">Administrative state</th>
                                                 <th class="col-sm-2 col-md-2 col-lg-2">Network Service</th>
+                                                <th class="col-sm-2 col-md-2 col-lg-2">NNI-CTAG</th>
                                                 <th class="col-sm-2 col-md-2 col-lg-2">UNI-CTAG</th>
                                                 <th class="col-sm-2 col-md-2 col-lg-2">Actions</th>
                                             </tr>
@@ -218,6 +219,7 @@
                                                 <td>{{networkServices[row._networkServiceId -1 ]._name}}
                                                 </td>
                                                 <td>{{row._cVlan}}</td>
+                                                <td>{{row._uniVlan}}</td>
                                                 <td>
                                                     <button type="button" ng-click="activateClientService(row) " class="btn btn-sm" ng-class="row._admin === '1' ? 'btn-warning' : 'btn-success'">
                                                         <span ng-if="row._admin === '1'">Disable</span>
@@ -230,7 +232,7 @@
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td class="text-center" st-pagination="" st-items-by-page="10" colspan="4">
+                                                <td class="text-center" st-pagination="" st-items-by-page="10" colspan="6">
                                                 </td>
                                             </tr>
                                         </tfoot>

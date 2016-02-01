@@ -219,6 +219,7 @@ angular.module('mqnaasApp')
             arnService.put(requestData).then(function (response) {
                 end = response.response.operation.interfaceList.interface.ethernet.counters;
             });
+
         };
 
         $scope.$on("$destroy", function () {
@@ -323,7 +324,7 @@ angular.module('mqnaasApp')
                 };
                 $scope.chartsTx = {
                     title: 'Transmited packets',
-                    description: 'This graph shows the last 20 visited pages',
+                    description: 'Transmited packets according the packet size',
                     data: res,
                     chart_type: 'bar',
                     x_accessor: 'value',
@@ -337,7 +338,7 @@ angular.module('mqnaasApp')
                 };
                 $scope.chartsRx = {
                     title: 'Recevied packets',
-                    description: 'This graph shows the last 20 visited pages',
+                    description: 'Recevied packets according the packet size',
                     data: resRx,
                     chart_type: 'bar',
                     x_accessor: 'value',

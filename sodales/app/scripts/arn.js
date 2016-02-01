@@ -46,8 +46,8 @@ changeStatusLAG = function (interfaceId, admin) {
     return '<?xml version="1.0" encoding="utf-8"?><request><operation token="200222" type="config" entity="interface"><interface equipmentId="0" interfaceId="' + interfaceId + '" admin="' + admin + '"></interface></operation></request>';
 };
 
-createNetworkService = function (admin, name, type, uplinkVlanId, uniVlanId, igmp) {
-    return '<?xml version="1.0" encoding="utf-8"?><request><operation type="create" entity="networkService"><networkService equipmentId="0" admin="' + admin + '" name="' + name + '" type="' + type + '" uplinkVlanId="' + uplinkVlanId + '" uniVlanId="' + uniVlanId + '" igmpEnable="' + igmp + '"></networkService></operation></request>';
+createNetworkService = function (admin, name, type, uplinkVlanId, uniVlanId, igmp, mcastProxyEnable, stackEnable, dhcpv4Enable, dhcpv6Enable, multicastFlood) {
+    return '<?xml version="1.0" encoding="utf-8"?><request><operation type="create" entity="networkService"><networkService equipmentId="0" admin="' + admin + '" name="' + name + '" type="' + type + '" uplinkVlanId="' + uplinkVlanId + '" uniVlanId="' + uniVlanId + '" igmpEnable="' + igmp + '" mcastProxyEnable="' + mcastProxyEnable + '" stackEnable="' + stackEnable + '" dhcpv4Enable="' + dhcpv4Enable + '" dhcpv6Enable="' + dhcpv6Enable + '" multicastFlood="' + multicastFlood + '" ></networkService></operation></request>';
 };
 
 addPortsToNetworkService = function (id, cardId, interfaceId, role) {
@@ -59,9 +59,16 @@ changeStatusNetworkService = function (id, admin) {
 };
 
 createClientService = function (networkServiceId, admin, name, uniVlan) {
-    return '<?xml version="1.0" encoding="utf-8"?><request>\
-        <operation type="create" entity="clientService"><clientService equipmentId="0"><create><clientService networkServiceId="' + networkServiceId + '" admin="' + admin + '" name="' + name + '" uniVlan="' + uniVlan + '" ></clientService></create</clientService></operation></request>';
+    return '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="create" entity="clientService"><clientService equipmentId="0" admin="2" name="' + name + '" networkServiceId="' + networkServiceId + '" uniVlan="' + uniVlan + '" upStreamId="1"><igmp useGlobalIgmp="0" igmpEnable="1"/></clientService></operation></request>';
+    //<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="create" entity="clientService"><clientService equipmentId="0" admin="2" name="test_client_s" networkServiceId="2" uniVlan="6"><igmp useGlobalIgmp="0" igmpEnable="1"/></clientService></operation></request>
+    //<?xml version="1.0" encoding="utf-8"?><request><operation type="create" entity="clientService"><clientService equipmentId="0"><create><clientService networkServiceId="2" admin="2" name="test_ui" uniVlan="6"></clientService></create</clientService></operation></request>
+    //return '<?xml version="1.0" encoding="utf-8"?><request><operation token="1" type="create" entity="clientService"><clientService equipmentId="0"><create><clientService networkServiceId="' + networkServiceId + '" admin="' + admin + '" name="' + name + '" uniVlan="' + uniVlan + '"></clientService></create</clientService></operation></request>';
 };
+
+addPortsToClientService = function (id, cardId, interfaceId, role) {
+    return '<?xml version="1.0" encoding="UTF-8"?><request><operation token="3" type="attach" entity="clientService"><clientService equipmentId="0" cardId="' + cardId + '" id="' + id + '"><attach><port portIfIndex="' + interfaceId + '"/></attach></clientService></operation></request>';
+};
+//
 
 changeStatusClientService = function (id, admin) {
     return '<?xml version="1.0" encoding="utf-8"?><request><operation type="config" entity="clientService"><clientService equipmentId="0" id="' + id + '" admin="' + admin + '"></clientService></operation></request>';

@@ -45,7 +45,14 @@ angular.module('mqnaasApp')
             UsersService.getUsers().then(function (users) {
                 $scope.usersDataCollection = users;
             });
+
         };
+
+        spService.getList().then(function (sps) {
+            console.log(sps);
+            $scope.dataCollection = sps;
+            //$scope.dataCollection[i].vis[j].name);
+        });
 
         $scope.updateSpList();
 
