@@ -299,12 +299,23 @@ angular.module('mqnaasApp')
             });
         };
 
-        $scope.createClientService = function (cs) {
+        $scope.createClientService = function (cs, listPorts) {
             console.log(cs);
             //return;
             //networkServiceId, admin, name, uniVlan
             arnService.put(createClientService(cs.ns._id, 2, cs.name, cs.uniVlanId)).then(function (response) {
                 console.log(response.response.operation.result);
+                angular.forEach(listPorts, function (port) {
+                    var equipment = $scope.interfaces.filter(function (d) {
+                        console.log(d);
+                        return d._interfaceId === port.physical
+                    })[0];
+                    var iface = $scope.interfaces.filter(function (d) {
+                        console.log(d);
+                        return (d._name === "intEth 1" && d._cardId === equipment._cardId)
+                    })[0];
+                    arnService.put(addPortsToClientService(response.response.operation.clientService._id, equipment._cardId, iface._interfaceId, 2)).then(function (response) {});
+                });
                 $scope.openOperationARNDialog($scope.virtualResourceOp, 'ARN');
                 //$scope.LAGs = response.response.operation.interfaceList.interface;
             });
