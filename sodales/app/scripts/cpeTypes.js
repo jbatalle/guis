@@ -8,7 +8,7 @@ var eIngressType = [
         id: 1
     },
     {
-        label: "Stag_Ctag",
+        label: "Stag Ctag",
         id: 4
     }];
 
@@ -32,7 +32,7 @@ var vlanEdit_outer_command = [
         id: 0
     },
     {
-        label: "_APPEND ",
+        label: "APPEND ",
         id: 1
     },
     {

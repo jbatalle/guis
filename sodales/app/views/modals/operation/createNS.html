@@ -35,9 +35,32 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">IGMP</label>
+                            <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">Stacked VLAN</label>
                             <div class="col-sm-8">
-                                <input type="checkbox" id="name" class="form-control input-sm ng-pristine" name="name" ng-model="ns.igmp">
+                                <input type="checkbox" id="name" class="form-control input-sm ng-pristine" name="name" ng-model="ns.stackEnable">
+                                <br/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">DHCP relay V4
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" id="name" class="form-control input-sm ng-pristine" name="name" ng-model="ns.dhcpv4Enable">
+                                <br/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">DHCP relay V6
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" id="name" class="form-control input-sm ng-pristine" name="name" ng-model="ns.dhcpv6Enable">
+                                <br/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">PPPoE</label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" id="name" class="form-control input-sm ng-pristine" name="name" ng-model="ns.ppoe">
                                 <br/>
                             </div>
                         </div>
@@ -52,6 +75,34 @@
                             <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">UNI C-TAG</label>
                             <div class="col-sm-8">
                                 <input type="text" id="name" class="form-control input-sm ng-pristine" name="name" data-ng-maxlength="64" ng-model="ns.uniVlanId" required>
+                                <br/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">IGMP</label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" id="name" class="form-control input-sm ng-pristine" name="name" ng-model="ns.igmp">
+                                <br/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">DAI</label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" id="name" class="form-control input-sm ng-pristine" name="name" ng-model="ns.dai">
+                                <br/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">MC Proxy</label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" id="name" class="form-control input-sm ng-pristine" name="name" ng-model="ns.mcastProxyEnable">
+                                <br/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label ng-scope fx-required-field modal-align">Multicast flood</label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" id="name" class="form-control input-sm ng-pristine" name="name" ng-model="ns.multicastFlood">
                                 <br/>
                             </div>
                         </div>

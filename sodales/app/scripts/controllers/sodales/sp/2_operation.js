@@ -243,6 +243,18 @@ angular.module('mqnaasApp')
             console.log(listPorts);
             if (ns.igmp) ns.igmp = 1;
             if (!ns.igmp) ns.igmp = 0;
+            if (ns.serviceType === 2) ns.mcastProxyEnable = 1;
+            else ns.mcastProxyEnable = 0;
+            if (ns.mcastProxyEnable) ns.mcastProxyEnable = 1;
+            if (!ns.mcastProxyEnable) ns.mcastProxyEnable = 0;
+            if (ns.stackEnable) ns.stackEnable = 1;
+            if (!ns.stackEnable) ns.stackEnable = 0;
+            if (ns.dhcpv4Enable) ns.dhcpv4Enable = 1;
+            if (!ns.dhcpv4Enable) ns.dhcpv4Enable = 0;
+            if (ns.dhcpv6Enable) ns.dhcpv6Enable = 1;
+            if (!ns.dhcpv6Enable) ns.dhcpv6Enable = 0;
+            if (ns.multicastFlood) ns.multicastFlood = 1;
+            if (!ns.multicastFlood) ns.multicastFlood = 0;
 
             $scope.interfaces.filter(function (d) {
                 console.log(d);
@@ -250,7 +262,7 @@ angular.module('mqnaasApp')
             });
             var id = "1"
             console.log(ns.interfaces);
-            arnService.put(createNetworkService(2, ns.name, ns.serviceType.id, ns.uplinkVlanId, ns.uniVlanId, ns.igmp)).then(function (response) {
+            arnService.put(createNetworkService(2, ns.name, ns.serviceType.id, ns.uplinkVlanId, ns.uniVlanId, ns.igmp, ns.mcastProxyEnable, ns.stackEnable, ns.dhcpv4Enable, ns.dhcpv6Enable, ns.multicastFlood)).then(function (response) {
                 console.log(response);
                 angular.forEach(listPorts, function (port) {
                     var equipment = $scope.interfaces.filter(function (d) {
@@ -360,19 +372,19 @@ angular.module('mqnaasApp')
         }];
 
         $scope.service_types = [{
-            id: 1,
+            id: 0,
             name: "Unicast"
         }, {
-            id: 2,
+            id: 1,
             name: "Multicast"
         }, {
-            id: 3,
+            id: 2,
             name: "Univoip"
         }, {
-            id: 4,
+            id: 3,
             name: "Bitstream"
         }, {
-            id: 5,
+            id: 4,
             name: "MAC Bridge"
         }];
 
@@ -462,6 +474,8 @@ angular.module('mqnaasApp')
                 });
             }
 
+            $scope.openOperationARNDialog($scope.virtualResourceOp, 'ARN');
+
             this.$hide();
         };
 
@@ -526,15 +540,13 @@ angular.module('mqnaasApp')
             cpeService.post(url).then(function (response) {});
 
 
-            $scope.openOperationARNDialog($scope.virtualResourceOp, 'CPE');
+            $scope.openOperationCPEDialog($scope.virtualResourceOp, 'CPE');
 
             if (cpeSvc.type === "CFM") {
                 url = "ccmSetting.html?unit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId=" + cpeSvc.innerVlan + "0&srcPort=" + cpeSvc.srcPort + "&megLevel=4&cfmVersion=0&ccmPeriod=1&rdiEnable=1&megId=ccmTest&lmEnable=1&remoteMepId=10&localMepId=9&policerId=" + policerId + "&outServiceId=" + outService + "&inServiceId=" + inService + "&Priority=7";
                 cpeService.post(url).then(function (response) {});
             }
-
-            $this.hide();
-
+            this.hide();
         };
 
         $scope.createEndToEndOperation = function (sourceCPE, targetCPE) {
