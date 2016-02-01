@@ -101,10 +101,7 @@
                         </table>
                     </div>
                     <div ng-show="packetsData2">
-                        Graph: {{packetsData2}}
-                        <!--vis-graph2d data="packetsData2" options="graphOptions"></vis-graph2d-->
-                        <graph2d ng-model="packetsData2" options="network_options" id="previewNetwork2">
-                        </graph2d>
+                        <vis-graph2d data="data" options="options"></vis-graph2d>
                     </div>
                     <div ng-show="packetsData">
                         <div class="row">

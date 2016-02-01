@@ -356,67 +356,99 @@ angular.module('mqnaasApp')
         };
 
         $scope.arnCounterStatistics = function (cardId, interfaceId) {
-            console.log();
+
+            var groups = new vis.DataSet();
+            groups.add({
+                id: 0,
+                content: "Transmission (packets)",
+                options: {
+                    drawPoints: {
+                        style: 'square' // square, circle
+                    },
+                    shaded: {
+                        orientation: 'bottom' // top, bottom
+                    }
+                }
+            });
+
+            groups.add({
+                id: 1,
+                content: "Reception (packets)",
+                options: {
+                    drawPoints: {
+                        style: 'circle' // square, circle
+                    },
+                    shaded: {
+                        orientation: 'bottom' // top, bottom
+                    }
+                }
+            });
+
+            $scope.options = {
+                dataAxis: {
+                    showMinorLabels: false
+                },
+                legend: {
+                    left: {
+                        position: "bottom-left"
+                    }
+                },
+                start: vis.moment().add(-10, 'seconds'), // changed so its faster
+                end: vis.moment(),
+            };
+            var items = [];
+
+            $scope.data = {
+                items: new vis.DataSet(items),
+                groups: groups
+            };
+            if (promise2) {
+                $interval.cancel(promise2);
+            }
             var initial;
             if ($scope.arnCounterEnd !== 0) initial = $scope.arnCounterEnd;
             var end;
-            $scope.packetsData2 = {};
-            $scope.packetsData2.data = [];
-            $scope.graphOptions = {
-                    start: vis.moment().add(-15, 'minutes'), // changed so its faster
-                    end: vis.moment().add(20, 'seconds'),
-                    height: 250,
-                    dataAxis: {
-                        left: {
-                            range: {
-                                min: 0
-                            }
-                        }
-                    }
-                }
-                //var dataItems = new VisDataSet();
-            var dataArray = [];
+            var initialRx = 0,
+                initalTx = 0;
+            $scope.packetsData2 = [];
             promise2 = $interval(function () {
                 var requestData = '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="showCounters" entity="interface/ethernet"><ethernet equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '"/></operation></request>';
                 arnService.put(requestData).then(function (response) {
                     end = response.response.operation.interfaceList.interface.ethernet.counters;
-                    console.log(end);
-                    //console.log(parseInt(end.tx._packets));
-                    dataArray.push({
-                        x: new Date(2016, 2, 1),
-                        y: parseInt(end.tx._packets),
+                    if ($scope.data.items.get().length === 0) {
+                        initalTx = end.tx._packets;
+                        initalRx = end.rx._packets;
+                        currentTx = currentRx = 0;
+                    } else {
+
+                        var lastTx = $scope.data.items.get({
+                            group: 0
+                        })[$scope.data.items.get({
+                            group: 0
+                        }).length - 1].y;
+                        var currentTx = parseInt(end.tx._packets) - initalTx;
+
+                        var lastRx = $scope.data.items.get({
+                            group: 1
+                        })[$scope.data.items.get({
+                            group: 1
+                        }).length - 1].y;
+                        var currentRx = parseInt(end.rx._packets) - initalRx;
+                        initalTx = end.tx._packets;
+                        initalRx = end.rx._packets;
+                    }
+                    console.log(currentTx);
+                    console.log(currentRx);
+                    $scope.data.items.add({
+                        x: new Date(),
+                        y: currentTx,
                         group: 0
                     });
-
-                    var items = [
-                        {
-                            x: '2014-06-11',
-                            y: 10
-                        },
-                        {
-                            x: '2014-06-12',
-                            y: 25
-                        },
-                        {
-                            x: '2014-06-13',
-                            y: 30
-                        },
-                        {
-                            x: '2014-06-14',
-                            y: 10
-                        },
-                        {
-                            x: '2014-06-15',
-                            y: 15
-                        },
-                        {
-                            x: '2014-06-16',
-                            y: 30
-                        }
-  ];
-
-
-                    $scope.packetsData2.data.push(items);
+                    $scope.data.items.add({
+                        x: new Date(),
+                        y: currentRx,
+                        group: 1
+                    });
                 });
             }, 5000);
         };

@@ -310,7 +310,7 @@ angular.module('mqnaasApp')
             var groups = new vis.DataSet();
             groups.add({
                 id: 0,
-                content: "Transmission",
+                content: "Transmission (packets)",
                 options: {
                     drawPoints: {
                         style: 'square' // square, circle
@@ -323,7 +323,7 @@ angular.module('mqnaasApp')
 
             groups.add({
                 id: 1,
-                content: "Reception",
+                content: "Reception (packets)",
                 options: {
                     drawPoints: {
                         style: 'circle' // square, circle
