@@ -80,10 +80,15 @@
                     <graph2d ng-model="packetsData2" options="network_options" id="previewNetwork2">
                     </graph2d>
                 </div>
-                <div ng-show="arnInterfaces && packetsData">
-                    Graph2: {{packetsData}}
-                    <graph2dbar ng-model="packetsData" options="network_options" id="previewNetwork3">
-                    </graph2dbar>
+                <div ng-show="chartsTx || chartsRx">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <widgetmetrics data="chartsTx.data" options="chartsTx" ng-if="chartsTx.data"></widgetmetrics>
+                        </div>
+                        <div class="col-md-6">
+                            <widgetmetrics data="chartsRx.data" options="chartsRx" ng-if="chartsRx.data"></widgetmetrics>
+                        </div>
+                    </div>
                 </div>
                 <div ng-show="cpePorts">
                     <ol class="breadcrumb">

@@ -23,7 +23,6 @@ angular.module('mqnaasApp')
         if ($rootScope.virtNetId) {
             $scope.getNetworkResources();
         } else {
-            console.log("create list of vi nets");
             AuthService.profile().then(function (data) {
                 spService.get(data.sp_id).then(function (data) {
                     $scope.networks = data.vis;
@@ -31,7 +30,7 @@ angular.module('mqnaasApp')
                         var url = 'viNetworks';
                         IMLService.get(url).then(function (result) {
                             if (!result) return;
-                            $rootScope.networkCollection.push(result);
+                            $rootScope.networkCollection = result;
                         });
                     });
                 });
@@ -41,7 +40,7 @@ angular.module('mqnaasApp')
         $scope.setVirtualNetwork = function () {
             console.log($scope.selectedNetwork);
             $rootScope.virtNetId = $scope.selectedNetwork;
-            $rootScope.networkId = $scope.selectedNetwork.physicalNetwork;
+            //$rootScope.networkId = $scope.selectedNetwork.physicalNetwork;
             $scope.getNetworkResources();
         };
 

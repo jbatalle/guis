@@ -251,54 +251,57 @@ angular.module('mqnaasApp')
                 content: "packets1024to1518Octets"
             });
             items = [];
+            var res = [];
+            var resRx = [];
             var requestData = getCounters(cardId, interfaceId);
             arnService.put(requestData).then(function (response) {
                 var data = response.response.operation.interfaceList.interface.ethernet.counters;
-                _.each(data.tx, function (val, key) {
-                    if (key === '_packets64Octets')
-                        items.push({
-                            x: new Date(),
-                            y: parseInt(val),
-                            group: 0
-                        });
-                    else if (key === '_packets65to127Octets')
-                        items.push({
-                            x: new Date(),
-                            y: parseInt(val),
-                            group: 1
-                        });
-                    else if (key === '_packets128to255Octets')
-                        items.push({
-                            x: new Date(),
-                            y: parseInt(val),
-                            group: 2
-                        });
-                    else if (key === '_packets256to511Octets')
-                        items.push({
-                            x: new Date(),
-                            y: parseInt(val),
-                            group: 3
-                        });
-                    else if (key === '_packets512to1023Octets')
-                        items.push({
-                            x: new Date(),
-                            y: parseInt(val),
-                            group: 4
-                        });
-                    else if (key === '_packets1024to1518Octets')
-                        items.push({
-                            x: new Date(),
-                            y: parseInt(val),
-                            group: 5
-                        });
-                    console.log(items);
-
+                _.each(data.rx, function (val, key) {
+                    if (key.indexOf("_packets") !== -1) {
+                        resRx.push({
+                            label: key,
+                            value: parseInt(val)
+                        })
+                    }
                 });
-                console.log(items);
-                $scope.packetsData = {
-                    items: items,
-                    groups: groups
+                _.each(data.tx, function (val, key) {
+                    if (key.indexOf("_packets") !== -1) {
+                        res.push({
+                            label: key,
+                            value: parseInt(val)
+                        })
+                    }
+                });
+                $scope.chartsTx = {
+                    title: 'Transmited packets',
+                    description: 'This graph shows the last 20 visited pages',
+                    data: res,
+                    chart_type: 'bar',
+                    x_accessor: 'value',
+                    y_accessor: 'label',
+                    width: 295,
+                    height: 150,
+                    right: 10,
+                    animate_on_load: true,
+                    target: '#bar2',
+                    left: 100
                 };
+                $scope.chartsRx = {
+                    title: 'Recevied packets',
+                    description: 'This graph shows the last 20 visited pages',
+                    data: resRx,
+                    chart_type: 'bar',
+                    x_accessor: 'value',
+                    y_accessor: 'label',
+                    width: 295,
+                    height: 150,
+                    right: 10,
+                    animate_on_load: true,
+                    target: '#bar2',
+                    left: 100
+                };
+                $scope.$broadcast("toggleAnimation", $scope.chartsTx);
+                $scope.$broadcast("toggleAnimation", $scope.chartsRx);
             });
         };
 

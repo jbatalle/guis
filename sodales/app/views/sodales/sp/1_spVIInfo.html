@@ -2,7 +2,7 @@
     <div class="col-md-4 col-md-offset-4">
         <h3 class="page-header">No virtual network selected</h3>
         <div class="list-group" ng-show="!virtualResource">
-            <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network.id for network in networkCollection" bs-select ng-change="setVirtualNetwork(selectedNetwork)">
+            <button type="button" class="btn btn-default" ng-model="selectedNetwork" data-html="1" bs-options="network.id as network.id for network in networkCollection" bs-select ng-change="setVirtualNetwork(selectedNetwork)">
                 Select <span class="caret"></span>
             </button>
         </div>

@@ -32,7 +32,7 @@ angular.module('mqnaasApp')
                         var url = 'viNetworks';
                         IMLService.get(url).then(function (result) {
                             if (!result) return;
-                            $rootScope.networkCollection.push(result);
+                            $rootScope.networkCollection = result;
                         });
                     })
                 });
@@ -40,8 +40,8 @@ angular.module('mqnaasApp')
         }
 
         $scope.setVirtualNetwork = function () {
-            $rootScope.virtNetId = $scope.selectedNetwork.id;
-            $rootScope.networkId = $scope.selectedNetwork.physicalNetwork;
+            $rootScope.virtNetId = $scope.selectedNetwork;
+            //$rootScope.networkId = $scope.selectedNetwork.physicalNetwork;
             $scope.getNetworkResources();
         };
 
@@ -349,8 +349,8 @@ angular.module('mqnaasApp')
                     target: '#bar2',
                     left: 100
                 };
-                $scope.$broadcast("toggleAnimation", $scope.charts);
-
+                $scope.$broadcast("toggleAnimation", $scope.chartsTx);
+                $scope.$broadcast("toggleAnimation", $scope.chartsRx);
             });
         };
 
@@ -359,17 +359,63 @@ angular.module('mqnaasApp')
             var initial;
             if ($scope.arnCounterEnd !== 0) initial = $scope.arnCounterEnd;
             var end;
-            $scope.packetsData2 = [];
+            $scope.packetsData2 = {};
+            $scope.packetsData2.data = [];
+            $scope.graphOptions = {
+                    start: vis.moment().add(-15, 'minutes'), // changed so its faster
+                    end: vis.moment().add(20, 'seconds'),
+                    height: 250,
+                    dataAxis: {
+                        left: {
+                            range: {
+                                min: 0
+                            }
+                        }
+                    }
+                }
+                //var dataItems = new VisDataSet();
+            var dataArray = [];
             promise2 = $interval(function () {
                 var requestData = '<?xml version="1.0" encoding="UTF-8"?><request><operation token="1" type="showCounters" entity="interface/ethernet"><ethernet equipmentId="0" cardId="' + cardId + '" interfaceId="' + interfaceId + '"/></operation></request>';
                 arnService.put(requestData).then(function (response) {
                     end = response.response.operation.interfaceList.interface.ethernet.counters;
                     console.log(end);
-                    console.log(parseInt(end.tx._packets));
-                    $scope.packetsData2.push({
-                        x: new Date(),
-                        y: parseInt(end.tx._packets)
+                    //console.log(parseInt(end.tx._packets));
+                    dataArray.push({
+                        x: new Date(2016, 2, 1),
+                        y: parseInt(end.tx._packets),
+                        group: 0
                     });
+
+                    var items = [
+                        {
+                            x: '2014-06-11',
+                            y: 10
+                        },
+                        {
+                            x: '2014-06-12',
+                            y: 25
+                        },
+                        {
+                            x: '2014-06-13',
+                            y: 30
+                        },
+                        {
+                            x: '2014-06-14',
+                            y: 10
+                        },
+                        {
+                            x: '2014-06-15',
+                            y: 15
+                        },
+                        {
+                            x: '2014-06-16',
+                            y: 30
+                        }
+  ];
+
+
+                    $scope.packetsData2.data.push(items);
                 });
             }, 5000);
         };
