@@ -240,7 +240,9 @@ angular.module('mqnaasApp')
 
         $scope.createNetworkService = function (ns, listPorts) {
             console.log(ns);
-            console.log(listPorts)
+            console.log(listPorts);
+            if (ns.igmp) ns.igmp = 1;
+            if (!ns.igmp) ns.igmp = 0;
 
             $scope.interfaces.filter(function (d) {
                 console.log(d);
@@ -248,7 +250,7 @@ angular.module('mqnaasApp')
             });
             var id = "1"
             console.log(ns.interfaces);
-            arnService.put(createNetworkService(2, ns.name, ns.serviceType.id, ns.uplinkVlanId, ns.uniVlanId)).then(function (response) {
+            arnService.put(createNetworkService(2, ns.name, ns.serviceType.id, ns.uplinkVlanId, ns.uniVlanId, ns.igmp)).then(function (response) {
                 console.log(response);
                 angular.forEach(listPorts, function (port) {
                     var equipment = $scope.interfaces.filter(function (d) {
