@@ -277,8 +277,7 @@ angular.module('mqnaasApp')
         };
 
         $scope.activateNetworkService = function (data) {
-            var id = 2;
-            var interfaceId = data._id;
+            var id = data._id;
             var admin = 0;
             if (data._admin === '1') admin = 2;
             else if (data._admin === '2') admin = 1;
