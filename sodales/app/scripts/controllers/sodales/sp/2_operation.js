@@ -527,10 +527,14 @@ angular.module('mqnaasApp')
             cpeService.post(url).then(function (response) {});
 
 
+            $scope.openOperationARNDialog($scope.virtualResourceOp, 'CPE');
+
             if (cpeSvc.type === "CFM") {
                 url = "ccmSetting.html?unit=0&stream_id=1&activate=1&destMac=00:01:03:05:06:09&vlanId=" + cpeSvc.innerVlan + "0&srcPort=" + cpeSvc.srcPort + "&megLevel=4&cfmVersion=0&ccmPeriod=1&rdiEnable=1&megId=ccmTest&lmEnable=1&remoteMepId=10&localMepId=9&policerId=" + policerId + "&outServiceId=" + outService + "&inServiceId=" + inService + "&Priority=7";
                 cpeService.post(url).then(function (response) {});
             }
+
+            $this.hide();
 
         };
 
