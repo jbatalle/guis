@@ -78,6 +78,32 @@ class IMLSodales < Sinatra::Application
 				@viNetwork.vi_resources.last['mapped_timeslot'] = viReqResource['mapped_timeslot']
 			end
 		end
+
+
+		puts "ADDING LINKS ..............................."
+		#read list of resources
+
+		@viNetwork.vi_resources.each do |viRes|
+			phyNetworks = PhyNetwork.all
+			phyNetworks.each do |phyNet|
+				phyNet.phy_links.each do |phyLink|
+					if  phyLink[:resource_from] == viRes[:mapped_resource]
+						begin
+							target = @viNetwork.vi_resources.find_by(:mapped_resource =>  phyLink[:resource_target])
+							@viNetwork.vi_links << ViLink.new({:resource_from => viRes[:id], :resource_target => target[:id]})
+						rescue Mongoid::Errors::DocumentNotFound => e
+						end
+					elsif phyLink[:resource_target] == viRes[:mapped_resource]
+						begin
+							target = @viNetwork.vi_resources.find_by(:mapped_resource =>  phyLink[:resource_from])
+							@viNetwork.vi_links << ViLink.new({:resource_from => viRes[:id], :resource_target => target[:id]})
+						rescue Mongoid::Errors::DocumentNotFound => e
+						end
+					end
+				end
+			end
+		end
+
 		
 		logger.error "Save VI NETWORK ........................................"
 		if @viNetwork.save!

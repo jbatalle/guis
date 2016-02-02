@@ -363,7 +363,7 @@ angular.module('mqnaasApp')
                             return;
                         }
                         $scope.nodes.add(generateNodeData(data.vi_resources));
-                        $scope.edges.add(generateLinkData(data.vi_resources, $scope.nodes));
+                        $scope.edges.add(generateLinkData(data.vi_links, $scope.nodes));
                     });
                 });
         };

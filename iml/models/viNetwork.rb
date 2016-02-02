@@ -25,6 +25,7 @@ class ViNetwork
   include Mongoid::Attributes::Dynamic
 
   embeds_many :vi_resources
+  embeds_many :vi_links
 
   #field :vi_resource_req, type: Array
   #field :viReqResource, type: Array
